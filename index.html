@@ -59,10 +59,10 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
       </div>
     </div>
   </div>
@@ -97,111 +97,16 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <a id="more"></a>
-
-<h1 id="2-1-Invoking-the-Interpreter"><a href="#2-1-Invoking-the-Interpreter" class="headerlink" title="2.1 Invoking the Interpreter"></a>2.1 Invoking the Interpreter</h1><h3 id="Python-path"><a href="#Python-path" class="headerlink" title="Python path"></a>Python path</h3><p>On Unix-like machines you can find the executable file under <code>/usr/local/bin/</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ file /usr/<span class="built_in">local</span>/bin/python3.9</span><br><span class="line">/usr/<span class="built_in">local</span>/bin/python3.9: Mach-O 64-bit executable x86_64</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Since the choice of the directory where the interpreter lives is an installation option, other places are possible</p>
-</blockquote>
-<h3 id="Exit-Python"><a href="#Exit-Python" class="headerlink" title="Exit Python"></a>Exit Python</h3><ul>
-<li><p>enter EOF character (Ctrl-D on Unix, Ctrl-Z on Windows)</p>
-</li>
-<li><p>exit via cmd <code>quit()</code></p>
-</li>
-<li><p>if exit gracefully, exit status will be 0</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ python3.9</span><br><span class="line">Python 3.9.1 (default, Dec 29 2020, 08:52:17) </span><br><span class="line">[Clang 12.0.0 (clang-1200.0.32.28)] on darwin</span><br><span class="line">Type <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> or <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt; quit()</span><br><span class="line">$ <span class="built_in">echo</span> $?</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
-<h3 id="Editing"><a href="#Editing" class="headerlink" title="Editing"></a>Editing</h3></li>
-<li><p>If Ctrl-P have beeps, line-edit is allowed</p>
-</li>
-<li><blockquote>
-<p>The interpreter operates somewhat like the Unix shell: when called with standard input connected to a tty device, it reads and executes commands interactively; when called with a file name argument or with a file as standard input, it reads and executes a <em>script</em> from that file.</p>
-</blockquote>
-</li>
-<li><p>TTY : stand for TeleTYpewriter </p>
-<p>PTS : stand for Pseudo-TeletypeS</p>
-<p><a target="_blank" rel="noopener" href="https://www.howtogeek.com/428174/what-is-a-tty-on-linux-and-how-to-use-the-tty-command/">more</a></p>
-</li>
-<li><p>simple cmd : <code>python -c command [arg] ...</code>, command is suggested to be quoted with single quotes</p>
-</li>
-<li><p>use module : <code>python -m module [arg] ...</code></p>
-</li>
-<li><p>enter interactive mode after executing a script file :</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ python3 test.py</span><br><span class="line">hello</span><br><span class="line">$ python3 -i test.py</span><br><span class="line">hello</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></li>
-<li><p><a target="_blank" rel="noopener" href="https://docs.python.org/3/using/cmdline.html#using-on-general">Command line and environment</a></p>
-</li>
-</ul>
-<h2 id="2-1-1-Argument-Passing"><a href="#2-1-1-Argument-Passing" class="headerlink" title="2.1.1. Argument Passing"></a>2.1.1. Argument Passing</h2><p>The script name and additional arguments are turned into a list of string stored in variable <code>sys.argv</code></p>
-<ul>
-<li>The length of the list is at least one</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th align="center">condition</th>
-<th align="center">argv[0]</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">no script and no arguments</td>
-<td align="center">‘’ (void string)</td>
-</tr>
-<tr>
-<td align="center">the script name is given as <code>&#39;-&#39;</code>(stdin)</td>
-<td align="center">‘_’</td>
-</tr>
-<tr>
-<td align="center"><a target="_blank" rel="noopener" href="https://docs.python.org/3/using/cmdline.html#cmdoption-c"><code>-c</code></a> <em>command</em> is used</td>
-<td align="center">‘-c’</td>
-</tr>
-<tr>
-<td align="center"><a target="_blank" rel="noopener" href="https://docs.python.org/3/using/cmdline.html#cmdoption-m"><code>-m</code></a> <em>module</em> is used</td>
-<td align="center">the full name of the located module</td>
-</tr>
-</tbody></table>
-<ul>
-<li>Options found after <a target="_blank" rel="noopener" href="https://docs.python.org/3/using/cmdline.html#cmdoption-c"><code>-c</code></a> <em>command</em> or <a target="_blank" rel="noopener" href="https://docs.python.org/3/using/cmdline.html#cmdoption-m"><code>-m</code></a> <em>module</em> are not consumed by the Python interpreter’s option processing but left in <code>sys.argv</code> for the command or module to handle.</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># source of test.py</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> sys.argv:</span><br><span class="line">  print(<span class="built_in">type</span>(i) , i)</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ python3 test.py hello world</span><br><span class="line">&lt;class <span class="string">&#x27;str&#x27;</span>&gt; test.py</span><br><span class="line">&lt;class <span class="string">&#x27;str&#x27;</span>&gt; hello</span><br><span class="line">&lt;class <span class="string">&#x27;str&#x27;</span>&gt; world</span><br></pre></td></tr></table></figure>
-<h2 id="2-1-2-Interactive-Mode"><a href="#2-1-2-Interactive-Mode" class="headerlink" title="2.1.2. Interactive Mode"></a>2.1.2. Interactive Mode</h2><p><a target="_blank" rel="noopener" href="https://docs.python.org/3/tutorial/appendix.html#tut-interac">Interactive Mode</a></p>
-<h1 id="2-2-The-Interpreter-and-Its-Environment"><a href="#2-2-The-Interpreter-and-Its-Environment" class="headerlink" title="2.2. The Interpreter and Its Environment"></a>2.2. The Interpreter and Its Environment</h1><h2 id="2-2-1-Source-Code-Encoding"><a href="#2-2-1-Source-Code-Encoding" class="headerlink" title="2.2.1. Source Code Encoding"></a>2.2.1. Source Code Encoding</h2><ul>
-<li><p><strong>By default, Python source code use <code>UTF-8</code> encoding</strong></p>
-</li>
-<li><p>All Python standard libraries use <code>ASCII</code>, a convention that any portable code should follow</p>
-</li>
-<li><blockquote>
-<p>To declare an encoding other than the default one, a special comment line should be added as the <strong><em>first</em></strong> line of the file. The syntax is as follows:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: encoding -*-</span></span><br></pre></td></tr></table></figure>
-
-<p>for example:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: cp1252 -*-</span></span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>the first or second line must match the regular expression “coding[:=]\s*([-\w.]+)”</p>
-</blockquote>
-<p>so <code># -*- encoding: xxxxxx -*-</code> also works</p>
-</blockquote>
-</li>
-<li><p>If the source code starts with a <a target="_blank" rel="noopener" href="https://docs.python.org/3/tutorial/appendix.html#tut-scripts">UNIX “shebang” line</a>, encoding massage should be the <strong>second line</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: cp1252 -*-</span></span><br></pre></td></tr></table></figure></li>
-<li><p>What does a “shebang” line do? —- make a python script a shell script</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">&quot;Hello World&quot;</span>)</span><br><span class="line"><span class="comment"># source of test.py</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ ./test.py</span><br><span class="line">permission denied: ./test.py</span><br><span class="line">$ ls -l test.py</span><br><span class="line">-rw-r--r--  1 ******  staff  21 Feb  2  **:** test.py</span><br><span class="line">$ chmod +x test.py</span><br><span class="line">$ ls -l test.py</span><br><span class="line">-rwxr-xr-x  1 ******  staff  21 Feb  2  **:** test.py</span><br><span class="line">$ ./test.py</span><br><span class="line">./test.py: line 1: syntax error near unexpected token `<span class="string">&#x27;Hello World&#x27;</span><span class="string">&#x27;</span></span><br><span class="line"><span class="string">./test.py: line 1: `print(&#x27;</span>Hello World<span class="string">&#x27;)&#x27;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python3</span></span><br><span class="line">print(<span class="string">&quot;Hello World&quot;</span>)</span><br><span class="line"><span class="comment"># source of test.py</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./test.py</span><br><span class="line">Hello World</span><br></pre></td></tr></table></figure></li>
-<li><p><strong>NOTE that the declaration does NOT change the encoding acutually</strong></p>
-<blockquote>
-<p>it only applies to how Python <em>reads the source code</em>. It doesn’t apply to executing that code, so not to how printing, opening files, or any other I/O operations translate between bytes and Unicode. </p>
-</blockquote>
-</li>
-</ul>
-<p><em>usually used to solve <code>UnicodeEncodeError</code></em></p>
-
+        <h1 id="2-1-Invoking-the-Interpreter"><a href="#2-1-Invoking-the-Interpreter" class="headerlink" title="2.1 Invoking the Interpreter"></a>2.1 Invoking the Interpreter</h1>
+        
+          <p class="article-more-link">
+            <a href="/2021/02/02/Using-the-Python-Interpreter/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/02/02/Using-the-Python-Interpreter/" data-id="ckknq9llx00048gzmg8p8flrt" data-title="Using the Python Interpreter" class="article-share-link">Teilen</a>
+      <a data-url="http://rubbish-and-world.github.io/2021/02/02/Using-the-Python-Interpreter/" data-id="ckknqel810001b6zm4d2x9b3g" data-title="Using the Python Interpreter" class="article-share-link">Share</a>
       
       
       
@@ -239,43 +144,16 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <a id="more"></a>
-
-<h3 id="Python-is-a-good-choice-for-automation"><a href="#Python-is-a-good-choice-for-automation" class="headerlink" title="Python is a good choice for automation"></a>Python is a good choice for automation</h3><ul>
-<li>using C/C++/Java will need libraries and the write/compile/test/re-compile cycle is too slow.</li>
-<li>make writing testing code less tedious.</li>
-<li>embed python as an extension language in your application instead of implement a whole new one.</li>
-</ul>
-<h3 id="Python-is-more-comprehensive"><a href="#Python-is-more-comprehensive" class="headerlink" title="Python is more comprehensive"></a>Python is more comprehensive</h3><ul>
-<li>shell/batch scripts are good at things like moving files</li>
-<li>faster than C/C++/Java at developing GUI/games</li>
-<li>Python offering much more structure and support for large programs than shell scripts or batch files</li>
-<li>Python offers much more error checking than C and it is a very-high-level language</li>
-</ul>
-<h3 id="Python-is-modulization"><a href="#Python-is-modulization" class="headerlink" title="Python is modulization"></a>Python is modulization</h3><blockquote>
-<p>Python allows you to split your program into modules that can be reused in other Python programs.</p>
-</blockquote>
-<h3 id="Python-is-an-interpreted-language"><a href="#Python-is-an-interpreted-language" class="headerlink" title="Python is an interpreted language"></a>Python is an interpreted language</h3><ul>
-<li>Time-saving, because no compilation and linking is necessary</li>
-<li>interactive mode is very handy</li>
-</ul>
-<h3 id="Python-is-short"><a href="#Python-is-short" class="headerlink" title="Python is short"></a>Python is short</h3><ul>
-<li>the high-level data types allow you to express complex operations in a single statement</li>
-<li>statement grouping is done by indentation instead of beginning and ending brackets</li>
-<li>no variable or argument declarations are necessary</li>
-</ul>
-<h3 id="Python-is-extensible"><a href="#Python-is-extensible" class="headerlink" title="Python is extensible"></a>Python is extensible</h3><ul>
-<li>easy to add new built-in functions or modules writen in C</li>
-</ul>
-<h3 id="Why-we-call-it-‘Python’"><a href="#Why-we-call-it-‘Python’" class="headerlink" title="Why we call it ‘Python’?"></a>Why we call it ‘Python’?</h3><blockquote>
-<p>By the way, the language is named after the BBC show “Monty Python’s Flying Circus” and has nothing to do with reptiles.</p>
-</blockquote>
-<p><em>NOT reptiles !!! In fact, it is a comdy group <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Monty_Python">Monty Python</a></em></p>
-
+        <h3 id="Python-is-a-good-choice-for-automation"><a href="#Python-is-a-good-choice-for-automation" class="headerlink" title="Python is a good choice for automation"></a>Python is a good choice for automation</h3>
+        
+          <p class="article-more-link">
+            <a href="/2021/01/27/Whetting-your-appetite/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/01/27/Whetting-your-appetite/" data-id="ckknq9llz00068gzm0wi051t3" data-title="Whetting your appetite" class="article-share-link">Teilen</a>
+      <a data-url="http://rubbish-and-world.github.io/2021/01/27/Whetting-your-appetite/" data-id="ckknqel860006b6zm0l0kea7s" data-title="Whetting your appetite" class="article-share-link">Share</a>
       
       
       
@@ -322,7 +200,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/01/26/Introduction-of-Python-OG-series/" data-id="ckknq9lln00008gzm1f4fdcju" data-title="Introduction of Python OG series" class="article-share-link">Teilen</a>
+      <a data-url="http://rubbish-and-world.github.io/2021/01/26/Introduction-of-Python-OG-series/" data-id="ckknqel840003b6zm2ly578ze" data-title="Introduction of Python OG series" class="article-share-link">Share</a>
       
       
       
@@ -365,7 +243,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/01/24/desire/" data-id="ckknq9lm000078gzmakoid49l" data-title="desire" class="article-share-link">Teilen</a>
+      <a data-url="http://rubbish-and-world.github.io/2021/01/24/desire/" data-id="ckknqel8e000kb6zm6yj4byo5" data-title="desire" class="article-share-link">Share</a>
       
       
       
@@ -408,7 +286,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/01/23/way-to-the-peace/" data-id="ckknq9lm4000e8gzm40vzf9a8" data-title="way to the peace" class="article-share-link">Teilen</a>
+      <a data-url="http://rubbish-and-world.github.io/2021/01/23/way-to-the-peace/" data-id="ckknqel8e000lb6zm5n7h4q94" data-title="way to the peace" class="article-share-link">Share</a>
       
       
       
@@ -451,7 +329,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/01/23/lonely/" data-id="ckknq9lm2000b8gzm6q3q8uix" data-title="lonely" class="article-share-link">Teilen</a>
+      <a data-url="http://rubbish-and-world.github.io/2021/01/23/lonely/" data-id="ckknqel8c000ib6zm2l1b95zz" data-title="lonely" class="article-share-link">Share</a>
       
       
       
@@ -494,7 +372,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/01/22/%E4%BA%8C/" data-id="ckknq9lm6000i8gzm0bapcqzu" data-title="二" class="article-share-link">Teilen</a>
+      <a data-url="http://rubbish-and-world.github.io/2021/01/22/%E4%BA%8C/" data-id="ckknqel8h000ob6zmesmrc3v8" data-title="二" class="article-share-link">Share</a>
       
       
       
@@ -537,7 +415,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/01/07/weight-of-the-world/" data-id="ckknq9lm5000g8gzm1cfd0jxm" data-title="weight of the world" class="article-share-link">Teilen</a>
+      <a data-url="http://rubbish-and-world.github.io/2021/01/07/weight-of-the-world/" data-id="ckknqel8f000mb6zm2znn8bas" data-title="weight of the world" class="article-share-link">Share</a>
       
       
       
@@ -580,7 +458,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/01/05/After-Nier-Automata/" data-id="ckknq9llv00028gzm912qgcsl" data-title="After Nier:Automata" class="article-share-link">Teilen</a>
+      <a data-url="http://rubbish-and-world.github.io/2021/01/05/After-Nier-Automata/" data-id="ckknqel7x0000b6zm5h678w9d" data-title="After Nier:Automata" class="article-share-link">Share</a>
       
       
       
@@ -622,7 +500,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/01/03/numb/" data-id="ckknq9lm100098gzm8544fz9u" data-title="Numb" class="article-share-link">Teilen</a>
+      <a data-url="http://rubbish-and-world.github.io/2021/01/03/numb/" data-id="ckknqel8d000jb6zmd5j30ry3" data-title="Numb" class="article-share-link">Share</a>
       
       
       
@@ -638,7 +516,7 @@
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">weiter &raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
   </nav>
 
 </section>
@@ -647,7 +525,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Kategorien</h3>
+    <h3 class="widget-title">Categories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/1-Whetting-your-appetite/">1.Whetting your appetite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/2-Using-the-Python-Interpreter/">2.Using the Python Interpreter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/introduction/">introduction</a></li></ul></li></ul>
     </div>
@@ -676,7 +554,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
     </div>
@@ -686,7 +564,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
