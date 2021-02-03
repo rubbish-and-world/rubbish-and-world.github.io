@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>An Informal Introduction to Python | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Comments in Python start with the hash character, #, and extend to the end of the physical line. 123&gt;&gt;&gt; a &#x3D; 1 #I am a comment&gt;&gt;&gt; a1  3.1. Using Python as a Calculator">
+<meta property="og:type" content="article">
+<meta property="og:title" content="An Informal Introduction to Python">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/02/03/An-Informal-Introduction-to-Python/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Comments in Python start with the hash character, #, and extend to the end of the physical line. 123&gt;&gt;&gt; a &#x3D; 1 #I am a comment&gt;&gt;&gt; a1  3.1. Using Python as a Calculator">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/Users/rubbish/Blog/rubbish-and-world.github.io/source/_posts/An-Informal-Introduction-to-Python/remeber.png">
+<meta property="article:published_time" content="2021-02-03T01:52:22.000Z">
+<meta property="article:modified_time" content="2021-02-03T03:47:48.057Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/Users/rubbish/Blog/rubbish-and-world.github.io/source/_posts/An-Informal-Introduction-to-Python/remeber.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-An-Informal-Introduction-to-Python" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/02/03/An-Informal-Introduction-to-Python/" class="article-date">
+  <time class="dt-published" datetime="2021-02-03T01:52:22.000Z" itemprop="datePublished">2021-02-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python-OG/">Python OG</a>►<a class="article-category-link" href="/categories/Python-OG/3-An-Informal-Introduction-to-Python/">3.An Informal Introduction to Python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      An Informal Introduction to Python
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>Comments in Python start with the hash character, #, and extend to the end of the physical line.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="number">1</span> <span class="comment">#I am a comment</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="3-1-Using-Python-as-a-Calculator"><a href="#3-1-Using-Python-as-a-Calculator" class="headerlink" title="3.1. Using Python as a Calculator"></a>3.1. Using Python as a Calculator</h2><a id="more"></a>
+
+<h3 id="3-1-1-Numbers"><a href="#3-1-1-Numbers" class="headerlink" title="3.1.1. Numbers"></a>3.1.1. Numbers</h3><ul>
+<li><p>Division <code>/</code> always returns a <code>float</code>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">20</span> / <span class="number">5</span></span><br><span class="line"><span class="number">4.0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>res = <span class="number">20</span> / <span class="number">5</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(res)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> &#x27;<span class="title">float</span>&#x27;&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p><a target="_blank" rel="noopener" href="https://docs.python.org/3/glossary.html#term-floor-division">floor division</a> <code>//</code> return an <code>int</code> and discard any fractional result</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">20</span> // <span class="number">5</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>res = <span class="number">20</span> // <span class="number">5</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(res)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> &#x27;<span class="title">int</span>&#x27;&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p><code>**</code> can be used for calculating powers. Note that the type of the result depends.</p>
+<ul>
+<li>Since <code>**</code> has higher precedence than <code>-</code>, <code>-3**2</code> will be interpreted as <code>-(3**2)</code> and thus result in <code>-9</code>. To avoid this and get <code>9</code>, you can use <code>(-3)**2</code>.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">2</span> ** <span class="number">10</span></span><br><span class="line"><span class="number">1024</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>res = <span class="number">16</span> ** <span class="number">0.5</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>res</span><br><span class="line"><span class="number">4.0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(res)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> &#x27;<span class="title">float</span>&#x27;&gt;</span></span><br><span class="line">&gt;&gt;&gt; res = 2 ** 10</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(res)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> &#x27;<span class="title">int</span>&#x27;&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>There is full support for floating point. Operators with mixed type operands <strong><u>convert the integer operand to floating point</u></strong>(works like C)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>res = <span class="number">3</span> * <span class="number">1.0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>res</span><br><span class="line"><span class="number">3.0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(res)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> &#x27;<span class="title">float</span>&#x27;&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>In <strong>interactive mode</strong>, the last printed expression is assigned to the variable <code>_</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">1</span>+<span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>_</span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">1</span>+<span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>_</span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(_)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> &#x27;<span class="title">int</span>&#x27;&gt;</span></span><br></pre></td></tr></table></figure>
+<p><em>This variable should be <strong>read-only</strong>, using it as a variable name will create a new independent variable without this magic behavior(the original one is masked)</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">200</span></span><br><span class="line"><span class="number">200</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>_</span><br><span class="line"><span class="number">200</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>_ = <span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>_</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">3</span>+<span class="number">4</span></span><br><span class="line"><span class="number">7</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>_</span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Other avaiable type of numbers : <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/decimal.html#decimal.Decimal">Decimal</a>,<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/fractions.html#fractions.Fraction">Fraction</a>,<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#typesnumeric">complex numbers</a>……</p>
+</li>
+</ul>
+<h3 id="3-1-2-Strings"><a href="#3-1-2-Strings" class="headerlink" title="3.1.2. Strings"></a>3.1.2. Strings</h3><ul>
+<li><p>express strings : enclosed in <code>&#39;</code> or <code>&quot;</code>,<code>\</code> can be used to escape</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&#x27;Hello World&#x27;</span></span><br><span class="line"><span class="string">&#x27;Hello World&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>_ == <span class="string">&quot;Hello World&quot;</span></span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">&quot;\&quot;Isn&#x27;t it\&quot;?&quot;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s</span><br><span class="line"><span class="string">&#x27;&quot;Isn\&#x27;t it&quot;?&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(s)</span><br><span class="line">&quot;Isn&#x27;t it&quot;?</span><br></pre></td></tr></table></figure></li>
+<li><blockquote>
+<p>If you don’t want characters prefaced by <code>\</code> to be interpreted as special characters, you can use <strong><em>raw strings</em></strong> by adding an <code>r</code> before the first quote:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">&#x27;C:\some\name&#x27;</span>)  <span class="comment"># here \n means newline!</span></span><br><span class="line">C:\some</span><br><span class="line">ame</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">r&#x27;C:\some\name&#x27;</span>)  <span class="comment"># note the r before the quote</span></span><br><span class="line">C:\some\name</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s1 = <span class="string">&#x27;C:\some\name&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s2 = <span class="string">r&#x27;C:\some\name&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s1 == s2</span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure></blockquote>
+</li>
+<li><p>two or more <strong>literal</strong> string <strong>next to each other</strong> are automatically concatenated</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&#x27;P&#x27;</span> <span class="string">&#x27;y&#x27;</span> <span class="string">&#x27;t&#x27;</span> <span class="string">&#x27;h&#x27;</span> <span class="string">&#x27;o&#x27;</span> <span class="string">&#x27;n&#x27;</span></span><br><span class="line"><span class="string">&#x27;Python&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">&#x27;Hello&#x27;</span><span class="string">&#x27;World&#x27;</span>)</span><br><span class="line">HelloWorld</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">&#x27;s&#x27;</span> <span class="string">&#x27;s&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>This feature is particularly useful when you want to break long strings:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>text = (<span class="string">&#x27;Put several strings within parentheses &#x27;</span></span><br><span class="line"><span class="meta">... </span>        <span class="string">&#x27;to have them joined together.&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>text</span><br><span class="line"><span class="string">&#x27;Put several strings within parentheses to have them joined together.&#x27;</span></span><br></pre></td></tr></table></figure></blockquote>
+</li>
+<li><blockquote>
+<p>String literals can span multiple lines. One way is using triple-quotes: <code>&quot;&quot;&quot;...&quot;&quot;&quot;</code> or <code>&#39;&#39;&#39;...&#39;&#39;&#39;</code>. End of lines are automatically included in the string, but it’s possible to prevent this by adding a <code>\</code> at the end of the line</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">&#x27;&#x27;&#x27;\</span></span><br><span class="line"><span class="string"><span class="meta">... </span>Usage: thingy [OPTIONS]</span></span><br><span class="line"><span class="string"><span class="meta">... </span>    -h                     Display this usage message</span></span><br><span class="line"><span class="string"><span class="meta">... </span>    -H hostname            Hostname to connect to</span></span><br><span class="line"><span class="string"><span class="meta">... </span>&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="meta">... </span>)</span><br><span class="line">Usage: thingy [OPTIONS]</span><br><span class="line">	-h                     Display this usage message</span><br><span class="line">	-H hostname            Hostname to connect to</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></blockquote>
+</li>
+<li><p>Strings can be concatenated by <code>+</code> and repeated by <code>*</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&#x27;em&#x27;</span> + <span class="string">&#x27;m&#x27;</span> * <span class="number">20</span></span><br><span class="line"><span class="string">&#x27;emmmmmmmmmmmmmmmmmmmmm&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>payload = <span class="string">&#x27;a&#x27;</span> * <span class="number">30</span> + <span class="string">&#x27;\xac\xeb&#x27;</span> <span class="comment">#this technique can be used to quickly produce a pwn payload</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>payload</span><br><span class="line"><span class="string">&#x27;aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa¬ë&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>String can be indexed. There is no separate character type; a character is simply a string of size one</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">&quot;I am a string&quot;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s[<span class="number">0</span>]</span><br><span class="line"><span class="string">&#x27;I&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(s[<span class="number">0</span>])</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> &#x27;<span class="title">str</span>&#x27;&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Indices can be negative numbers, since <code>-0 = 0</code>, so negative indices start with -1</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s[-<span class="number">1</span>]</span><br><span class="line"><span class="string">&#x27;g&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">&quot;I am a string\n&quot;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s[-<span class="number">1</span>]</span><br><span class="line"><span class="string">&#x27;\n&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>string can be sliced. While indexing is used to obtain individual characters, <em>slicing</em> allows you to obtain substring. Note that <strong><u>the start is always included, and the end always excluded</u></strong>. This makes sure that <code>s[:i] + s[i:]</code> is always equal to <code>s</code></p>
+<ul>
+<li><p>an omitted first index defaults to 0, an omitted second index defaults to the size of the string being sliced.</p>
+</li>
+<li><blockquote>
+<p>For non-negative indices, the length of a slice is the difference of the indices, if both are within bounds. For example, the length of <code>word[1:3]</code> is 2.</p>
+<p><img src="/Users/rubbish/Blog/rubbish-and-world.github.io/source/_posts/An-Informal-Introduction-to-Python/remeber.png" alt="remember"></p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>Attempting to use an index that is too large will result in an error, while slicing error can be handled gracefully</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>word[<span class="number">42</span>]  <span class="comment"># the word only has 6 characters</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">IndexError: string index out of <span class="built_in">range</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>word[<span class="number">4</span>:<span class="number">42</span>]</span><br><span class="line"><span class="string">&#x27;on&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>word[<span class="number">42</span>:]</span><br><span class="line"><span class="string">&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><blockquote>
+<p>Python strings cannot be changed — they are <a target="_blank" rel="noopener" href="https://docs.python.org/3/glossary.html#term-immutable">immutable</a>. Therefore, assigning to an indexed position in the string results in an error:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>word[<span class="number">0</span>] = <span class="string">&#x27;J&#x27;</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: <span class="string">&#x27;str&#x27;</span> <span class="built_in">object</span> does <span class="keyword">not</span> support item assignment</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>word[<span class="number">2</span>:] = <span class="string">&#x27;py&#x27;</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">TypeError: <span class="string">&#x27;str&#x27;</span> <span class="built_in">object</span> does <span class="keyword">not</span> support item assignment</span><br></pre></td></tr></table></figure>
+
+<p>If you need a different string, you should create a new one:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&#x27;J&#x27;</span> + word[<span class="number">1</span>:]</span><br><span class="line"><span class="string">&#x27;Jython&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>word[:<span class="number">2</span>] + <span class="string">&#x27;py&#x27;</span></span><br><span class="line"><span class="string">&#x27;Pypy&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>While in C, string array can of course be changed.</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ cat test.c</span><br><span class="line"><span class="comment">#include &lt;stdio.h&gt;</span></span><br><span class="line">int <span class="function"><span class="title">main</span></span>()&#123;</span><br><span class="line">	char s [] = <span class="string">&quot;Hello World\n&quot;</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span> ,s);</span><br><span class="line">	s[5] = <span class="string">&#x27;,&#x27;</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span> ,s);</span><br><span class="line">	<span class="built_in">return</span> 0;</span><br><span class="line">&#125;</span><br><span class="line">$ ./<span class="built_in">test</span></span><br><span class="line">Hello World</span><br><span class="line">Hello,World</span><br></pre></td></tr></table></figure></li>
+<li><p>see more about :<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#textseq">Text Sequence Type — str</a>,<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#string-methods">String Methods</a>,<a target="_blank" rel="noopener" href="https://docs.python.org/3/reference/lexical_analysis.html#f-strings">Formatted string literals</a>,<a target="_blank" rel="noopener" href="https://docs.python.org/3/library/string.html#formatstrings">Format String Syntax</a><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#old-string-formatting">printf-style String Formatting</a>…..</p>
+</li>
+</ul>
+<h3 id="3-1-3-Lists"><a href="#3-1-3-Lists" class="headerlink" title="3.1.3. Lists"></a>3.1.3. Lists</h3><ul>
+<li><p>Lists might contain items of different types, but usually the items all have the same type.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>ls = [<span class="number">123</span> , <span class="string">&#x27;Hello&#x27;</span> , <span class="number">3.4</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>ls</span><br><span class="line">[<span class="number">123</span>, <span class="string">&#x27;Hello&#x27;</span>, <span class="number">3.4</span>]</span><br></pre></td></tr></table></figure></li>
+<li><p>list can be indexed, just like string</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>ls[<span class="number">100</span>:<span class="number">101</span>]</span><br><span class="line">[]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>ls[<span class="number">100</span>]</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">IndexError: <span class="built_in">list</span> index out of <span class="built_in">range</span></span><br></pre></td></tr></table></figure></li>
+<li><p>However, list slicing return <strong><u>a new list</u></strong> with selected items, differ with string slicing behavior</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">&#x27;Python&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">id</span>(s)</span><br><span class="line"><span class="number">4316265008</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">id</span>(s[:])</span><br><span class="line"><span class="number">4316265008</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">id</span>(ls)</span><br><span class="line"><span class="number">4317802688</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">id</span>(ls[:])</span><br><span class="line"><span class="number">4317798080</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Lists also support operations like concatenation</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>squares + [<span class="number">36</span>, <span class="number">49</span>, <span class="number">64</span>, <span class="number">81</span>, <span class="number">100</span>]</span><br><span class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>, <span class="number">49</span>, <span class="number">64</span>, <span class="number">81</span>, <span class="number">100</span>]</span><br></pre></td></tr></table></figure></li>
+<li><p>Assignment to slices is also possible</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>ls</span><br><span class="line">[<span class="string">&#x27;p&#x27;</span>, <span class="string">&#x27;y&#x27;</span>, <span class="string">&#x27;t&#x27;</span>, <span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;n&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>ls[<span class="number">2</span>:<span class="number">5</span>] = [<span class="number">123</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>ls</span><br><span class="line">[<span class="string">&#x27;p&#x27;</span>, <span class="string">&#x27;y&#x27;</span>, <span class="number">123</span>, <span class="string">&#x27;n&#x27;</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="3-2-First-Steps-Towards-Programming"><a href="#3-2-First-Steps-Towards-Programming" class="headerlink" title="3.2. First Steps Towards Programming"></a>3.2. First Steps Towards Programming</h2></li>
+<li><p>multiple assignment:</p>
+<p>the expressions on the right-hand side are all evaluated first before any of the assignments take place. The right-hand side expressions are evaluated from the left to the right.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a , b = <span class="number">0</span> ,<span class="number">1</span> <span class="comment"># the variables a and b simultaneously get the new values 0 and 1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a , c = a+b , b</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure></li>
+<li><p>an initial sub-sequence of the <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Fibonacci_number">Fibonacci series</a></p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a , b = <span class="number">0</span> , <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> a &lt; <span class="number">10</span>:</span><br><span class="line">    print(a)</span><br><span class="line">    a , b = b  , a+b</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/02/03/An-Informal-Introduction-to-Python/" data-id="ckkow6anl0003ddzmcgwu6xav" data-title="An Informal Introduction to Python" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/02/02/Using-the-Python-Interpreter/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">Using the Python Interpreter</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/1-Whetting-your-appetite/">1.Whetting your appetite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/2-Using-the-Python-Interpreter/">2.Using the Python Interpreter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/3-An-Informal-Introduction-to-Python/">3.An Informal Introduction to Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/introduction/">introduction</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/02/03/An-Informal-Introduction-to-Python/">An Informal Introduction to Python</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/02/Using-the-Python-Interpreter/">Using the Python Interpreter</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/27/Whetting-your-appetite/">Whetting your appetite</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/26/Introduction-of-Python-OG-series/">Introduction of Python OG series</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/24/desire/">desire</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
