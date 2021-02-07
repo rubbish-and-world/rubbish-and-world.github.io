@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Input and Output | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="There are several ways to present the output of a program; data can be printed in a human-readable form, or written to a file for future use.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Input and Output">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/02/07/Input-and-Output/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="There are several ways to present the output of a program; data can be printed in a human-readable form, or written to a file for future use.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-02-07T01:00:57.000Z">
+<meta property="article:modified_time" content="2021-02-07T02:39:04.725Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Input-and-Output" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/02/07/Input-and-Output/" class="article-date">
+  <time class="dt-published" datetime="2021-02-07T01:00:57.000Z" itemprop="datePublished">2021-02-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python-OG/">Python OG</a>►<a class="article-category-link" href="/categories/Python-OG/7-Input-and-Output/">7.Input and Output</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Input and Output
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>There are several ways to present the output of a program; data can be printed in a human-readable form, or written to a file for future use. </p>
+</blockquote>
+<a id="more"></a>
+
+<h2 id="7-1-Fancier-Output-Formatting"><a href="#7-1-Fancier-Output-Formatting" class="headerlink" title="7.1. Fancier Output Formatting"></a>7.1. Fancier Output Formatting</h2><ul>
+<li><p>the standard output file can be referenced as <code>sys.stdout</code>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>sys.stdout.write(<span class="string">&#x27;Hello\n&#x27;</span>)</span><br><span class="line">Hello</span><br><span class="line"><span class="number">6</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Formatted string literally, add <code>f</code> or <code>F</code> before a single or triple quotation, wrap variable or expression in <code>&#123;&#125;</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="number">2021</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = <span class="string">&#x27;Python&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">f&#x27;Learn <span class="subst">&#123;b&#125;</span> in <span class="subst">&#123;a&#125;</span>&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s</span><br><span class="line"><span class="string">&#x27;Learn Python in 2021&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#str.format">str.format()</a> can make more complex format</p>
+</li>
+<li><p>using <strong>string slicing and concatenation</strong> operations to create any layout you can imagine.</p>
+</li>
+<li><p>you can convert any value to a string with the <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#repr">repr()</a> or <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#str">str()</a> functions.</p>
+</li>
+</ul>
+<h3 id="7-1-1-Formatted-String-Literals"><a href="#7-1-1-Formatted-String-Literals" class="headerlink" title="7.1.1. Formatted String Literals"></a>7.1.1. Formatted String Literals</h3><ul>
+<li><p>Passing an integer after the <code>:</code> will cause that field to be a <strong>minimum number of characters wide</strong>. This is useful for making columns line up.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">f&#x27;the res is <span class="subst">&#123;res:&lt;<span class="number">20</span>&#125;</span>|&#x27;</span></span><br><span class="line"><span class="string">&#x27;the res is 3.423452154         |&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">f&#x27;the res is <span class="subst">&#123;res:^<span class="number">20</span>&#125;</span>|&#x27;</span></span><br><span class="line"><span class="string">&#x27;the res is     3.423452154     |&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">f&#x27;the res is <span class="subst">&#123;res:&gt;<span class="number">20</span>&#125;</span>|&#x27;</span></span><br><span class="line"><span class="string">&#x27;the res is          3.423452154|&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Other modifiers can be used to convert the value before it is formatted. <code>!a</code> applies <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#ascii"><code>ascii()</code></a>, <code>!s</code> applies <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#str"><code>str()</code></a>, and <code>!r</code> applies <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#repr"><code>repr()</code></a>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>animals = <span class="string">&#x27;eels&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">f&#x27;My hovercraft is full of <span class="subst">&#123;animals&#125;</span>.&#x27;</span>)</span><br><span class="line">My hovercraft <span class="keyword">is</span> full of eels.</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">f&#x27;My hovercraft is full of <span class="subst">&#123;animals!r&#125;</span>.&#x27;</span>)</span><br><span class="line">My hovercraft <span class="keyword">is</span> full of <span class="string">&#x27;eels&#x27;</span>.</span><br></pre></td></tr></table></figure></li>
+<li><p>see more at  <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/string.html#formatspec">Format Specification Mini-Language</a></p>
+</li>
+</ul>
+<h3 id="7-1-2-The-String-format-Method"><a href="#7-1-2-The-String-format-Method" class="headerlink" title="7.1.2. The String format() Method"></a>7.1.2. The String format() Method</h3><ul>
+<li><p>A number in the brackets can be used to refer to the position of the object passed into the <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#str.format"><code>str.format()</code></a> method.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">&#x27;&#123;1&#125; and &#123;0&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="string">&#x27;spam&#x27;</span>, <span class="string">&#x27;eggs&#x27;</span>))</span><br><span class="line">eggs <span class="keyword">and</span> spam</span><br></pre></td></tr></table></figure></li>
+<li><p>keyword arguments are referred by their keys</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">&#x27;This &#123;food&#125; is &#123;adjective&#125;.&#x27;</span>.<span class="built_in">format</span>(</span><br><span class="line"><span class="meta">... </span>      food=<span class="string">&#x27;spam&#x27;</span>, adjective=<span class="string">&#x27;absolutely horrible&#x27;</span>))</span><br><span class="line">This spam <span class="keyword">is</span> absolutely horrible.</span><br></pre></td></tr></table></figure></li>
+<li><p>dictionary unpacking is useful</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>dic = &#123;<span class="string">&#x27;name&#x27;</span> : <span class="string">&#x27;Jack&#x27;</span> , <span class="string">&#x27;age&#x27;</span>:<span class="number">24</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&#x27;His name is &#123;name&#125; and age is &#123;age&#125;&#x27;</span>.<span class="built_in">format</span>(**dic)</span><br><span class="line"><span class="string">&#x27;His name is Jack and age is 24&#x27;</span></span><br></pre></td></tr></table></figure>
+<h3 id="7-1-3-Manual-String-Formatting"><a href="#7-1-3-Manual-String-Formatting" class="headerlink" title="7.1.3. Manual String Formatting"></a>7.1.3. Manual String Formatting</h3></li>
+<li><p>The <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#str.rjust"><code>str.rjust()</code></a> method of string objects right-justifies a string in a field of a given width by padding it with spaces on the left, similar methods are <code>str.ljust()</code> and <code>str.center()</code>.</p>
+</li>
+<li><p>They just return a new string</p>
+</li>
+<li><p>They do not truncate strings, if you really want to truncate surplus part, use <code>x.ljust(n)[:n]</code> to make a slicing.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&#x27;hello&#x27;</span>.rjust(<span class="number">10</span>)</span><br><span class="line"><span class="string">&#x27;     hello&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&#x27;hello&#x27;</span>.ljust(<span class="number">10</span>)</span><br><span class="line"><span class="string">&#x27;hello     &#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&#x27;hello&#x27;</span>.center(<span class="number">10</span>)</span><br><span class="line"><span class="string">&#x27;  hello   &#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#str.zfill"><code>str.zfill()</code></a>, which pads a numeric string on the left with zeros. It understands about plus and minus signs:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&#x27;12&#x27;</span>.zfill(<span class="number">5</span>)</span><br><span class="line"><span class="string">&#x27;00012&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&#x27;-3.14&#x27;</span>.zfill(<span class="number">7</span>)</span><br><span class="line"><span class="string">&#x27;-003.14&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">&#x27;3.14159265359&#x27;</span>.zfill(<span class="number">5</span>)</span><br><span class="line"><span class="string">&#x27;3.14159265359&#x27;</span></span><br></pre></td></tr></table></figure>
+<h3 id="7-1-4-Old-string-formatting"><a href="#7-1-4-Old-string-formatting" class="headerlink" title="7.1.4. Old string formatting"></a>7.1.4. Old string formatting</h3></li>
+<li><p>Given <code>&#39;string&#39; % values</code>, instances of <code>%</code> in <code>string</code> are replaced with zero or more elements of <code>values</code>.</p>
+<p>(This method is very C like)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> math</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">&#x27;The value of pi is approximately %5.3f.&#x27;</span> % math.pi)</span><br><span class="line">The value of pi <span class="keyword">is</span> approximately <span class="number">3.142</span>.</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="string">&#x27;a = %d b = %f&#x27;</span> % (<span class="number">2000</span>,<span class="number">3.14</span>))</span><br><span class="line">a = <span class="number">2000</span> b = <span class="number">3.140000</span></span><br></pre></td></tr></table></figure></li>
+<li><p>see more at <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#old-string-formatting">printf-style String Formatting</a></p>
+</li>
+</ul>
+<h2 id="7-2-Reading-and-Writing-Files"><a href="#7-2-Reading-and-Writing-Files" class="headerlink" title="7.2. Reading and Writing Files"></a>7.2. Reading and Writing Files</h2><ul>
+<li><p><code>file = open(&#39;filename&#39; , &#39;mode&#39;)</code>, The mode argument is optional; <code>&#39;r&#39;</code> will be assumed if it’s omitted.</p>
+</li>
+<li><p>when I/O text encoding can be specified, If encoding is not specified, the default is platform dependent (see <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#open"><code>open()</code></a>)</p>
+</li>
+<li><p>add <code>&#39;b&#39;</code>to mode character to I/O binary, which represented by bytes objects in Python</p>
+</li>
+<li><p>In text mode, the default when reading is to convert platform-specific line endings, you write the <code>\n</code> in your source code, but Unix Python use <code>\n</code>, Windows Python use <code>\r\n</code>, when actually write to the file.</p>
+</li>
+<li><p>The advantage of using <code>with</code> is that the file is properly closed after its suite finishes, <strong>even if an exception is raised at some point.</strong> </p>
+<p><strong><em>If the do file.write() without file closing, the content may not be writen to the disk,even Python exit successfully!!!</em></strong></p>
+</li>
+</ul>
+<h3 id="7-2-1-Methods-of-File-Objects"><a href="#7-2-1-Methods-of-File-Objects" class="headerlink" title="7.2.1. Methods of File Objects"></a>7.2.1. Methods of File Objects</h3><ul>
+<li><p><code>f.read(size)</code>, size is a numerical number, the method reads size character in text mode, reads size bytes in binary mode, if not given, read the whole file.</p>
+<p><strong>It will read from the latest position! Return a ‘’ when reach the end</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cat text</span><br><span class="line">HelloWorld</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>f = <span class="built_in">open</span> (<span class="string">&#x27;text&#x27;</span> , <span class="string">&#x27;rt&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f.read(<span class="number">5</span>)</span><br><span class="line"><span class="string">&#x27;Hello&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f.read(<span class="number">5</span>)</span><br><span class="line"><span class="string">&#x27;World&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f.read(<span class="number">5</span>)</span><br><span class="line"><span class="string">&#x27;\n&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f.read(<span class="number">5</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p><code>f.readline()</code> reads a single line from the file; a newline character (<code>\n</code>) is left at the end of the string, and is only omitted on the last line of the file if the file doesn’t end in a newline. Return a <code>&#39;&#39;</code> when reach the end of the file.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>f.readline()</span><br><span class="line"><span class="string">&#x27;This is the first line of the file.\n&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f.readline()</span><br><span class="line"><span class="string">&#x27;Second line of the file\n&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>f.readline()</span><br><span class="line"><span class="string">&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>use <code>list(f)</code> or <code>f.readlines()</code> to read as a <code>list</code>, or directly use a loop</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line"><span class="meta">... </span>    print(line, end=<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">...</span><br><span class="line">This <span class="keyword">is</span> the first line of the file.</span><br><span class="line">Second line of the file</span><br></pre></td></tr></table></figure></li>
+<li><p><code>f.write(string)</code> writes the contents of <em>string</em> to the file, returning the number of characters written.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>f.write(<span class="string">&#x27;This is a test\n&#x27;</span>)</span><br><span class="line"><span class="number">15</span></span><br></pre></td></tr></table></figure>
+<p>Other types of objects need to be converted – either to a string (in text mode) or a bytes object (in binary mode) – before writing them</p>
+</li>
+<li><p><code>f.tell()</code> returns an integer giving the file object’s current position in the file represented as number of bytes from the beginning of the file when in binary mode and an opaque number(should only be used to pass to a <code>seek()</code>, otherwise meaningless) when in text mode.</p>
+</li>
+<li><p><code>f.seek(offset, whence)</code>. The position is computed from adding <em>offset</em> to a reference point; the reference point is selected by the <em>whence</em> argument.</p>
+<table>
+<thead>
+<tr>
+<th>whence = (default is 0)</th>
+<th>position</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>beginning of the file</td>
+</tr>
+<tr>
+<td>1</td>
+<td>current position</td>
+</tr>
+<tr>
+<td>2</td>
+<td>end of the file</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>In text mode, only seeks relative to the beginning of the file are allowed, only the return value of <code>tell()</code> or 0 is a valid value for whence.</p>
+</li>
+</ul>
+<h3 id="7-2-2-Saving-structured-data-with-json"><a href="#7-2-2-Saving-structured-data-with-json" class="headerlink" title="7.2.2. Saving structured data with json"></a>7.2.2. Saving structured data with <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/json.html#module-json"><code>json</code></a></h3><blockquote>
+<p>When you want to save more complex data types like nested lists and dictionaries, parsing and serializing by hand becomes complicated.</p>
+</blockquote>
+<ul>
+<li><p>The standard module called <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/json.html#module-json"><code>json</code></a> can take Python data <strong>hierarchies</strong>, and convert them to string representations; this process is called <strong><em>serializing</em></strong>. Reconstructing the data from the string representation is called <strong><em>deserializing</em></strong>. </p>
+</li>
+<li><p>If you have an object x, you can view its JSON string representation with a simple line of code:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> json</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>ls = [<span class="string">&#x27;ewf&#x27;</span>,<span class="number">123</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s= json.dumps(ls)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s</span><br><span class="line"><span class="string">&#x27;[&quot;ewf&quot;, 123]&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(s)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> &#x27;<span class="title">str</span>&#x27;&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/json.html#json.dump"><code>dump()</code></a>, simply serializes the object to a <a target="_blank" rel="noopener" href="https://docs.python.org/3/glossary.html#term-text-file">text file</a>. So if <code>f</code> is a <a target="_blank" rel="noopener" href="https://docs.python.org/3/glossary.html#term-text-file">text file</a> object opened for writing</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;serialization&#x27;</span>,<span class="string">&#x27;w+&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line"><span class="meta">... </span>    json.dump(ls,f)</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ cat serialization </span><br><span class="line">[<span class="string">&quot;ewf&quot;</span>, 123]%</span><br><span class="line"><span class="comment"># (% means no newline)</span></span><br></pre></td></tr></table></figure></li>
+<li><p>To decode the object again, if <code>f</code> is a <a target="_blank" rel="noopener" href="https://docs.python.org/3/glossary.html#term-text-file">text file</a> object which has been opened for reading</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>f = <span class="built_in">open</span>(<span class="string">&#x27;serialization&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> json <span class="keyword">as</span> j</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = j.load(f)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x</span><br><span class="line">[<span class="string">&#x27;ewf&#x27;</span>, <span class="number">123</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(x)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> &#x27;<span class="title">list</span>&#x27;&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>to convert <code>Python Class</code> to json see more at <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/json.html#module-json">json</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/pickle.html#module-pickle">pickle</a> is a protocol which allows the serialization of arbitrarily complex Python objects, and it is specific to Python Only.</p>
+<p><strong>deserializing pickle data coming from an untrusted source can execute arbitrary code!!!</strong></p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/02/07/Input-and-Output/" data-id="ckkujtb3x0000xezmc85p2jlf" data-title="Input and Output" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/02/06/Modules/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Modules</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/1-Whetting-your-appetite/">1.Whetting your appetite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/2-Using-the-Python-Interpreter/">2.Using the Python Interpreter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/3-An-Informal-Introduction-to-Python/">3.An Informal Introduction to Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/4-More-Control-Flow-Tools/">4.More Control Flow Tools</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/5-Data-Structures/">5.Data Structures</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/6-Modules/">6.Modules</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/7-Input-and-Output/">7.Input and Output</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/introduction/">introduction</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/02/07/Input-and-Output/">Input and Output</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/06/Modules/">Modules</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/05/Data-Structures/">Data Structures</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/04/More-Control-Flow-Tools/">More Control Flow Tools</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/03/An-Informal-Introduction-to-Python/">An Informal Introduction to Python</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
