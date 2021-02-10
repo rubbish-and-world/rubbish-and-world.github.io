@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Errors and Exceptions | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="There are (at least) two distinguishable kinds of errors: syntax errors and exceptions.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Errors and Exceptions">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/02/08/Errors-and-Exceptions/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="There are (at least) two distinguishable kinds of errors: syntax errors and exceptions.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-02-08T07:09:22.000Z">
+<meta property="article:modified_time" content="2021-02-10T08:38:18.517Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Errors-and-Exceptions" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/02/08/Errors-and-Exceptions/" class="article-date">
+  <time class="dt-published" datetime="2021-02-08T07:09:22.000Z" itemprop="datePublished">2021-02-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python-OG/">Python OG</a>►<a class="article-category-link" href="/categories/Python-OG/8-Errors-and-Exceptions/">8.Errors and Exceptions</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Errors and Exceptions
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>There are (at least) two distinguishable kinds of errors: <em>syntax errors</em> and <em>exceptions</em>.</p>
+</blockquote>
+<a id="more"></a>
+
+<h2 id="8-1-Syntax-Errors"><a href="#8-1-Syntax-Errors" class="headerlink" title="8.1. Syntax Errors"></a>8.1. Syntax Errors</h2><ul>
+<li><p>a little ‘arrow’ pointing at the earliest point in the line where the error was detected. The error is caused by (or at least detected at) the token <em>preceding</em> the arrow</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="literal">True</span> <span class="number">4</span>  <span class="literal">False</span></span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span></span><br><span class="line">    <span class="literal">True</span> <span class="number">4</span>  <span class="literal">False</span></span><br><span class="line">         ^</span><br><span class="line">SyntaxError: invalid syntax</span><br></pre></td></tr></table></figure></li>
+<li><p>File name and line number are printed so you know where to look in case the input came from a script.</p>
+</li>
+</ul>
+<h2 id="8-2-Exceptions"><a href="#8-2-Exceptions" class="headerlink" title="8.2. Exceptions"></a>8.2. Exceptions</h2><blockquote>
+<p>Errors detected during execution are called <em>exceptions</em> and are not unconditionally fatal</p>
+</blockquote>
+<ul>
+<li>Exceptions come in different types, and the type is printed as part of the message</li>
+<li>Standard exception names are built-in identifiers (not reserved keywords).</li>
+<li>see more at <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/exceptions.html#bltin-exceptions">Built-in Exceptions</a></li>
+</ul>
+<h2 id="8-3-Handling-Exceptions"><a href="#8-3-Handling-Exceptions" class="headerlink" title="8.3. Handling Exceptions"></a>8.3. Handling Exceptions</h2><ul>
+<li><p>a user-generated interruption is signalled by raising the <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/exceptions.html#KeyboardInterrupt"><code>KeyboardInterrupt</code></a> exception.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        enter = <span class="built_in">input</span>(<span class="string">&quot;Here is echo system:\n&quot;</span>)</span><br><span class="line">        print(enter)</span><br><span class="line">    <span class="keyword">except</span> KeyboardInterrupt:</span><br><span class="line">        print(<span class="string">&quot;You can&#x27;t get out @_@&quot;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Here is echo system:</span><br><span class="line">sdfioaj</span><br><span class="line">sdfioaj</span><br><span class="line">Here is echo system:</span><br><span class="line">^CYou can&#39;t get out @_@</span><br><span class="line">Here is echo system:</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Here is echo system:</span><br><span class="line">^CYou can&#39;t get out @_@</span><br><span class="line">Here is echo system:</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;&#x2F;Users&#x2F;rubbish&#x2F;test&#x2F;ptest.py&quot;, line 3, in &lt;module&gt;</span><br><span class="line">    enter &#x3D; input(&quot;Here is echo system:\n&quot;)</span><br><span class="line">EOFError</span><br><span class="line"></span><br><span class="line"># enter a ^D as EOF to raise another Exception to get out.</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        enter = <span class="built_in">input</span>(<span class="string">&quot;Here is echo system:\n&quot;</span>)</span><br><span class="line">        print(enter)</span><br><span class="line">    <span class="keyword">except</span> KeyboardInterrupt:</span><br><span class="line">        print(<span class="string">&quot;You can&#x27;t get out @_@&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        print(<span class="string">&#x27;No way!!!&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Here is echo system:</span><br><span class="line">iowef</span><br><span class="line">iowef</span><br><span class="line">Here is echo system:</span><br><span class="line">No way!!!</span><br><span class="line">Here is echo system:</span><br><span class="line">^CYou can&#39;t get out @_@</span><br><span class="line">Here is echo system:</span><br><span class="line">ffffffffffffffffffffffff</span><br><span class="line">ffffffffffffffffffffffff</span><br><span class="line">Here is echo system:</span><br><span class="line">^CYou can&#39;t get out @_@</span><br><span class="line">Here is echo system:</span><br><span class="line">No way!!!</span><br><span class="line">zsh: terminated  python3 ptest.py</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ps</span><br><span class="line">$ <span class="built_in">kill</span> PythonPID</span><br></pre></td></tr></table></figure></li>
+<li><p>How <code>try</code> statement works ?</p>
+<ol>
+<li><p>the <code>try claus</code>(between <code>try</code> and <code>except</code>) are executed.</p>
+<p>—-&gt; no exception occurs</p>
+<p><code>except</code> claus are skipped and the execution of <code>try</code> is finished.</p>
+<p>—-&gt; an exception occurs</p>
+</li>
+<li><p>the rest of <code>try</code> claus is skipped</p>
+<p>—–&gt; the exception type matches the exception named after the <code>except</code> keyword</p>
+<p>Execute the exception claus and the execution of <code>try</code> is finished.</p>
+<p>—–&gt; the exception type doesn’t match any name.</p>
+</li>
+<li><p>it is passed to the outer <code>try</code> statement</p>
+<p>—–&gt; if there is an outer <code>try</code> statement</p>
+<p>The process repeated</p>
+<p>—–&gt; if there does not exist an outer <code>try</code> statement</p>
+<p>The exception becomes an unhandled exception and the program break at the exception line. </p>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">&quot;start&quot;</span>)</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    print(<span class="string">&#x27;enter try claus&#x27;</span>)</span><br><span class="line">    <span class="keyword">raise</span> ValueError</span><br><span class="line">    print(<span class="string">&#x27;after ValueError&#x27;</span>) <span class="comment"># this line will never be executed</span></span><br><span class="line"><span class="keyword">except</span> ValueError:</span><br><span class="line">    print(<span class="string">&#x27;executing except claus&#x27;</span>)</span><br><span class="line">print(<span class="string">&quot;end&quot;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">start</span><br><span class="line">enter try claus</span><br><span class="line">executing except claus</span><br><span class="line">end</span><br></pre></td></tr></table></figure></li>
+<li><p>An except clause may name multiple exceptions as a parenthesized tuple</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">... </span><span class="keyword">except</span> (RuntimeError, TypeError, NameError):</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Class derived from an <code>Exception</code> can be used as an Exception</p>
+</li>
+<li><p>A class in an <a target="_blank" rel="noopener" href="https://docs.python.org/3/reference/compound_stmts.html#except"><code>except</code></a> clause is compatible with an exception if it is the same class or a base class thereof</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>(<span class="params">Exception</span>):</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span>(<span class="params">B</span>):</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">D</span>(<span class="params">C</span>):</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> cls <span class="keyword">in</span> [B, C, D]:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">raise</span> cls()</span><br><span class="line">    <span class="keyword">except</span> D:</span><br><span class="line">        print(<span class="string">&quot;D&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> C:</span><br><span class="line">        print(<span class="string">&quot;C&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> B:</span><br><span class="line">        print(<span class="string">&quot;B&quot;</span>)</span><br><span class="line"><span class="comment"># This will print BCD</span></span><br><span class="line"><span class="comment"># if the except clauses were reversed (with except B first), it would have printed B, B, B — the first matching except clause is triggered.</span></span><br></pre></td></tr></table></figure></li>
+<li><p><code>except</code> can omit the exception name(s), to serve as a wildcard.</p>
+<ul>
+<li>but this may mask an error, use it carefully</li>
+<li>you can reraise the captured exception with <code>raise</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    file = <span class="built_in">open</span>(<span class="string">&#x27;notexist.txt&#x27;</span>)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    print(<span class="string">&#x27;Error&#x27;</span>,sys.exc_info())</span><br><span class="line">    <span class="keyword">raise</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Error (&lt;class &#39;FileNotFoundError&#39;&gt;, FileNotFoundError(2, &#39;No such file or directory&#39;), &lt;traceback object at 0x10ee85040&gt;)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;&#x2F;Users&#x2F;******&#x2F;test&#x2F;ptest.py&quot;, line 4, in &lt;module&gt;</span><br><span class="line">    file &#x3D; open(&#39;notexist.txt&#39;)</span><br><span class="line">FileNotFoundError: [Errno 2] No such file or directory: &#39;notexist.txt&#39;</span><br></pre></td></tr></table></figure></li>
+<li><p>The <code>try...except</code> claus have an optional <code>else</code>, must follow all except clauses, it is executed if <code>try</code> do not raise any exception. use <code>else</code> instead of nested <code>try...except</code> can avoid catch exceptions which are not raised by codes in <code>try</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    f = <span class="built_in">open</span>(<span class="string">&#x27;exist&#x27;</span>)</span><br><span class="line"><span class="keyword">except</span> FileNotFoundError:</span><br><span class="line">    print(<span class="string">&#x27;file not found&#x27;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(f.read() , end=<span class="string">&#x27;&#x27;</span>)</span><br></pre></td></tr></table></figure></li>
+<li><p>exceptions can have arguments, stored in <code>instance.args</code>, can be print directly use <code>instance.__str__()</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ins = Exception (<span class="string">&#x27;Hello&#x27;</span> , <span class="string">&#x27;world&#x27;</span>)</span><br><span class="line">argus = ins.args</span><br><span class="line">print(<span class="built_in">type</span>(argus))</span><br><span class="line">x , y = argus</span><br><span class="line">print(x ,y )</span><br><span class="line">ss = ins.__str__()</span><br><span class="line">print(<span class="built_in">type</span>(ss) , ss)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;class &#39;tuple&#39;&gt;</span><br><span class="line">Hello world</span><br><span class="line">&lt;class &#39;str&#39;&gt; (&#39;Hello&#39;, &#39;world&#39;)</span><br></pre></td></tr></table></figure></li>
+<li><p>If an unhandled exception has argus, they are printed as the last part (‘detail’) of the exception</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ins  = (Exception(<span class="string">&#x27;I am an error&#x27;</span>))</span><br><span class="line"><span class="keyword">raise</span> ins</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;&#x2F;Users&#x2F;*****&#x2F;test&#x2F;ptest.py&quot;, line 2, in &lt;module&gt;</span><br><span class="line">    raise ins</span><br><span class="line">Exception: I am an error</span><br></pre></td></tr></table></figure></li>
+<li><p>Exception handlers can handle exception in <code>try</code> claus, even it is in a function call (even indirectly)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">this_fails</span>():</span></span><br><span class="line"><span class="meta">... </span>    x = <span class="number">1</span>/<span class="number">0</span></span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">try</span>:</span><br><span class="line"><span class="meta">... </span>    this_fails()</span><br><span class="line"><span class="meta">... </span><span class="keyword">except</span> ZeroDivisionError <span class="keyword">as</span> err:</span><br><span class="line"><span class="meta">... </span>    print(<span class="string">&#x27;Handling run-time error:&#x27;</span>, err)</span><br><span class="line">...</span><br><span class="line">Handling run-time error: division by zero</span><br></pre></td></tr></table></figure>
+<h2 id="8-4-Raising-Exceptions"><a href="#8-4-Raising-Exceptions" class="headerlink" title="8.4. Raising Exceptions"></a>8.4. Raising Exceptions</h2></li>
+</ul>
+<blockquote>
+<p>The <a target="_blank" rel="noopener" href="https://docs.python.org/3/reference/simple_stmts.html#raise"><code>raise</code></a> statement allows the programmer to force a specified exception to occur.</p>
+</blockquote>
+<ul>
+<li><p><code>raise</code> must be followed with either an exception instance or an exception class (a class that derives from <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/exceptions.html#Exception"><code>Exception</code></a>). If an exception class is passed, it will be implicitly instantiated by calling its constructor with no arguments:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">raise</span> ValueError  <span class="comment"># shorthand for &#x27;raise ValueError()&#x27;</span></span><br></pre></td></tr></table></figure>
+<h2 id="8-5-Exception-Chaining"><a href="#8-5-Exception-Chaining" class="headerlink" title="8.5. Exception Chaining"></a>8.5. Exception Chaining</h2></li>
+</ul>
+<blockquote>
+<p>The <a target="_blank" rel="noopener" href="https://docs.python.org/3/reference/simple_stmts.html#raise"><code>raise</code></a> statement allows an optional <a target="_blank" rel="noopener" href="https://docs.python.org/3/reference/simple_stmts.html#from"><code>from</code></a> which enables chaining exceptions. This can be useful when transform exceptions</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">func</span>():</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">raise</span> IOError</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">try</span>:</span><br><span class="line"><span class="meta">... </span>    func()</span><br><span class="line"><span class="meta">... </span><span class="keyword">except</span> IOError <span class="keyword">as</span> exc:</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">raise</span> RuntimeError(<span class="string">&#x27;Failed to open database&#x27;</span>) <span class="keyword">from</span> exc <span class="comment"># exc must be an exception instance or None.</span></span><br><span class="line">...</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">Traceback (most recent call last):</span></span><br><span class="line"><span class="string">  File &quot;&lt;stdin&gt;&quot;, line 2, in &lt;module&gt;</span></span><br><span class="line"><span class="string">  File &quot;&lt;stdin&gt;&quot;, line 2, in func</span></span><br><span class="line"><span class="string">OSError</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">The above exception was the direct cause of the following exception:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Traceback (most recent call last):</span></span><br><span class="line"><span class="string">  File &quot;&lt;stdin&gt;&quot;, line 4, in &lt;module&gt;</span></span><br><span class="line"><span class="string">RuntimeError: Failed to open database&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>Exception chaining happens automatically when an exception is raised inside an <a target="_blank" rel="noopener" href="https://docs.python.org/3/reference/compound_stmts.html#except"><code>except</code></a> or <a target="_blank" rel="noopener" href="https://docs.python.org/3/reference/compound_stmts.html#finally"><code>finally</code></a> section. Exception chaining can be disabled by using <code>from None</code> idiom:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="built_in">open</span>(<span class="string">&#x27;database.sqlite&#x27;</span>)</span><br><span class="line"><span class="keyword">except</span> IOError:</span><br><span class="line">    <span class="keyword">raise</span> RuntimeError <span class="keyword">from</span> <span class="literal">None</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">Traceback (most recent call last):</span></span><br><span class="line"><span class="string">  File &quot;&lt;stdin&gt;&quot;, line 4, in &lt;module&gt;</span></span><br><span class="line"><span class="string">RuntimeError&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>see more at  <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/exceptions.html#bltin-exceptions">Built-in Exceptions</a></p>
+</li>
+</ul>
+<h2 id="8-6-User-defined-Exceptions"><a href="#8-6-User-defined-Exceptions" class="headerlink" title="8.6. User-defined Exceptions"></a>8.6. User-defined Exceptions</h2><blockquote>
+<p>User Exceptions should typically be derived from the <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/exceptions.html#Exception"><code>Exception</code></a> class, either directly or indirectly.</p>
+</blockquote>
+<ul>
+<li><p>User-defined Exceptions can do anything any other class can do, but are usually kept simple, often only offering a number of attributes that allow information about the error to be extracted by handlers for the exception. </p>
+</li>
+<li><p>When creating a module that can raise several distinct errors, a common practice is to create a <strong>base class</strong> for exceptions defined by that module, and subclass that to create specific exception classes for different error conditions:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Error</span>(<span class="params">Exception</span>):</span></span><br><span class="line">  <span class="string">&#x27;&#x27;&#x27;base exception class&#x27;&#x27;&#x27;</span></span><br><span class="line">  <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InputError</span>(<span class="params">Error</span>):</span></span><br><span class="line">  <span class="string">&#x27;&#x27;&#x27;special input error&#x27;&#x27;&#x27;</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self ,message</span>):</span></span><br><span class="line">    self.message = message</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">OtherError</span>(<span class="params">Error</span>):</span></span><br><span class="line">  <span class="string">&#x27;&#x27;&#x27;other errors&#x27;&#x27;&#x27;</span></span><br><span class="line">  <span class="keyword">pass</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Most exceptions are defined with names that end in “Error”, similar to the naming of the standard exceptions.</p>
+</li>
+</ul>
+<h2 id="8-7-Defining-Clean-up-Actions"><a href="#8-7-Defining-Clean-up-Actions" class="headerlink" title="8.7. Defining Clean-up Actions"></a>8.7. Defining Clean-up Actions</h2><blockquote>
+<p><code>finally</code> claus is intended to define clean-up actions that must be executed under all circumstances.</p>
+</blockquote>
+<ul>
+<li><p>how <code>finally</code> works under different conditions</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">exec</span> <span class="keyword">try</span></span><br><span class="line"><span class="keyword">if</span> Exception occurs during <span class="keyword">try</span>:</span><br><span class="line">  <span class="keyword">if</span> Exception handled by <span class="keyword">except</span>:</span><br><span class="line">    <span class="built_in">exec</span> <span class="keyword">except</span> claus</span><br><span class="line">    <span class="keyword">if</span> NewException occurs during <span class="keyword">except</span>:</span><br><span class="line">     	<span class="built_in">exec</span> <span class="keyword">finally</span> claus</span><br><span class="line">      <span class="keyword">raise</span> NewException</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">    	<span class="built_in">exec</span> <span class="keyword">finally</span> claus</span><br><span class="line">  <span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">exec</span> <span class="keyword">finally</span> claus</span><br><span class="line">    <span class="keyword">raise</span> unhandled exception</span><br><span class="line"><span class="keyword">elif</span> <span class="keyword">try</span> reach a (<span class="keyword">break</span> , <span class="keyword">continue</span> , <span class="keyword">return</span>) statement:</span><br><span class="line">	<span class="built_in">exec</span> <span class="keyword">finally</span> claus</span><br><span class="line">  <span class="built_in">exec</span> (<span class="keyword">break</span> <span class="keyword">or</span> <span class="keyword">continue</span> <span class="keyword">or</span> <span class="keyword">return</span>) statement</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">  <span class="built_in">exec</span> <span class="keyword">finally</span> claus</span><br></pre></td></tr></table></figure></li>
+<li><p>If a <code>finally</code> clause includes a <code>return</code> statement, the returned value will be the one from the <code>finally</code> clause’s <code>return</code> statement, not the value from the <code>try</code> clause’s <code>return</code> statement.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">divide</span>(<span class="params">x, y</span>):</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">try</span>:</span><br><span class="line"><span class="meta">... </span>        result = x / y</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">except</span> ZeroDivisionError:</span><br><span class="line"><span class="meta">... </span>        print(<span class="string">&quot;division by zero!&quot;</span>)</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">else</span>:</span><br><span class="line"><span class="meta">... </span>        print(<span class="string">&quot;result is&quot;</span>, result)</span><br><span class="line"><span class="meta">... </span>    <span class="keyword">finally</span>:</span><br><span class="line"><span class="meta">... </span>        print(<span class="string">&quot;executing finally clause&quot;</span>)</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>divide(<span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line">result <span class="keyword">is</span> <span class="number">2.0</span></span><br><span class="line">executing <span class="keyword">finally</span> clause</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>divide(<span class="number">2</span>, <span class="number">0</span>)</span><br><span class="line">division by zero!</span><br><span class="line">executing <span class="keyword">finally</span> clause</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>divide(<span class="string">&quot;2&quot;</span>, <span class="string">&quot;1&quot;</span>)</span><br><span class="line">executing <span class="keyword">finally</span> clause</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">3</span>, <span class="keyword">in</span> divide</span><br><span class="line">TypeError: unsupported operand <span class="built_in">type</span>(s) <span class="keyword">for</span> /: <span class="string">&#x27;str&#x27;</span> <span class="keyword">and</span> <span class="string">&#x27;str&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>In real world applications, the <a target="_blank" rel="noopener" href="https://docs.python.org/3/reference/compound_stmts.html#finally"><code>finally</code></a> clause is useful for releasing external resources (such as files or network connections), regardless of whether the use of the resource was successful.</p>
+</li>
+</ul>
+<h2 id="8-8-Predefined-Clean-up-Actions"><a href="#8-8-Predefined-Clean-up-Actions" class="headerlink" title="8.8. Predefined Clean-up Actions"></a>8.8. Predefined Clean-up Actions</h2><blockquote>
+<p>Some objects define standard clean-up actions to be undertaken when the object is no longer needed, regardless of whether or not the operation using the object succeeded or failed.</p>
+<p>Objects which, like files, provide predefined clean-up actions will indicate this in their documentation.</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/02/08/Errors-and-Exceptions/" data-id="ckkz6mmqu000099zmesxd2k5l" data-title="Errors and Exceptions" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/02/07/Input-and-Output/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Input and Output</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/1-Whetting-your-appetite/">1.Whetting your appetite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/2-Using-the-Python-Interpreter/">2.Using the Python Interpreter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/3-An-Informal-Introduction-to-Python/">3.An Informal Introduction to Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/4-More-Control-Flow-Tools/">4.More Control Flow Tools</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/5-Data-Structures/">5.Data Structures</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/6-Modules/">6.Modules</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/7-Input-and-Output/">7.Input and Output</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/8-Errors-and-Exceptions/">8.Errors and Exceptions</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/introduction/">introduction</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/02/08/Errors-and-Exceptions/">Errors and Exceptions</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/07/Input-and-Output/">Input and Output</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/06/Modules/">Modules</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/05/Data-Structures/">Data Structures</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/04/More-Control-Flow-Tools/">More Control Flow Tools</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
