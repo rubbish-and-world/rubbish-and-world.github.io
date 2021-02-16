@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Classes | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Classes provide a means of bundling data and functionality together.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Classes">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/02/10/PythonOG/Classes/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Classes provide a means of bundling data and functionality together.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-02-10T12:06:24.000Z">
+<meta property="article:modified_time" content="2021-02-12T16:40:45.905Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-PythonOG/Classes" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/02/10/PythonOG/Classes/" class="article-date">
+  <time class="dt-published" datetime="2021-02-10T12:06:24.000Z" itemprop="datePublished">2021-02-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python-OG/">Python OG</a>►<a class="article-category-link" href="/categories/Python-OG/9-Classes/">9.Classes</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Classes
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>Classes provide a means of bundling data and functionality together. </p>
+</blockquote>
+<a id="more"></a>
+
+<ul>
+<li>Python add very little syntactic and semantics feature when comes to Class Mechanism</li>
+<li>It is a mixture of <code>C++</code> and <code>Modula-3</code></li>
+<li>It fully support everything you know in OOP</li>
+<li>As Python is a dynamic language, Python Classes can be created at runtime, and <strong>can be modified</strong> further after creation.</li>
+<li>Since no universal accepted terminology for classes, terms of <code>C++</code>, <code>Smalltake</code> and  <code>Module-3</code> are used.</li>
+</ul>
+<h2 id="9-1-A-Word-About-Names-and-Objects"><a href="#9-1-A-Word-About-Names-and-Objects" class="headerlink" title="9.1. A Word About Names and Objects"></a>9.1. A Word About Names and Objects</h2><blockquote>
+<p>Objects have individuality, and multiple names (in multiple scopes) can be bound to the same object. This is known as aliasing in other languages. Sometimes it behave like pointers in some respects.</p>
+</blockquote>
+<h2 id="9-2-Python-Scopes-and-Namespaces"><a href="#9-2-Python-Scopes-and-Namespaces" class="headerlink" title="9.2. Python Scopes and Namespaces"></a>9.2. Python Scopes and Namespaces</h2><blockquote>
+<p>Knowledges of Scopes and Namespaces is very useful for understanding Python Classes.</p>
+</blockquote>
+<h4 id="9-2-1-Namespaces"><a href="#9-2-1-Namespaces" class="headerlink" title="9.2.1 Namespaces"></a>9.2.1 Namespaces</h4><ul>
+<li>A <em>namespace</em> is a mapping from names to objects.</li>
+<li>Most namespaces are currently implemented as Python dictionaries.</li>
+<li>there is absolutely no relation between names in different namespaces<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">tell</span>():</span></span><br><span class="line"><span class="meta">... </span>    a = <span class="number">2</span></span><br><span class="line"><span class="meta">... </span>    print(a)</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>tell()</span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure></li>
+<li>the word <strong><em>attribute</em></strong> is used to refer any name followed by a dot, like <code>z.real</code>, <code>real</code> is an attribute of the object <code>z</code>.</li>
+<li>From this perspective, in the expression <code>modname.funcname</code>, <code>modname</code> is a module object and <code>funcname</code> is an attribute of it. Then the attributes of the module and the global names defined in the module share the same namespace.</li>
+<li>Attributes may be <strong>read-only</strong> or <strong>writable</strong>. </li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">modname.the_answer = <span class="number">42</span></span><br><span class="line"><span class="keyword">del</span> modname.the_answer</span><br><span class="line"><span class="comment"># these statements are valid</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>Namespaces are created at different moments and have different lifetimes.</p>
+<table>
+<thead>
+<tr>
+<th>Namespace</th>
+<th>start</th>
+<th>end</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>containing the built-in names</td>
+<td>when the interpreter start</td>
+<td>the interpreter exit</td>
+</tr>
+<tr>
+<td>The global namespace for a module</td>
+<td>when the module definition is read in(when the module is imported)</td>
+<td>the interpreter quits, normally</td>
+</tr>
+<tr>
+<td>The local namespace for a function</td>
+<td>the function is called</td>
+<td>The function returns or raise unhandled exception</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>The statements executed by the top-level invocation of the interpreter, are considered part of a module called <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/__main__.html#module-__main__"><code>__main__</code></a>, so they have their own global namespace.</p>
+</li>
+</ul>
+<h4 id="9-2-2-Scope"><a href="#9-2-2-Scope" class="headerlink" title="9.2.2 Scope"></a>9.2.2 Scope</h4><ul>
+<li><p>Scope —- a <strong>textual region</strong> of a Python program where a namespace is directly accessible.</p>
+</li>
+<li><p>directly accessible —- an unqualified reference to a name attempts to find the name in the namespace.</p>
+</li>
+<li><p>Maybe we can say that Namespace is logical while that Scope is physical or literally textual</p>
+</li>
+<li><p>At any time during execution, there are 3 or 4 nested scopes whose namespaces are directly accessible:</p>
+<ul>
+<li>the innermost scope, which is searched first, contains the local names(Local)</li>
+<li>the scopes of any enclosing functions, which are searched starting with the nearest enclosing scope, contains <code>non-local</code>, but also <code>non-global</code> names(Enclosing)</li>
+<li>the next-to-last scope contains the <strong>current module’s global names</strong>(Global)</li>
+<li>the outermost scope (searched last) is the namespace containing <strong>built-in names</strong>(Built-in)</li>
+</ul>
+</li>
+<li><p>The searching process is like this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Local -&gt; Enclosing -&gt; Global -&gt; Built-in</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> builtins</span><br><span class="line">print(<span class="built_in">dir</span>(builtins)) <span class="comment"># print all built-in names</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># here is global</span></span><br><span class="line">a = <span class="string">&quot;global a&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outter</span>():</span></span><br><span class="line">    <span class="comment"># local for outter, enclosing for inner</span></span><br><span class="line">    a = <span class="string">&quot;outter a&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>():</span></span><br><span class="line">        <span class="comment"># local for inner</span></span><br><span class="line">        a = <span class="string">&quot;inner a&quot;</span></span><br><span class="line">        print(a)</span><br><span class="line">    </span><br><span class="line">    inner()</span><br><span class="line">    print(a)</span><br><span class="line"></span><br><span class="line">outter()</span><br><span class="line">print(a)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">inner a</span></span><br><span class="line"><span class="string">outter a</span></span><br><span class="line"><span class="string">global a</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>The <a target="_blank" rel="noopener" href="https://docs.python.org/3/reference/simple_stmts.html#global"><code>global</code></a> statement can be used to indicate that particular variables live in the global scope and should be rebound there</p>
+</li>
+<li><p>the <a target="_blank" rel="noopener" href="https://docs.python.org/3/reference/simple_stmts.html#nonlocal"><code>nonlocal</code></a> statement indicates that particular variables live in an enclosing scope and should be rebound there.</p>
+</li>
+<li><p>in order to keep things under control, you should try to avoid use these two statements ALAP</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># here is global</span></span><br><span class="line">a = <span class="string">&quot;global a&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outter</span>():</span></span><br><span class="line">    <span class="comment"># local for outter, enclosing for inner</span></span><br><span class="line">    <span class="comment"># nonlocal a  # no binding for a because outter do not have an enclosing scope</span></span><br><span class="line">    a = <span class="string">&quot;outter a&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>():</span></span><br><span class="line">        <span class="comment"># local for inner</span></span><br><span class="line">        <span class="keyword">nonlocal</span> a <span class="comment"># bind the a of next line to outter&#x27;s a</span></span><br><span class="line">        a = <span class="string">&quot;inner a&quot;</span></span><br><span class="line">        print(a)</span><br><span class="line">    </span><br><span class="line">    inner()</span><br><span class="line">    print(a)</span><br><span class="line"></span><br><span class="line">outter()</span><br><span class="line">print(a)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">inner a</span></span><br><span class="line"><span class="string">inner a</span></span><br><span class="line"><span class="string">global a</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># here is global</span></span><br><span class="line">a = <span class="string">&quot;global a&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outter</span>():</span></span><br><span class="line">    <span class="comment"># local for outter, enclosing for inner</span></span><br><span class="line">    <span class="comment"># nonlocal a  # no binding for a because outter do not have an enclosing scope</span></span><br><span class="line">    <span class="keyword">global</span> a <span class="comment"># bind the a of next line to global&#x27;s a</span></span><br><span class="line">    a = <span class="string">&quot;outter a&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span>():</span></span><br><span class="line">        <span class="comment"># local for inner</span></span><br><span class="line">        <span class="comment"># nonlocal a # the outter&#x27;s a has been rebound to global&#x27;s a, so there&#x27;s no outter&#x27;s a any more</span></span><br><span class="line">        a = <span class="string">&quot;inner a&quot;</span></span><br><span class="line">        print(a)</span><br><span class="line">    </span><br><span class="line">    inner()</span><br><span class="line">    print(a)</span><br><span class="line"></span><br><span class="line">outter()</span><br><span class="line">print(a)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">inner a</span></span><br><span class="line"><span class="string">outter a</span></span><br><span class="line"><span class="string">outter a</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>In fact, all operations that introduce new names use the local scope: in particular, <a target="_blank" rel="noopener" href="https://docs.python.org/3/reference/simple_stmts.html#import"><code>import</code></a> statements and function definitions bind the module or function name in the local scope.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># here is global</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span>():</span></span><br><span class="line">    <span class="keyword">import</span> string</span><br><span class="line">    print(string.ascii_letters)</span><br><span class="line">func()</span><br><span class="line">print(string.ascii_letters)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</span></span><br><span class="line"><span class="string">Traceback (most recent call last):</span></span><br><span class="line"><span class="string">  File &quot;/Users/******/test/ptest.py&quot;, line 6, in &lt;module&gt;</span></span><br><span class="line"><span class="string">    print(string.ascii_letters)</span></span><br><span class="line"><span class="string">NameError: name &#x27;string&#x27; is not defined</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h2 id="9-3-A-First-Look-at-Classes"><a href="#9-3-A-First-Look-at-Classes" class="headerlink" title="9.3. A First Look at Classes"></a>9.3. A First Look at Classes</h2></li>
+</ul>
+<p><em>a little bit of new syntax, three new object types, and some new semantics.</em></p>
+<h3 id="9-3-1-Class-Definition-Syntax"><a href="#9-3-1-Class-Definition-Syntax" class="headerlink" title="9.3.1. Class Definition Syntax"></a>9.3.1. Class Definition Syntax</h3><ul>
+<li><p>Classes can be defined in form of</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClassName</span>:</span></span><br><span class="line">  <span class="comment"># statements</span></span><br><span class="line"><span class="keyword">or</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClassName</span>(<span class="params">BaseClass</span>):</span></span><br><span class="line">  <span class="comment"># statements</span></span><br><span class="line"><span class="keyword">or</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ClassName</span>():</span></span><br><span class="line">  <span class="comment"># statements</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">myc</span>():</span></span><br><span class="line"><span class="meta">... </span>    <span class="keyword">pass</span></span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>myc</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> &#x27;<span class="title">__main__</span>.<span class="title">myc</span>&#x27;&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Class definitions, like function definitions must be executed before they have any effect, so you can even place the definition in a <code>if</code> claus.</p>
+</li>
+<li><p>When a class definition is entered, a new namespace is created, and used as the local scope</p>
+</li>
+</ul>
+<h3 id="9-3-2-Class-Objects"><a href="#9-3-2-Class-Objects" class="headerlink" title="9.3.2. Class Objects"></a>9.3.2. Class Objects</h3><blockquote>
+<p>Class objects support two kinds of operations: <strong>attribute references</strong> and <strong>instantiation</strong>.</p>
+</blockquote>
+<ul>
+<li><p><em>Attribute references</em> use the standard syntax used for all attribute references in Python: <code>obj.name</code>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">A</span>():</span></span><br><span class="line"><span class="meta">... </span>    <span class="string">&#x27;&#x27;&#x27;class A&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="meta">... </span>    a = <span class="number">0</span></span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">dir</span>(A)</span><br><span class="line">[<span class="string">&#x27;__class__&#x27;</span>, <span class="string">&#x27;__delattr__&#x27;</span>, <span class="string">&#x27;__dict__&#x27;</span>, <span class="string">&#x27;__dir__&#x27;</span>, <span class="string">&#x27;__doc__&#x27;</span>, <span class="string">&#x27;__eq__&#x27;</span>, <span class="string">&#x27;__format__&#x27;</span>, <span class="string">&#x27;__ge__&#x27;</span>, <span class="string">&#x27;__getattribute__&#x27;</span>, <span class="string">&#x27;__gt__&#x27;</span>, <span class="string">&#x27;__hash__&#x27;</span>, <span class="string">&#x27;__init__&#x27;</span>, <span class="string">&#x27;__init_subclass__&#x27;</span>, <span class="string">&#x27;__le__&#x27;</span>, <span class="string">&#x27;__lt__&#x27;</span>, <span class="string">&#x27;__module__&#x27;</span>, <span class="string">&#x27;__ne__&#x27;</span>, <span class="string">&#x27;__new__&#x27;</span>, <span class="string">&#x27;__reduce__&#x27;</span>, <span class="string">&#x27;__reduce_ex__&#x27;</span>, <span class="string">&#x27;__repr__&#x27;</span>, <span class="string">&#x27;__setattr__&#x27;</span>, <span class="string">&#x27;__sizeof__&#x27;</span>, <span class="string">&#x27;__str__&#x27;</span>, <span class="string">&#x27;__subclasshook__&#x27;</span>, <span class="string">&#x27;__weakref__&#x27;</span>, <span class="string">&#x27;a&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>A.__doc__</span><br><span class="line"><span class="string">&#x27;class A&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>A.a</span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Class <em>instantiation</em> uses function notation. The following statement creates a new <em>instance</em> of the class and assigns this object to the local variable <code>x</code>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = A()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(b)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> &#x27;<span class="title">__main__</span>.<span class="title">A</span>&#x27;&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>The instantiation operation (“calling” a class object) creates an empty object. To initialize it, define <code>__init__()</code> function, which will be automatically invoked for newly-created class instance.</p>
+</li>
+<li><p>initialization function can have arguments. Under this circumstance, arguments given to the class instantiation operator are passed on to <code>__init__()</code></p>
+</li>
+<li><p>the <code>self</code> argument represent the <code>instantiated class instance</code>, it can be changed to other names, but you’d better not do that. It works like <code>*this</code> in c++</p>
+</li>
+<li><p>just like <code>C++ constructor</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">C</span>():</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line"><span class="meta">... </span>            print(<span class="string">&quot;class C is instantiated&quot;</span>)</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c = C()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span> <span class="title">is</span> <span class="title">instantiated</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="9-3-3-Instance-Objects"><a href="#9-3-3-Instance-Objects" class="headerlink" title="9.3.3. Instance Objects"></a>9.3.3. Instance Objects</h3></li>
+</ul>
+<blockquote>
+<p>The only operations understood by instance objects are attribute references. There are two kinds of valid attribute names: data attributes and methods.</p>
+</blockquote>
+<ul>
+<li><p><em>data attributes</em> correspond to data members in C++.</p>
+</li>
+<li><p>Data attributes need not be declared; like local variables, they spring into existence when they are first assigned to.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">dir</span>(c)</span><br><span class="line">[<span class="string">&#x27;__class__&#x27;</span>, <span class="string">&#x27;__delattr__&#x27;</span>, <span class="string">&#x27;__dict__&#x27;</span>, <span class="string">&#x27;__dir__&#x27;</span>, <span class="string">&#x27;__doc__&#x27;</span>, <span class="string">&#x27;__eq__&#x27;</span>, <span class="string">&#x27;__format__&#x27;</span>, <span class="string">&#x27;__ge__&#x27;</span>, <span class="string">&#x27;__getattribute__&#x27;</span>, <span class="string">&#x27;__gt__&#x27;</span>, <span class="string">&#x27;__hash__&#x27;</span>, <span class="string">&#x27;__init__&#x27;</span>, <span class="string">&#x27;__init_subclass__&#x27;</span>, <span class="string">&#x27;__le__&#x27;</span>, <span class="string">&#x27;__lt__&#x27;</span>, <span class="string">&#x27;__module__&#x27;</span>, <span class="string">&#x27;__ne__&#x27;</span>, <span class="string">&#x27;__new__&#x27;</span>, <span class="string">&#x27;__reduce__&#x27;</span>, <span class="string">&#x27;__reduce_ex__&#x27;</span>, <span class="string">&#x27;__repr__&#x27;</span>, <span class="string">&#x27;__setattr__&#x27;</span>, <span class="string">&#x27;__sizeof__&#x27;</span>, <span class="string">&#x27;__str__&#x27;</span>, <span class="string">&#x27;__subclasshook__&#x27;</span>, <span class="string">&#x27;__weakref__&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c.newmember = <span class="string">&#x27;hhh&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">dir</span>(c)</span><br><span class="line">[<span class="string">&#x27;__class__&#x27;</span>, <span class="string">&#x27;__delattr__&#x27;</span>, <span class="string">&#x27;__dict__&#x27;</span>, <span class="string">&#x27;__dir__&#x27;</span>, <span class="string">&#x27;__doc__&#x27;</span>, <span class="string">&#x27;__eq__&#x27;</span>, <span class="string">&#x27;__format__&#x27;</span>, <span class="string">&#x27;__ge__&#x27;</span>, <span class="string">&#x27;__getattribute__&#x27;</span>, <span class="string">&#x27;__gt__&#x27;</span>, <span class="string">&#x27;__hash__&#x27;</span>, <span class="string">&#x27;__init__&#x27;</span>, <span class="string">&#x27;__init_subclass__&#x27;</span>, <span class="string">&#x27;__le__&#x27;</span>, <span class="string">&#x27;__lt__&#x27;</span>, <span class="string">&#x27;__module__&#x27;</span>, <span class="string">&#x27;__ne__&#x27;</span>, <span class="string">&#x27;__new__&#x27;</span>, <span class="string">&#x27;__reduce__&#x27;</span>, <span class="string">&#x27;__reduce_ex__&#x27;</span>, <span class="string">&#x27;__repr__&#x27;</span>, <span class="string">&#x27;__setattr__&#x27;</span>, <span class="string">&#x27;__sizeof__&#x27;</span>, <span class="string">&#x27;__str__&#x27;</span>, <span class="string">&#x27;__subclasshook__&#x27;</span>, <span class="string">&#x27;__weakref__&#x27;</span>, <span class="string">&#x27;newmember&#x27;</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c.newmember</span><br><span class="line"><span class="string">&#x27;hhh&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">del</span> c.newmember</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">dir</span>(c)</span><br><span class="line">[<span class="string">&#x27;__class__&#x27;</span>, <span class="string">&#x27;__delattr__&#x27;</span>, <span class="string">&#x27;__dict__&#x27;</span>, <span class="string">&#x27;__dir__&#x27;</span>, <span class="string">&#x27;__doc__&#x27;</span>, <span class="string">&#x27;__eq__&#x27;</span>, <span class="string">&#x27;__format__&#x27;</span>, <span class="string">&#x27;__ge__&#x27;</span>, <span class="string">&#x27;__getattribute__&#x27;</span>, <span class="string">&#x27;__gt__&#x27;</span>, <span class="string">&#x27;__hash__&#x27;</span>, <span class="string">&#x27;__init__&#x27;</span>, <span class="string">&#x27;__init_subclass__&#x27;</span>, <span class="string">&#x27;__le__&#x27;</span>, <span class="string">&#x27;__lt__&#x27;</span>, <span class="string">&#x27;__module__&#x27;</span>, <span class="string">&#x27;__ne__&#x27;</span>, <span class="string">&#x27;__new__&#x27;</span>, <span class="string">&#x27;__reduce__&#x27;</span>, <span class="string">&#x27;__reduce_ex__&#x27;</span>, <span class="string">&#x27;__repr__&#x27;</span>, <span class="string">&#x27;__setattr__&#x27;</span>, <span class="string">&#x27;__sizeof__&#x27;</span>, <span class="string">&#x27;__str__&#x27;</span>, <span class="string">&#x27;__subclasshook__&#x27;</span>, <span class="string">&#x27;__weakref__&#x27;</span>]</span><br></pre></td></tr></table></figure></li>
+<li><p>A method is a function that “belongs to” an object. </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">instance.f <span class="comment"># a method object</span></span><br><span class="line">ClassName.f <span class="comment"># a function object</span></span><br></pre></td></tr></table></figure>
+<h3 id="9-3-4-Method-Objects"><a href="#9-3-4-Method-Objects" class="headerlink" title="9.3.4. Method Objects"></a>9.3.4. Method Objects</h3></li>
+<li><p>the special thing about methods is that the <strong>instance object(the self)</strong> is passed as the first argument of the function</p>
+<p>the call <code>instance.f()</code> is exactly equivalent to <code>ClassName.f(instance)</code></p>
+</li>
+<li><p>The implementation: <code>method = ObjPointer + function</code> (ObjPointer just like <code>this</code> in C++)</p>
+</li>
+</ul>
+<h3 id="9-3-5-Class-and-Instance-Variables"><a href="#9-3-5-Class-and-Instance-Variables" class="headerlink" title="9.3.5. Class and Instance Variables"></a>9.3.5. Class and Instance Variables</h3><blockquote>
+<p>Generally speaking, instance variables are for data unique to each instance and class variables are for attributes and methods shared by all instances of the class</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span>:</span></span><br><span class="line"></span><br><span class="line">    kind = <span class="string">&#x27;canine&#x27;</span>         <span class="comment"># class variable shared by all instances</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, name</span>):</span></span><br><span class="line">        self.name = name    <span class="comment"># instance variable unique to each instance</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d = Dog(<span class="string">&#x27;Fido&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>e = Dog(<span class="string">&#x27;Buddy&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d.kind                  <span class="comment"># shared by all dogs</span></span><br><span class="line"><span class="string">&#x27;canine&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>e.kind                  <span class="comment"># shared by all dogs</span></span><br><span class="line"><span class="string">&#x27;canine&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d.name                  <span class="comment"># unique to d</span></span><br><span class="line"><span class="string">&#x27;Fido&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>e.name                  <span class="comment"># unique to e</span></span><br><span class="line"><span class="string">&#x27;Buddy&#x27;</span></span><br></pre></td></tr></table></figure>
+<p><strong>Mutable variable like lists will be shared by all instances !!!</strong></p>
+<h2 id="9-4-Random-Remarks"><a href="#9-4-Random-Remarks" class="headerlink" title="9.4. Random Remarks"></a>9.4. Random Remarks</h2><ul>
+<li><p>classes are not usable to implement pure abstract data types. In fact, nothing in Python makes it possible to enforce data hiding, in order to be convenient.(If you really want to completely hide something, add extensions written in C to C Python implementation can achieve this.)</p>
+</li>
+<li><p>There is no shorthand for referencing data attributes (or other methods!) from within methods.(<code>nonlocal</code> won’t work here)</p>
+<p>If you want to access a class variable, use <code>ClassName.attribute</code> or <code>self.attribute</code> in your methods</p>
+</li>
+<li><p>Any function object that is a class attribute defines a method for instances of that class.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Function defined outside the class</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f1</span>(<span class="params">self, x, y</span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">min</span>(x, x+y)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span>:</span></span><br><span class="line">    f = f1</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">g</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;hello world&#x27;</span></span><br><span class="line">    h = g</span><br><span class="line"><span class="comment"># f , g , h  are all methods of class C</span></span><br><span class="line"><span class="comment"># this technique is useless unless you want to confuse your code readers</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Methods may call other methods by using method attributes of the <code>self</code> argument</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bag</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.data = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">self, x</span>):</span></span><br><span class="line">        self.data.append(x)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addtwice</span>(<span class="params">self, x</span>):</span></span><br><span class="line">        self.add(x)</span><br><span class="line">        self.add(x)</span><br></pre></td></tr></table></figure></li>
+<li><p>Methods may reference global names in the same way as ordinary functions. </p>
+</li>
+<li><p>Each value is an object, and therefore has a <em>class</em> (also called its <em>type</em>). It is stored as <code>object.__class__</code>. This is what <code>type()</code> will give you</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(a) == a.__class__</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<h2 id="9-5-Inheritance"><a href="#9-5-Inheritance" class="headerlink" title="9.5. Inheritance"></a>9.5. Inheritance</h2></li>
+</ul>
+<p>to derive a class from a base class, the syntax is easy</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">subclass</span>(<span class="params">BaseClassName</span>):</span></span><br><span class="line">  <span class="comment"># statements</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>The name <code>BaseClassName</code> must be defined in a scope containing the derived class definition.</p>
+</li>
+<li><p>This is also very useful : <code>class DerivedClassName(modname.BaseClassName):</code></p>
+</li>
+<li><p>if a requested attribute is not found in the class, the search proceeds to look in the base class recursively</p>
+</li>
+<li><p>Method references are resolved descending the derived chain, too.</p>
+</li>
+<li><p>Derived classes may override methods of their base classes. In another word, all methods are <code>virtual</code> from c++ programmers’ perspective.(<strong>Be careful! This can destroy your code!!!</strong>)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">base</span>():</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.a = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addone</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;addone of base called&#x27;</span>)</span><br><span class="line">        self.a += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addtwo</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.addone()</span><br><span class="line">        self.addone()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">derive</span>(<span class="params">base</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addone</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;addone of derive called&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addthree</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.addone()</span><br><span class="line">        self.addone()</span><br><span class="line">        self.addone()</span><br><span class="line"></span><br><span class="line">instance = derive()</span><br><span class="line">print(instance.a)</span><br><span class="line">instance.addtwo()</span><br><span class="line">print(instance.a)</span><br><span class="line">instance.addthree()</span><br><span class="line">print(instance.a)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">0</span></span><br><span class="line"><span class="string">addone of derive called</span></span><br><span class="line"><span class="string">addone of derive called</span></span><br><span class="line"><span class="string">0</span></span><br><span class="line"><span class="string">addone of derive called</span></span><br><span class="line"><span class="string">addone of derive called</span></span><br><span class="line"><span class="string">addone of derive called</span></span><br><span class="line"><span class="string">0</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">print(<span class="built_in">help</span>(derive))</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">Help on class derive in module __main__:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">class derive(base)</span></span><br><span class="line"><span class="string"> |  Method resolution order:</span></span><br><span class="line"><span class="string"> |      derive</span></span><br><span class="line"><span class="string"> |      base</span></span><br><span class="line"><span class="string"> |      builtins.object</span></span><br><span class="line"><span class="string"> |  </span></span><br><span class="line"><span class="string"> |  Methods defined here:</span></span><br><span class="line"><span class="string"> |  </span></span><br><span class="line"><span class="string"> |  addone(self)</span></span><br><span class="line"><span class="string"> |  </span></span><br><span class="line"><span class="string"> |  addthree(self)</span></span><br><span class="line"><span class="string"> |  </span></span><br><span class="line"><span class="string"> |  ----------------------------------------------------------------------</span></span><br><span class="line"><span class="string"> |  Methods inherited from base:</span></span><br><span class="line"><span class="string"> |  </span></span><br><span class="line"><span class="string"> |  __init__(self)</span></span><br><span class="line"><span class="string"> |      Initialize self.  See help(type(self)) for accurate signature.</span></span><br><span class="line"><span class="string"> |  </span></span><br><span class="line"><span class="string"> |  addtwo(self)</span></span><br><span class="line"><span class="string"> |  </span></span><br><span class="line"><span class="string"> |  ----------------------------------------------------------------------</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>There is a simple way to call the base class method directly: just call <code>BaseClassName.methodname(self, arguments)</code>, you can use this to extend a method safely. <strong>(Note that this only works if the base class is accessible as <code>BaseClassName</code> in the global scope.)</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">derive</span>(<span class="params">base</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addone</span>(<span class="params">self</span>):</span></span><br><span class="line">        print(<span class="string">&#x27;addone of derive called&#x27;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addthree</span>(<span class="params">self</span>):</span></span><br><span class="line">        base.addone(self)</span><br><span class="line">        base.addone(self)</span><br><span class="line">        base.addone(self)</span><br></pre></td></tr></table></figure></li>
+<li><p>Python has two built-in functions that work with inheritance:</p>
+<ul>
+<li>Use <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#isinstance"><code>isinstance()</code></a> to check an instance’s type: <code>isinstance(obj, int)</code> will be <code>True</code> only if <code>obj.__class__</code> is <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><code>int</code></a> or some class derived from <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><code>int</code></a>.</li>
+<li>Use <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#issubclass"><code>issubclass()</code></a> to check class inheritance: <code>issubclass(bool, int)</code> is <code>True</code> since <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#bool"><code>bool</code></a> is a subclass of <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><code>int</code></a>. However, <code>issubclass(float, int)</code> is <code>False</code> since <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#float"><code>float</code></a> is not a subclass of <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#int"><code>int</code></a>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="9-5-1-Multiple-Inheritance"><a href="#9-5-1-Multiple-Inheritance" class="headerlink" title="9.5.1. Multiple Inheritance"></a>9.5.1. Multiple Inheritance</h3><p>the syntax of mutiple inheritance is:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DerivedClassName</span>(<span class="params">Base1, Base2, Base3</span>):</span></span><br><span class="line">    &lt;statement-<span class="number">1</span>&gt;</span><br><span class="line">    .</span><br><span class="line">    .</span><br><span class="line">    .</span><br><span class="line">    &lt;statement-N&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>For most purposes, in the simplest cases, you can think of the search for attributes inherited <strong>from a parent class as depth-first</strong>, <strong>left-to-right</strong>, <strong>not searching twice</strong> in the same class where there is an overlap in the hierarchy. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">|	derived</span><br><span class="line">|	├── Base1</span><br><span class="line">|	│   └── base</span><br><span class="line">|	├── Base2</span><br><span class="line">|	│   └── base(ignored)</span><br><span class="line">↓	└── Base3</span><br></pre></td></tr></table></figure></li>
+<li><p>However, in fact, the method resolution order changes dynamically to support cooperative calls to <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#super"><code>super()</code></a>.</p>
+</li>
+<li><p>dynamically ordering is used to implement the “Dimond inheritance”</p>
+</li>
+</ul>
+<h2 id="9-6-Private-Variables"><a href="#9-6-Private-Variables" class="headerlink" title="9.6. Private Variables"></a>9.6. Private Variables</h2><blockquote>
+<p>“Private” instance variables that cannot be accessed except from inside an object <strong><em><u>Don’t Exist</u></em></strong> in Python.</p>
+</blockquote>
+<ul>
+<li><p>there is a convention that name prefixed with a <code>_</code> should be treated as a private one.</p>
+</li>
+<li><p>Python name mangling</p>
+<ul>
+<li><p>In name mangling process any identifier with two leading underscore and one trailing underscore is textually replaced with <strong><code>_classname__identifier</code></strong> where classname is the name of the current class. </p>
+</li>
+<li><p>```python<br>class Student: </p>
+<pre><code>def __init__(self, name): 
+    self.__name = name </code></pre>
+<p>s1 = Student(“Santhosh”)<br>print(dir(s1))<br>‘’’<br>[‘<em>Student__name’, ‘<strong>class</strong>‘, ‘<strong>delattr</strong>‘, ‘<strong>dict</strong>‘, ‘<strong>dir</strong>‘, ‘<strong>doc</strong>‘, ‘<strong>eq</strong>‘, ‘<strong>format</strong>‘, ‘<strong>ge</strong>‘, ‘<strong>getattribute</strong>‘, ‘<strong>gt</strong>‘, ‘<strong>hash</strong>‘, ‘<strong>init</strong>‘, ‘__init_subclass_</em>‘, ‘<strong>le</strong>‘, ‘<strong>lt</strong>‘, ‘<strong>module</strong>‘, ‘<strong>ne</strong>‘, ‘<strong>new</strong>‘, ‘<strong>reduce</strong>‘, ‘__reduce_ex__’, ‘<strong>repr</strong>‘, ‘<strong>setattr</strong>‘, ‘<strong>sizeof</strong>‘, ‘<strong>str</strong>‘, ‘<strong>subclasshook</strong>‘, ‘<strong>weakref</strong>‘]<br>‘’’</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## 9.7. Odds and Ends</span><br><span class="line"></span><br><span class="line">&gt; Sometimes it is useful to have a data type similar to the Pascal “record” or C “struct”, bundling together a few named data items. An empty class definition will do nicely:</span><br><span class="line"></span><br><span class="line">&#96;&#96;&#96;python</span><br><span class="line">class Employee:</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line">john &#x3D; Employee()  # Create an empty employee record</span><br><span class="line"></span><br><span class="line"># Fill the fields of the record</span><br><span class="line">john.name &#x3D; &#39;John Doe&#39;</span><br><span class="line">john.dept &#x3D; &#39;computer lab&#39;</span><br><span class="line">john.salary &#x3D; 1000</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>A piece of Python code that expects a particular abstract data type can often be passed a class that emulates the methods of that data type instead. </p>
+</li>
+</ul>
+<h2 id="9-8-Iterators"><a href="#9-8-Iterators" class="headerlink" title="9.8. Iterators"></a>9.8. Iterators</h2><blockquote>
+<p>The use of iterators pervades and unifies Python.</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> iterator:</span><br><span class="line">  ......</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>What is behind the scenes ?</p>
+<ul>
+<li> the <a target="_blank" rel="noopener" href="https://docs.python.org/3/reference/compound_stmts.html#for"><code>for</code></a> statement calls <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#iter"><code>iter()</code></a> on the container object. </li>
+<li>The function returns an <code>iterator object</code> that defines the method <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#iterator.__next__"><code>__next__()</code></a> which accesses elements in the container one at a time.</li>
+<li>When there are no more elements, <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#iterator.__next__"><code>__next__()</code></a> raises a <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/exceptions.html#StopIteration"><code>StopIteration</code></a> exception which tells the <code>for</code> loop to terminate.</li>
+<li>You can call the <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/stdtypes.html#iterator.__next__"><code>__next__()</code></a> method using the <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#next"><code>next()</code></a> built-in function</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s = <span class="string">&#x27;abc&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>it = <span class="built_in">iter</span>(s)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>it</span><br><span class="line">&lt;iterator <span class="built_in">object</span> at <span class="number">0x00A1DB50</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">next</span>(it)</span><br><span class="line"><span class="string">&#x27;a&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">next</span>(it)</span><br><span class="line"><span class="string">&#x27;b&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">next</span>(it)</span><br><span class="line"><span class="string">&#x27;c&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">next</span>(it)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="built_in">next</span>(it)</span><br><span class="line">StopIteration</span><br></pre></td></tr></table></figure></li>
+<li><p>Then you can define your iterable class</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Reverse</span>:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;Iterator for looping over a sequence backwards.&quot;&quot;&quot;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, data</span>):</span></span><br><span class="line">        self.data = data</span><br><span class="line">        self.index = <span class="built_in">len</span>(data)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__next__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.index == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">raise</span> StopIteration</span><br><span class="line">        self.index = self.index - <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> self.data[self.index]</span><br></pre></td></tr></table></figure></li>
+<li><p>do iteration manually</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>ls = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>it = ls.__iter__()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>it.__next__()</span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>it.__next__()</span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">next</span>(it)</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>it.__next__()</span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>it.__next__()</span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>it.__next__()</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">StopIteration</span><br></pre></td></tr></table></figure>
+<h2 id="9-9-Generators"><a href="#9-9-Generators" class="headerlink" title="9.9. Generators"></a>9.9. Generators</h2></li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.python.org/3/glossary.html#term-generator">Generators</a> are a simple and powerful tool for creating <code>iterators</code>.</p>
+</blockquote>
+<ul>
+<li><p>They are written like regular functions but use the <a target="_blank" rel="noopener" href="https://docs.python.org/3/reference/simple_stmts.html#yield"><code>yield</code></a> statement whenever they want to return data.</p>
+</li>
+<li><p>Each time <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/functions.html#next"><code>next()</code></a> is called on it, the generator resumes where it left off </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reverse</span>(<span class="params">data</span>):</span></span><br><span class="line">    <span class="keyword">for</span> index <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(data)-<span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">yield</span> data[index]</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">for</span> char <span class="keyword">in</span> reverse(<span class="string">&#x27;golf&#x27;</span>):</span><br><span class="line"><span class="meta">... </span>    print(char)</span><br><span class="line">...</span><br><span class="line">f</span><br><span class="line">l</span><br><span class="line">o</span><br><span class="line">g</span><br></pre></td></tr></table></figure></li>
+<li><p>for <code>generators</code>, <a target="_blank" rel="noopener" href="https://docs.python.org/3/reference/datamodel.html#object.__iter__"><code>__iter__()</code></a> and <a target="_blank" rel="noopener" href="https://docs.python.org/3/reference/expressions.html#generator.__next__"><code>__next__()</code></a> methods are created automatically.</p>
+</li>
+<li><p>local variables and execution state are automatically saved between calls in generators</p>
+</li>
+<li><p> when generators terminate, they automatically raise <a target="_blank" rel="noopener" href="https://docs.python.org/3/library/exceptions.html#StopIteration"><code>StopIteration</code></a>. </p>
+</li>
+</ul>
+<h2 id="9-10-Generator-Expressions"><a href="#9-10-Generator-Expressions" class="headerlink" title="9.10. Generator Expressions"></a>9.10. Generator Expressions</h2><ul>
+<li><p>a syntax similar to list comprehensions but with parentheses instead of square brackets. </p>
+</li>
+<li><p>more memory friendly than equivalent list comprehensions.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = (i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.__class__</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> &#x27;<span class="title">generator</span>&#x27;&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h2 id="Supplement"><a href="#Supplement" class="headerlink" title="Supplement"></a>Supplement</h2><p><a target="_blank" rel="noopener" href="https://www.youtube.com/playlist?list=PL-osiE80TeTsqhIuOqKhwlXsIBIdSeYtc">watch the videos</a></p>
+<ul>
+<li><p>You can use <code>instance.__dict__</code>to check all the names your instance have.(the namespace of instance)</p>
+</li>
+<li><p>you can use decorator to make a <code>ClassMethod</code> which automatically take the class as its first argument(cls is the same with self in ordinary methods)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Class</span>:</span></span><br><span class="line"><span class="meta">  @classmethod</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">namespace</span>(<span class="params">cls</span>):</span></span><br><span class="line">    print(cls.__dict__)</span><br></pre></td></tr></table></figure>
+<p>This can be used to define alternative constructors!</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@classmethod</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">from_string</span>(<span class="params">cls, s</span>):</span></span><br><span class="line">  x,y,z = s.split(<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">  <span class="keyword">return</span> cls(x,y,z)</span><br></pre></td></tr></table></figure></li>
+<li><p>static functions = ordinary functions have some logical connection with the class, decorator <code>@staticmethod</code> is used</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@staticmethod</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span>():</span></span><br><span class="line">  .....</span><br></pre></td></tr></table></figure></li>
+<li><p>To make things quick clear, you can use <code>help(obj)</code> with any obj which confuses you.</p>
+</li>
+<li><p>in subclass, use <code>super().__init__(arg1,arg2 , ...)</code> to invoke the constructor of parent class</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Developer</span>(<span class="params">Employee</span>):</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self , name , email , dev_lang</span>):</span></span><br><span class="line">    <span class="built_in">super</span>().__init__(name , email)</span><br><span class="line">    <span class="comment"># Employee.__init__(self , name , email) will do the same</span></span><br><span class="line">    self.devlang= dev_lang</span><br></pre></td></tr></table></figure></li>
+<li><p>Special methods : <code>repr(instance)</code> will automatically invoke <code>classname.__repr__()</code>, and <code>str(instance)</code> will automatically invoke <code>classname.__str__()</code></p>
+</li>
+<li><p>you can use special methods(usually in form of  <code>__xxx()__</code>) to customize or overload operations</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Employee</span>:</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__add__</span>(<span class="params">self , other</span>):</span></span><br><span class="line">    <span class="keyword">return</span> self.salary + other.salary</span><br></pre></td></tr></table></figure>
+<p>see more special methods at <a target="_blank" rel="noopener" href="https://docs.python.org/3/reference/datamodel.html?highlight=__add__#emulating-numeric-types">reference</a></p>
+</li>
+<li><p>the <code>attribute decorator</code> allow us to define a function works like a property, which can be accessed by <code>instance.property</code>(like a <code>getter</code> in Java), the result is the return value.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@property</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">attr</span>(<span class="params">self</span>):</span></span><br><span class="line">  <span class="keyword">return</span> ........</span><br></pre></td></tr></table></figure></li>
+<li><p>Since we have a getter, we may need a setter also. We can do this by using the decorator <code>@PropertyName.setter</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@attr.setter</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">attr</span>(<span class="params">self , argus</span>):</span></span><br><span class="line">  self.argus = argus</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure></li>
+<li><p>to do clean up, we can use <code>@PropertyName.deleter</code> decorator</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@attr.deleter</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">attr</span>(<span class="params">self</span>):</span> <span class="comment"># no other argus are needed.</span></span><br><span class="line">  self.argus = <span class="literal">None</span></span><br><span class="line">  ...</span><br><span class="line">  </span><br><span class="line"><span class="keyword">del</span> instance.attr  <span class="comment"># automatically invoke deleter</span></span><br></pre></td></tr></table></figure></li>
+<li><p>if you want to learn the decorators <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=FsAPt_9Bf3U&ab_channel=CoreySchafer">@</a></p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/02/10/PythonOG/Classes/" data-id="ckl7sassp001d35yq3yuu3hs5" data-title="Classes" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/02/12/PythonOG/Brief-Tour-of-the-Standard-Library/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Brief Tour of the Standard Library
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/02/08/PythonOG/Errors-and-Exceptions/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Errors and Exceptions</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/1-Whetting-your-appetite/">1.Whetting your appetite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/10-Brief-Tour-of-the-Standard-Library/">10.Brief Tour of the Standard Library</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/11-Brief-Tour-of-the-Standard-Library-%E2%80%94-Part-II/">11.Brief Tour of the Standard Library — Part II</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/12-Virtual-Environments-and-Packages/">12.Virtual Environments and Packages</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/13-What-Now-The-Rest-of-The-Tutorial/">13.What Now & The Rest of The Tutorial</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/2-Using-the-Python-Interpreter/">2.Using the Python Interpreter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/3-An-Informal-Introduction-to-Python/">3.An Informal Introduction to Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/4-More-Control-Flow-Tools/">4.More Control Flow Tools</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/5-Data-Structures/">5.Data Structures</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/6-Modules/">6.Modules</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/7-Input-and-Output/">7.Input and Output</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/8-Errors-and-Exceptions/">8.Errors and Exceptions</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/9-Classes/">9.Classes</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/introduction/">introduction</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/02/16/MachineLearning/Welcome-to-ML/">Welcome to ML</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/16/PythonOG/What-s-now-The-Rest-of-The-Tutorial/">What&#39;s now &amp; The Rest of The Tutorial</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/16/PythonOG/Virtual-Environments-and-Packages/">Virtual Environments and Packages</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/15/PythonOG/Brief-Tour-of-the-Standard-Library-%E2%80%94-Part-II/">Brief Tour of the Standard Library — Part II</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/12/PythonOG/Brief-Tour-of-the-Standard-Library/">Brief Tour of the Standard Library</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

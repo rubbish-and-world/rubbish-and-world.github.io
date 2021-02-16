@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Using the Python Interpreter | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="2.1 Invoking the Interpreter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Using the Python Interpreter">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/02/02/PythonOG/Using-the-Python-Interpreter/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="2.1 Invoking the Interpreter">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-02-02T05:53:29.000Z">
+<meta property="article:modified_time" content="2021-02-02T08:19:19.991Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-PythonOG/Using-the-Python-Interpreter" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/02/02/PythonOG/Using-the-Python-Interpreter/" class="article-date">
+  <time class="dt-published" datetime="2021-02-02T05:53:29.000Z" itemprop="datePublished">2021-02-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python-OG/">Python OG</a>►<a class="article-category-link" href="/categories/Python-OG/2-Using-the-Python-Interpreter/">2.Using the Python Interpreter</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Using the Python Interpreter
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="2-1-Invoking-the-Interpreter"><a href="#2-1-Invoking-the-Interpreter" class="headerlink" title="2.1 Invoking the Interpreter"></a>2.1 Invoking the Interpreter</h1><a id="more"></a>
+
+
+<h3 id="Python-path"><a href="#Python-path" class="headerlink" title="Python path"></a>Python path</h3><p>On Unix-like machines you can find the executable file under <code>/usr/local/bin/</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ file /usr/<span class="built_in">local</span>/bin/python3.9</span><br><span class="line">/usr/<span class="built_in">local</span>/bin/python3.9: Mach-O 64-bit executable x86_64</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Since the choice of the directory where the interpreter lives is an installation option, other places are possible</p>
+</blockquote>
+<h3 id="Exit-Python"><a href="#Exit-Python" class="headerlink" title="Exit Python"></a>Exit Python</h3><ul>
+<li><p>enter EOF character (Ctrl-D on Unix, Ctrl-Z on Windows)</p>
+</li>
+<li><p>exit via cmd <code>quit()</code></p>
+</li>
+<li><p>if exit gracefully, exit status will be 0</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ python3.9</span><br><span class="line">Python 3.9.1 (default, Dec 29 2020, 08:52:17) </span><br><span class="line">[Clang 12.0.0 (clang-1200.0.32.28)] on darwin</span><br><span class="line">Type <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> or <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt; quit()</span><br><span class="line">$ <span class="built_in">echo</span> $?</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+<h3 id="Editing"><a href="#Editing" class="headerlink" title="Editing"></a>Editing</h3></li>
+<li><p>If Ctrl-P have beeps, line-edit is allowed</p>
+</li>
+<li><blockquote>
+<p>The interpreter operates somewhat like the Unix shell: when called with standard input connected to a tty device, it reads and executes commands interactively; when called with a file name argument or with a file as standard input, it reads and executes a <em>script</em> from that file.</p>
+</blockquote>
+</li>
+<li><p>TTY : stand for TeleTYpewriter </p>
+<p>PTS : stand for Pseudo-TeletypeS</p>
+<p><a target="_blank" rel="noopener" href="https://www.howtogeek.com/428174/what-is-a-tty-on-linux-and-how-to-use-the-tty-command/">more</a></p>
+</li>
+<li><p>simple cmd : <code>python -c command [arg] ...</code>, command is suggested to be quoted with single quotes</p>
+</li>
+<li><p>use module : <code>python -m module [arg] ...</code></p>
+</li>
+<li><p>enter interactive mode after executing a script file :</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ python3 test.py</span><br><span class="line">hello</span><br><span class="line">$ python3 -i test.py</span><br><span class="line">hello</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p><a target="_blank" rel="noopener" href="https://docs.python.org/3/using/cmdline.html#using-on-general">Command line and environment</a></p>
+</li>
+</ul>
+<h2 id="2-1-1-Argument-Passing"><a href="#2-1-1-Argument-Passing" class="headerlink" title="2.1.1. Argument Passing"></a>2.1.1. Argument Passing</h2><p>The script name and additional arguments are turned into a list of string stored in variable <code>sys.argv</code></p>
+<ul>
+<li>The length of the list is at least one</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">condition</th>
+<th align="center">argv[0]</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">no script and no arguments</td>
+<td align="center">‘’ (void string)</td>
+</tr>
+<tr>
+<td align="center">the script name is given as <code>&#39;-&#39;</code>(stdin)</td>
+<td align="center">‘_’</td>
+</tr>
+<tr>
+<td align="center"><a target="_blank" rel="noopener" href="https://docs.python.org/3/using/cmdline.html#cmdoption-c"><code>-c</code></a> <em>command</em> is used</td>
+<td align="center">‘-c’</td>
+</tr>
+<tr>
+<td align="center"><a target="_blank" rel="noopener" href="https://docs.python.org/3/using/cmdline.html#cmdoption-m"><code>-m</code></a> <em>module</em> is used</td>
+<td align="center">the full name of the located module</td>
+</tr>
+</tbody></table>
+<ul>
+<li>Options found after <a target="_blank" rel="noopener" href="https://docs.python.org/3/using/cmdline.html#cmdoption-c"><code>-c</code></a> <em>command</em> or <a target="_blank" rel="noopener" href="https://docs.python.org/3/using/cmdline.html#cmdoption-m"><code>-m</code></a> <em>module</em> are not consumed by the Python interpreter’s option processing but left in <code>sys.argv</code> for the command or module to handle.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># source of test.py</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> sys.argv:</span><br><span class="line">  print(<span class="built_in">type</span>(i) , i)</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ python3 test.py hello world</span><br><span class="line">&lt;class <span class="string">&#x27;str&#x27;</span>&gt; test.py</span><br><span class="line">&lt;class <span class="string">&#x27;str&#x27;</span>&gt; hello</span><br><span class="line">&lt;class <span class="string">&#x27;str&#x27;</span>&gt; world</span><br></pre></td></tr></table></figure>
+<h2 id="2-1-2-Interactive-Mode"><a href="#2-1-2-Interactive-Mode" class="headerlink" title="2.1.2. Interactive Mode"></a>2.1.2. Interactive Mode</h2><p><a target="_blank" rel="noopener" href="https://docs.python.org/3/tutorial/appendix.html#tut-interac">Interactive Mode</a></p>
+<h1 id="2-2-The-Interpreter-and-Its-Environment"><a href="#2-2-The-Interpreter-and-Its-Environment" class="headerlink" title="2.2. The Interpreter and Its Environment"></a>2.2. The Interpreter and Its Environment</h1><h2 id="2-2-1-Source-Code-Encoding"><a href="#2-2-1-Source-Code-Encoding" class="headerlink" title="2.2.1. Source Code Encoding"></a>2.2.1. Source Code Encoding</h2><ul>
+<li><p><strong>By default, Python source code use <code>UTF-8</code> encoding</strong></p>
+</li>
+<li><p>All Python standard libraries use <code>ASCII</code>, a convention that any portable code should follow</p>
+</li>
+<li><blockquote>
+<p>To declare an encoding other than the default one, a special comment line should be added as the <strong><em>first</em></strong> line of the file. The syntax is as follows:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: encoding -*-</span></span><br></pre></td></tr></table></figure>
+
+<p>for example:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: cp1252 -*-</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>the first or second line must match the regular expression “coding[:=]\s*([-\w.]+)”</p>
+</blockquote>
+<p>so <code># -*- encoding: xxxxxx -*-</code> also works</p>
+</blockquote>
+</li>
+<li><p>If the source code starts with a <a target="_blank" rel="noopener" href="https://docs.python.org/3/tutorial/appendix.html#tut-scripts">UNIX “shebang” line</a>, encoding massage should be the <strong>second line</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: cp1252 -*-</span></span><br></pre></td></tr></table></figure></li>
+<li><p>What does a “shebang” line do? —- make a python script a shell script</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">&quot;Hello World&quot;</span>)</span><br><span class="line"><span class="comment"># source of test.py</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ ./test.py</span><br><span class="line">permission denied: ./test.py</span><br><span class="line">$ ls -l test.py</span><br><span class="line">-rw-r--r--  1 ******  staff  21 Feb  2  **:** test.py</span><br><span class="line">$ chmod +x test.py</span><br><span class="line">$ ls -l test.py</span><br><span class="line">-rwxr-xr-x  1 ******  staff  21 Feb  2  **:** test.py</span><br><span class="line">$ ./test.py</span><br><span class="line">./test.py: line 1: syntax error near unexpected token `<span class="string">&#x27;Hello World&#x27;</span><span class="string">&#x27;</span></span><br><span class="line"><span class="string">./test.py: line 1: `print(&#x27;</span>Hello World<span class="string">&#x27;)&#x27;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#! /usr/bin/env python3</span></span><br><span class="line">print(<span class="string">&quot;Hello World&quot;</span>)</span><br><span class="line"><span class="comment"># source of test.py</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./test.py</span><br><span class="line">Hello World</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>NOTE that the declaration does NOT change the encoding acutually</strong></p>
+<blockquote>
+<p>it only applies to how Python <em>reads the source code</em>. It doesn’t apply to executing that code, so not to how printing, opening files, or any other I/O operations translate between bytes and Unicode. </p>
+</blockquote>
+</li>
+</ul>
+<p><em>usually used to solve <code>UnicodeEncodeError</code></em></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/02/02/PythonOG/Using-the-Python-Interpreter/" data-id="ckl7sassb000j35yq1yvx11w0" data-title="Using the Python Interpreter" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/02/03/PythonOG/An-Informal-Introduction-to-Python/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          An Informal Introduction to Python
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/01/27/PythonOG/Whetting-your-appetite/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Whetting your appetite</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/1-Whetting-your-appetite/">1.Whetting your appetite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/10-Brief-Tour-of-the-Standard-Library/">10.Brief Tour of the Standard Library</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/11-Brief-Tour-of-the-Standard-Library-%E2%80%94-Part-II/">11.Brief Tour of the Standard Library — Part II</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/12-Virtual-Environments-and-Packages/">12.Virtual Environments and Packages</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/13-What-Now-The-Rest-of-The-Tutorial/">13.What Now & The Rest of The Tutorial</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/2-Using-the-Python-Interpreter/">2.Using the Python Interpreter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/3-An-Informal-Introduction-to-Python/">3.An Informal Introduction to Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/4-More-Control-Flow-Tools/">4.More Control Flow Tools</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/5-Data-Structures/">5.Data Structures</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/6-Modules/">6.Modules</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/7-Input-and-Output/">7.Input and Output</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/8-Errors-and-Exceptions/">8.Errors and Exceptions</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/9-Classes/">9.Classes</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/introduction/">introduction</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/02/16/MachineLearning/Welcome-to-ML/">Welcome to ML</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/16/PythonOG/What-s-now-The-Rest-of-The-Tutorial/">What&#39;s now &amp; The Rest of The Tutorial</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/16/PythonOG/Virtual-Environments-and-Packages/">Virtual Environments and Packages</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/15/PythonOG/Brief-Tour-of-the-Standard-Library-%E2%80%94-Part-II/">Brief Tour of the Standard Library — Part II</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/12/PythonOG/Brief-Tour-of-the-Standard-Library/">Brief Tour of the Standard Library</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
