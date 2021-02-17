@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Linear Regression and Gradient Descent | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });   Linear Regression is supervised learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linear Regression and Gradient Descent">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/02/17/MachineLearning/CS229/Linear-Regression-and-Gradient-Descent/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });   Linear Regression is supervised learning">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/02/17/MachineLearning/CS229/Linear-Regression-and-Gradient-Descent/process.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/02/17/MachineLearning/CS229/Linear-Regression-and-Gradient-Descent/plot.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/02/17/MachineLearning/CS229/Linear-Regression-and-Gradient-Descent/mini1.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/02/17/MachineLearning/CS229/Linear-Regression-and-Gradient-Descent/mini2.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/02/17/MachineLearning/CS229/Linear-Regression-and-Gradient-Descent/bowl.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/02/17/MachineLearning/CS229/Linear-Regression-and-Gradient-Descent/stochastic.png">
+<meta property="article:published_time" content="2021-02-17T00:51:09.000Z">
+<meta property="article:modified_time" content="2021-02-17T07:40:39.066Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/02/17/MachineLearning/CS229/Linear-Regression-and-Gradient-Descent/process.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-MachineLearning/CS229/Linear-Regression-and-Gradient-Descent" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/02/17/MachineLearning/CS229/Linear-Regression-and-Gradient-Descent/" class="article-date">
+  <time class="dt-published" datetime="2021-02-17T00:51:09.000Z" itemprop="datePublished">2021-02-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Machine-Learning/">Machine Learning</a>►<a class="article-category-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Linear Regression and Gradient Descent
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+
+<p><em>Linear Regression is supervised learning</em></p>
+<a id="more"></a>
+
+<p>And in supervised learning, your work process maybe like this:</p>
+<p><img src="/2021/02/17/MachineLearning/CS229/Linear-Regression-and-Gradient-Descent/process.png" alt="process"></p>
+<p>when design a linear regression algorithm, you may ask yourself the following questions</p>
+<h2 id="How-to-represent-the-output-hypothesis"><a href="#How-to-represent-the-output-hypothesis" class="headerlink" title="How to represent the output hypothesis?"></a>How to represent the output hypothesis?</h2><ul>
+<li><p>In machine learning, linear regression hypothesis should be in form of $h(x) = a_0 + a_1x$</p>
+</li>
+<li><p>when the input $x$ is multi-dimension: $h(x) = h(x_1 , x_2 , … ,x_n) = a_0+a_1x_1+a_2x_2 + … +a_nx_n $</p>
+</li>
+<li><p>matrix representation<br>$$<br>\text{parameter}\ \theta =<br>\begin{bmatrix}<br>a_0 , a_1 , …,a_n<br>\end{bmatrix}<br>$$</p>
+<p>$$<br>\text{feature} \ x = \begin{bmatrix}<br>1\<br>x_1\<br>…\<br>x_n<br>\end{bmatrix}<br>$$</p>
+</li>
+</ul>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="comment"># for n dimension x , x0 = 1</span></span><br><span class="line">paramters  = np.array([[a0 , a1 , a2 , ... , an]]) <span class="comment"># (1，n)</span></span><br><span class="line">x = np.array([[x0] , [x1] , [x2] , ... ,[xn]]) <span class="comment"># (n,1)</span></span><br><span class="line">hypothesis = np.dot(paramters , x) <span class="comment"># (1,n)*(n,1) = (1,1)</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>The main job of the algorithm is to choose the parameters let<br>$$<br>\frac{1}{2} \sum_{i=0}^m(h_{\theta}(x^{(i)}) - y^{(i)})^2 = \min(\frac{1}{2} \sum_{i=0}^m(h(x^{(i)}) - y^{(i)})^2)<br>$$</p>
+<ul>
+<li>m is the number of training examples you have</li>
+<li>y is the correct value</li>
+<li>$x^{(i)},y^{(i)}$ means the $x, y$ of example  $ i$</li>
+<li>$\frac{1}{2} $  is for the purpose to simplify the arithmetic, when you do derivation, you can cancel it out with the power</li>
+<li>$h_{\theta}$ means the paramters of this hypothesis is $\theta$</li>
+</ul>
+</li>
+</ul>
+<h2 id="Gradient-Descent"><a href="#Gradient-Descent" class="headerlink" title="Gradient Descent"></a>Gradient Descent</h2><ul>
+<li>Start with a random $\theta$ , for example <code>parameters = np.zeros((1,n))</code></li>
+<li>Keep changing $\theta$ to reduce $J(\theta) = \frac{1}{2} \sum_{i=0}^m(h_{\theta}(x^{(i)}) - y^{(i)})^2$</li>
+</ul>
+<h4 id="Example-of-2-dimension-x"><a href="#Example-of-2-dimension-x" class="headerlink" title="Example of 2-dimension x"></a>Example of 2-dimension x</h4><ul>
+<li><p>add the $ J(\theta)$ as the extra dimension, calculate the values</p>
+<p><img src="/2021/02/17/MachineLearning/CS229/Linear-Regression-and-Gradient-Descent/plot.png" alt="plot"></p>
+</li>
+<li><p>start from a random point, take a little step each time, follow the direction that decrease most(value of derivative is the least), you will reach a local minimum.</p>
+<p><img src="/2021/02/17/MachineLearning/CS229/Linear-Regression-and-Gradient-Descent/mini1.png" alt="mini1"></p>
+</li>
+<li><p>However, it is a local minimum, not a global one, so if you start from another random point, you may get a different result.</p>
+<p><img src="/2021/02/17/MachineLearning/CS229/Linear-Regression-and-Gradient-Descent/mini2.png" alt="mini2"></p>
+</li>
+<li><p>How to do the descending ?</p>
+<p>update the parameters in each step</p>
+<p><strong><em>NOTE that the derivative value is positive, the cutting line is under the surface, not on the surface!</em></strong><br>$$<br>\theta_j := \theta_j - \alpha\frac{\partial(J(\theta))}{\partial\theta_j} (j=0,1,2,…,n)<br>  $$</p>
+<p>  $$<br>\theta_j - \alpha\frac{\partial(J(\theta))}            {\partial\theta_j} = \theta_j-\alpha[(h_\theta(x)-y)x_j]<br>$$</p>
+</li>
+<li><p><code>:=</code> means assignment</p>
+<ul>
+<li>$\alpha$ is the learning rate, it defines the ‘length’ of your each step, if it is too big, you may go beyond the mini point, see a increase in $\theta_j$, if it is too small, you have too wait for some time for the result to come out. So it is suggested that you can test several value of it, and then choose the most suitable one, like 0.01, 0.02, 0.04, 0.08, ……</li>
+</ul>
+<p>in fact, you will have m training examples, so the forumla would be like<br>$$<br>\theta_j := \theta_j- \alpha \sum_{i=1}^m[h_\theta(x^{(i)})-y^{(i)}]x_j^{(i)} , (j=0,1,2,…n)<br>$$<br>also be called <strong>Repeat Until Convergence</strong></p>
+</li>
+<li><p>It’s turn out that when using Linear Regression, the picture will always look like a bowl, so the local minimum will be the global minimum, don’t worry.</p>
+<p><img src="/2021/02/17/MachineLearning/CS229/Linear-Regression-and-Gradient-Descent/bowl.png" alt="bowl"></p>
+</li>
+</ul>
+<h3 id="Disadvantages"><a href="#Disadvantages" class="headerlink" title="Disadvantages"></a>Disadvantages</h3><ul>
+<li>The algorithm <strong>has to go over every training example in each upgrade</strong>, when the given data set is vary large, it will take vary vary long time to make a step, the amount of calculation is also quite big.(This algorithm is also called ‘Batch Gradient Descend’, and the ‘Batch’ means the the algorithm view all training examples as a ‘batch’. )</li>
+</ul>
+<h3 id="improve-Stochastic-Gradient-Descend"><a href="#improve-Stochastic-Gradient-Descend" class="headerlink" title="improve:  Stochastic Gradient Descend"></a>improve:  <strong>Stochastic Gradient Descend</strong></h3><p><em>Instead of using every training example to make one upgrade, only use one example to make one upgrade</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">while(1)&#123;</span><br><span class="line">	for (i &#x3D; 1 ; i &lt; m ; i++)&#123;</span><br><span class="line">		for (j&#x3D;0 ; j&lt;n ;j++)&#123;</span><br><span class="line">		upgrade(parameter[j] , example(i))</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>This is what it looks like:</p>
+<p><img src="/2021/02/17/MachineLearning/CS229/Linear-Regression-and-Gradient-Descent/stochastic.png" alt="stochastic"></p>
+<ul>
+<li>the algorithm will never converge, so you can stop it when you feel the output is comfortable to use.</li>
+<li>because your data set is very large, so you should have a bigger $\alpha$, too.</li>
+</ul>
+<hr>
+</li>
+</ul>
+<h3 id="A-trick-especially-for-Linear-Regression-Normal-Equation"><a href="#A-trick-especially-for-Linear-Regression-Normal-Equation" class="headerlink" title="A trick especially for Linear Regression, Normal Equation"></a>A trick especially for Linear Regression, Normal Equation</h3><p><em>We can directly find out the value of θ without using Gradient Descent, only one step!</em></p>
+<h5 id="The-big-idea-is-that-solve-the-equation-for-what-theta-nabla-theta-J-theta-0"><a href="#The-big-idea-is-that-solve-the-equation-for-what-theta-nabla-theta-J-theta-0" class="headerlink" title="The big idea is that solve the equation, for what $\theta$, $\nabla_{\theta}J(\theta) = 0$"></a>The big idea is that solve the equation, for what $\theta$, $\nabla_{\theta}J(\theta) = 0$</h5><ul>
+<li><p>partial derivative for respect $\theta$<br>$$<br>\text{define} \nabla_{\theta}J(\theta) = \begin{bmatrix}<br>\frac{\partial J}{\theta_0}\<br>\frac{\partial J}{\theta_1}\<br>…\<br>\frac{\partial J}{\theta_n}\<br>\end{bmatrix}<br>$$</p>
+</li>
+<li><p>partial matrix(two dimension as an example)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># say we have a function which maps a matrix to a real number.</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span>(<span class="params">A:numpy.array</span>):</span></span><br><span class="line">    <span class="keyword">return</span> A[<span class="number">0</span>][<span class="number">0</span>] + A[<span class="number">0</span>][<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<p>$$<br>\text{then},\nabla_{A}f(A) = \begin{bmatrix}<br>\frac{\partial f}{A[0][0]} &amp; \frac{\partial f}{A[0][1]}&amp;…&amp;\frac{\partial f}{A[0][n]}\<br>\frac{\partial f}{A[1][0]} &amp; \frac{\partial f}{A[1][1]}&amp;…&amp;\frac{\partial f}{A[1][n]}\<br>… &amp; …&amp;…&amp;…\<br>\frac{\partial f}{A[n][0]} &amp; \frac{\partial f}{A[n][1]}&amp;…&amp;\frac{\partial f}{A[n][n]}\<br>\end{bmatrix}<br>$$</p>
+<p><em>the output should be a matrix with the same dimension of A</em></p>
+</li>
+<li><p>trace of square matrix<br>$$<br>tr(A^{n\times n}) = \sum_{i=1}^nA_{ii}<br>$$</p>
+</li>
+<li><p>Theorem 1:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span>(<span class="params">A:numpy.array</span>):</span></span><br><span class="line">    B = numpy.array(.....) <span class="comment"># B is some fixed matrix</span></span><br><span class="line">    <span class="keyword">return</span> tr(AB)</span><br></pre></td></tr></table></figure>
+<p>then<br>$$<br>\nabla_Af(A) = B ^{\mathbf{T}}<br>$$</p>
+</li>
+<li><p>Theorem 2:<br>$$<br>tr(AB) = tr(BA)<br>$$</p>
+<p>$$<br>tr(ABC) = tr(CAB)<br>$$</p>
+</li>
+<li><p>Theorm 3:<br>$$<br>f(A) = tr(AA^{\mathbf{T}}C),\text{for some fixed C}<br>$$<br>then<br>$$<br>\nabla_Af(A) = CA+C^{\mathbf{T}}A<br>$$</p>
+</li>
+<li><p>Design Matrix:<br>$$<br>X = \begin{bmatrix}<br>(x^{(1)})^{\mathbf{T}}\<br>(x^{(2)})^{\mathbf{T}}\<br>…\<br>(x^{(m)})^{\mathbf{T}}\<br>\end{bmatrix}<br>\<br>Y=\begin{bmatrix}<br>y^{(1)}\<br>y^{(2)}\<br>…\<br>y^{(m)}\<br>\end{bmatrix}<br>$$</p>
+</li>
+</ul>
+<p>then<br>$$<br>X\theta =  \begin{bmatrix}<br>(x^{(1)})^{\mathbf{T}} \theta\<br>(x^{(2)})^{\mathbf{T}}\theta\<br>…\<br>(x^{(m)})^{\mathbf{T}}\theta\<br>\end{bmatrix} = \begin{bmatrix}<br>h_\theta(x^{(1)})\<br>h_\theta(x^{(2)})\<br>…\<br>h_\theta(x^{(m)})\<br>\end{bmatrix}<br>$$<br>then<br>$$<br>J(\theta) = \frac{1}{2} (X\theta-Y)^{\mathbf{T}}  (X\theta-Y)<br>$$</p>
+<p>$$<br>= \frac{1}{2}(\theta^{\mathbf{T}} X^{\mathbf{T}}  - Y^{\mathbf{T}})(X\theta-Y)<br>$$</p>
+<p>$$<br>=\frac{1}{2}(\theta^{\mathbf{T}} X^{\mathbf{T}} X\theta-\theta^{\mathbf{T}} X^{\mathbf{T}}Y-Y^{\mathbf{T}}\theta^{\mathbf{T}} X^{\mathbf{T}}+Y^{\mathbf{T}}Y)<br>$$</p>
+<p>use theorems to simplify<br>$$<br>=\frac{1}{2} *2(X^{\mathbf{T}} X\theta - X^{\mathbf{T}}Y)<br>$$</p>
+<p>$$<br>=X^{\mathbf{T}} X\theta - X^{\mathbf{T}}Y<br>$$</p>
+<p>$$<br>\therefore \nabla_\theta J(\theta) = \nabla_\theta(X^{\mathbf{T}} X\theta - X^{\mathbf{T}}Y)<br>$$</p>
+<p>$$<br>\text{let} \nabla_\theta J(\theta) =0<br>$$</p>
+<p>$$<br>\therefore X^{\mathbf{T}} X\theta - X^{\mathbf{T}}Y =0<br>$$</p>
+<p>$$<br>\therefore X^{\mathbf{T}} X\theta =X^{\mathbf{T}}Y<br>$$</p>
+<p>$$<br>\therefore \theta = (X^{\mathbf{T}}X)^{-1}X^{\mathbf{T}}Y<br>$$</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/02/17/MachineLearning/CS229/Linear-Regression-and-Gradient-Descent/" data-id="ckl94migq0000qlyqdgozgixd" data-title="Linear Regression and Gradient Descent" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/02/16/aboutHexo/Hexo-Math-support/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">Hexo Math support</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/1-Whetting-your-appetite/">1.Whetting your appetite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/10-Brief-Tour-of-the-Standard-Library/">10.Brief Tour of the Standard Library</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/11-Brief-Tour-of-the-Standard-Library-%E2%80%94-Part-II/">11.Brief Tour of the Standard Library — Part II</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/12-Virtual-Environments-and-Packages/">12.Virtual Environments and Packages</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/13-What-Now-The-Rest-of-The-Tutorial/">13.What Now & The Rest of The Tutorial</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/2-Using-the-Python-Interpreter/">2.Using the Python Interpreter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/3-An-Informal-Introduction-to-Python/">3.An Informal Introduction to Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/4-More-Control-Flow-Tools/">4.More Control Flow Tools</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/5-Data-Structures/">5.Data Structures</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/6-Modules/">6.Modules</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/7-Input-and-Output/">7.Input and Output</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/8-Errors-and-Exceptions/">8.Errors and Exceptions</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/9-Classes/">9.Classes</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/introduction/">introduction</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/02/17/MachineLearning/CS229/Linear-Regression-and-Gradient-Descent/">Linear Regression and Gradient Descent</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/16/aboutHexo/Hexo-Math-support/">Hexo Math support</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/16/MachineLearning/CS229/Welcome-to-ML/">Welcome to ML</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/16/PythonOG/What-s-now-The-Rest-of-The-Tutorial/">What&#39;s now &amp; The Rest of The Tutorial</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/16/PythonOG/Virtual-Environments-and-Packages/">Virtual Environments and Packages</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
