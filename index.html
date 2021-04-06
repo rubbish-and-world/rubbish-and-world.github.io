@@ -71,6 +71,96 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-MachineLearning/CS229/Locally-Weight-Regression" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/04/06/MachineLearning/CS229/Locally-Weight-Regression/" class="article-date">
+  <time class="dt-published" datetime="2021-04-06T09:27:07.000Z" itemprop="datePublished">2021-04-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Machine-Learning/">Machine Learning</a>►<a class="article-category-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2021/04/06/MachineLearning/CS229/Locally-Weight-Regression/">Locally Weighted Regression</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h3 id="Two-type-of-learning-algorithm"><a href="#Two-type-of-learning-algorithm" class="headerlink" title="Two type of learning algorithm"></a>Two type of learning algorithm</h3><ul>
+<li>Parametric learning Algorithm<ul>
+<li>fit fixed set of parameters to data</li>
+</ul>
+</li>
+<li>Non-parametric learning algorithm<ul>
+<li>amount of data/parameters you need to keep grow with the size of data</li>
+<li>Locally weighted Regression belongs to this type</li>
+</ul>
+</li>
+</ul>
+<h3 id="High-level-preview-of-Locally-weighted-regression"><a href="#High-level-preview-of-Locally-weighted-regression" class="headerlink" title="High level preview of Locally weighted regression"></a>High level preview of Locally weighted regression</h3><p><em>Fit $\theta$ to minimum the loss function $\sum_{i=1}^m w_i (y^{i} - \theta^{i}x^{i})^2$</em>, where $w_i$ is a “weight” function, usually $w_i$ is given by the following:<br>$$<br>w_i = e^{-\frac{(x^{(i)}-x)^2}{2\tau^2}}<br>$$<br>which means<br>$$<br>\begin{cases}<br>w_i\longrightarrow1,&amp;|x^{(i)}-x|\longrightarrow0\<br>w_i\longrightarrow0,&amp;|x^{(i)}-x|\longrightarrow \infin<br>\end{cases}<br>$$<br>the more x is close to the training sample $x^{(i)}$, the more important $x^{(i)}$ will be</p>
+<p><img src="/2021/04/06/MachineLearning/CS229/Locally-Weight-Regression/local.png" alt="local"></p>
+<ul>
+<li><p>we try to use only training sample near $x$ to make our predication</p>
+</li>
+<li><p>you can control the “attention” span by changing the parameter $\tau$</p>
+<p><img src="/2021/04/06/MachineLearning/CS229/Locally-Weight-Regression/tau.png" alt="tau"></p>
+</li>
+</ul>
+<h2 id="Classification-Problem"><a href="#Classification-Problem" class="headerlink" title="Classification Problem"></a>Classification Problem</h2><h3 id="Binary-Classification"><a href="#Binary-Classification" class="headerlink" title="Binary Classification"></a>Binary Classification</h3><p>$$<br>y\in{0,1}<br>$$</p>
+<p><em>Note that Linear Regression is absolutely NOT a good algorithm for Classification problem becasue classification problem has nothing to do with linear relationship!!!</em></p>
+<p><img src="/2021/04/06/MachineLearning/CS229/Locally-Weight-Regression/nolinear.png" alt="nolinear"></p>
+<h4 id="We-solve-this-kind-of-problem-via-Logistic-Regression"><a href="#We-solve-this-kind-of-problem-via-Logistic-Regression" class="headerlink" title="We solve this kind of problem via Logistic Regression"></a>We solve this kind of problem via Logistic Regression</h4><p>we want out hypothesis works like<br>$$<br>h(\theta) \in [0,1]<br>$$<br>so we have a logistic function<br>$$<br>g(z) = \frac{1}{1+e^{-z}} \in [0,1]<br>$$<br><img src="/2021/04/06/MachineLearning/CS229/Locally-Weight-Regression/logistic.png" alt="logistic"></p>
+<p>we then feed our old linear regression hypothesis in to it to just reduce the value to [0,1]<br>$$<br>h(\theta) = g(\theta^Tx) = \frac{1}{1+e^{-\theta^Tx}}<br>$$<br>After some sophisticated math, we make a function which gives us the likelihood of our parameters now are the right ones, we call it a “log function”<br>$$<br>\log(\theta) = \sum_{i=1}^m y^{(i)} \log{h_\theta(x^{(i)})}+(1-y^{(i)})\log(1-h_\theta (x^{(i)}))<br>$$<br><em>becasue y is either 0 or 1, so it function like a switcher</em></p>
+<h4 id="Finally-we-come-with-our-solution-Gradient-Ascent"><a href="#Finally-we-come-with-our-solution-Gradient-Ascent" class="headerlink" title="Finally, we come with our solution : Gradient Ascent"></a>Finally, we come with our solution : Gradient Ascent</h4><p>compared with gradient descent, we try to maximum the correct probability.</p>
+<p>update parameters in gradient ascent:<br>$$<br>\theta_j = \theta_j + \alpha \frac{\partial \log{(\theta)}}{\partial\theta_j}\<br>= \theta_j + \alpha \sum_{i=1}^m (y^{(i) } - h_\theta(x^{(i)}))x_j^{(i)}<br>$$<br>update parameters in gradient descent:<br>$$<br>\theta_j = \theta_j - \alpha \frac{\partial h (\theta)}{\partial\theta_j}<br>$$</p>
+<ul>
+<li>just like the gradient descent, gradient ascent has a local maximun same as global maximum</li>
+<li>No one shoot method like normal equation for gradient ascent</li>
+<li>but we have Newton’s method to accelerate</li>
+</ul>
+<h3 id="Newton’s-method"><a href="#Newton’s-method" class="headerlink" title="Newton’s method"></a>Newton’s method</h3><blockquote>
+<p>give a function $f(\theta)$, Newton’s method try to find a $\theta$ that makes $f(\theta) = 0$</p>
+</blockquote>
+<p>we can just set $f(\theta)$ to our $\log’(\theta)$ to find the $\theta$ that make max $\log (\theta)$</p>
+<h5 id="Here-is-how-Newton’s-method-work"><a href="#Here-is-how-Newton’s-method-work" class="headerlink" title="Here is how Newton’s method work"></a>Here is how Newton’s method work</h5><p><img src="/2021/04/06/MachineLearning/CS229/Locally-Weight-Regression/newton.png" alt="newton"></p>
+<ol>
+<li>We start from a random $\theta_0$</li>
+<li>Calculate the tangent line at $\theta_0$</li>
+<li>let tangent line to be 0 to find $\theta_1$</li>
+<li>Repeat until we find our target</li>
+</ol>
+<h4 id="Derivate-the-formula"><a href="#Derivate-the-formula" class="headerlink" title="Derivate the formula"></a>Derivate the formula</h4><p><img src="/2021/04/06/MachineLearning/CS229/Locally-Weight-Regression/formula.png" alt="formula"><br>$$<br>\theta^{(1) }  = \theta^{(0)} - \triangle<br>$$</p>
+<p>$$<br>f’(\theta^{(0)}) = \frac{f(\theta_0)}{\triangle}<br>$$</p>
+<p>$$<br>\theta^{(1) }  = \theta^{(0)} - \frac{f(\theta_0)}{f’(\theta^{(0)})}<br>$$</p>
+<p>$$<br>\theta^{(i+1)} = \theta^{(i)} - \frac{f(\theta_i)}{f’(\theta^{(i)})}<br>$$</p>
+<h4 id="Disadvantages"><a href="#Disadvantages" class="headerlink" title="Disadvantages"></a>Disadvantages</h4><p>each step in newton’ method require to inverse a matrix, if number of your parameters is small, that’s fine. However, when you have many parameters, the dimension of your matrix is very high, each step will cost much.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/04/06/MachineLearning/CS229/Locally-Weight-Regression/" data-id="ckn5yew4z0002noyqdft86bf1" data-title="Locally Weighted Regression" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Cryptography/Stream-Cipher" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/03/29/Cryptography/Stream-Cipher/" class="article-date">
@@ -413,6 +503,10 @@
   <time class="dt-published" datetime="2021-02-16T09:53:07.000Z" itemprop="datePublished">2021-02-16</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Hexo/">Hexo</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -502,53 +596,6 @@
 
 
   
-    <article id="post-PythonOG/What-s-now-The-Rest-of-The-Tutorial" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/02/16/PythonOG/What-s-now-The-Rest-of-The-Tutorial/" class="article-date">
-  <time class="dt-published" datetime="2021-02-16T05:22:26.000Z" itemprop="datePublished">2021-02-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Python-OG/">Python OG</a>►<a class="article-category-link" href="/categories/Python-OG/13-What-Now-The-Rest-of-The-Tutorial/">13.What Now & The Rest of The Tutorial</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2021/02/16/PythonOG/What-s-now-The-Rest-of-The-Tutorial/">What&#39;s now &amp; The Rest of The Tutorial</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="13-What-Now"><a href="#13-What-Now" class="headerlink" title="13. What Now?"></a>13. What Now?</h1><p>Where should you go to learn more?</p>
-        
-          <p class="article-more-link">
-            <a href="/2021/02/16/PythonOG/What-s-now-The-Rest-of-The-Tutorial/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/02/16/PythonOG/What-s-now-The-Rest-of-The-Tutorial/" data-id="ckmuleq38000n4kyq8gpc9gzb" data-title="What&#39;s now &amp; The Rest of The Tutorial" class="article-share-link">Teilen</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
   <nav id="page-nav">
@@ -564,7 +611,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/1-Whetting-your-appetite/">1.Whetting your appetite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/10-Brief-Tour-of-the-Standard-Library/">10.Brief Tour of the Standard Library</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/11-Brief-Tour-of-the-Standard-Library-%E2%80%94-Part-II/">11.Brief Tour of the Standard Library — Part II</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/12-Virtual-Environments-and-Packages/">12.Virtual Environments and Packages</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/13-What-Now-The-Rest-of-The-Tutorial/">13.What Now & The Rest of The Tutorial</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/2-Using-the-Python-Interpreter/">2.Using the Python Interpreter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/3-An-Informal-Introduction-to-Python/">3.An Informal Introduction to Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/4-More-Control-Flow-Tools/">4.More Control Flow Tools</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/5-Data-Structures/">5.Data Structures</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/6-Modules/">6.Modules</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/7-Input-and-Output/">7.Input and Output</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/8-Errors-and-Exceptions/">8.Errors and Exceptions</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/9-Classes/">9.Classes</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/introduction/">introduction</a></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/1-Whetting-your-appetite/">1.Whetting your appetite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/10-Brief-Tour-of-the-Standard-Library/">10.Brief Tour of the Standard Library</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/11-Brief-Tour-of-the-Standard-Library-%E2%80%94-Part-II/">11.Brief Tour of the Standard Library — Part II</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/12-Virtual-Environments-and-Packages/">12.Virtual Environments and Packages</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/13-What-Now-The-Rest-of-The-Tutorial/">13.What Now & The Rest of The Tutorial</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/2-Using-the-Python-Interpreter/">2.Using the Python Interpreter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/3-An-Informal-Introduction-to-Python/">3.An Informal Introduction to Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/4-More-Control-Flow-Tools/">4.More Control Flow Tools</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/5-Data-Structures/">5.Data Structures</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/6-Modules/">6.Modules</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/7-Input-and-Output/">7.Input and Output</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/8-Errors-and-Exceptions/">8.Errors and Exceptions</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/9-Classes/">9.Classes</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/introduction/">introduction</a></li></ul></li></ul>
     </div>
   </div>
 
@@ -593,7 +640,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
     </div>
   </div>
 
@@ -604,6 +651,10 @@
     <h3 class="widget-title">letzter Beitrag</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2021/04/06/MachineLearning/CS229/Locally-Weight-Regression/">Locally Weighted Regression</a>
+          </li>
         
           <li>
             <a href="/2021/03/29/Cryptography/Stream-Cipher/">Stream Cipher</a>
@@ -619,10 +670,6 @@
         
           <li>
             <a href="/2021/03/07/Math/Discrete/Boolean-Algebra/">Boolean Algebra</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/24/MachineLearning/NTU/regression-and-gradient-descent/">regression and gradient descent</a>
           </li>
         
       </ul>
