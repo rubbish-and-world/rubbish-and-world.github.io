@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>SparseMatrix | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Sparse Matrix">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SparseMatrix">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/05/18/DataStructure/SparseMatrix/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Sparse Matrix">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-05-18T09:28:15.000Z">
+<meta property="article:modified_time" content="2021-05-18T09:29:21.040Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-DataStructure/SparseMatrix" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/05/18/DataStructure/SparseMatrix/" class="article-date">
+  <time class="dt-published" datetime="2021-05-18T09:28:15.000Z" itemprop="datePublished">2021-05-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/DataStructure/">DataStructure</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      SparseMatrix
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Sparse-Matrix"><a href="#Sparse-Matrix" class="headerlink" title="Sparse Matrix"></a>Sparse Matrix</h1><a id="more"></a>
+
+
+<blockquote>
+<p>There is no strict definition how many elements need to be zero for a matrix to be considered <strong>sparse</strong> but a common criterion is that the number of non-zero elements is roughly the number of rows or columns. </p>
+</blockquote>
+<blockquote>
+<p>When storing and manipulating sparse matrices on a computer, it is beneficial and often necessary to use specialized algorithms and data structures that take advantage of the sparse structure of the matrix.(<strong>Don’t waste your precious memory on non-sense zeros!</strong>) Specialized computers have been made for sparse matrices, as they are common in the machine learning field.</p>
+</blockquote>
+<h3 id="Storage-strategy"><a href="#Storage-strategy" class="headerlink" title="Storage strategy"></a>Storage strategy</h3><p>Formats can be divided into two groups:</p>
+<ul>
+<li>Those that support <strong>efficient modification</strong>, such as DOK (Dictionary of keys), LIL (List of lists), or COO (Coordinate list). These are typically used to construct the matrices.</li>
+<li>Those that support <strong>efficient access and matrix operations</strong>, such as CSR (Compressed Sparse Row) or CSC (Compressed Sparse Column).</li>
+</ul>
+<hr>
+<h3 id="快速转置"><a href="#快速转置" class="headerlink" title="快速转置"></a>快速转置</h3><p>原稀疏矩阵$m\times n$，共有非0元素$t$个，则算法复杂度为$O(n+t)$</p>
+<ul>
+<li>转置后行号为转置前的列号，即转置前列号在前的，转置后行号也在前</li>
+<li>转置后的行号（转置前的列号）的存储位置为所有转置前该列前所有非0元素个数和<ul>
+<li>注意递归转化为迭代</li>
+</ul>
+</li>
+</ul>
+<p>根据以上信息，即可构造出转置后的压缩稀疏矩阵表</p>
+<p>用空间$(S(n))$换时间，先从原压缩稀疏矩阵表中提取出以上信息$O(t)$,(忽略初始化时间$O(n)$)，迭代法构造出可以直接使用的下标($O(n)$),再用这些信息去构造结果$O(n)$(遍历信息矩阵空间),总共$O(n+t)$</p>
+<p><em>注意在使用下标的时候不要忘记++</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> Type int</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 8</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> columnLength 6</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Item</span>&#123;</span></span><br><span class="line">	<span class="keyword">int</span> row ;</span><br><span class="line">	<span class="keyword">int</span> col ;</span><br><span class="line">	Type element ;</span><br><span class="line">&#125;Item ; </span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Info</span>&#123;</span></span><br><span class="line">	<span class="keyword">int</span> number_of_elements_of_current_col ;</span><br><span class="line">	<span class="keyword">int</span> location;</span><br><span class="line">&#125;Info;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	Item compressed  [N] = &#123;&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">16</span>&#125; , &#123;<span class="number">0</span>,<span class="number">3</span>,<span class="number">22</span>&#125; , &#123;<span class="number">0</span>,<span class="number">5</span>,<span class="number">16</span>&#125; , &#123;<span class="number">1</span>,<span class="number">1</span>,<span class="number">12</span>&#125;, &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125; ,&#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">-8</span>&#125;,&#123;<span class="number">4</span>,<span class="number">0</span>,<span class="number">91</span>&#125; , &#123;<span class="number">6</span>,<span class="number">2</span>,<span class="number">15</span>&#125;&#125;;</span><br><span class="line">	Info infomation [columnLength] = &#123;&#123;<span class="number">0</span>,<span class="number">0</span>&#125; &#125;;</span><br><span class="line">	Item transposed [N] = &#123;&#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>&#125;,&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//loop over compressed to get number of elements of current column</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; N ; i++)&#123;</span><br><span class="line">		infomation[compressed[i].col].number_of_elements_of_current_col++;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//loop over information to generate usable location</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span> ; i &lt; columnLength ; i++)&#123;</span><br><span class="line">		infomation[i].location = infomation[i<span class="number">-1</span>].location + infomation[i<span class="number">-1</span>].number_of_elements_of_current_col;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//loop over compressed &amp; transposed to do the transposing</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; N ; i++)&#123;</span><br><span class="line">		<span class="keyword">int</span> index = infomation[compressed[i].col].location++;</span><br><span class="line"></span><br><span class="line">		transposed[index].row = compressed[i].col;</span><br><span class="line">		transposed[index].col = compressed[i].row;</span><br><span class="line">		transposed[index].element = compressed[i].element;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//print out the result</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; columnLength ; i++) <span class="built_in">printf</span>(<span class="string">&quot;%d %d\n&quot;</span> , infomation[i].number_of_elements_of_current_col, infomation[i].location);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; N ; i++) <span class="built_in">printf</span>(<span class="string">&quot;&#123;%d,%d,%d&#125;\n&quot;</span> , transposed[i].row , transposed[i].col , transposed[i].element);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">2 2</span></span><br><span class="line"><span class="comment">1 3</span></span><br><span class="line"><span class="comment">2 5</span></span><br><span class="line"><span class="comment">2 7</span></span><br><span class="line"><span class="comment">0 7</span></span><br><span class="line"><span class="comment">1 8</span></span><br><span class="line"><span class="comment">&#123;0,0,16&#125;</span></span><br><span class="line"><span class="comment">&#123;0,4,91&#125;</span></span><br><span class="line"><span class="comment">&#123;1,1,12&#125;</span></span><br><span class="line"><span class="comment">&#123;2,1,3&#125;</span></span><br><span class="line"><span class="comment">&#123;2,6,15&#125;</span></span><br><span class="line"><span class="comment">&#123;3,0,22&#125;</span></span><br><span class="line"><span class="comment">&#123;3,2,-8&#125;</span></span><br><span class="line"><span class="comment">&#123;5,0,16&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/05/18/DataStructure/SparseMatrix/" data-id="ckotu4uhk0000qxyq8k2xdfug" data-title="SparseMatrix" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/05/18/Cryptography/Digital-Signature/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Digital Signature</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/DataStructure/">DataStructure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/1-Whetting-your-appetite/">1.Whetting your appetite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/10-Brief-Tour-of-the-Standard-Library/">10.Brief Tour of the Standard Library</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/11-Brief-Tour-of-the-Standard-Library-%E2%80%94-Part-II/">11.Brief Tour of the Standard Library — Part II</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/12-Virtual-Environments-and-Packages/">12.Virtual Environments and Packages</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/13-What-Now-The-Rest-of-The-Tutorial/">13.What Now & The Rest of The Tutorial</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/2-Using-the-Python-Interpreter/">2.Using the Python Interpreter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/3-An-Informal-Introduction-to-Python/">3.An Informal Introduction to Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/4-More-Control-Flow-Tools/">4.More Control Flow Tools</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/5-Data-Structures/">5.Data Structures</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/6-Modules/">6.Modules</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/7-Input-and-Output/">7.Input and Output</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/8-Errors-and-Exceptions/">8.Errors and Exceptions</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/9-Classes/">9.Classes</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/introduction/">introduction</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/05/18/DataStructure/SparseMatrix/">SparseMatrix</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/18/Cryptography/Digital-Signature/">Digital Signature</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/17/Cryptography/ECC/">ECC</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/13/DataStructure/Graph/">Graph</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/13/Cryptography/DiscreteLog/">DiscreteLog</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
