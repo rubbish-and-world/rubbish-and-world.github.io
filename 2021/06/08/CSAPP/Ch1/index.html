@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Ch1 | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Chapter 1 : A Tour of Computer Systems">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ch1">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/06/08/CSAPP/Ch1/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Chapter 1 : A Tour of Computer Systems">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/08/CSAPP/Ch1/compilation.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/08/CSAPP/Ch1/organization.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/08/CSAPP/Ch1/examples.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/08/CSAPP/Ch1/hello.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/08/CSAPP/Ch1/dma.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/08/CSAPP/Ch1/output.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/08/CSAPP/Ch1/cache.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/08/CSAPP/Ch1/hierarchy.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/08/CSAPP/Ch1/interpose.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/08/CSAPP/Ch1/switch.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/08/CSAPP/Ch1/virtualmemory.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/08/CSAPP/Ch1/upper.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/08/CSAPP/Ch1/lower.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/08/CSAPP/Ch1/network.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/08/CSAPP/Ch1/multicore.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/08/CSAPP/Ch1/vm.png">
+<meta property="article:published_time" content="2021-06-08T10:01:23.000Z">
+<meta property="article:modified_time" content="2021-06-10T11:46:40.928Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/06/08/CSAPP/Ch1/compilation.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Buscar"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSAPP/Ch1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/06/08/CSAPP/Ch1/" class="article-date">
+  <time class="dt-published" datetime="2021-06-08T10:01:23.000Z" itemprop="datePublished">2021-06-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/csapp/">csapp</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Ch1
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Chapter-1-A-Tour-of-Computer-Systems"><a href="#Chapter-1-A-Tour-of-Computer-Systems" class="headerlink" title="Chapter 1 : A Tour of Computer Systems"></a>Chapter 1 : A Tour of Computer Systems</h1><a id="more"></a>
+
+<blockquote>
+<p><em>Specific implementations of systems change over time, but the underlying concepts do not. All computer systems have similar hardware and software components that perform similar functions.</em></p>
+</blockquote>
+<p>We begin our study of systems by tracing the lifetime of the hello program</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//hello.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;hello, world\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="1-1-Information-Is-Bits-Context"><a href="#1-1-Information-Is-Bits-Context" class="headerlink" title="1.1 Information Is Bits + Context"></a>1.1 Information Is Bits + Context</h2><ul>
+<li>Our hello program begins life as a <strong>source program</strong> (or source file) that the programmer creates with an editor and saves in a text file called hello.c.</li>
+<li>The source program is a sequence of bits, each with a value of 0 or 1, organized in 8-bit chunks called bytes. Each byte represents some text character in the program</li>
+<li>Files such as hello.c that consist exclusively of ASCII characters are known as <strong>text files</strong>. <strong>All other files are known as binary files.</strong></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ hexdump -C hello.c</span><br><span class="line">00000000  23 69 6e 63 6c 75 64 65  20 3c 73 74 64 69 6f 2e  |<span class="comment">#include &lt;stdio.|</span></span><br><span class="line">00000010  68 3e 0a 0a 69 6e 74 20  6d 61 69 6e 28 29 7b 0a  |h&gt;..int <span class="function"><span class="title">main</span></span>()&#123;.|</span><br><span class="line">00000020  20 20 20 20 70 72 69 6e  74 66 28 22 68 65 6c 6c  |    <span class="built_in">printf</span>(<span class="string">&quot;hell|</span></span><br><span class="line"><span class="string">00000030  6f 2c 20 77 6f 72 6c 64  5c 6e 22 29 3b 0a 20 20  |o, world\n&quot;</span>);.  |</span><br><span class="line">00000040  20 20 72 65 74 75 72 6e  20 30 3b 0a 7d 0a        |  <span class="built_in">return</span> 0;.&#125;.|</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># dump.py</span></span><br><span class="line"><span class="keyword">from</span> prettytable <span class="keyword">import</span> PrettyTable</span><br><span class="line"><span class="keyword">from</span> string <span class="keyword">import</span> printable</span><br><span class="line">tb = PrettyTable()</span><br><span class="line">file = <span class="built_in">open</span>(<span class="string">&#x27;hello.c&#x27;</span> , <span class="string">&quot;rb&quot;</span>)</span><br><span class="line">binary = file.read()</span><br><span class="line">tb.field_names = [<span class="string">&#x27;Decimal&#x27;</span> , <span class="string">&#x27;Hexadecimal&#x27;</span> , <span class="string">&#x27;ASCII decode&#x27;</span>]</span><br><span class="line"><span class="keyword">for</span> b <span class="keyword">in</span> binary:</span><br><span class="line">    <span class="keyword">if</span> b == <span class="number">10</span>:</span><br><span class="line">        tb.add_row([b,<span class="built_in">hex</span>(b)[<span class="number">2</span>:],<span class="string">&#x27;.&#x27;</span>])</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        tb.add_row([b,<span class="built_in">hex</span>(b)[<span class="number">2</span>:],<span class="built_in">chr</span>(b)])</span><br><span class="line">print(tb)</span><br><span class="line">file.close()</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">$ py dump.py</span><br><span class="line">+---------+-------------+--------------+</span><br><span class="line">| Decimal | Hexadecimal | ASCII decode |</span><br><span class="line">+---------+-------------+--------------+</span><br><span class="line">|    35   |      23     |      <span class="comment">#       |</span></span><br><span class="line">|   105   |      69     |      i       |</span><br><span class="line">|   110   |      6e     |      n       |</span><br><span class="line">|    99   |      63     |      c       |</span><br><span class="line">|   108   |      6c     |      l       |</span><br><span class="line">|   117   |      75     |      u       |</span><br><span class="line">|   100   |      64     |      d       |</span><br><span class="line">|   101   |      65     |      e       |</span><br><span class="line">|    32   |      20     |              |</span><br><span class="line">|    60   |      3c     |      &lt;       |</span><br><span class="line">|   115   |      73     |      s       |</span><br><span class="line">|   116   |      74     |      t       |</span><br><span class="line">|   100   |      64     |      d       |</span><br><span class="line">|   105   |      69     |      i       |</span><br><span class="line">|   111   |      6f     |      o       |</span><br><span class="line">|    46   |      2e     |      .       |</span><br><span class="line">|   104   |      68     |      h       |</span><br><span class="line">|    62   |      3e     |      &gt;       |</span><br><span class="line">|    10   |      a      |      .       |</span><br><span class="line">|    10   |      a      |      .       |</span><br><span class="line">|   105   |      69     |      i       |</span><br><span class="line">|   110   |      6e     |      n       |</span><br><span class="line">|   116   |      74     |      t       |</span><br><span class="line">|    32   |      20     |              |</span><br><span class="line">|   109   |      6d     |      m       |</span><br><span class="line">|    97   |      61     |      a       |</span><br><span class="line">|   105   |      69     |      i       |</span><br><span class="line">|   110   |      6e     |      n       |</span><br><span class="line">|    40   |      28     |      (       |</span><br><span class="line">|    41   |      29     |      )       |</span><br><span class="line">|   123   |      7b     |      &#123;       |</span><br><span class="line">|    10   |      a      |      .       |</span><br><span class="line">|    32   |      20     |              |</span><br><span class="line">|    32   |      20     |              |</span><br><span class="line">|    32   |      20     |              |</span><br><span class="line">|    32   |      20     |              |</span><br><span class="line">|   112   |      70     |      p       |</span><br><span class="line">|   114   |      72     |      r       |</span><br><span class="line">|   105   |      69     |      i       |</span><br><span class="line">|   110   |      6e     |      n       |</span><br><span class="line">|   116   |      74     |      t       |</span><br><span class="line">|   102   |      66     |      f       |</span><br><span class="line">|    40   |      28     |      (       |</span><br><span class="line">|    34   |      22     |      <span class="string">&quot;       |</span></span><br><span class="line"><span class="string">|   104   |      68     |      h       |</span></span><br><span class="line"><span class="string">|   101   |      65     |      e       |</span></span><br><span class="line"><span class="string">|   108   |      6c     |      l       |</span></span><br><span class="line"><span class="string">|   108   |      6c     |      l       |</span></span><br><span class="line"><span class="string">|   111   |      6f     |      o       |</span></span><br><span class="line"><span class="string">|    44   |      2c     |      ,       |</span></span><br><span class="line"><span class="string">|    32   |      20     |              |</span></span><br><span class="line"><span class="string">|   119   |      77     |      w       |</span></span><br><span class="line"><span class="string">|   111   |      6f     |      o       |</span></span><br><span class="line"><span class="string">|   114   |      72     |      r       |</span></span><br><span class="line"><span class="string">|   108   |      6c     |      l       |</span></span><br><span class="line"><span class="string">|   100   |      64     |      d       |</span></span><br><span class="line"><span class="string">|    92   |      5c     |      \       |</span></span><br><span class="line"><span class="string">|   110   |      6e     |      n       |</span></span><br><span class="line"><span class="string">|    34   |      22     |      &quot;</span>       |</span><br><span class="line">|    41   |      29     |      )       |</span><br><span class="line">|    59   |      3b     |      ;       |</span><br><span class="line">|    10   |      a      |      .       |</span><br><span class="line">|    32   |      20     |              |</span><br><span class="line">|    32   |      20     |              |</span><br><span class="line">|    32   |      20     |              |</span><br><span class="line">|    32   |      20     |              |</span><br><span class="line">|   114   |      72     |      r       |</span><br><span class="line">|   101   |      65     |      e       |</span><br><span class="line">|   116   |      74     |      t       |</span><br><span class="line">|   117   |      75     |      u       |</span><br><span class="line">|   114   |      72     |      r       |</span><br><span class="line">|   110   |      6e     |      n       |</span><br><span class="line">|    32   |      20     |              |</span><br><span class="line">|    48   |      30     |      0       |</span><br><span class="line">|    59   |      3b     |      ;       |</span><br><span class="line">|    10   |      a      |      .       |</span><br><span class="line">|   125   |      7d     |      &#125;       |</span><br><span class="line">|    10   |      a      |      .       |</span><br><span class="line">+---------+-------------+--------------+</span><br></pre></td></tr></table></figure>
+<h4 id="Every-thing-is-binary"><a href="#Every-thing-is-binary" class="headerlink" title="Every thing is binary !!!"></a>Every thing is binary !!!</h4><blockquote>
+<p>The representation of hello.c illustrates a fundamental idea: <strong>All information in a system</strong>—including disk files, programs stored in memory, user data stored in memory, and data transferred across a network—<strong>is represented as a bunch of bits</strong></p>
+</blockquote>
+<p><span style="color:red">The only thing that distinguishes different data objects is the context in which we view them.</span></p>
+<p>For example, in different contexts, the same sequence of bytes might represent an integer, floating-point number, character string, or machine instruction.</p>
+<h4 id="Binary-can-never-be-concise"><a href="#Binary-can-never-be-concise" class="headerlink" title="Binary can never be concise."></a>Binary can never be concise.</h4><p>As programmers, we need to understand machine representations of numbers because <strong>they are not the same as integers and real numbers. They are finite approximations that can behave in unexpected ways.</strong></p>
+<h2 id="1-2-Programs-Are-Translated-by-Other-Programs-into-Different-Forms"><a href="#1-2-Programs-Are-Translated-by-Other-Programs-into-Different-Forms" class="headerlink" title="1.2 Programs Are Translated by Other Programs into Different Forms"></a>1.2 Programs Are Translated by Other Programs into Different Forms</h2><blockquote>
+<p>In order to run hello.c on the system, the individual C statements must be translated by other programs into a sequence of low-level machine-language instructions. These instructions are then packaged in a form called an executable object program and stored as a binary disk file. Object programs are also referred to as executable object files.</p>
+</blockquote>
+<p><img src="/2021/06/08/CSAPP/Ch1/compilation.png" alt="compilation system"></p>
+<h4 id="Phase-1-Preprocessing-phase"><a href="#Phase-1-Preprocessing-phase" class="headerlink" title="Phase 1 : Preprocessing phase"></a>Phase 1 : Preprocessing phase</h4><p>the c preprocessor take care of macros and header files etc.</p>
+<p>For example, the <code>#include</code>  command in line 1 of hello.c tells the preprocessor to read the contents of the system header file stdio.h and insert it directly into the program text. The result is another C program, typically with the <code>.i</code> suffix.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ man cpp</span><br><span class="line">NAME</span><br><span class="line">       cpp - The C Preprocessor</span><br><span class="line">       ...</span><br><span class="line">$ cpp hello.c -o hello.i</span><br><span class="line"></span><br><span class="line"><span class="comment"># -E : Stop after the preprocessing stage; do not run the compiler proper. </span></span><br><span class="line">$ gcc hello.c -E -o h.i</span><br><span class="line"></span><br><span class="line"><span class="comment"># -s, --report-identical-files</span></span><br><span class="line"><span class="comment">#             report when two files are the same</span></span><br><span class="line">$ diff -s hello.i h.i</span><br><span class="line">Files h.i and hello.i are identical             </span><br></pre></td></tr></table></figure>
+<h4 id="Phase-2-Compilation-phase"><a href="#Phase-2-Compilation-phase" class="headerlink" title="Phase 2 : Compilation phase"></a>Phase 2 : Compilation phase</h4><p>The compiler (cc1) translates the text file hello.i into the text file hello.s, which contains an assembly-language program</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Stop after the stage of compilation proper; do not assemble. </span></span><br><span class="line">$ gcc -S hello.i -o hello.s</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"># hello.s</span><br><span class="line">	.file	&quot;hello.c&quot;</span><br><span class="line">	.text</span><br><span class="line">	.section	.rodata</span><br><span class="line">.LC0:</span><br><span class="line">	.string	&quot;hello, world&quot;</span><br><span class="line">	.text</span><br><span class="line">	.globl	main</span><br><span class="line">	.type	main, @function</span><br><span class="line">main:</span><br><span class="line">.LFB0:</span><br><span class="line">	.cfi_startproc</span><br><span class="line">	pushq	%rbp</span><br><span class="line">	.cfi_def_cfa_offset 16</span><br><span class="line">	.cfi_offset 6, -16</span><br><span class="line">	movq	%rsp, %rbp</span><br><span class="line">	.cfi_def_cfa_register 6</span><br><span class="line">	leaq	.LC0(%rip), %rdi</span><br><span class="line">	call	puts@PLT</span><br><span class="line">	movl	$0, %eax</span><br><span class="line">	popq	%rbp</span><br><span class="line">	.cfi_def_cfa 7, 8</span><br><span class="line">	ret</span><br><span class="line">	.cfi_endproc</span><br><span class="line">.LFE0:</span><br><span class="line">	.size	main, .-main</span><br><span class="line">	.ident	&quot;GCC: (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0&quot;</span><br><span class="line">	.section	.note.GNU-stack,&quot;&quot;,@progbits</span><br></pre></td></tr></table></figure>
+<h4 id="Phase-3-Assembly-phase"><a href="#Phase-3-Assembly-phase" class="headerlink" title="Phase 3 : Assembly phase"></a>Phase 3 : Assembly phase</h4><p>Next, the assembler <code>as</code> translates hello.s into machinelanguage instructions, packages them in a form known as a <strong>relocatable object program</strong>, and stores the result in the object file hello.o. This file is a binary file containing 17 bytes to <strong>encode the instructions for function main</strong>. If we were to view hello.o with a text editor, it would appear to be gibberish.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># gcc -o &lt;target_name&gt; &lt;remainder of command&gt;</span></span><br><span class="line"><span class="comment"># gcc -c &lt;filename&gt;</span></span><br><span class="line"><span class="comment"># -c  Compile or assemble the source files, but do not link. </span></span><br><span class="line">$ gcc -o h.o -c hello.s</span><br><span class="line">$ as hello.s -o hello.o</span><br><span class="line">$ diff -s h.o hello.o</span><br><span class="line">Files hello.o and h.o are identical</span><br></pre></td></tr></table></figure>
+<h4 id="Phase-4-Linking-phase"><a href="#Phase-4-Linking-phase" class="headerlink" title="Phase 4 : Linking phase"></a>Phase 4 : Linking phase</h4><p>the <code>printf</code> function, which is part of the standard C library provided by every C compiler. The printf function resides in a separate precompiled object file called <code>printf.o</code>, which must somehow be merged with our <code>hello.o</code> program. The linker <code>ld</code> handles this merging. The result is the <code>hello</code> file, which is an <code>executable object file</code> that is ready to be loaded into memory and executed by the system.</p>
+<blockquote>
+<p>GCC is doing much more than most people think on an Ubuntu System. For example, it typically links with ld using something like this:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/lib/gcc/i486-linux-gnu/4.1.2/collect2 --eh-frame-hdr -m elf_i386 -dynamic-linker /lib/ld-linux.so.2 -oS /usr/lib/gcc/i486-linux-gnu/4.1.2/../../../../lib/crt1.o /usr/lib/gcc/i486-linux-gnu/4.1.2/../../../../lib/crti.o /usr/lib/gcc/i486-linux-gnu/4.1.2/crtbegin.o -L/usr/lib/gcc/i486-linux-gnu/4.1.2 -L/usr/lib/gcc/i486-linux-gnu/4.1.2 -L/usr/lib/gcc/i486-linux-gnu/4.1.2/../../../../lib -L/lib/../lib -L/usr/lib/../lib S.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /usr/lib/gcc/i486-linux-gnu/4.1.2/crtend.o /usr/lib/gcc/i486-linux-gnu/4.1.2/../../../../lib/crtn.o</span><br></pre></td></tr></table></figure>
+
+<p><span style="color:red">You can always compile using the -v (verbose) flag to see everything gcc is doing to your files.</span></p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -o hello hello.o</span><br><span class="line">$ file hello</span><br><span class="line">hello: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, <span class="keyword">for</span> GNU/Linux 3.2.0, BuildID[sha1]=2104eb23ebe0786674d413318f5c8f37597cb913, not stripped</span><br></pre></td></tr></table></figure>
+<h2 id="1-3-It-Pays-to-Understand-How-Compilation-Systems-Work"><a href="#1-3-It-Pays-to-Understand-How-Compilation-Systems-Work" class="headerlink" title="1.3 It Pays to Understand How Compilation Systems Work"></a>1.3 It Pays to Understand How Compilation Systems Work</h2><p>we can rely on the compilation system to produce correct and efficient machine code.</p>
+<p>why programmers need to understand how compilation systems work?</p>
+<ul>
+<li><p>Optimizing program performance.</p>
+<p>in order to make good coding decisions in our C programs, we do need a basic understanding of machine-level code and how the compiler translates different C statements into machine code.</p>
+<ul>
+<li> is a switch statement always more efficient than a sequence of if-else statements?</li>
+<li>How much overhead is incurred by a function call? </li>
+<li>Is a while loop more efficient than a for loop?</li>
+<li> Are pointer references more efficient than array indexes?</li>
+<li>Why does our loop run so much faster if we sum into a local variable instead of an argument that is passed by reference?</li>
+<li>….</li>
+</ul>
+</li>
+<li><p>Understanding link-time errors.</p>
+<p>In our experience, some of the most perplexing programming errors are related to the operation of the linker, especially when you are trying to build large software.</p>
+<ul>
+<li>what does it mean when the linker reports that it cannot resolve a reference?</li>
+<li>What is the difference between a static variable and a global variable?</li>
+<li>What happens if you define two global variables in different C files with the same name?</li>
+<li>What is the difference between a static library and a dynamic library? </li>
+<li>Why does it matter what order we list libraries on the command line?</li>
+<li>why do some linker-related errors not appear until run time?</li>
+<li>…..</li>
+</ul>
+</li>
+<li><p>Avoiding security holes</p>
+<p>For many years, <strong>buffer overflow vulnerabilities</strong> have accounted for many of the security holes in network and Internet servers. These vulnerabilities exist because <strong>too few programmers understand the need to carefully restrict the quantity and forms of data they accept from untrusted sources</strong>. A first step in learning secure programming is to <strong>understand the consequences of the way data and control information are stored on the program stack.</strong> </p>
+</li>
+</ul>
+<h2 id="1-4-Processors-Read-and-Interpret-Instructions-Stored-in-Memory"><a href="#1-4-Processors-Read-and-Interpret-Instructions-Stored-in-Memory" class="headerlink" title="1.4 Processors Read and Interpret Instructions Stored in Memory"></a>1.4 Processors Read and Interpret Instructions Stored in Memory</h2><h3 id="Shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h3><ul>
+<li><p>The shell is a command-line interpreter that prints a prompt, waits for you to type a command line, and then performs the command.</p>
+</li>
+<li><p>If the first word of the command line does not correspond to a built-in shell command, then the shell assumes that it is the name of an executable file that it should load and run.</p>
+</li>
+<li><p>When running loaded program, shell wait for the program to terminate. After the program terminates, the shell regain its control. The shell then prints a prompt and waits for the next input command line.</p>
+</li>
+</ul>
+<h3 id="Hardware-Organization-of-a-System"><a href="#Hardware-Organization-of-a-System" class="headerlink" title="Hardware Organization of a System"></a>Hardware Organization of a System</h3><p><img src="/2021/06/08/CSAPP/Ch1/organization.png" alt="organization"></p>
+<h4 id="Bus"><a href="#Bus" class="headerlink" title="Bus"></a>Bus</h4><ul>
+<li><p>Running throughout the system is <strong>a collection of electrical conduits</strong> called buses that carry bytes of information back and forth between the components.</p>
+</li>
+<li><p>Buses are typically designed to <strong>transfer fixed-size chunks of bytes known as <em>words</em></strong>. <strong>The number of bytes in a word</strong> (the <strong>word size</strong>) is a fundamental system parameter that varies across systems</p>
+</li>
+<li><p>Most machines today have word sizes of either 4 bytes (32 bits) or 8 bytes (64 bits).</p>
+</li>
+</ul>
+<h4 id="I-O-Devices"><a href="#I-O-Devices" class="headerlink" title="I/O Devices"></a>I/O Devices</h4><ul>
+<li><p>Input/output (I/O) devices are the system’s connection to the external world</p>
+</li>
+<li><p>Our example system has four I/O devices:</p>
+<ul>
+<li>Keyboard for user input</li>
+<li>Mouse for user input</li>
+<li>Screen for user output</li>
+<li>Disk for long-term storage</li>
+</ul>
+</li>
+<li><p>Each I/O device is connected to the I/O bus by either a <em>controller</em> or an <em>adapter</em></p>
+<p> The purpose of each is to <strong>transfer information back and forth between the I/O bus and an I/O device</strong></p>
+<p>The distinction between the two is mainly one of packaging.</p>
+<ul>
+<li> Controllers are chip sets in the device itself or <strong>on the system’s main printed circuit board</strong> (often called the motherboard)</li>
+<li>An adapter is <strong>a card that plugs into a slot on the motherboard.</strong></li>
+</ul>
+</li>
+<li><p>network is also an external device.</p>
+</li>
+</ul>
+<h4 id="Main-Memory"><a href="#Main-Memory" class="headerlink" title="Main Memory"></a>Main Memory</h4><ul>
+<li>The main memory is a temporary storage device that holds both a program and the data it manipulates while the processor is executing the program</li>
+<li>Physically, main memory consists of <strong>a collection of dynamic random access memory (DRAM) chips.</strong></li>
+<li>Logically, memory is organized as <strong>a linear array of bytes</strong>, each with its own unique address (array index) starting at zero.</li>
+</ul>
+<h4 id="Processor"><a href="#Processor" class="headerlink" title="Processor"></a>Processor</h4><ul>
+<li><p>The central processing unit (CPU), or simply processor, is the engine that interprets (or executes) instructions stored in main memory</p>
+</li>
+<li><p>At its core is a word-size storage device (or register) called the <strong>program counter (PC)</strong>.At any point in time, <strong>the PC points at (contains the address of) some machine-language instruction in main memory</strong>.</p>
+<p>a processor repeatedly executes the instruction pointed at by the program counter and updates the program counter to point to the next instruction.</p>
+<ul>
+<li>The processor reads the instruction from memory pointed at by the program counter (PC)</li>
+<li>interprets the bits in the instruction</li>
+<li>performs some simple operation dictated by the instruction</li>
+<li>updates the PC to point to the next instruction, which may or may not be contiguous in memory to the instruction that was just executed.</li>
+</ul>
+</li>
+<li><p>There are only a few of these simple operations, and they revolve around : the main memory, the register files, the ALU</p>
+<ul>
+<li>The register file is a small storage device that consists of a collection of word-size registers, each with its own unique name.</li>
+<li>The ALU computes new data and address values.</li>
+</ul>
+</li>
+<li><p>some instruction examples</p>
+<p><img src="/2021/06/08/CSAPP/Ch1/examples.png" alt="examples"></p>
+</li>
+<li><p>a processor <strong>appears to be a simple implementation of its instruction set architecture</strong>, but in fact <strong>modern processors use far more complex mechanisms to speed up program execution</strong>.</p>
+</li>
+<li><p>Thus, we can distinguish the processor’s instruction set architecture(describing the effect of each machine-code instruction), from its microarchitecture (describing how the processor is actually implemented.)</p>
+</li>
+</ul>
+<h3 id="Running-the-hello-Program"><a href="#Running-the-hello-Program" class="headerlink" title="Running the hello Program"></a>Running the hello Program</h3><p><em>We must omit a lot of details here that will be filled in later, but for now we will be content with the big picture</em></p>
+<ol>
+<li><p>Initially, the shell program is executing its instructions, waiting for us to type a command</p>
+</li>
+<li><p>As we type the characters ./hello at the keyboard, the shell program reads each one into a register and then stores it in memory</p>
+<p><img src="/2021/06/08/CSAPP/Ch1/hello.png" alt="hello"></p>
+</li>
+<li><p>When we hit the enter key on the keyboard, the shell knows that we have finished typing the command.</p>
+</li>
+<li><p>The shell then loads the executable hello file by executing a sequence of instructions that copies the code and data in the hello object file from disk to main memory.</p>
+<p>Using a technique known as <strong>direct memory access</strong> (DMA), the <strong>data travel directly from disk to main memory, without passing through the processor</strong>.</p>
+<p><img src="/2021/06/08/CSAPP/Ch1/dma.png" alt="DMA"></p>
+</li>
+<li><p>Once the code and data in the hello object file are loaded into memory, the processor begins <strong>executing the machine-language instructions in the hello program’s main routine</strong>. </p>
+</li>
+<li><p>These instructions copy the bytes in the hello, world\n string from memory to the register file, and from there to the display device, where they are displayed on the screen</p>
+<p><img src="/2021/06/08/CSAPP/Ch1/output.png" alt="output"></p>
+</li>
+</ol>
+<h2 id="1-5-Caches-Matter"><a href="#1-5-Caches-Matter" class="headerlink" title="1.5 Caches Matter"></a>1.5 Caches Matter</h2><ul>
+<li><p>An important lesson from this simple example is that a system spends a lot of time moving information from one place to another</p>
+<p>Thus, a major goal for system designers is to make these copy operations run as fast as possible.</p>
+<p>(can we just moving data directly ? :confused:)</p>
+</li>
+<li><p>Because of physical laws, larger storage devices are slower than smaller storage devices. And faster devices are more expensive to build than their slower counterparts</p>
+</li>
+<li><p>processor–memory gap :  the processor can read data from the register file much faster than from memory.</p>
+</li>
+<li><p>To deal with the processor–memory gap, system designers include <strong>smaller, faster storage devices called cache memories (or simply caches)</strong> that serve as <strong>temporary staging areas for information that the processor is likely to need in the near future.</strong> </p>
+<p><img src="/2021/06/08/CSAPP/Ch1/cache.png" alt="cache"></p>
+</li>
+<li><p>An <strong>L1 cache</strong> on the processor chip holds tens of thousands of bytes and can be accessed nearly as fast as the register file. </p>
+</li>
+<li><p>A larger <strong>L2 cache</strong> with hundreds of thousands to millions of bytes is connected to the processor by a special bus.</p>
+</li>
+<li><p>The L1 and L2 caches are implemented with a hardware technology known as static random access memory (SRAM). Some newer system may have the L3 cache.</p>
+</li>
+<li><p>The idea behind caching is that <strong>a system can get the effect of both a very large memory and a very fast one by exploiting locality</strong>, the tendency for programs to access data and code in localized regions. By setting up caches to hold data that are likely to be accessed often, we can <strong>perform most memory operations using the fast caches.</strong></p>
+</li>
+<li><p>One of the most important lessons in this book is that application programmers who are aware of cache memories can <strong>exploit them to improve the performance of their programs by an order of magnitude</strong>.(order of magnitude)</p>
+</li>
+</ul>
+<h2 id="1-6-Storage-Devices-Form-a-Hierarchy"><a href="#1-6-Storage-Devices-Form-a-Hierarchy" class="headerlink" title="1.6 Storage Devices Form a Hierarchy"></a>1.6 Storage Devices Form a Hierarchy</h2><p>This notion of <strong>inserting a smaller, faster storage device (e.g., cache memory) between the processor and a larger, slower device</strong> (e.g., main memory) turns out to be a general idea.</p>
+<p>The main idea of a memory hierarchy is that <strong>storage at one level serves as a cache for storage at the next lower level.</strong> </p>
+<p><img src="/2021/06/08/CSAPP/Ch1/hierarchy.png" alt="hierarchy"></p>
+<h2 id="1-7-The-Operating-System-Manages-the-Hardware"><a href="#1-7-The-Operating-System-Manages-the-Hardware" class="headerlink" title="1.7 The Operating System Manages the Hardware"></a>1.7 The Operating System Manages the Hardware</h2><ul>
+<li><p>When we run an application program, neither does it access keyboard, display, disk, or main memory directly,  they relied on the services provided by the operating system.</p>
+<p>All attempts by an application program to manipulate the hardware must go through the operating system</p>
+</li>
+<li><p>We can think of the operating system as a layer of software interposed between the application program and the hardware</p>
+<p><img src="/2021/06/08/CSAPP/Ch1/interpose.png" alt="interpose"></p>
+</li>
+<li><p>The operating system has two primary purposes:</p>
+<ul>
+<li>to protect the hardware from misuse by runaway applications </li>
+<li>to provide applications with simple and uniform mechanisms for manipulating complicated and often wildly different low-level hardware devices.</li>
+</ul>
+</li>
+<li><p>The operating system achieves both goals via the fundamental abstractions:</p>
+<ul>
+<li>Files : abstraction for I/O devices.</li>
+<li>Virtual memory : abstraction for the main memory and disk I/O devices.</li>
+<li>Processes : abstractions for the processor, main memory, and I/O devices.</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-7-1-Processes"><a href="#1-7-1-Processes" class="headerlink" title="1.7.1 Processes"></a>1.7.1 Processes</h3><p><em>the notion of a process is one of the most important and successful ideas in computer science.</em></p>
+<ul>
+<li><p>A process is the operating system’s abstraction for a running program</p>
+</li>
+<li><p> Multiple processes can run concurrently on the same system, and each process <strong>appears</strong> to have exclusive use of the hardware.</p>
+</li>
+<li><p>By concurrently, we mean that the instructions of one process are <strong>interleaved</strong> with the instructions of another process</p>
+<blockquote>
+<p>In computing, <strong>interleaving</strong> of data refers to the interspersing of <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Fields_(computing)">fields</a> or channels of different meaning sequentially in <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Memory_(computing)">memory</a>, in <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Processor_registers">processor registers</a>, or in <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/File_format">file formats</a>. For example, for <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Coordinate">coordinate</a> data, <code>x0 y0 z0 w0 x1 y1 z1 w1 x2 y2 z2 w2</code> is interleaved whilst <code>x0 x1 x2 x3 y0 y1 y2 y3 z0 z1 z2 z3 w0 w1 w2 w3</code> is not.</p>
+</blockquote>
+</li>
+<li><p>In both uniporcessor machine and mulitprocessor machine, a single CPU can appear to execute multiple processes concurrently by having the <strong>processor switch among them</strong>. The operating system performs this interleaving with a mechanism known as <strong>context switching</strong>.</p>
+</li>
+<li><p>The operating system keeps track of all the state information that the process needs in order to run. </p>
+<p>This state, which is known as the context, includes information such as the <em>current values of the PC, the register file, and the contents of main memory</em></p>
+</li>
+<li><p>When the operating system decides to transfer control from the current process to some new process, it performs a context switch by saving the context of the current process, restoring the context of the new process, and then passing control to the new process. The new process picks up exactly where it left off</p>
+<p><img src="/2021/06/08/CSAPP/Ch1/switch.png" alt="context switch"></p>
+</li>
+<li><p>Example</p>
+<ol>
+<li>Initially, the shell process is running alone, waiting for input on the command line. </li>
+<li>When we ask it to run the hello program, the shell carries out our request by invoking a special function known as a <code>system call</code> that passes control to the operating system.</li>
+<li>The operating system saves the shell’s context, creates a new hello process and its context, and then passes control to the new hello process.</li>
+<li>After hello terminates, the operating system restores the context of the shell process and passes control back to it, where it waits for the next command-line input.</li>
+</ol>
+</li>
+<li><p>The <strong>kernal</strong></p>
+<ul>
+<li><p>The kernel is <strong>the portion of the operating system code that is always resident in memory</strong></p>
+</li>
+<li><p>When an application program requires some action by the operating system, such as to read or write a file, it executes a special <code>system call </code>instruction, transferring control to the kernel.</p>
+<p>The kernel then performs the requested operation and returns back to the application program. </p>
+</li>
+<li><p>the kernel is not a separate process, it is <strong>a collection of code and data structures that the system uses to manage all the processes</strong>.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-7-2-Threads"><a href="#1-7-2-Threads" class="headerlink" title="1.7.2 Threads"></a>1.7.2 Threads</h3><ul>
+<li>In modern systems a process can actually consist of multiple <strong>execution units</strong> instead of having a single control flow, called threads, each running in the context of the process and <strong>sharing the same code and global data.</strong></li>
+<li>It is easier to share data between multiple threads than between multiple processes</li>
+<li> Threads are typically more efficient than processes.</li>
+<li>Multi-threading is also one way to make programs run faster when multiple processors are available.</li>
+</ul>
+<h3 id="1-7-3-Virtual-Memory"><a href="#1-7-3-Virtual-Memory" class="headerlink" title="1.7.3 Virtual Memory"></a>1.7.3 Virtual Memory</h3><ul>
+<li><p>Virtual memory is an abstraction that provides each process with the <strong>illusion</strong> that it has exclusive use of the main memory.</p>
+</li>
+<li><p>Each process has the same uniform view of memory, which is known as its <strong>virtual address space</strong>.(which means this view is identical for all process)</p>
+<p><img src="/2021/06/08/CSAPP/Ch1/virtualmemory.png" alt="virtual memory space"></p>
+</li>
+<li><p>The virtual address space seen by each process consists of a number of well defined areas, each with a specific purpose</p>
+<p><img src="/2021/06/08/CSAPP/Ch1/upper.png" alt="upper"></p>
+<p><img src="/2021/06/08/CSAPP/Ch1/lower.png" alt="lower"></p>
+</li>
+<li><p>The basic idea is to store the contents of a process’s virtual memory on disk and then use the main memory as a cache for the disk</p>
+</li>
+</ul>
+<h3 id="1-7-4-Files"><a href="#1-7-4-Files" class="headerlink" title="1.7.4 Files"></a>1.7.4 Files</h3><p><strong><em>A file is a sequence of bytes, nothing more and nothing less.</em></strong></p>
+<ul>
+<li><p> Every I/O device, including disks, keyboards, displays, and even networks, is modeled as a file.</p>
+</li>
+<li><p>This simple and elegant notion of a file is nonetheless very powerful because it <strong>provides applications with a uniform view of all the varied I/O devices</strong> that might be contained in the system. </p>
+<p>For example, application programmers who manipulate the contents of a disk file are blissfully unaware of the specific disk technology. Further, the same program will run on different systems that use different disk technologies</p>
+</li>
+</ul>
+<h2 id="1-8-Systems-Communicate-with-Other-Systems-Using-Networks"><a href="#1-8-Systems-Communicate-with-Other-Systems-Using-Networks" class="headerlink" title="1.8 Systems Communicate with Other Systems Using Networks"></a>1.8 Systems Communicate with Other Systems Using Networks</h2><p><em>From the point of view of an individual system, the network can be viewed as just another I/O device</em></p>
+<p><img src="/2021/06/08/CSAPP/Ch1/network.png" alt="network"></p>
+<h2 id="1-9-Important-Themes"><a href="#1-9-Important-Themes" class="headerlink" title="1.9 Important Themes"></a>1.9 Important Themes</h2><ul>
+<li>An important idea to take away from this discussion is that <strong>a system is more than just hardware. It is a collection of intertwined hardware and systems software</strong> that must cooperate in order to achieve the ultimate goal of running application programs.</li>
+<li>To close out this chapter, we highlight several important concepts that cut across all aspects of computer systems</li>
+</ul>
+<h3 id="1-9-1-Amdahl’s-Law"><a href="#1-9-1-Amdahl’s-Law" class="headerlink" title="1.9.1 Amdahl’s Law"></a>1.9.1 Amdahl’s Law</h3><p><strong><em>The main idea is that when we speed up one part of a system, the effect on the overall system performance depends on both <u>how significant this part was</u> and <u>how much it sped up</u>.</em></strong></p>
+<h4 id="Deduction"><a href="#Deduction" class="headerlink" title="Deduction"></a>Deduction</h4><p> Consider a system in which executing some application requires time $T_\text{old}$.</p>
+<p>Suppose some part of the system requires a fraction $\alpha$ of this time.</p>
+<p>we improve its performance by a factor of $k$<br>$$<br>\therefore \text{the component originally required time} = \alpha T_\text{old}<br>$$</p>
+<p>$$<br>\therefore \text{after improvement required time} = \frac{\alpha T_\text{old}}{k}<br>$$</p>
+<p>$$<br>\therefore \text{the application new requires time} : T_\text{new} = (1-\alpha)T_\text{old} +\frac{\alpha T_\text{old}}{k}\<br>=(1-\alpha+\frac{\alpha}{k}) T_\text{old}<br>$$</p>
+<p>$$<br>\therefore \frac{T_\text{new}}{T_\text{old}} =1-\alpha+\frac{\alpha}{k}<br>$$</p>
+<p>we define that speed up as:<br>$$<br>S = \frac{T_\text{old}}{T_\text{new}} =\frac{1}{1-\alpha+\frac{\alpha}{k}}<br>$$<br>The major insight of Amdahl’s law— <strong>to significantly speed up the entire system, we must improve the speed of a very large fraction of the overall system.</strong></p>
+<h4 id="Practice-Problem"><a href="#Practice-Problem" class="headerlink" title="Practice Problem"></a>Practice Problem</h4><blockquote>
+<p>Suppose you work as a truck driver, and you have been hired to carry a load of potatoes from Boise, Idaho, to Minneapolis, Minnesota, a total distance of 2,500 kilometers. You estimate you can average 100 km/hr driving within the speed limits, requiring a total of 25 hours for the trip</p>
+<p>A. You hear on the news that Montana has just abolished its speed limit, which constitutes 1,500 km of the trip. Your truck can travel at 150 km/hr. What will be your speedup for the trip?</p>
+<p>B. You can buy a new turbocharger for your truck at <a target="_blank" rel="noopener" href="http://www.fasttrucks.com/">www.fasttrucks.com</a>. They stock a variety of models, but the faster you want to go, the more it will cost. How fast must you travel through Montana to get an overall speedup for your trip of 1.67?</p>
+</blockquote>
+<h4 id="My-solution"><a href="#My-solution" class="headerlink" title="My solution:"></a>My solution:</h4><p>$$<br>T_\text{old} = 25, D = 2500<br>$$</p>
+<h5 id="Question-A-white-check-mark"><a href="#Question-A-white-check-mark" class="headerlink" title="Question A: :white_check_mark:"></a>Question A: :white_check_mark:</h5><p>$$<br>\alpha = \frac{1500}{D} = \frac{3}{5} = 0.6<br>$$</p>
+<p>$$<br>k = \frac{150}{100} = \frac{3}{2} = 1.5<br>$$</p>
+<p>$$<br>S = \frac{1}{1-\alpha + \frac{\alpha}{k}} = \frac{1}{0.4 + 0.4} = 1.25<br>$$</p>
+<h5 id="Question-B-white-check-mark"><a href="#Question-B-white-check-mark" class="headerlink" title="Question B: :white_check_mark:"></a>Question B: :white_check_mark:</h5><p>assume I need to trave at speed $x$ km/hr<br>$$<br>k = \frac{x}{100}<br>$$</p>
+<p>$$<br>S = 1.67 = \frac{1}{0.4 +\frac{60}{x}}<br>$$</p>
+<p>$$<br>x \approx 301.807 \approx 300<br>$$</p>
+<blockquote>
+<p>A car manufacturing company has promised their customers that the next release of a new engine will show a 4× performance improvement. You have been assigned the task of delivering on that promise. You have determined that only 90% of the engine can be improved. How much (i.e., what value of k) would you need to improve this part to meet the overall performance target of the engine?</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark"><a href="#My-solution-white-check-mark" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><p>assume I need to improve $k$ times of the original one<br>$$<br>S = 4 = \frac{1}{0.1 + \frac{0.9}{k}}<br>$$</p>
+<p>$$<br>k = 6<br>$$</p>
+<hr>
+<p>One interesting special case of Amdahl’s law is to consider the effect of setting k to $\infty$.<br>$$<br>S = \frac{1}{1-\alpha}<br>$$<br><strong>Therefore, even we can make some part of our system cost no time, we still don’t have a satisfying result if ⍺ is small</strong></p>
+<h3 id="1-9-2-Concurrency-and-Parallelism"><a href="#1-9-2-Concurrency-and-Parallelism" class="headerlink" title="1.9.2 Concurrency and Parallelism"></a>1.9.2 Concurrency and Parallelism</h3><p><em>Throughout the history of digital computers, two demands have been constant forces in driving improvements: we want them to <strong>do more</strong>, and we want them to <strong>run faster</strong>.</em></p>
+<ul>
+<li><p>We use the term <strong>concurrency</strong> to refer to the general concept of <strong>a system with multiple, simultaneous activities</strong></p>
+<blockquote>
+<p>In <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Computer_science">computer science</a>, <strong>concurrency</strong> is the ability of different parts or units of a <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Computer_program">program</a>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Algorithm">algorithm</a>, or <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Problem_solving">problem</a> to be <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Execution_(computing)">executed</a> out-of-order or at the same time simultaneously <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Partial_Order">partial order</a>, without affecting the final outcome.</p>
+</blockquote>
+<p><strong>Concurrency</strong>: Interruptability</p>
+</li>
+<li><p>the term <strong>parallelism</strong> to refer to <strong>the use of concurrency</strong> to make a system run faster.</p>
+<blockquote>
+<p><strong>Parallel computing</strong> is a type of <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Computing">computation</a> in which many calculations or <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Process_(computing)">processes</a> are carried out simultaneously. Large problems can often be divided into smaller ones, which can then be solved at the same time.</p>
+</blockquote>
+<blockquote>
+<p><strong>Parallelism</strong> is when tasks <em>literally</em> run at the same time, e.g., on a multicore processor.</p>
+</blockquote>
+<p><strong>Parallelism</strong>: Independentability</p>
+</li>
+<li><p>Parallelism can be exploited at multiple levels of abstraction in a computer system.</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Concurrency                 	Parallelism</span><br><span class="line">(Single-Core CPU)           (Multi-Core CPU)</span><br><span class="line">    CPU                      CPU1         CPU2</span><br><span class="line"> ___                         ___           ___</span><br><span class="line">|th1|                       |th1|         |th2|</span><br><span class="line">|   |                       |   |         |   |</span><br><span class="line">|___|___                    |   |         |   |</span><br><span class="line">    |th2|                   |   |         |   |</span><br><span class="line"> ___|___|                   |   |         |   |</span><br><span class="line">|th1|                       |   |         |   |</span><br><span class="line">|___|___                    |   |         |   | </span><br><span class="line">    |th2|                   |   |         |   |</span><br></pre></td></tr></table></figure>
+<h4 id="Thread-Level-Concurrency"><a href="#Thread-Level-Concurrency" class="headerlink" title="Thread-Level Concurrency"></a>Thread-Level Concurrency</h4><ul>
+<li>with <strong>process abstraction</strong>, we are able to devise systems where <strong>multiple programs execute at the same time</strong>, leading to concurrency</li>
+<li>with <strong>thread</strong>, we can have <strong>multiple control flows executing within a single process</strong></li>
+</ul>
+<h5 id="uniprocessor-system"><a href="#uniprocessor-system" class="headerlink" title="uniprocessor system"></a>uniprocessor system</h5><ul>
+<li><p>Traditionally, this concurrent execution was only simulated, by <strong>having a single computer rapidly switch among its executing processes</strong></p>
+<ul>
+<li><p>time-sharing strategy</p>
+</li>
+<li><p>allows a single user to engage in multiple tasks concurrently, such as having a Web browser in one window, a word processor in another, and streaming music playing at the same time.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="multiprocessor-system"><a href="#multiprocessor-system" class="headerlink" title="multiprocessor system"></a>multiprocessor system</h5><ul>
+<li><p>When we construct a system consisting of multiple processors all under the control of a single operating system kernel, we have a </p>
+<ul>
+<li>Multi-core processors have several CPUs (referred to as “cores”) integrated onto a single integrated-circuit chip.</li>
+</ul>
+<p><img src="/2021/06/08/CSAPP/Ch1/multicore.png" alt="multicore"></p>
+<p>Each core has it unique L1 and L2 cache, and shares the rest of caches such as L3 cache and memory with other cores.</p>
+</li>
+</ul>
+<h5 id="Hyperthreading"><a href="#Hyperthreading" class="headerlink" title="Hyperthreading"></a>Hyperthreading</h5><p>sometimes called <strong>simultaneous multi-threading</strong></p>
+<ul>
+<li><p>is a technique that allows a single CPU to <strong>execute multiple flows of control</strong>.</p>
+</li>
+<li><p><strong>having multiple copies of some of the CPU hardware</strong>, such as PC and registers, while having only single copies of other parts of the hardware, such as ALU</p>
+</li>
+<li><p>It enables the CPU to take better advantage of its processing resources.</p>
+<p>For example, if one thread must wait for some data to be loaded into a cache, the CPU can proceed with the execution of a different thread. </p>
+</li>
+<li><p>the Intel Core i7 processor can have each core executing two threads, and so a four-core system can actually execute eight threads in parallel.</p>
+</li>
+</ul>
+<h5 id="Advantages"><a href="#Advantages" class="headerlink" title="Advantages"></a>Advantages</h5><ul>
+<li>reduces the need to simulate concurrency when performing multiple tasks.</li>
+<li> run a single application program faster, but only if that program is expressed in terms of multiple threads that can effectively execute in parallel.</li>
+</ul>
+<h4 id="Instruction-Level-Parallelism"><a href="#Instruction-Level-Parallelism" class="headerlink" title="Instruction-Level Parallelism"></a>Instruction-Level Parallelism</h4><p><em>modern processors can <strong>execute multiple instructions at one time</strong>, a property known as instruction-level parallelism</em></p>
+<ul>
+<li>Processors that can sustain execution rates faster than 1 instruction per cycle are known as <strong>superscalar processors</strong></li>
+</ul>
+<h4 id="Single-Instruction-Multiple-Data-SIMD-Parallelism"><a href="#Single-Instruction-Multiple-Data-SIMD-Parallelism" class="headerlink" title="Single-Instruction, Multiple-Data (SIMD) Parallelism"></a>Single-Instruction, Multiple-Data (SIMD) Parallelism</h4><p><em>At the lowest level, many modern processors have special hardware that allows a <strong>single instruction to cause multiple operations to be performed in parallel</strong>, a mode known assingle-instruction, multiple-data (SIMD) parallelism.</em></p>
+<ul>
+<li>For example, recent generations of Intel and AMD processors have instructions that can add 8 pairs of single-precision floating-point numbers (C data type float) in parallel</li>
+<li>These SIMD instructions are provided mostly to speed up applications that process image, sound, and video data. </li>
+<li> Although some compilers attempt to automatically extract SIMD parallelism from C programs, a more reliable method is to <strong>write programs using special <code>vector data types</code> supported in compilers such as gcc</strong>.</li>
+</ul>
+<h3 id="1-9-3-The-Importance-of-Abstractions-in-Computer-Systems"><a href="#1-9-3-The-Importance-of-Abstractions-in-Computer-Systems" class="headerlink" title="1.9.3 The Importance of Abstractions in Computer Systems"></a>1.9.3 The Importance of Abstractions in Computer Systems</h3><p><span style="color:red">The use of abstractions is one of the most important concepts in computer science.</span></p>
+<ul>
+<li><p>For example, one aspect of good programming practice is to formulate a simple <strong>application program interface (API)</strong> for a set of functions that allow programmers to use the code without having to delve into its inner workings</p>
+</li>
+<li><p>the <strong>instruction set architecture</strong> provides an abstraction of the actual processor hardware.</p>
+<ul>
+<li>With this abstraction, a machine-code program behaves <strong>as if</strong> it were executed on a processor that performs just <strong>one instruction at a time</strong>. The underlying hardware is far more elaborate, executing multiple instructions in parallel, but always in a way that <strong>is consistent with the simple, sequential model.</strong></li>
+<li>By keeping the same execution model, different processor implementations can execute the same machine code while offering a range of cost and performance.</li>
+</ul>
+</li>
+<li><p>the <strong>virtual machine</strong>, providing an abstraction of the entire computer, including the operating system, the processor, and the programs.</p>
+<p><img src="/2021/06/08/CSAPP/Ch1/vm.png" alt="vm"></p>
+</li>
+</ul>
+<h2 id="1-10-Summary"><a href="#1-10-Summary" class="headerlink" title="1.10 Summary"></a>1.10 Summary</h2><h2 id="Bibliographic-Notes"><a href="#Bibliographic-Notes" class="headerlink" title="Bibliographic Notes"></a>Bibliographic Notes</h2><ul>
+<li><a href="www.gnu.org">The GNU</a></li>
+<li><a href="www.linux.org">Linux</a></li>
+<li><a href="www.unix.org">The Posix standards</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/06/08/CSAPP/Ch1/" data-id="ckpqu5gmk0000kbyqcvvncy7g" data-title="Ch1" class="article-share-link">Compartir</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/06/10/CSAPP/Introduction/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Nuevo</strong>
+      <div class="article-nav-title">
+        
+          Introduction
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/06/03/Electronics/Latches-FF/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Viejo</strong>
+      <div class="article-nav-title">Latches&amp;FF</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categorías</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/1-Whetting-your-appetite/">1.Whetting your appetite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/10-Brief-Tour-of-the-Standard-Library/">10.Brief Tour of the Standard Library</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/11-Brief-Tour-of-the-Standard-Library-%E2%80%94-Part-II/">11.Brief Tour of the Standard Library — Part II</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/12-Virtual-Environments-and-Packages/">12.Virtual Environments and Packages</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/13-What-Now-The-Rest-of-The-Tutorial/">13.What Now & The Rest of The Tutorial</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/2-Using-the-Python-Interpreter/">2.Using the Python Interpreter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/3-An-Informal-Introduction-to-Python/">3.An Informal Introduction to Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/4-More-Control-Flow-Tools/">4.More Control Flow Tools</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/5-Data-Structures/">5.Data Structures</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/6-Modules/">6.Modules</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/7-Input-and-Output/">7.Input and Output</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/8-Errors-and-Exceptions/">8.Errors and Exceptions</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/9-Classes/">9.Classes</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/introduction/">introduction</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nube de Tags</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archivos</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Posts recientes</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/06/10/CSAPP/Introduction/">Introduction</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/08/CSAPP/Ch1/">Ch1</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/03/Electronics/Latches-FF/">Latches&amp;FF</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/03/DataStructure/BTree/">BTree</a>
+          </li>
+        
+          <li>
+            <a href="/2021/06/03/DataStructure/BST/">BST</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Construido por <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
