@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>PyFAQ | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Import module from parent directory">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PyFAQ">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/07/12/miscellaneous/PyFAQ/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Import module from parent directory">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-07-11T16:36:57.000Z">
+<meta property="article:modified_time" content="2021-07-11T16:38:18.419Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Buscar"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-miscellaneous/PyFAQ" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/07/12/miscellaneous/PyFAQ/" class="article-date">
+  <time class="dt-published" datetime="2021-07-11T16:36:57.000Z" itemprop="datePublished">2021-07-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/misc/">misc</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      PyFAQ
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Import-module-from-parent-directory"><a href="#Import-module-from-parent-directory" class="headerlink" title="Import module from parent directory"></a>Import module from parent directory</h2><a id="more"></a>
+
+
+
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/714063/importing-modules-from-parent-folder">origin</a></p>
+<ul>
+<li><h3 id="Solution-with-sys-path-hacks"><a href="#Solution-with-sys-path-hacks" class="headerlink" title="Solution with sys.path hacks"></a>Solution with <code>sys.path</code> hacks</h3></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">sys.path.append(<span class="string">&quot;the/path/your/module/stored/in&quot;</span>)</span><br><span class="line"><span class="keyword">import</span> your_module</span><br></pre></td></tr></table></figure>
+<ul>
+<li><h3 id="Solution-without-sys-path-hacks"><a href="#Solution-without-sys-path-hacks" class="headerlink" title="Solution without sys.path hacks"></a><strong>Solution without <code>sys.path</code> hacks</strong></h3></li>
+</ul>
+<h3 id="1-Add-a-setup-py-to-the-root-folder"><a href="#1-Add-a-setup-py-to-the-root-folder" class="headerlink" title="1 ) Add a setup.py to the root folder"></a>1 ) Add a <code>setup.py</code> to the root folder</h3><p>The contents of the <code>setup.py</code> can be simply</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> setuptools <span class="keyword">import</span> setup, find_packages</span><br><span class="line"></span><br><span class="line">setup(name=<span class="string">&#x27;myproject&#x27;</span>, version=<span class="string">&#x27;1.0&#x27;</span>, packages=find_packages())</span><br></pre></td></tr></table></figure>
+<p>Basically “any” <code>setup.py</code> would work. This is just a minimal working example.</p>
+<h3 id="2"><a href="#2" class="headerlink" title="2 )"></a>2 )</h3><p>Removing the package is also possible with <code>pip uninstall package-name</code>, and package name can be read from <code>pip list</code></p>
+<hr>
+<h2 id="Pillow-PIL-xor-two-image-get-ValueError-image-has-wrong-mode"><a href="#Pillow-PIL-xor-two-image-get-ValueError-image-has-wrong-mode" class="headerlink" title="Pillow(PIL) xor two image get ValueError: image has wrong mode"></a>Pillow(PIL) xor two image get <code>ValueError: image has wrong mode</code></h2><p>from pillow documentation <a target="_blank" rel="noopener" href="https://pillow.readthedocs.io/en/stable/reference/ImageChops.html#PIL.ImageChops.logical_xor">see more</a></p>
+<blockquote>
+<p>Logical XOR between two images.</p>
+<p>Both of the images must have mode “1”.</p>
+</blockquote>
+<p>if you want to get two <code>RGB</code> picture xored, use <code>numpy</code> or other codes mannually.</p>
+<hr>
+<h2 id="Python-module-do-not-have-the-attributes-expected"><a href="#Python-module-do-not-have-the-attributes-expected" class="headerlink" title="Python module do not have the attributes expected"></a>Python module do not have the attributes expected</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AttributeError: partially initialized module <span class="string">&#x27;csv&#x27;</span> has no attribute <span class="string">&#x27;DictWriter&#x27;</span> (most likely due to a circular <span class="keyword">import</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Don’t name your file <code>csv.py</code>.<br>When you do, Python will look in your file for the <code>csv</code> code instead of the standard library <code>csv</code> module.</p>
+</blockquote>
+<hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/07/12/miscellaneous/PyFAQ/" data-id="ckqzg5p2a00027kyq8gqn4b5k" data-title="PyFAQ" class="article-share-link">Compartir</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/07/12/miscellaneous/DotLanguage/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Nuevo</strong>
+      <div class="article-nav-title">
+        
+          DotLanguage
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/06/10/CSAPP/Ch2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Viejo</strong>
+      <div class="article-nav-title">Ch2</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categorías</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/1-Whetting-your-appetite/">1.Whetting your appetite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/10-Brief-Tour-of-the-Standard-Library/">10.Brief Tour of the Standard Library</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/11-Brief-Tour-of-the-Standard-Library-%E2%80%94-Part-II/">11.Brief Tour of the Standard Library — Part II</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/12-Virtual-Environments-and-Packages/">12.Virtual Environments and Packages</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/13-What-Now-The-Rest-of-The-Tutorial/">13.What Now & The Rest of The Tutorial</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/2-Using-the-Python-Interpreter/">2.Using the Python Interpreter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/3-An-Informal-Introduction-to-Python/">3.An Informal Introduction to Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/4-More-Control-Flow-Tools/">4.More Control Flow Tools</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/5-Data-Structures/">5.Data Structures</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/6-Modules/">6.Modules</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/7-Input-and-Output/">7.Input and Output</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/8-Errors-and-Exceptions/">8.Errors and Exceptions</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/9-Classes/">9.Classes</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/introduction/">introduction</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nube de Tags</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archivos</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Posts recientes</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/12/Math/Discrete/Graph/">Graph</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/12/Math/Discrete/PropositionalLogic/">PropositionalLogic</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/12/Math/Discrete/Relation/">Relation</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/12/miscellaneous/DotLanguage/">DotLanguage</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/12/miscellaneous/PyFAQ/">PyFAQ</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Construido por <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
