@@ -13,10 +13,16 @@
 <meta property="og:site_name" content="rubbishbin">
 <meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Representing and Manipulating Information">
 <meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/10/CSAPP/Ch2/hexadecimal.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/10/CSAPP/Ch2/wrong.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/10/CSAPP/Ch2/csize.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/10/CSAPP/Ch2/endian.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/10/CSAPP/Ch2/machines.png">
 <meta property="article:published_time" content="2021-06-10T15:41:08.000Z">
-<meta property="article:modified_time" content="2021-06-10T16:34:15.787Z">
+<meta property="article:modified_time" content="2021-07-15T10:08:08.456Z">
 <meta property="article:author" content="rubbish">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/06/10/CSAPP/Ch2/hexadecimal.png">
   
     <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
   
@@ -107,6 +113,12 @@
 
 
 <p><em>In isolation, a single bit is not very useful. When we group bits together and apply some interpretation that gives meaning to the different possible bit patterns, however, we can represent the elements of any <strong>finite set</strong>.</em></p>
+<p>We will mainly focus on three most important representations of numbers:</p>
+<ul>
+<li>Unsigned –&gt; traditional binary notation</li>
+<li>Signed –&gt; 2’s complement</li>
+<li>Floating-point –&gt; base-2 version of scientific notation(IEEE)</li>
+</ul>
 <h2 id="Intro"><a href="#Intro" class="headerlink" title="Intro"></a>Intro</h2><p><em>just get some feeling of our dear computer</em></p>
 <ul>
 <li><p>numbers in computer is finite, so sometimes result will overflow</p>
@@ -127,7 +139,350 @@
 <li><p>Everything said in this chapter about C also holds for C++. The Java language definition, on the other hand, created a new set of standards for numeric representations and operations.</p>
 </li>
 </ul>
-<h2 id="2-1-Information-Storage"><a href="#2-1-Information-Storage" class="headerlink" title="2.1 Information Storage"></a>2.1 Information Storage</h2>
+<h2 id="2-1-Information-Storage"><a href="#2-1-Information-Storage" class="headerlink" title="2.1 Information Storage"></a>2.1 Information Storage</h2><p><em>Rather than modifying individual bit, most modern computers use <strong>blocks of 8 bits, or bytes, as the smallest addressable unit of memory</strong></em></p>
+<h3 id="2-1-1-Hexadecimal-Notation"><a href="#2-1-1-Hexadecimal-Notation" class="headerlink" title="2.1.1 Hexadecimal Notation"></a>2.1.1 Hexadecimal Notation</h3><p><img src="/2021/06/10/CSAPP/Ch2/hexadecimal.png" alt="hex"></p>
+<p><strong><em>One simple trick for doing the conversion in your head is to memorize the decimal equivalents of hex digits A, C, and F. The hex values B, D, and E can be translated to decimal by computing their values relative to the first three.</em></strong></p>
+<p>If the total number of bits is not a multiple of 4, you should make the <strong>leftmost</strong> group be the one with fewer than 4 bits, effectively <strong>padding the number with leading zeros</strong>. </p>
+<hr>
+<h4 id="Practice-Problem-2-1"><a href="#Practice-Problem-2-1" class="headerlink" title="Practice Problem 2.1"></a>Practice Problem 2.1</h4><blockquote>
+<p>Perform the following number conversions: </p>
+<p>A. 0x25B9D2 to binary </p>
+<p>B. binary 1010111001001001 to hexadecimal </p>
+<p>C. 0xA8B3D to binary </p>
+<p>D. binary 1100100010110110010110 to hexadecimal</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark"><a href="#My-solution-white-check-mark" class="headerlink" title="My solution::white_check_mark:"></a>My solution::white_check_mark:</h4><p>$$<br>A:(25B9D2)_{16} = (0010 0101 1011 1001 1101 0010)_2<br>$$</p>
+<p>$$<br>B : (1010 1110 0100 1001)<em>2 = (AE49)</em>{16}<br>$$</p>
+<p>$$<br>C: (A8B3D)_{16} = (1010 1000 1011 0011 1101)_2<br>$$</p>
+<p>$$<br>D : (11 0010 0010 1101 1001 0110)_2 = (0011 0010 0010 1101 1001 0110)<em>2 = (322D96)</em>{16}<br>$$</p>
+<p><span style="color:red">(solution on the book is wrong)</span></p>
+<p><img src="/2021/06/10/CSAPP/Ch2/wrong.png" alt="wrong"></p>
+<hr>
+<p>When a value <strong>x is a power of 2</strong>, that is, $x = 2^n$ for some nonnegative integer n, we can readily write x in hexadecimal form by remembering that the binary representation of x is simply <strong>1 followed by n zeros</strong>.</p>
+<p>The hexadecimal digit 0 represents 4 binary zeros.</p>
+<p>1 hexadecimal 0 is equals to $2^4$</p>
+<p>So, for n written in the form i + 4j , where 0 ≤ i ≤ 3, we can write x with a leading hex digit of 1 (i = 0), 2 (i = 1), 4 (i = 2), or 8 (i = 3), followed by j hexadecimal 0s.<br>$$<br>(2^i)\underbrace{000…000}_\text{j zeros}<br>$$</p>
+<hr>
+<h4 id="Practice-Problem-2-2"><a href="#Practice-Problem-2-2" class="headerlink" title="Practice Problem 2.2"></a>Practice Problem 2.2</h4><blockquote>
+<p>Fill in the blank entries in the following table, giving the decimal and hexadecimal representations of different powers of 2:</p>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>$2^n$(decimal)</th>
+<th>$2^n$(hexadecimal)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>5</td>
+<td>32</td>
+<td>0x20</td>
+</tr>
+<tr>
+<td>23</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>32768</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>0x2000</td>
+</tr>
+<tr>
+<td>12</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>64</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>0x100</td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-1"><a href="#My-solution-white-check-mark-1" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><p>$$<br>2^{23} = 2^3\times2^{10} \times 2^{10}= 8 \times 1048576 = 8388608<br>$$</p>
+<p>$$<br>23 = 3 + 4 \times 5 , 2^{23} = (800000)_{16}<br>$$</p>
+<p>$$<br>\log_2 (32768) = 15<br>$$</p>
+<p>$$<br>15 = 3 + 3\times4 , 2^{15} = (8000)_{16}<br>$$</p>
+<p>$$<br>(2000)<em>{16} = 2^{1+3\times4} = 2^{13} = 2^3 \times 2^{10} = (8192)</em>{10}<br>$$</p>
+<p>$$<br>2^{12} = 4 \times 1024 = 4096<br>$$</p>
+<p>$$<br>12 = 0 + 3\times 4, 2^{12} = (1000)_{16}<br>$$</p>
+<p>$$<br>\log_2 {64} = 6<br>$$</p>
+<p>$$<br>6 = 2+1\times 4 , 2^{6} = (40)_{16}<br>$$</p>
+<p>$$<br>(100)_{16} = 2^{0+2\times4} = 256<br>$$</p>
+<table>
+<thead>
+<tr>
+<th>n</th>
+<th>$2^n$(decimal)</th>
+<th>$2^n$(hexadecimal)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>5</td>
+<td>32</td>
+<td>0x20</td>
+</tr>
+<tr>
+<td>23</td>
+<td>8388608</td>
+<td>0x800000</td>
+</tr>
+<tr>
+<td>15</td>
+<td>32768</td>
+<td>0x8000</td>
+</tr>
+<tr>
+<td>13</td>
+<td>8192</td>
+<td>0x2000</td>
+</tr>
+<tr>
+<td>12</td>
+<td>4096</td>
+<td>0x1000</td>
+</tr>
+<tr>
+<td>6</td>
+<td>64</td>
+<td>0x40</td>
+</tr>
+<tr>
+<td>8</td>
+<td>256</td>
+<td>0x100</td>
+</tr>
+</tbody></table>
+<hr>
+<p>Converting between decimal and hexadecimal representations requires using multiplication or division to handle the general case.</p>
+<p>(just the same method used when we convert between binary and decimal)</p>
+<hr>
+<h4 id="Practice-Problem-2-3"><a href="#Practice-Problem-2-3" class="headerlink" title="Practice Problem 2.3"></a>Practice Problem 2.3</h4><blockquote>
+<p>A single byte can be represented by 2 hexadecimal digits. </p>
+<p>Fill in the missing entries in the following table, giving the decimal, binary, and hexadecimal values of different byte patterns:</p>
+<table>
+<thead>
+<tr>
+<th>Decimal</th>
+<th>Binary</th>
+<th>Hexadecimal</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0000 0000</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>158</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>76</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>145</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>1010 1110</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>0011 1100</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>1111 0001</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>0x75</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>0xBD</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>0xF5</td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-2"><a href="#My-solution-white-check-mark-2" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><p>$$<br>158 = 9 \times 16 + 14(E)<br>$$</p>
+<p>$$<br>9 = 0 \times 16 + 9 (9)<br>$$</p>
+<p>$$<br>158 = (9E)_{16}<br>$$</p>
+<table>
+<thead>
+<tr>
+<th>Decimal</th>
+<th>Binary</th>
+<th>Hexadecimal</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0000 0000</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>158</td>
+<td>1001 1110</td>
+<td>0x9E</td>
+</tr>
+<tr>
+<td>76</td>
+<td>0100 1100</td>
+<td>0x4C</td>
+</tr>
+<tr>
+<td>145</td>
+<td>1001 0001</td>
+<td>0x91</td>
+</tr>
+<tr>
+<td>174</td>
+<td>1010 1110</td>
+<td>0xAE</td>
+</tr>
+<tr>
+<td>60</td>
+<td>0011 1100</td>
+<td>0x3C</td>
+</tr>
+<tr>
+<td>241</td>
+<td>1111 0001</td>
+<td>0xF1</td>
+</tr>
+<tr>
+<td>117</td>
+<td>0111 0101</td>
+<td>0x75</td>
+</tr>
+<tr>
+<td>189</td>
+<td>1011 1101</td>
+<td>0xBD</td>
+</tr>
+<tr>
+<td>245</td>
+<td>1111 0101</td>
+<td>0xF5</td>
+</tr>
+</tbody></table>
+<h4 id="Practice-Problem-2-4"><a href="#Practice-Problem-2-4" class="headerlink" title="Practice Problem 2.4"></a>Practice Problem 2.4</h4><blockquote>
+<p>Without converting the numbers to decimal or binary, try to solve the following arithmetic problems, giving the answers in hexadecimal. Hint: Just modify the methods you use for performing decimal addition and subtraction to use base 16.</p>
+<p>A. 0x605c + 0x5 = </p>
+<p>B. 0x605c − 0x20 = </p>
+<p>C. 0x605c + 32 = </p>
+<p>D. 0x60fa − 0x605c =</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-3"><a href="#My-solution-white-check-mark-3" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><p>$$<br>A : (605C)<em>{16} + (5)</em>{16} = (6061)_{16}<br>$$</p>
+<p>B. 0x605c − 0x20 = 0x603c</p>
+<p>C. 0x605c + 32 = 0x605c + 0x20 = 0x607c<br>$$<br>+60FA\<br>-605C\<br>\rule{4cm}{0.4pt}\<br>    +009E<br>$$<br>D. 0x60fa − 0x605c = 0x9E</p>
+<p><em>just normal arithmetic with base 16</em></p>
+<hr>
+<h3 id="2-1-2-Data-Sizes"><a href="#2-1-2-Data-Sizes" class="headerlink" title="2.1.2 Data Sizes"></a>2.1.2 Data Sizes</h3><ul>
+<li><p>Every computer has a <strong>word size</strong>, and a virtual address is encoded by such a word, so <strong>word size</strong> determine <strong>the maximum size of the virtual address space.</strong></p>
+</li>
+<li><p> For a machine with a w-bit word size, the virtual addresses can range from 0 to $2^w − 1$, giving the program access to at most $2^w$ bytes.</p>
+</li>
+<li><p>We will therefore refer to programs as being either “32-bit programs” or “64-bit programs,” since the distinction lies in how a program is compiled, rather than the type of machine on which it runs.</p>
+<ul>
+<li>32-bits program : <code>linux&gt;gcc -m32 program.c</code></li>
+<li>64-bits program : <code>linux&gt;gcc -m64 program.c</code></li>
+<li>Nowadays <code>32-bits</code> seems to be deprecated and gcc default compile it as <code>64-bits</code>, the <code>-m32</code> parameter will result in missing file error on 64 bits machine.</li>
+</ul>
+</li>
+<li><p>To avoid the vagaries of relying on “typical” sizes and different compiler settings, ISO C99 introduced a class of data types where the data sizes are fixed regardless of compiler and machine settings : <code>int32_t</code> and <code>int64_t</code>,having exactly 4 and 8 bytes, respectively.</p>
+<p>Using fixed-size integer types is the best way for programmers to have close control over data representations.</p>
+<p><img src="/2021/06/10/CSAPP/Ch2/csize.png" alt="csize"></p>
+</li>
+<li><p>One aspect of portability is to make the program <strong>insensitive to the exact sizes of the different data types.</strong></p>
+<p>For example, many programmers historically assumed that an object declared as type int could be used to store a pointer. This works fine for most 32-bit programs, but it leads to problems for 64-bit programs.</p>
+<p>(the size of virtual address space differs!)</p>
+<p>(check size by using <code>sizeof()</code> before use it may be a good trick.)</p>
+</li>
+</ul>
+<h3 id="2-1-3-Addressing-and-Byte-Ordering"><a href="#2-1-3-Addressing-and-Byte-Ordering" class="headerlink" title="2.1.3 Addressing and Byte Ordering"></a>2.1.3 Addressing and Byte Ordering</h3><h4 id="Byte-ordering"><a href="#Byte-ordering" class="headerlink" title="Byte ordering"></a>Byte ordering</h4><ul>
+<li><p>where the least significant byte comes first—is referred to as little endian.</p>
+<p>where the most significant byte comes first—is referred to as big endian.</p>
+</li>
+<li><p>Example</p>
+<p><img src="/2021/06/10/CSAPP/Ch2/endian.png" alt="endian"></p>
+</li>
+<li><p>Many recent microprocessor chips are <strong>bi-endian</strong>, meaning that they can <strong>be configured to operate as either little- or big-endian machines</strong>. In practice, however, <strong>byte ordering becomes fixed once a particular operating system is chosen.</strong></p>
+<p> For example, ARM microprocessors, used in many cell phones, have hardware that can operate in either little- or big-endian mode, but the two most common operating systems for these chips—Android (from Google) and IOS (from Apple)—operate only in little-endian mode.</p>
+</li>
+<li><p> Just like the egg issue, there is <strong>no technological reason</strong> to choose one byte ordering convention over the other</p>
+</li>
+</ul>
+<h5 id="Three-case-when-byte-ordering-matters"><a href="#Three-case-when-byte-ordering-matters" class="headerlink" title="Three case when byte ordering matters"></a>Three case when byte ordering matters</h5><ul>
+<li><p>code written for <strong>networking</strong> applications must follow established conventions for byte ordering to make sure the sending machine converts its internal representation to the network standard, while the receiving machine converts the network standard to its internal representation.</p>
+</li>
+<li><p>when <strong>inspecting machine-level programs</strong>, especially codes provided by a disassemble, the byte sequences representing integer data are related to endian.</p>
+<p>For example</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">4004d3: 01 05 43 0b 20 00 add %eax,0x200b43(%rip)</span><br></pre></td></tr></table></figure>
+<p>little endian reads it as <code>add eax,0x00200b43</code>, while big endian will reads it as <code>add eax,0x430b2000</code></p>
+</li>
+<li><p>when programs are written that <strong>circumvent the normal type system</strong>.</p>
+<p> In the C language, this can be done using a cast or a union to allow an object to be referenced according to a different data type from which it was created.</p>
+<p>Such coding tricks are strongly discouraged for most application programming, but they can be quite useful and even necessary for system-level programming.</p>
+<p><img src="/2021/06/10/CSAPP/Ch2/machines.png" alt="machines"> </p>
+</li>
+</ul>
+<hr>
+<h4 id="Practice-Problem-2-5"><a href="#Practice-Problem-2-5" class="headerlink" title="Practice Problem 2.5"></a>Practice Problem 2.5</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *byte_pointer;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show_bytes</span><span class="params">(byte_pointer start, <span class="keyword">size_t</span> len)</span> </span>&#123;</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; len; i++)</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot; %.2x&quot;</span>, start[i]);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show_int</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">show_bytes((byte_pointer) &amp;x, <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show_float</span><span class="params">(<span class="keyword">float</span> x)</span> </span>&#123;</span><br><span class="line">show_bytes((byte_pointer) &amp;x, <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">show_pointer</span><span class="params">(<span class="keyword">void</span> *x)</span> </span>&#123;</span><br><span class="line">show_bytes((byte_pointer) &amp;x, <span class="keyword">sizeof</span>(<span class="keyword">void</span> *));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Consider the following three calls to show_bytes: </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">0x12345678</span>; </span><br><span class="line">byte_pointer ap = (byte_pointer) &amp;a;</span><br><span class="line">show_bytes(ap, <span class="number">1</span>); <span class="comment">/* A. */</span> </span><br><span class="line">show_bytes(ap, <span class="number">2</span>); <span class="comment">/* B. */</span> </span><br><span class="line">show_bytes(ap, <span class="number">3</span>); <span class="comment">/* C. */</span></span><br></pre></td></tr></table></figure>
+
+<p> Indicate the values that will be printed by each call on a little-endian machine and on a big-endian machine: </p>
+<p>A. Little endian: ? Big endian: ?</p>
+<p>B. Little endian: ? Big endian: ?</p>
+<p>C. Little endian: ?  Big endian: ?</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-4"><a href="#My-solution-white-check-mark-4" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><p>A. Little endian: 78 Big endian: 12</p>
+<p>B. Little endian: 78 56 Big endian: 12 34</p>
+<p>C. Little endian: 78 56 34  Big endian: 12 34 56</p>
+<h4 id="Practice-Problem-2-6"><a href="#Practice-Problem-2-6" class="headerlink" title="Practice Problem 2.6"></a>Practice Problem 2.6</h4><blockquote>
+<p>Using <code>show_int</code> and <code>show_float</code>, we determine that the integer 2607352 has hexadecimal representation 0x0027C8F8, while the floating-point number 3510593.0 has hexadecimal representation 0x4A1F23E0. </p>
+<p>A. Write the binary representations of these two hexadecimal values. </p>
+<p>B. Shift these two strings relative to one another to maximize the number of matching bits. How many bits match? </p>
+<p>C. What parts of the strings do not match?</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-5"><a href="#My-solution-white-check-mark-5" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><p>A:<br>$$<br>(0027C8F8)_{16} = (0000 0000 0010 0111 1100 1000 1111 1000)_2<br>$$</p>
+<p>$$<br>(4A1F23E0)_{16} = (0100 1010 0001 1111 0010 0011 1110 0000)_2<br>$$</p>
+<p>B:</p>
+<p>right shift the second one 2 bits</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">00000000001001111100100011111000</span><br><span class="line">  01001010000111110010001111100000</span><br></pre></td></tr></table></figure>
+<p>21 bits match</p>
+<p>C:</p>
+<p>(according to IEEE the signed bit , exponent bits and the hidden 1 in mantissa do not match)</p>
+<h3 id="2-1-4-Representing-Strings"><a href="#2-1-4-Representing-Strings" class="headerlink" title="2.1.4 Representing Strings"></a>2.1.4 Representing Strings</h3>
       
     </div>
     <footer class="article-footer">
