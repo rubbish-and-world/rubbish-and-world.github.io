@@ -18,8 +18,14 @@
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/10/CSAPP/Ch2/csize.png">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/10/CSAPP/Ch2/endian.png">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/10/CSAPP/Ch2/machines.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/10/CSAPP/Ch2/light.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/10/CSAPP/Ch2/shift.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/10/CSAPP/Ch2/terminology.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/10/CSAPP/Ch2/range.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/10/CSAPP/Ch2/importantnums.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/06/10/CSAPP/Ch2/versus.png">
 <meta property="article:published_time" content="2021-06-10T15:41:08.000Z">
-<meta property="article:modified_time" content="2021-07-15T10:08:08.456Z">
+<meta property="article:modified_time" content="2021-07-18T09:11:27.951Z">
 <meta property="article:author" content="rubbish">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/06/10/CSAPP/Ch2/hexadecimal.png">
@@ -67,12 +73,12 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Buscar"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
       </div>
     </div>
   </div>
@@ -482,11 +488,1134 @@
 <p>21 bits match</p>
 <p>C:</p>
 <p>(according to IEEE the signed bit , exponent bits and the hidden 1 in mantissa do not match)</p>
-<h3 id="2-1-4-Representing-Strings"><a href="#2-1-4-Representing-Strings" class="headerlink" title="2.1.4 Representing Strings"></a>2.1.4 Representing Strings</h3>
+<h3 id="2-1-4-Representing-Strings"><a href="#2-1-4-Representing-Strings" class="headerlink" title="2.1.4 Representing Strings"></a>2.1.4 Representing Strings</h3><p><em>A string in C is encoded by an array of characters terminated by the null (having value 0) character.</em></p>
+<ul>
+<li>ASCII code for decimal digit $x$ happens to be 0x3$x$, and that the terminating byte has the hex representation 0x00</li>
+<li> Text data are more platform independent than binary data. It has nothing to do with byte ordering. It is always a sequence.</li>
+</ul>
+<hr>
+<h4 id="Practice-Problem-2-7"><a href="#Practice-Problem-2-7" class="headerlink" title="Practice Problem 2.7"></a>Practice Problem 2.7</h4><blockquote>
+<p>What would be printed as a result of the following call to <code>show_bytes</code>? </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *m = <span class="string">&quot;mnopqr&quot;</span>; show_bytes((byte_pointer) m, <span class="built_in">strlen</span>(m));</span><br></pre></td></tr></table></figure>
+
+<p> Note that letters ‘a’ through ‘z’ have ASCII codes 0x61 through 0x7A</p>
+</blockquote>
+<h4 id="My-solution"><a href="#My-solution" class="headerlink" title="My solution:"></a>My solution:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">6d 6e 6f 70 71 72</span><br></pre></td></tr></table></figure>
+<p><strong>Recall also that the library routine strlen does NOT count the terminating null character</strong></p>
+<hr>
+<h3 id="2-1-5-Representing-Code"><a href="#2-1-5-Representing-Code" class="headerlink" title="2.1.5 Representing Code"></a>2.1.5 Representing Code</h3><p>Consider the following C function:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sum</span><span class="params">(<span class="keyword">int</span> x , <span class="keyword">int</span> y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x + y ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>When compiled on our sample machines, we generate machine code having the following byte representations:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Linux32 	55 89 e5 8b 45 0c 03 45 08 c9 c3</span><br><span class="line">Windows 	55 89 e5 8b 45 0c 03 45 08 5d c3</span><br><span class="line">Sun 		81 c3 e0 08 90 02 00 09</span><br><span class="line">Linux64 	55 48 89 e5 89 7d fc 89 75 f8 03 45 fc c9 c3</span><br></pre></td></tr></table></figure>
+<p><strong>Different machine types use different and incompatible instructions and encodings. Even identical processors running different operating systems have differences in their coding conventions and hence are not binary compatible.</strong></p>
+<p><em>A fundamental concept of computer systems is that a program, from the perspective of the machine, is simply <strong>a sequence of bytes</strong>.</em></p>
+<h3 id="2-1-6-Introduction-to-Boolean-Algebra"><a href="#2-1-6-Introduction-to-Boolean-Algebra" class="headerlink" title="2.1.6 Introduction to Boolean Algebra"></a>2.1.6 Introduction to Boolean Algebra</h3><hr>
+<h4 id="Practice-Problem-2-8"><a href="#Practice-Problem-2-8" class="headerlink" title="Practice Problem 2.8"></a>Practice Problem 2.8</h4><blockquote>
+<p>Fill in the following table showing the results of evaluating Boolean operations on bit vectors.</p>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a</td>
+<td>[01001110]</td>
+</tr>
+<tr>
+<td>b</td>
+<td>[11100001]</td>
+</tr>
+<tr>
+<td>~a</td>
+<td></td>
+</tr>
+<tr>
+<td>~b</td>
+<td></td>
+</tr>
+<tr>
+<td>a&amp;b</td>
+<td></td>
+</tr>
+<tr>
+<td>a|b</td>
+<td></td>
+</tr>
+<tr>
+<td>a^b</td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-6"><a href="#My-solution-white-check-mark-6" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a</td>
+<td>[01001110]</td>
+</tr>
+<tr>
+<td>b</td>
+<td>[11100001]</td>
+</tr>
+<tr>
+<td>~a</td>
+<td>[10110001]</td>
+</tr>
+<tr>
+<td>~b</td>
+<td>[00011110]</td>
+</tr>
+<tr>
+<td>a&amp;b</td>
+<td>[01000000]</td>
+</tr>
+<tr>
+<td>a|b</td>
+<td>[11101111]</td>
+</tr>
+<tr>
+<td>a^b</td>
+<td>[10101111]</td>
+</tr>
+</tbody></table>
+<h4 id="Practice-Problem-2-9"><a href="#Practice-Problem-2-9" class="headerlink" title="Practice Problem 2.9"></a>Practice Problem 2.9</h4><blockquote>
+<p>Computers generate color pictures on a video screen or liquid crystal display by mixing three different colors of light: red, green, and blue. Imagine a simple scheme, with three different lights, each of which can be turned on or off, projecting onto a glass screen:</p>
+<p><img src="/2021/06/10/CSAPP/Ch2/light.png" alt="light"></p>
+<p>We can then create eight different colors based on the absence (0) or presence (1) of light sources R, G, and B:</p>
+<table>
+<thead>
+<tr>
+<th>Red</th>
+<th>Green</th>
+<th>Blue</th>
+<th>Color</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>Black</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>Blue</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>Green</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>Cyan</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>Red</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>Magenta</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>Yellow</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>White</td>
+</tr>
+</tbody></table>
+<p>Each of these colors can be represented as a bit vector of length 3, and we can apply Boolean operations to them.</p>
+<p>A. The complement of a color is formed by turning off the lights that are on and turning on the lights that are off. What would be the complement of each of the eight colors listed above? </p>
+<p>B. Describe the effect of applying Boolean operations on the following colors:</p>
+<p>Blue | Green = </p>
+<p>Yellow &amp; Cyan =</p>
+<p>Red ^ Magenta =</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-7"><a href="#My-solution-white-check-mark-7" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><p>A:</p>
+<table>
+<thead>
+<tr>
+<th>Red</th>
+<th>Green</th>
+<th>Blue</th>
+<th>Color</th>
+<th>Complement Color</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>Black</td>
+<td>White</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>Blue</td>
+<td>Yellow</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>Green</td>
+<td>Magenta</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>Cyan</td>
+<td>Red</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>Red</td>
+<td>Cyan</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>Magenta</td>
+<td>Green</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>Yellow</td>
+<td>Blue</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>White</td>
+<td>Black</td>
+</tr>
+</tbody></table>
+<p>B:</p>
+<p>Blue | Green = 001 | 010 = 011 = Cyan</p>
+<p>Yellow &amp; Cyan = 110 &amp; 011 = 010 = Green</p>
+<p>Red ^ Magenta = 100 ^ 101 = 001 = Blue</p>
+<hr>
+<h3 id="2-1-7-Bit-Level-Operations-in-C"><a href="#2-1-7-Bit-Level-Operations-in-C" class="headerlink" title="2.1.7 Bit-Level Operations in C"></a>2.1.7 Bit-Level Operations in C</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">inplace_swap</span><span class="params">(<span class="keyword">int</span> *x, <span class="keyword">int</span> *y)</span> </span>&#123;</span><br><span class="line">*y = *x ^ *y; <span class="comment">/* Step 1 */</span></span><br><span class="line">*x = *x ^ *y; <span class="comment">/* Step 2 */</span></span><br><span class="line">*y = *x ^ *y; <span class="comment">/* Step 3 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong><em>There is NO performance advantage to this way of swapping; it is merely an intellectual amusement!!!</em></strong></p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>*x</th>
+<th>*y</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Initial</td>
+<td>a</td>
+<td>b</td>
+</tr>
+<tr>
+<td>Step 1</td>
+<td>a</td>
+<td>a^b</td>
+</tr>
+<tr>
+<td>Step 2</td>
+<td>a^a^b=b</td>
+<td>a^b</td>
+</tr>
+<tr>
+<td>Step 3</td>
+<td>b</td>
+<td>b^a^b=a</td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="Practice-Problem-2-11"><a href="#Practice-Problem-2-11" class="headerlink" title="Practice Problem 2.11"></a>Practice Problem 2.11</h4><blockquote>
+<p>Armed with the function <code>inplace_swap</code> from Problem 2.10, you decide to write code that will reverse the elements of an array by swapping elements from opposite ends of the array, working toward the middle. You arrive at the following function:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse_array</span><span class="params">(<span class="keyword">int</span> a[], <span class="keyword">int</span> cnt)</span> </span>&#123;    </span><br><span class="line"><span class="keyword">int</span> first, last;      </span><br><span class="line"><span class="keyword">for</span> (first = <span class="number">0</span>, last = cnt<span class="number">-1</span>;  first &lt;= last;first++,last--)      </span><br><span class="line">	inplace_swap(&amp;a[first], &amp;a[last]);      </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>When you apply your function to an array containing elements 1, 2, 3, and 4, you find the array now has, as expected, elements 4, 3, 2, and 1. When you try it on an array with elements 1, 2, 3, 4, and 5, however, you are surprised to see that the array now has elements 5, 4, 0, 2, and 1. In fact, you discover that the code always works correctly on arrays of even length, but it sets the middle element to 0 whenever the array has odd length.</p>
+<p>A. For an array of odd length cnt = 2k + 1, what are the values of variables first and last in the final iteration of function reverse_array? </p>
+<p>B. Why does this call to function inplace_swap set the array element to 0? </p>
+<p>C. What simple modification to the code for reverse_array would eliminate this problem?</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-8"><a href="#My-solution-white-check-mark-8" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><p>A: first = last = (2k+1-1)/2 = k</p>
+<p>B: because <code>inplace_swap</code> use <code>^</code> to facilitate swapping rather than more reliable <code>int temp</code> variable, at the first step we set the value to <code>a^a=0</code>, and then we play with <code>0</code> all the time.</p>
+<p>C: change <code>first &lt;= last</code> to <code>first &lt; last</code></p>
+<hr>
+<h5 id="Mask"><a href="#Mask" class="headerlink" title="Mask"></a>Mask</h5><p>One common use of bit-level operations is to implement <strong>masking</strong> operations, where a mask is <strong>a bit pattern that indicates a selected set of bits within a word</strong>.</p>
+<p>As an example, the mask 0xFF (having ones for the least significant 8 bits) indicates the low-order byte of a word. The bit-level operation x &amp; 0xFF yields a value consisting of the least significant byte of x, but with all other bytes set to 0.</p>
+<h4 id="Practice-Problem-2-12"><a href="#Practice-Problem-2-12" class="headerlink" title="Practice Problem 2.12"></a>Practice Problem 2.12</h4><blockquote>
+<p>Write C expressions, in terms of variable <code>x</code>, for the following values. <strong>Your code should work for any word size w ≥ 8</strong>. For reference, we show the result of evaluating the expressions for x = 0x87654321, with w = 32.</p>
+<p>A. The least significant byte of x, with all other bits set to 0. [0x00000021] </p>
+<p>B. All but the least significant byte of x complemented, with the least significant byte left unchanged. [0x789ABC21]</p>
+<p>C. The least significant byte set to all ones, and all other bytes of x left unchanged. [0x876543FF]</p>
+</blockquote>
+<h4 id="My-solution-warning"><a href="#My-solution-warning" class="headerlink" title="My solution: :warning:"></a>My solution: :warning:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdint.h&gt;    </span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;    </span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> x = <span class="number">0x87654321</span> ; <span class="comment">//w = 32    </span></span><br><span class="line">    <span class="keyword">uint64_t</span> y = <span class="number">0xFEDCBA9876543210</span>; <span class="comment">// w = 64    </span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;32 bits : 0x%x , 64 bits : 0x%llx\n&quot;</span> , x , y);    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">//A:    </span></span><br><span class="line">    x &amp;= <span class="number">0xff</span>; y &amp;= <span class="number">0xff</span>;    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;32 bits : 0x%x , 64 bits : 0x%llx\n&quot;</span> , x , y);    </span><br><span class="line">    x = <span class="number">0x87654321</span>;    </span><br><span class="line">    y = <span class="number">0xFEDCBA9876543210</span>;                                                              </span><br><span class="line">    <span class="comment">//B:                                                                                 </span></span><br><span class="line">    x = ((x &amp; <span class="number">0xff</span>) | ~<span class="number">0xff</span>) &amp; ~(x &amp; ~<span class="number">0xff</span>);                                             </span><br><span class="line">    y = ((y &amp; <span class="number">0xff</span>) | ~<span class="number">0xff</span>) &amp; ~(y &amp; ~<span class="number">0xff</span>);                                             </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;32 bits : 0x%x , 64 bits : 0x%llx\n&quot;</span> , x , y);                               </span><br><span class="line">    x = <span class="number">0x87654321</span>;                                                                      </span><br><span class="line">    y = <span class="number">0xFEDCBA9876543210</span>;                                                              </span><br><span class="line">    <span class="comment">//C:                                                                                 </span></span><br><span class="line">    x |= <span class="number">0xff</span>;                                                                           </span><br><span class="line">    y |= <span class="number">0xff</span>;                                                                           </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;32 bits : 0x%x , 64 bits : 0x%llx\n&quot;</span> , x , y);                               </span><br><span class="line">                                                                                         </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;                                                                            </span><br><span class="line">&#125;    </span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">32 bits : 0x87654321 , 64 bits : 0xfedcba9876543210</span><br><span class="line">32 bits : 0x21 , 64 bits : 0x10</span><br><span class="line">32 bits : 0x789abc21 , 64 bits : 0x123456789abcd10</span><br><span class="line">32 bits : 0x876543ff , 64 bits : 0xfedcba98765432ff</span><br></pre></td></tr></table></figure>
+<p><span style="color:red">solution B can be simplified</span><br>$$<br>f = ((x \cdot FF)+\overline{FF}) \cdot \overline{x \cdot \overline {FF}}<br>$$</p>
+<p>$$<br>f = ((x+\overline{FF}) \cdot (FF + \overline{FF})) \cdot (\bar{x}+FF)<br>$$</p>
+<p>$$<br>f = (x+\overline{FF})\cdot (\bar{x}+FF)<br>$$</p>
+<p>$$<br>f = x\cdot \bar{x} + (x\cdot FF)+(\overline{FF}\cdot \bar{x})+FF\cdot\overline{FF}<br>$$</p>
+<p>$$<br>f = (x\cdot FF)+(\bar{x}\cdot\overline{FF} )=\overline{x\oplus FF}<br>$$</p>
+<p><span style="color:red">solution to question B:</span></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x ^ ~<span class="number">0xFF</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a ^ <span class="number">0</span> = a</span><br><span class="line">a ^ <span class="number">1</span> = ~a </span><br></pre></td></tr></table></figure>
+<ul>
+<li> The expression <code>~0</code> will yield a mask of all ones, <strong>regardless of the size of the data representation.</strong></li>
+<li>when your expression become very long, try to simplify it.</li>
+</ul>
+<hr>
+<h4 id="Practice-Problem-2-13"><a href="#Practice-Problem-2-13" class="headerlink" title="Practice Problem 2.13"></a>Practice Problem 2.13</h4><blockquote>
+<p>The Digital Equipment VAX computer was a very popular machine from the late 1970s until the late 1980s. Rather than instructions for Boolean operations and and or, it had instructions bis (bit set) and bic (bit clear). Both instructions take a data word x and a mask word m. They generate a result z consisting of the bits of x modified according to the bits of m. With bis, the modification involves setting z to 1 at each bit position where m is 1. With bic, the modification involves setting z to 0 at each bit position where m is 1. </p>
+<p>To see how these operations relate to the C bit-level operations, assume we have functions bis and bic implementing the bit set and bit clear operations, and that we want to use these to implement functions computing bitwise operations | and ^, without using any other C operations. Fill in the missing code below. </p>
+<p>Hint: Write C expressions for the operations bis and bic.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Declarations of functions implementing operations bis and bic */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bis</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> m)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bic</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> m)</span></span>;</span><br><span class="line"><span class="comment">/* Compute x|y using only calls to functions bis and bic */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bool_or</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line"><span class="keyword">int</span> result = ;</span><br><span class="line"><span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* Compute x^y using only calls to functions bis and bic */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bool_xor</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line"><span class="keyword">int</span> result = ;</span><br><span class="line"><span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark-9"><a href="#My-solution-white-check-mark-9" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="comment">/* Declarations of functions implementing operations bis and bic */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bis</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> m)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bic</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> m)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Compute x|y using only calls to functions bis and bic */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bool_or</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line"><span class="keyword">int</span> result = bis(x  , y);</span><br><span class="line"><span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Compute x^y using only calls to functions bis and bic */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bool_xor</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line"><span class="keyword">int</span> result = bis(bic(x, y) , bic(y, x));</span><br><span class="line"><span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">0</span> , b = <span class="number">0</span> ;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a|b test : %d\n&quot;</span> , (a|b) == bool_or(a, b) );</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a^b test : %d\n&quot;</span> , (a^b) == bool_xor(a, b) );</span><br><span class="line">    b = <span class="number">1</span>;                          </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a|b test : %d\n&quot;</span> , (a|b) == bool_or(a, b) );</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a^b test : %d\n&quot;</span> , (a^b) == bool_xor(a, b) );</span><br><span class="line">    a = <span class="number">1</span>;                          </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a|b test : %d\n&quot;</span> , (a|b) == bool_or(a, b) );</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a^b test : %d\n&quot;</span> , (a^b) == bool_xor(a, b) );</span><br><span class="line">    b = <span class="number">0</span>;                          </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a|b test : %d\n&quot;</span> , (a|b) == bool_or(a, b) );</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a^b test : %d\n&quot;</span> , (a^b) == bool_xor(a, b) );</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bis</span><span class="params">(<span class="keyword">int</span> x , <span class="keyword">int</span> m)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x | m;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bic</span><span class="params">(<span class="keyword">int</span> x , <span class="keyword">int</span> m)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x &amp; ~m;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a|b test : 1</span><br><span class="line">a^b test : 1</span><br><span class="line">a|b test : 1</span><br><span class="line">a^b test : 1</span><br><span class="line">a|b test : 1</span><br><span class="line">a^b test : 1</span><br><span class="line">a|b test : 1</span><br><span class="line">a^b test : 1</span><br></pre></td></tr></table></figure>
+<p><span style="color:red">when doing boolean algebra, <strong>truth table</strong> and <strong>sum-of-product expression</strong> are very useful!!!</span></p>
+<p><em>also , don’t forget xor property : <code>x ^ y = (x &amp; ~y) | (~x &amp; y)​</code></em></p>
+<hr>
+<h4 id="2-1-8-Logical-Operations-in-C"><a href="#2-1-8-Logical-Operations-in-C" class="headerlink" title="2.1.8 Logical Operations in C"></a>2.1.8 Logical Operations in C</h4><ul>
+<li><em>The logical operations treat <strong>any nonzero argument as</strong> representing <strong>true</strong> and argument <strong>0 as representing false</strong></em></li>
+<li> logical operators do not evaluate their second argument if the result of the expression can be determined by evaluating the first argument. Thus, for example, the expression <code>a &amp;&amp; 5/a</code> will never cause a division by zero, and the expression <code>p &amp;&amp; *p++</code> will never cause the dereferencing of a null pointer.</li>
+</ul>
+<hr>
+<h4 id="Practice-Problem-2-14"><a href="#Practice-Problem-2-14" class="headerlink" title="Practice Problem 2.14"></a>Practice Problem 2.14</h4><blockquote>
+<p>Suppose that a and b have byte values <code>0x55</code> and <code>0x46</code>, respectively. Fill in the following table indicating the byte values of the different C expressions:</p>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a &amp; b</td>
+<td></td>
+</tr>
+<tr>
+<td>a | b</td>
+<td></td>
+</tr>
+<tr>
+<td>~a | ~b</td>
+<td></td>
+</tr>
+<tr>
+<td>a &amp; !b</td>
+<td></td>
+</tr>
+<tr>
+<td>a &amp;&amp; b</td>
+<td></td>
+</tr>
+<tr>
+<td>a || b</td>
+<td></td>
+</tr>
+<tr>
+<td>!a || !b</td>
+<td></td>
+</tr>
+<tr>
+<td>a &amp;&amp; ~b</td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-10"><a href="#My-solution-white-check-mark-10" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>a &amp; b</td>
+<td>0x44</td>
+</tr>
+<tr>
+<td>a | b</td>
+<td>0x57</td>
+</tr>
+<tr>
+<td>~a | ~b</td>
+<td>0xbb</td>
+</tr>
+<tr>
+<td>a &amp; !b</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>a &amp;&amp; b</td>
+<td>0x01</td>
+</tr>
+<tr>
+<td>a || b</td>
+<td>0x01</td>
+</tr>
+<tr>
+<td>!a || !b</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>a &amp;&amp; ~b</td>
+<td>0x01</td>
+</tr>
+</tbody></table>
+<h4 id="Practice-Problem-2-15"><a href="#Practice-Problem-2-15" class="headerlink" title="Practice Problem 2.15"></a>Practice Problem 2.15</h4><blockquote>
+<p>Using only bit-level and logical operations, write a C expression that is equivalent to <code>x == y</code>. In other words, it will return 1 when x and y are equal and 0 otherwise.</p>
+</blockquote>
+<h4 id="My-solution-1"><a href="#My-solution-1" class="headerlink" title="My solution :"></a>My solution :</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdbool.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">equal</span><span class="params">(<span class="keyword">int</span> a , <span class="keyword">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (<span class="keyword">bool</span>)(!(a ^ b));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">3242542</span>;</span><br><span class="line">    <span class="keyword">int</span> b = <span class="number">3213434</span>;</span><br><span class="line">    <span class="keyword">int</span> c = a;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a == b test : %d %d\n&quot;</span> , a == b , equal(a, b));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;a == c test : %d %d\n&quot;</span> , a == c , equal(a, c));</span><br><span class="line">    <span class="keyword">return</span>  <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>There is <strong>NO</strong> real reason to use this expression rather than simply writing <code>x == y</code></em></p>
+<hr>
+<h3 id="2-1-9-Shift-Operations-in-C"><a href="#2-1-9-Shift-Operations-in-C" class="headerlink" title="2.1.9 Shift Operations in C"></a>2.1.9 Shift Operations in C</h3><h5 id="Left-shift"><a href="#Left-shift" class="headerlink" title="Left shift"></a>Left shift</h5><p>Left shift is simple and stable. </p>
+<p>That is <code>x &lt;&lt; k</code> means x is shifted k bits to the left, dropping off the k most significant bits and filling the right end with k zeros.</p>
+<h5 id="Right-shift"><a href="#Right-shift" class="headerlink" title="Right shift"></a>Right shift</h5><h6 id="Logical-Right-shift"><a href="#Logical-Right-shift" class="headerlink" title="Logical Right shift"></a>Logical Right shift</h6><p>A logical right shift fills the left end with k zeros, giving a result $[0,…, 0, x_{w−1}, x_{w−2},…,x_k].$</p>
+<h6 id="Arithmetic-left-shift"><a href="#Arithmetic-left-shift" class="headerlink" title="Arithmetic left shift"></a>Arithmetic left shift</h6><p>An arithmetic right shift fills the left end with k repetitions of the most significant bit, giving a result$[x_{w−1},…,x_{w−1}, x_{w−1}, x_{w−2},…,x_k]$.</p>
+<ul>
+<li>In C, almost all compiler/machine combinations use <strong>arithmetic right shifts for signed data</strong>, and many programmers assume this to be the case. <strong>For unsigned data, on the other hand, right shifts must be logical.</strong></li>
+<li> Java has a precise definition of how right shifts should be performed. The expression <code>x &gt;&gt; k</code> shifts x arithmetically by k positions, while <code>x &gt;&gt;&gt; k</code> shifts it logically</li>
+</ul>
+<hr>
+<h4 id="Practice-Problem-2-16"><a href="#Practice-Problem-2-16" class="headerlink" title="Practice Problem 2.16"></a>Practice Problem 2.16</h4><blockquote>
+<p>Fill in the table below showing the effects of the different shift operations on singlebyte quantities. The best way to think about shift operations is to work with binary representations. Convert the initial values to binary, perform the shifts, and then convert back to hexadecimal. Each of the answers should be 8 binary digits or 2 hexadecimal digits.</p>
+<p><img src="/2021/06/10/CSAPP/Ch2/shift.png" alt="shift"></p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-11"><a href="#My-solution-white-check-mark-11" class="headerlink" title="My solution:  :white_check_mark:"></a>My solution:  :white_check_mark:</h4><table>
+<thead>
+<tr>
+<th>Hex</th>
+<th>Binary</th>
+<th>Binary</th>
+<th>Hex</th>
+<th>Binary</th>
+<th>Hex</th>
+<th>Binary</th>
+<th>Hex</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0xd4</td>
+<td>[11010100]</td>
+<td>[01010000]</td>
+<td>0x50</td>
+<td>[00011010]</td>
+<td>0x1a</td>
+<td>[11111010]</td>
+<td>0xfa</td>
+</tr>
+<tr>
+<td>0x64</td>
+<td>[01100100]</td>
+<td>[10010000]</td>
+<td>0x90</td>
+<td>[00001100]</td>
+<td>0x0c</td>
+<td>[00001100]</td>
+<td>0x0c</td>
+</tr>
+<tr>
+<td>0x72</td>
+<td>[01110010]</td>
+<td>[11001000]</td>
+<td>0xc8</td>
+<td>[00001110]</td>
+<td>0x0e</td>
+<td>[00001110]</td>
+<td>0x0e</td>
+</tr>
+<tr>
+<td>0x44</td>
+<td>[01000100]</td>
+<td>[00010000]</td>
+<td>0x10</td>
+<td>[00001000]</td>
+<td>0x08</td>
+<td>[00001000]</td>
+<td>0x08</td>
+</tr>
+</tbody></table>
+<hr>
+<p>What if shift length k is larger than the word width w?</p>
+<ul>
+<li>The C standards carefully avoid stating what should be done in such a case. On many machines, the shift amount is computed as $k \mod w$</li>
+<li>Java, on the other hand, specifically requires that shift amounts should be computed in the modular fashion we have shown.</li>
+</ul>
+<p><strong>Programming tip : When in doubt about operator precedence, put in parentheses!</strong></p>
+<h2 id="2-2-Integer-Representations"><a href="#2-2-Integer-Representations" class="headerlink" title="2.2 Integer Representations"></a>2.2 Integer Representations</h2><p><img src="/2021/06/10/CSAPP/Ch2/terminology.png" alt="terminology"></p>
+<h3 id="2-2-1-Integral-Data-Types"><a href="#2-2-1-Integral-Data-Types" class="headerlink" title="2.2.1 Integral Data Types"></a>2.2.1 Integral Data Types</h3><p><img src="/2021/06/10/CSAPP/Ch2/range.png" alt="intergral range"></p>
+<h3 id="2-2-2-Unsigned-Encodings"><a href="#2-2-2-Unsigned-Encodings" class="headerlink" title="2.2.2 Unsigned Encodings"></a>2.2.2 Unsigned Encodings</h3><p>The most common way you do with binary to interger.<br>$$<br>x_{w-1}…x_1x_0 = x_{w-1}\cdot2^{w-1}+…+x_1\cdot2^1+x_0\cdot 2^0<br>$$</p>
+<blockquote>
+<p>principle: <strong>Uniqueness</strong> of unsigned encoding</p>
+<p>Function $B2U_w$ is a bijection.</p>
+<p>The mathematical term bijection refers to a function f that goes two ways: it maps a value x to a value y where y = f (x), but it can also operate in reverse, since for every y, there is a unique value x such that f (x) = y.</p>
+</blockquote>
+<h3 id="2-2-3-Two’s-Complement-Encodings"><a href="#2-2-3-Two’s-Complement-Encodings" class="headerlink" title="2.2.3 Two’s-Complement Encodings"></a>2.2.3 Two’s-Complement Encodings</h3><p>The most common computer representation of signed numbers is known as two’s-complement form. This is defined by <strong>interpreting the most significant bit of the word to have negative weight.</strong> </p>
+<ul>
+<li><p>The most significant bit $x_{w−1}$ is also called the sign bit</p>
+</li>
+<li><p>Range of Two’s complement : $[100….00 , 011..11]$</p>
+</li>
+<li><p>the two’s-complement range is <strong>asymmetric</strong>: |TMin| = |TMax| + 1; that is, there is no positive counterpart to TMin. </p>
+</li>
+</ul>
+<blockquote>
+<p>principle: <strong>Uniqueness</strong> of two’s-complement encoding</p>
+<p>Function $B2T_w$ is a bijection.</p>
+</blockquote>
+<hr>
+<h4 id="Practice-Problem-2-17"><a href="#Practice-Problem-2-17" class="headerlink" title="Practice Problem 2.17"></a>Practice Problem 2.17</h4><blockquote>
+<p>Assuming w = 4, we can assign a numeric value to each possible hexadecimal digit, assuming either an unsigned or a two’s-complement interpretation. Fill in the following table according to these interpretations by writing out the nonzero powers of 2 in the summations shown in Equations 2.1 and 2.3:</p>
+<table>
+<thead>
+<tr>
+<th>Hexadecimal</th>
+<th>Binary</th>
+<th>B2U</th>
+<th>B2T</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0xa</td>
+<td>[1010]</td>
+<td>$2^3+2^1=10$</td>
+<td>$-2^{3}+2^1=-6$</td>
+</tr>
+<tr>
+<td>0x1</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0xb</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0x2</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0x7</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0xc</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-12"><a href="#My-solution-white-check-mark-12" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><table>
+<thead>
+<tr>
+<th>Hexadecimal</th>
+<th>Binary</th>
+<th>B2U</th>
+<th>B2T</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0xa</td>
+<td>[1010]</td>
+<td>$2^3+2^1=10$</td>
+<td>$-2^{3}+2^1=-6$</td>
+</tr>
+<tr>
+<td>0x1</td>
+<td>[0001]</td>
+<td>$2^0=1$</td>
+<td>$2^0=1$</td>
+</tr>
+<tr>
+<td>0xb</td>
+<td>[1011]</td>
+<td>$2^3+2^1+2^0=11$</td>
+<td>$-2^3+2^1+2^0=-5$</td>
+</tr>
+<tr>
+<td>0x2</td>
+<td>[0010]</td>
+<td>$2^1=2$</td>
+<td>$2^1=2$</td>
+</tr>
+<tr>
+<td>0x7</td>
+<td>[0111]</td>
+<td>$2^2+2^1+2^0=7$</td>
+<td>$2^2+2^1+2^0=7$</td>
+</tr>
+<tr>
+<td>0xc</td>
+<td>[1100]</td>
+<td>$2^3+2^2=12$</td>
+<td>$-2^3+2^2=-4$</td>
+</tr>
+</tbody></table>
+<hr>
+<blockquote>
+<p>Programming tips:</p>
+<ul>
+<li><p>use <code>int32_t</code>, <code>uint64_t</code> ,…., to get exact size you want.</p>
+</li>
+<li><p>Formatted printing with fixed-width types requires use of macros that expand into format strings in a system-dependent manner. </p>
+<p>So, for example, the values of variables x and y of type <code>int32_t</code> and <code>uint64_t</code> can be printed by the following call to printf: <code>printf(&quot;x = %&quot; PRId32 &quot;, y = %&quot; PRIu64 &quot;\n&quot;, x, y); </code></p>
+<p>When compiled as a 64-bit program, macro PRId32 expands to the string “d”, while PRIu64 expands to the pair of strings “l” “u”. When the C preprocessor encounters a sequence of string constants separated only by spaces (or other whitespace characters), it concatenates them together. </p>
+<p>Thus, the above call to printf becomes <code>printf(&quot;x = %d, y = %lu\n&quot;, x, y); </code>Using the macros ensures that a correct format string will be generated regardless of how the code is compiled.</p>
+</li>
+</ul>
+</blockquote>
+<p><img src="/2021/06/10/CSAPP/Ch2/importantnums.png" alt="important numbers"></p>
+<ul>
+<li><p>The C standards do NOT require signed integers to be represented in two’scomplement form, but nearly all machines do so.</p>
+<p>So if you want max portability, do NOT assume any “typical” ranges beyond the minimum range and do NOT assume signed numbers are encoded by 2’s complement. Use <code>&lt;limit.h&gt;</code> which defines constants <code>INT_MAX</code>, <code>INT_ MIN</code>, and <code>UINT_MAX</code> describing the ranges of signed and unsigned integers.</p>
+</li>
+<li><p>The Java standard is quite specific about integer data type ranges and representations.These detailed requirements are intended to enable Java programs to behave identically regardless of the machines or operating systems running them.</p>
+</li>
+</ul>
+<hr>
+<h4 id="Practice-Problem-2-18"><a href="#Practice-Problem-2-18" class="headerlink" title="Practice Problem 2.18"></a>Practice Problem 2.18</h4><blockquote>
+<p>In Chapter 3, we will look at listings generated by a disassembler, a program that converts an executable program file back to a more readable ASCII form. </p>
+<p>These files contain many hexadecimal numbers, typically representing values in two’scomplement form. Being able to recognize these numbers and understand their significance (for example, whether they are negative or positive) is an important skill. </p>
+<p>For the lines labeled A–I (on the right) in the following listing, convert the hexadecimal values (in 32-bit two’s-complement form) shown to the right of the instruction names (sub, mov, and add) into their decimal equivalents:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">4004d0: 48 81 ec e0 02 00 00 	sub $0x2e0,%rsp 			A.</span><br><span class="line">4004d7: 48 8b 44 24 a8 			mov -0x58(%rsp),%rax 		B.</span><br><span class="line">4004dc: 48 03 47 28 			add 0x28(%rdi),%rax 		C.</span><br><span class="line">4004e0: 48 89 44 24 d0 			mov %rax,-0x30(%rsp) 		D.</span><br><span class="line">4004e5: 48 8b 44 24 78 			mov 0x78(%rsp),%rax 		E.</span><br><span class="line">4004ea: 48 89 87 88 00 00 00 	mov %rax,0x88(%rdi) 		F.</span><br><span class="line">4004f1: 48 8b 84 24 f8 01 00 	mov 0x1f8(%rsp),%rax 		G.</span><br><span class="line">4004f8: 00</span><br><span class="line">4004f9: 48 03 44 24 08 			add 0x8(%rsp),%rax</span><br><span class="line">4004fe: 48 89 84 24 c0 00 00 	mov %rax,0xc0(%rsp) 		H.</span><br><span class="line">400505: 00</span><br><span class="line">400506: 48 8b 44 d4 b8 			mov -0x48(%rsp,%rdx,8),%rax I.</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark-13"><a href="#My-solution-white-check-mark-13" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><table>
+<thead>
+<tr>
+<th>Index</th>
+<th>hexadecimal</th>
+<th>decimal</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td>0x2e0</td>
+<td>736</td>
+</tr>
+<tr>
+<td>B</td>
+<td>-0x58</td>
+<td>-88</td>
+</tr>
+<tr>
+<td>C</td>
+<td>0x28</td>
+<td>40</td>
+</tr>
+<tr>
+<td>D</td>
+<td>-0x30</td>
+<td>-48</td>
+</tr>
+<tr>
+<td>E</td>
+<td>0x78</td>
+<td>120</td>
+</tr>
+<tr>
+<td>F</td>
+<td>0x88</td>
+<td>136</td>
+</tr>
+<tr>
+<td>G</td>
+<td>0x1f8</td>
+<td>504</td>
+</tr>
+<tr>
+<td>H</td>
+<td>0xc0</td>
+<td>192</td>
+</tr>
+<tr>
+<td>I</td>
+<td>-0x48</td>
+<td>-72</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="2-2-4-Conversions-between-Signed-and-Unsigned"><a href="#2-2-4-Conversions-between-Signed-and-Unsigned" class="headerlink" title="2.2.4 Conversions between Signed and Unsigned"></a>2.2.4 Conversions between Signed and Unsigned</h3><p><strong><em>the effect of casting is to keep the bit values identical but change how these bits are interpreted.</em></strong></p>
+<hr>
+<h4 id="Practice-Problem-2-19"><a href="#Practice-Problem-2-19" class="headerlink" title="Practice Problem 2.19"></a>Practice Problem 2.19</h4><blockquote>
+<p>Using the table you filled in when solving Problem 2.17, fill in the following table describing the function $T2U_4$:</p>
+<table>
+<thead>
+<tr>
+<th>x</th>
+<th>$T2U_4(x)$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-1</td>
+<td></td>
+</tr>
+<tr>
+<td>-5</td>
+<td></td>
+</tr>
+<tr>
+<td>-6</td>
+<td></td>
+</tr>
+<tr>
+<td>-4</td>
+<td></td>
+</tr>
+<tr>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-14"><a href="#My-solution-white-check-mark-14" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><table>
+<thead>
+<tr>
+<th>x</th>
+<th>$T2U_4(x)$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-1</td>
+<td>15</td>
+</tr>
+<tr>
+<td>-5</td>
+<td>11</td>
+</tr>
+<tr>
+<td>-6</td>
+<td>10</td>
+</tr>
+<tr>
+<td>-4</td>
+<td>12</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>8</td>
+<td>?</td>
+</tr>
+</tbody></table>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bitstring.CreationError: <span class="number">8</span> <span class="keyword">is</span> too large a signed integer <span class="keyword">for</span> a bitstring of length <span class="number">4.</span> The</span><br><span class="line"> allowed <span class="built_in">range</span> <span class="keyword">is</span> [-<span class="number">8</span>, <span class="number">7</span>].</span><br></pre></td></tr></table></figure>
+<hr>
+<p><strong><em>when mapping a signed number to its unsigned counterpart, negative numbers are converted to large positive numbers, while nonnegative numbers remain unchanged.</em></strong></p>
+<blockquote>
+<p>principle: Conversion from two’s complement to unsigned<br>$$<br>\forall x , TMin\le x \le TMax,T2U_w(x) = \begin{cases}<br>x,&amp;x\ge0\<br>x+2^w,&amp;x&lt;0<br>\end{cases}<br>$$<br>Derivation:<br>$$<br>B2U_w(\vec{x}) - B2T_w(\vec{x}) = x_{w-1}\cdot2^{w-1}-(-x_{w-1}\cdot2^{w-1}) = x_{w-1}\cdot 2^w<br>$$</p>
+<p>$$<br>T2U_w(x) = B2U_w(T2B_w(x))=x+x_{w-1}\cdot 2^w<br>$$</p>
+</blockquote>
+<hr>
+<h4 id="Practice-Problem-2-20"><a href="#Practice-Problem-2-20" class="headerlink" title="Practice Problem 2.20"></a>Practice Problem 2.20</h4><blockquote>
+<p>Explain how Equation 2.5 applies to the entries in the table you generated when solving Problem 2.19.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-15"><a href="#My-solution-white-check-mark-15" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><p>if the value is nonnegative, leave it unchanged, otherwise add it with $2^4=16$</p>
+<hr>
+<p>Going in the other direction:</p>
+<blockquote>
+<p>principle: Unsigned to two’s-complement conversion<br>$$<br>\forall u , 0\le u \le UMax,U2T_w(u) = \begin{cases}<br>u , &amp; u\le TMax\<br>u - 2^{w} , &amp; u &gt; TMax<br>\end{cases}<br>$$</p>
+</blockquote>
+<p>Summary:</p>
+<ul>
+<li>Numbers in this range have identical unsigned and two’s-complement representations. </li>
+<li>For values outside of this range, the conversions either add or subtract $2^w$</li>
+</ul>
+<h3 id="2-2-5-Signed-versus-Unsigned-in-C"><a href="#2-2-5-Signed-versus-Unsigned-in-C" class="headerlink" title="2.2.5 Signed versus Unsigned in C"></a>2.2.5 Signed versus Unsigned in C</h3><p><strong><em>When an operation is performed where one operand is signed and the other is unsigned, C implicitly <u>casts the signed argument to unsigned</u> and performs the operations assuming the numbers are nonnegative.</em></strong></p>
+<p><img src="/2021/06/10/CSAPP/Ch2/versus.png" alt="versus"></p>
+<h4 id="Practice-Problem-2-21"><a href="#Practice-Problem-2-21" class="headerlink" title="Practice Problem 2.21"></a>Practice Problem 2.21</h4><blockquote>
+<p>Assuming the expressions are evaluated when executing a 32-bit program on a machine that uses two’s-complement arithmetic, fill in the following table describing the effect of casting and relational operations, in the style of Figure 2.19:</p>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Type</th>
+<th>Evaluation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-2147483647-1 == 2147483648U</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>-2147483647-1 &lt; 2147483647</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>-2147483647-1U &lt; 2147483647</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>-2147483647-1 &lt; -2147483647</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>-2147483647-1U &lt; -2147483647</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-16"><a href="#My-solution-white-check-mark-16" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Type</th>
+<th>Evaluation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-2147483647-1 == 2147483648U</td>
+<td>Unsigned</td>
+<td>1</td>
+</tr>
+<tr>
+<td>-2147483647-1 &lt; 2147483647</td>
+<td>Signed</td>
+<td>1</td>
+</tr>
+<tr>
+<td>-2147483647-1U &lt; 2147483647</td>
+<td>Unsigned</td>
+<td>0</td>
+</tr>
+<tr>
+<td>-2147483647-1 &lt; -2147483647</td>
+<td>Signed</td>
+<td>1</td>
+</tr>
+<tr>
+<td>-2147483647-1U &lt; -2147483647</td>
+<td>Unsigned</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<h3 id="2-2-6-Expanding-the-Bit-Representation-of-a-Number"><a href="#2-2-6-Expanding-the-Bit-Representation-of-a-Number" class="headerlink" title="2.2.6 Expanding the Bit Representation of a Number"></a>2.2.6 Expanding the Bit Representation of a Number</h3><p>One common operation is to <strong>convert between integers having different word sizes</strong> while retaining the same numeric value. </p>
+<ul>
+<li> When the destination data type is too small to represent the desired value, this may not be possible.</li>
+<li>Converting from a smaller to a larger data type, however, should always be possible.</li>
+</ul>
+<h5 id="Convert-an-unsigned-number-to-a-larger-data-type"><a href="#Convert-an-unsigned-number-to-a-larger-data-type" class="headerlink" title="Convert an unsigned number to a larger data type:"></a>Convert an unsigned number to a larger data type:</h5><ul>
+<li>simply add leading zeros to the representation</li>
+<li>this operation is known as zero extension</li>
+</ul>
+<h5 id="Convert-a-two’s-complement-number-to-a-larger-data-type"><a href="#Convert-a-two’s-complement-number-to-a-larger-data-type" class="headerlink" title="Convert a two’s-complement number to a larger data type:"></a>Convert a two’s-complement number to a larger data type:</h5><ul>
+<li>adding copies of the most significant bit to the representation</li>
+<li>this operation is known as sign extension</li>
+</ul>
+<h5 id="Why-sign-extension-pad-1-How-this-perseves-the-value"><a href="#Why-sign-extension-pad-1-How-this-perseves-the-value" class="headerlink" title="Why sign extension pad 1 ? How this perseves the value ?"></a>Why sign extension pad 1 ? How this perseves the value ?</h5><blockquote>
+<p>Derivation:</p>
+<p>assume we expend by k bits<br>$$<br>\forall k \in Z^*,w’=w+k<br>$$<br>we only need to prove when k=1 the value holds, then all the situations are the same.<br>$$<br>B2T_{w+1}([x_{w−1}, x_{w−1}, x_{w−2},…,x_0]) = -x_{w−1}2^{w}+x_{w−1}2^{w-1}+…+x_02^0\<br>=-x_{w−1}2^{w-1}+…+x_0\<br>=B2T_{w}([ x_{w−1}, x_{w−2},…,x_0])<br>$$<br>The key property we exploit is that $2^w − 2^{w−1} = 2^{w−1}$</p>
+</blockquote>
+<hr>
+<h4 id="Practice-Problem-2-22"><a href="#Practice-Problem-2-22" class="headerlink" title="Practice Problem 2.22"></a>Practice Problem 2.22</h4><blockquote>
+<p>Show that each of the following bit vectors is a two’s-complement representation of −4 by applying Equation 2.3: </p>
+<p>A. [1100] </p>
+<p>B. [11100] </p>
+<p>C. [111100] </p>
+<p>Observe that the second and third bit vectors can be derived from the first by sign extension</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-17"><a href="#My-solution-white-check-mark-17" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><p>A : $-2^3+2^2=-4$</p>
+<p>B : $-2^4+2^3+2^2=-4$</p>
+<p>C : $-2^5+2^4+2^3+2^2=-4$</p>
+<hr>
+<p><strong><em>When converting from <code>short</code> to <code>unsigned</code>, the program first changes the size and then the type. This convention is required by the C standards.</em></strong></p>
+<hr>
+<h4 id="Practice-Problem-2-23"><a href="#Practice-Problem-2-23" class="headerlink" title="Practice Problem 2.23"></a>Practice Problem 2.23</h4><blockquote>
+<p>Consider the following C functions:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fun1</span><span class="params">(<span class="keyword">unsigned</span> word)</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> (<span class="keyword">int</span>) ((word &lt;&lt; <span class="number">24</span>) &gt;&gt; <span class="number">24</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fun2</span><span class="params">(<span class="keyword">unsigned</span> word)</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> ((<span class="keyword">int</span>) word &lt;&lt; <span class="number">24</span>) &gt;&gt; <span class="number">24</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Assume these are executed as a 32-bit program on a machine that uses two’scomplement arithmetic. Assume also that right shifts of signed values are performed arithmetically, while right shifts of unsigned values are performed logically.</p>
+<p>A. Fill in the following table showing the effect of these functions for several example arguments. You will find it more convenient to work with a hexadecimal representation. Just remember that hex digits 8 through F have their most significant bits equal to 1.</p>
+<table>
+<thead>
+<tr>
+<th>w</th>
+<th>fun1(w)</th>
+<th>fun2(2)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x00000076</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0x87654321</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0x000000C9</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0xEDCBA987</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-18"><a href="#My-solution-white-check-mark-18" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><table>
+<thead>
+<tr>
+<th>w</th>
+<th>fun1(w)</th>
+<th>fun2(2)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x00000076</td>
+<td>0x00000076</td>
+<td>0x00000076</td>
+</tr>
+<tr>
+<td>0x87654321</td>
+<td>0x00000021</td>
+<td>0x00000021</td>
+</tr>
+<tr>
+<td>0x000000C9</td>
+<td>0x000000C9</td>
+<td>0xFFFFFFC9</td>
+</tr>
+<tr>
+<td>0xEDCBA987</td>
+<td>0x00000087</td>
+<td>0xFFFFFF87</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="2-2-7-Truncating-Numbers"><a href="#2-2-7-Truncating-Numbers" class="headerlink" title="2.2.7 Truncating Numbers"></a>2.2.7 Truncating Numbers</h3><h5 id="Truncate-unsigned-number"><a href="#Truncate-unsigned-number" class="headerlink" title="Truncate unsigned number"></a>Truncate unsigned number</h5><blockquote>
+<p>principle: Truncation of an unsigned number </p>
+<p>Let x be the bit vector $[x_{w−1}, x_{w−2},…,x_0]$, and let $x’$ be the result of truncating it to k bits: $x’ = [x_{k−1}, x_{k−2},…,x_0]$. Let $x = B2U_w(\vec{x})$ and $x’ = B2U_k(\vec{x’})$. </p>
+<p>Then $x’ = x \mod 2^k$.</p>
+</blockquote>
+<p>The intuition behind this principle is simply that all of the bits that were truncated have weights of the form $2^i$ , where i ≥ k, and therefore each of these weights reduces to zero under the modulus operation.</p>
+<h5 id="Truncate-signed-number"><a href="#Truncate-signed-number" class="headerlink" title="Truncate signed number"></a>Truncate signed number</h5><blockquote>
+<p>principle: Truncation of a two’s-complement number </p>
+<p>Let x be the bit vector $[x_{w−1}, x_{w−2},…,x_0]$, and let  $x’$ be the result of truncating it to k bits: $x’ = [x_{k−1}, x_{k−2},…,x_0]$. Let $x = B2T_w(\vec{x})$ and $x’ = B2T_k(\vec{x’})$. </p>
+<p>Then $x’ = U2T_k(x \mod 2^k)$.</p>
+</blockquote>
+<h4 id="Practice-Problem-2-24"><a href="#Practice-Problem-2-24" class="headerlink" title="Practice Problem 2.24"></a>Practice Problem 2.24</h4><blockquote>
+<p>Suppose we truncate a 4-bit value (represented by hex digits 0 through F) to a 3- bit value (represented as hex digits 0 through 7.) Fill in the table below showing the effect of this truncation for some cases, in terms of the unsigned and two’scomplement interpretations of those bit patterns</p>
+<p>Unsigned:</p>
+<table>
+<thead>
+<tr>
+<th>Original</th>
+<th>Truncated</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td></td>
+</tr>
+<tr>
+<td>14</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>Two’s complement:</p>
+<table>
+<thead>
+<tr>
+<th>Original</th>
+<th>Truncated</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td></td>
+</tr>
+<tr>
+<td>-4</td>
+<td></td>
+</tr>
+<tr>
+<td>-2</td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-19"><a href="#My-solution-white-check-mark-19" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><p>Unsigned:</p>
+<table>
+<thead>
+<tr>
+<th>Original</th>
+<th>Truncated</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>5</td>
+<td>5</td>
+</tr>
+<tr>
+<td>12</td>
+<td>4</td>
+</tr>
+<tr>
+<td>14</td>
+<td>6</td>
+</tr>
+</tbody></table>
+<p>Two’s complement:</p>
+<table>
+<thead>
+<tr>
+<th>Original</th>
+<th>Truncated</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>5</td>
+<td>-3</td>
+</tr>
+<tr>
+<td>-4</td>
+<td>-4</td>
+</tr>
+<tr>
+<td>-2</td>
+<td>-2</td>
+</tr>
+</tbody></table>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ls = [<span class="number">5</span> , -<span class="number">4</span> , -<span class="number">2</span>]</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> ls:</span><br><span class="line">    a = ba(<span class="built_in">int</span>=x,length=<span class="number">4</span>)</span><br><span class="line">    truncateda = ba(<span class="built_in">bin</span>=a.<span class="built_in">bin</span>[<span class="number">1</span>:])</span><br><span class="line">    print(<span class="string">&quot;original:&quot;</span> , a.<span class="built_in">int</span>, <span class="string">&quot;after:&quot;</span> , truncateda.<span class="built_in">int</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">original: 5 after: -3</span><br><span class="line">original: -4 after: -4</span><br><span class="line">original: -2 after: -2</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="2-2-8-Advice-on-Signed-versus-Unsigned"><a href="#2-2-8-Advice-on-Signed-versus-Unsigned" class="headerlink" title="2.2.8 Advice on Signed versus Unsigned"></a>2.2.8 Advice on Signed versus Unsigned</h3><p><strong><em>Since the casting takes place without any clear indication in the code, programmers often overlook its effects.Be careful!</em></strong></p>
+<h4 id="Practice-Problem-2-25"><a href="#Practice-Problem-2-25" class="headerlink" title="Practice Problem 2.25"></a>Practice Problem 2.25</h4><blockquote>
+<p>Consider the following code that attempts to sum the elements of an array <code>a</code>, where the number of elements is given by parameter length:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* WARNING: This is buggy code */</span>    </span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">sum_elements</span><span class="params">(<span class="keyword">float</span> a[], <span class="keyword">unsigned</span> length)</span> </span>&#123;      </span><br><span class="line">    <span class="keyword">int</span> i;                  </span><br><span class="line">	<span class="keyword">float</span> result = <span class="number">0</span>;       </span><br><span class="line">                        </span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt;= length<span class="number">-1</span>; i++)      </span><br><span class="line">	result += a[i];         </span><br><span class="line">	<span class="keyword">return</span> result;          </span><br><span class="line">&#125;        </span><br></pre></td></tr></table></figure>
+
+<p>When run with argument length equal to 0, this code should return 0.0. Instead, it encounters a memory error. Explain why this happens. Show how this code can be corrected.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-20"><a href="#My-solution-white-check-mark-20" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><p><code>length</code> is an unsigned number, while <code>i</code> is a signed one. When evaluate <code>i&lt;= length-1</code> , <code>i</code> will be converted to <code>unsigned</code>.</p>
+<p>When <code>length</code> equals 0, <code>length-1</code> gives the bit string <code>0b111111....111</code>, then any value in <code>unsigned</code> is less than <code>length-1</code> </p>
+<ul>
+<li><p>the comparison always holds</p>
+</li>
+<li><p>expression <code>a[i]</code> will access a forbidden memory area.</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">sum_elements</span><span class="params">(<span class="keyword">float</span> a[], <span class="keyword">unsigned</span> length)</span> </span>&#123;      </span><br><span class="line">    <span class="keyword">unsigned</span> i;                  </span><br><span class="line">	<span class="keyword">float</span> result = <span class="number">0</span>;       </span><br><span class="line">                        </span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; length; i++)      </span><br><span class="line">	result += a[i];         </span><br><span class="line">	<span class="keyword">return</span> result;          </span><br><span class="line">&#125;   </span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-2-26"><a href="#Practice-Problem-2-26" class="headerlink" title="Practice Problem 2.26"></a>Practice Problem 2.26</h4><blockquote>
+<p>You are given the assignment of writing a function that determines whether one string is longer than another. You decide to make use of the string library function <code>strlen</code> having the following declaration:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Prototype for library function strlen */</span></span><br><span class="line"><span class="function"><span class="keyword">size_t</span> <span class="title">strlen</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *s)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>Here is your first attempt at the function:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Determine whether string s is longer than string t */</span></span><br><span class="line"><span class="comment">/* WARNING: This function is buggy */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">strlonger</span><span class="params">(<span class="keyword">char</span> *s, <span class="keyword">char</span> *t)</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="built_in">strlen</span>(s) - <span class="built_in">strlen</span>(t) &gt; <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>When you test this on some sample data, things do not seem to work quite right. You investigate further and determine that, when compiled as a 32-bit program, data type <code>size_t</code> is defined (via<code>typedef</code>) in header file <code>stdio.h</code> to be <code>unsigned</code>.</p>
+<p>A. For what cases will this function produce an incorrect result? </p>
+<p>B. Explain how this incorrect result comes about. </p>
+<p>C. Show how to fix the code so that it will work reliably.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-21"><a href="#My-solution-white-check-mark-21" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><p>A : if string s doesn’t have the same length with string t, the result will always be true</p>
+<p>B : when compare <code>unsigned</code> with <code>0</code>, the result will always be true</p>
+<p>C:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">strlonger</span><span class="params">(<span class="keyword">char</span> *s, <span class="keyword">char</span> *t)</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="built_in">strlen</span>(s) &gt; <span class="built_in">strlen</span>(t);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>We have seen multiple ways in which the subtle features of unsigned arithmetic, and especially the implicit conversion of signed to unsigned, can lead to errors or vulnerabilities.</p>
+<ul>
+<li>One way to avoid such bugs is to never use unsigned numbers. (In fact, few languages other than C support unsigned integers.)</li>
+<li>Unsigned values are very useful when we want to think of words as just collections of bits with no numeric interpretation.<ul>
+<li>when packing a word with flags describing various Boolean conditions.</li>
+<li>Addresses are naturally unsigned, so systems programmers find unsigned types to be helpful.</li>
+<li>Unsigned values are also useful when implementing mathematical packages for modular arithmetic and for multiprecision arithmetic, in which numbers are represented by arrays of words.</li>
+</ul>
+</li>
+</ul>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/06/10/CSAPP/Ch2/" data-id="ckqzg5p2700007kyqhyfr0d0b" data-title="Ch2" class="article-share-link">Compartir</a>
+      <a data-url="http://rubbish-and-world.github.io/2021/06/10/CSAPP/Ch2/" data-id="ckqzg5p2700007kyqhyfr0d0b" data-title="Ch2" class="article-share-link">Share</a>
       
       
       
@@ -497,7 +1626,7 @@
 <nav id="article-nav">
   
     <a href="/2021/07/12/miscellaneous/PyFAQ/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Nuevo</strong>
+      <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
           PyFAQ
@@ -507,7 +1636,7 @@
   
   
     <a href="/2021/06/10/CSAPP/Introduction/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Viejo</strong>
+      <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">Introduction</div>
     </a>
   
@@ -523,7 +1652,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Categorías</h3>
+    <h3 class="widget-title">Categories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/1-Whetting-your-appetite/">1.Whetting your appetite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/10-Brief-Tour-of-the-Standard-Library/">10.Brief Tour of the Standard Library</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/11-Brief-Tour-of-the-Standard-Library-%E2%80%94-Part-II/">11.Brief Tour of the Standard Library — Part II</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/12-Virtual-Environments-and-Packages/">12.Virtual Environments and Packages</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/13-What-Now-The-Rest-of-The-Tutorial/">13.What Now & The Rest of The Tutorial</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/2-Using-the-Python-Interpreter/">2.Using the Python Interpreter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/3-An-Informal-Introduction-to-Python/">3.An Informal Introduction to Python</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/4-More-Control-Flow-Tools/">4.More Control Flow Tools</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/5-Data-Structures/">5.Data Structures</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/6-Modules/">6.Modules</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/7-Input-and-Output/">7.Input and Output</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/8-Errors-and-Exceptions/">8.Errors and Exceptions</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/9-Classes/">9.Classes</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/introduction/">introduction</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
     </div>
@@ -543,7 +1672,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Nube de Tags</h3>
+    <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
       <a href="/tags/game/" style="font-size: 10px;">game</a>
     </div>
@@ -552,7 +1681,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archivos</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
     </div>
@@ -562,7 +1691,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Posts recientes</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
@@ -600,7 +1729,7 @@
     <div id="footer-info" class="inner">
       
       &copy; 2021 rubbish<br>
-      Construido por <a href="https://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
