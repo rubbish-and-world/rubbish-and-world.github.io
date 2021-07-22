@@ -13,10 +13,14 @@
 <meta property="og:site_name" content="rubbishbin">
 <meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Representing and Manipulating Information (Part II)">
 <meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/18/CSAPP/Ch2PartII/example.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/18/CSAPP/Ch2PartII/Example.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/18/CSAPP/Ch2PartII/solution.png">
 <meta property="article:published_time" content="2021-07-18T11:00:29.000Z">
-<meta property="article:modified_time" content="2021-07-18T11:09:43.928Z">
+<meta property="article:modified_time" content="2021-07-22T08:51:15.735Z">
 <meta property="article:author" content="rubbish">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/07/18/CSAPP/Ch2PartII/example.png">
   
     <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
   
@@ -61,12 +65,12 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Buscar"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
       </div>
     </div>
   </div>
@@ -104,11 +108,939 @@
 
 <h1 id="Representing-and-Manipulating-Information-Part-II"><a href="#Representing-and-Manipulating-Information-Part-II" class="headerlink" title="Representing and Manipulating Information (Part II)"></a>Representing and Manipulating Information (Part II)</h1><a id="more"></a>
 
+<h2 id="2-3-Integer-Arithmetic"><a href="#2-3-Integer-Arithmetic" class="headerlink" title="2.3 Integer Arithmetic"></a>2.3 Integer Arithmetic</h2><h3 id="2-3-1-Unsigned-Addition"><a href="#2-3-1-Unsigned-Addition" class="headerlink" title="2.3.1 Unsigned Addition"></a>2.3.1 Unsigned Addition</h3><p>Consider two nonnegative integers x and y, such that $0 ≤ x, y &lt; 2^w$. Each of these values can be represented by a w-bit unsigned number. If we compute their sum, however, we have a possible range $0 ≤ x + y ≤ 2^{w+1} − 2$. Representing this sum could require w + 1 bits.</p>
+<p> If we were to maintain the sum as a $(w + 1)$-bit number and add it to another value, we may require $w + 2$ bits, and so on. This continued <strong>“word size inflation”</strong> means we cannot place any bound on the word size required to fully represent the results of arithmetic operations. </p>
+<p>Some programming languages, such as Lisp, actually support arbitrary size arithmetic to allow integers of any size .More commonly, programming languages support fixed-size arithmetic.</p>
+<p>**Let us define the operation $+^u_w$ for arguments x and y, where 0 ≤ x, y &lt; $2^w$, as the result of truncating the integer sum x + y to be w bits long and then viewing the result as an unsigned number. **</p>
+<p><strong>This can be characterized as a form of <u>modular arithmetic</u>, computing the sum modulo $2^w$ by simply discarding any bits with weight greater than $2^{w−1}$ in the bit-level representation of x + y.</strong></p>
+<blockquote>
+<p>principle: Unsigned addition </p>
+<p>For x and y such that $0 ≤ x,y &lt; 2^w$:<br>$$<br>x + y = \begin{cases}<br>x+y , &amp; \text{normal}\<br>x+y-2^w , &amp;\text{overflow} , 2^w \le x+y &lt; 2 ^{w+1}<br>\end{cases}<br>$$</p>
+</blockquote>
+<blockquote>
+<p>principle: Detecting overflow of unsigned addition</p>
+<p>For x and y in the range $0 ≤ x,y ≤ UMax_w$, let $s = x +^u_w y$. Then the computation of s overflowed if and only if :<br>$$<br>s &lt; x<br>$$<br>or equivalently:<br>$$<br>s &lt; y<br>$$<br>derivation:</p>
+<p>If the computation is normal<br>$$<br>s = x+y \ge x<br>$$<br>Also, for w bits data<br>$$<br>UMax_w = 2^w-1 &lt; 2^w<br>$$<br>If overflow happens, s must smaller than x(y).</p>
+</blockquote>
+<hr>
+<h4 id="Practice-Problem-2-27"><a href="#Practice-Problem-2-27" class="headerlink" title="Practice Problem 2.27"></a>Practice Problem 2.27</h4><blockquote>
+<p>Write a function with the following prototype: </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Determine whether arguments can be added without overflow */</span> <span class="function"><span class="keyword">int</span> <span class="title">uadd_ok</span><span class="params">(<span class="keyword">unsigned</span> x, <span class="keyword">unsigned</span> y)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p> This function should return 1 if arguments x and y can be added without causing overflow.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark"><a href="#My-solution-white-check-mark" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">uadd_ok</span><span class="params">(<span class="keyword">unsigned</span> x, <span class="keyword">unsigned</span> y)</span></span>&#123;    </span><br><span class="line">    <span class="keyword">unsigned</span> sum = x + y ;    </span><br><span class="line">    <span class="keyword">return</span>  !(sum &lt; x);  </span><br><span class="line">&#125;    </span><br></pre></td></tr></table></figure>
+<hr>
+<blockquote>
+<p>principle: Unsigned negation</p>
+<p>For any number x such that $0 ≤ x &lt; 2^w$, its w-bit unsigned negation $-^u_w$ x is given by the following:<br>$$<br>-^u_wx = \begin{cases}x,&amp;x = 0\<br>2^w-x,&amp; \text{otherwise}<br>\end{cases}<br>$$<br>derivation:</p>
+<p>Since unsigned addition use a modulo strategy, we have an abelian group. Therefore, the inverse of x has the property that:<br>$$<br>(-x +x) \mod 2^w = 0<br>$$</p>
+</blockquote>
+<h4 id="Practice-Problem-2-28"><a href="#Practice-Problem-2-28" class="headerlink" title="Practice Problem 2.28"></a>Practice Problem 2.28</h4><blockquote>
+<p>We can represent a bit pattern of length w = 4 with a single hex digit. For an unsigned interpretation of these digits, use Equation 2.12 to fill in the following table giving the values and the bit representations (in hex) of the unsigned additive inverses of the digits shown.</p>
+<p>x:</p>
+<table>
+<thead>
+<tr>
+<th>Hex</th>
+<th>Decimal</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td></td>
+</tr>
+<tr>
+<td>A</td>
+<td></td>
+</tr>
+<tr>
+<td>E</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>-x:</p>
+<table>
+<thead>
+<tr>
+<th>Hex</th>
+<th>Decimal</th>
+</tr>
+</thead>
+<tbody><tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-1"><a href="#My-solution-white-check-mark-1" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><p>x:</p>
+<table>
+<thead>
+<tr>
+<th>Hex</th>
+<th>Decimal</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>7</td>
+<td>7</td>
+</tr>
+<tr>
+<td>A</td>
+<td>10</td>
+</tr>
+<tr>
+<td>E</td>
+<td>14</td>
+</tr>
+</tbody></table>
+<p>-x:</p>
+<table>
+<thead>
+<tr>
+<th>Hex</th>
+<th>Decimal</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>F</td>
+<td>15</td>
+</tr>
+<tr>
+<td>C</td>
+<td>12</td>
+</tr>
+<tr>
+<td>9</td>
+<td>9</td>
+</tr>
+<tr>
+<td>6</td>
+<td>6</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="2-3-2-Two’s-Complement-Addition"><a href="#2-3-2-Two’s-Complement-Addition" class="headerlink" title="2.3.2 Two’s-Complement Addition"></a>2.3.2 Two’s-Complement Addition</h4><p> Given integer values x and y in the range $−2^{w−1} ≤ x, y ≤ 2^{w−1} − 1$, their sum is in the range $−2^w ≤ x + y ≤ 2^{w} − 2$, potentially requiring w + 1 bits to represent exactly.</p>
+<p>We truncate the result by dropping the leading bit, then view it as 2’s complement</p>
+<blockquote>
+<p>principle: Two’s-complement addition</p>
+<p>For integer values x and y in the range $−2^{w−1} ≤ x,y ≤ 2^{w−1} − 1$:<br>$$<br>x +^t_w y = \begin{cases}<br>x+y-2^w , &amp; 2^{w-1} \le x+y  , &amp;\text{positive overflow}\<br>x+y , &amp;−2^{w−1} ≤ x+y ≤ 2^{w−1} − 1 , &amp;\text{normal}\<br>x+y+2^w , &amp;x+y &lt; -2^{w-1} , &amp;\text{negative overflow}<br>\end{cases}<br>$$<br><strong>The w-bit two’s-complement sum of two numbers has the exact SAME bit-level representation as the unsigned sum.</strong></p>
+<p>Derivation:</p>
+<p>Since two’s-complement addition has the exact same bit-level representation as unsigned addition, we can characterize the operation $+^t_w$ as one of <em>converting its arguments to unsigned, performing unsigned addition, and then converting back to two’s complement</em>:<br>$$<br>x +^t_wy= U2T_w(T2U_w(x)+^u_wT2U_w(y))\<br>=U2T_w([(x_{w−1}2^w + x + y_{w−1}2^w + y) \mod 2^w])\<br>=U2T_w(x+y \mod 2^w)<br>$$<br><img src="/2021/07/18/CSAPP/Ch2PartII/example.png" alt="example"></p>
+</blockquote>
+<blockquote>
+<p>principle: Detecting overflow in two’s-complement addition</p>
+<p>For x and y in the range $TMin_w ≤ x,y ≤ TMax_w$, let $s = x +^t_w y$. Then the computation of s </p>
+<ul>
+<li>has had positive overflow if and only if x &gt; 0 and y &gt; 0 but s ≤ 0. </li>
+<li>has had negative overflow if and only if x &lt; 0 and y &lt; 0 but s ≥ 0.</li>
+</ul>
+</blockquote>
+<h4 id="Practice-Problem-2-29"><a href="#Practice-Problem-2-29" class="headerlink" title="Practice Problem 2.29"></a>Practice Problem 2.29</h4><blockquote>
+<p>Fill in the following table in the style of Figure 2.25. Give the integer values of the 5-bit arguments, the values of both their integer and two’s-complement sums, the bit-level representation of the two’s-complement sum, and the case from the derivation of Equation 2.13.</p>
+<table>
+<thead>
+<tr>
+<th>x</th>
+<th>y</th>
+<th>x+y</th>
+<th>$x+^t_w y $</th>
+<th>Case</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10100</td>
+<td>10001</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>11000</td>
+<td>11000</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10111</td>
+<td>01000</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>00010</td>
+<td>00101</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>01100</td>
+<td>00100</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-2"><a href="#My-solution-white-check-mark-2" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><table>
+<thead>
+<tr>
+<th>x</th>
+<th>y</th>
+<th>x+y</th>
+<th>$x+^t_w y $</th>
+<th>Case</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10100</td>
+<td>10001</td>
+<td>100101</td>
+<td>00101</td>
+<td></td>
+</tr>
+<tr>
+<td>-12</td>
+<td>-15</td>
+<td>-27</td>
+<td>5</td>
+<td>1</td>
+</tr>
+<tr>
+<td>11000</td>
+<td>11000</td>
+<td>110000</td>
+<td>10000</td>
+<td></td>
+</tr>
+<tr>
+<td>-8</td>
+<td>-8</td>
+<td>-16</td>
+<td>-16</td>
+<td>2</td>
+</tr>
+<tr>
+<td>10111</td>
+<td>01000</td>
+<td>11111</td>
+<td>11111</td>
+<td></td>
+</tr>
+<tr>
+<td>-9</td>
+<td>8</td>
+<td>-1</td>
+<td>-1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>00010</td>
+<td>00101</td>
+<td>00111</td>
+<td>00111</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>5</td>
+<td>7</td>
+<td>7</td>
+<td>3</td>
+</tr>
+<tr>
+<td>01100</td>
+<td>00100</td>
+<td>10000</td>
+<td>10000</td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td>4</td>
+<td>16</td>
+<td>-16</td>
+<td>4</td>
+</tr>
+</tbody></table>
+<h4 id="Practice-Problem-2-30"><a href="#Practice-Problem-2-30" class="headerlink" title="Practice Problem 2.30:"></a>Practice Problem 2.30:</h4><blockquote>
+<p>Write a function with the following prototype: </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Determine whether arguments can be added without overflow */</span> <span class="function"><span class="keyword">int</span> <span class="title">tadd_ok</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>; </span><br></pre></td></tr></table></figure>
+
+<p>This function should return 1 if arguments x and y can be added without causing overflow.</p>
+</blockquote>
+<h4 id="My-solution-warning"><a href="#My-solution-warning" class="headerlink" title="My solution: :warning:"></a>My solution: :warning:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">tadd_ok</span><span class="params">(<span class="keyword">int</span> x , <span class="keyword">int</span> y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> sum = x + y ;</span><br><span class="line">    <span class="keyword">if</span> ( (x &gt; <span class="number">0</span> &amp;&amp; y &gt; <span class="number">0</span> &amp;&amp; sum  &lt;= <span class="number">0</span> ) ||</span><br><span class="line">        (x &lt; <span class="number">0</span> &amp;&amp; y &lt; <span class="number">0</span> &amp;&amp; sum &gt;= <span class="number">0</span>) ) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Solution-on-the-book"><a href="#Solution-on-the-book" class="headerlink" title="Solution on the book:"></a>Solution on the book:</h4><p>This function is a direct implementation of the rules given to determine whether or not a two’s-complement addition overflows.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Determine whether arguments can be added without overflow */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">tadd_ok</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line"><span class="keyword">int</span> sum = x+y;</span><br><span class="line"><span class="keyword">int</span> neg_over = x &lt; <span class="number">0</span> &amp;&amp; y &lt; <span class="number">0</span> &amp;&amp; sum &gt;= <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> pos_over = x &gt;= <span class="number">0</span> &amp;&amp; y &gt;= <span class="number">0</span> &amp;&amp; sum &lt; <span class="number">0</span>;</span><br><span class="line"><span class="keyword">return</span> !neg_over &amp;&amp; !pos_over;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-2-31"><a href="#Practice-Problem-2-31" class="headerlink" title="Practice Problem 2.31"></a>Practice Problem 2.31</h4><blockquote>
+<p>Your coworker gets impatient with your analysis of the overflow conditions for two’s-complement addition and presents you with the following implementation of tadd_ok:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Determine whether arguments can be added without overflow */</span></span><br><span class="line"><span class="comment">/* WARNING: This code is buggy. */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">tadd_ok</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line"><span class="keyword">int</span> sum = x+y;</span><br><span class="line"><span class="keyword">return</span> (sum-x == y) &amp;&amp; (sum-y == x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>You look at the code and laugh. Explain why.</p>
+</blockquote>
+<h4 id="My-solution-x"><a href="#My-solution-x" class="headerlink" title="My solution: :x:"></a>My solution: :x:</h4><p>assume both x and y are positive numbers, and the sum of them gets a positive overflow so the result is now negative. When doing <code>sum-x</code>, it is equivalent to <code>sum + (-x)</code>, negative overflow might(<span style="color:red">must</span>) happen and the result will be positive, so there possible some value can breach the function.</p>
+<p><span style="color:red">all value breach the function</span></p>
+<h4 id="Solution-on-the-book-1"><a href="#Solution-on-the-book-1" class="headerlink" title="Solution on the book:"></a>Solution on the book:</h4><p>Your coworker could have learned, by studying Section 2.3.2, that two’scomplement addition forms an abelian group, and so the expression <code>(x+y)-x </code>will evaluate to y <strong>regardless of whether or not the addition overflows</strong>, and that <code>(x+y)-y</code> will always evaluate to x.</p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/a/11464365">More details</a></p>
+<p><span style="color:red">signed addition has no difference with unsigned addition in bit level!</span></p>
+<h4 id="Practice-Problem-2-32"><a href="#Practice-Problem-2-32" class="headerlink" title="Practice Problem 2.32"></a>Practice Problem 2.32</h4><blockquote>
+<p>You are assigned the task of writing code for a function tsub_ok, with arguments x and y, that will return 1 if computing x-y does not cause overflow. Having just written the code for Problem 2.30, you write the following:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Determine whether arguments can be subtracted without overflow */</span></span><br><span class="line"><span class="comment">/* WARNING: This code is buggy. */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">tsub_ok</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> tadd_ok(x, -y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>For what values of x and y will this function give incorrect results?</p>
+</blockquote>
+<h4 id="My-solution-warning-1"><a href="#My-solution-warning-1" class="headerlink" title="My solution :  :warning:"></a>My solution :  :warning:</h4><p>For the reason that TMin’s inverse is itself, we have the following expressions.</p>
+<p>if <code>y=INT32_MIN</code>, <code>-y=INT32_MIN</code></p>
+<p>the <code>tadd_ok</code> actually test <code>x+INT32_MIN</code> rather than <code>x-INT32_MIN</code></p>
+<h4 id="Solution-on-the-book-2"><a href="#Solution-on-the-book-2" class="headerlink" title="Solution on the book:"></a>Solution on the book:</h4><p>This function will give correct values, except when y is TMin. In this case, we will have -y also equal to TMin, and so the call to function <code>tadd_ok</code> will indicate overflow when x is negative and no overflow when x is nonnegative. </p>
+<p>In fact, the opposite is true: <code>tsub_ok(x, TMin)</code> should yield 0 when x is negative and 1 when it is nonnegative. </p>
+<p><strong><em>One lesson to be learned from this exercise is that TMin should be included as one of the cases in any test procedure for a function.</em></strong></p>
+<hr>
+<h3 id="2-3-3-Two’s-Complement-Negation"><a href="#2-3-3-Two’s-Complement-Negation" class="headerlink" title="2.3.3 Two’s-Complement Negation"></a>2.3.3 Two’s-Complement Negation</h3><p>We can see that every number x in the range $TMin_w ≤ x ≤ TMax_w$ has an <strong>additive inverse</strong> under $+^t_w$</p>
+<blockquote>
+<p>principle: Two’s-complement negation<br>$$<br>-^t_wx= \begin{cases}<br>TMin_w , &amp; x= TMin_w\<br>-x , &amp; \text{otherwise}<br>\end{cases}<br>$$</p>
+</blockquote>
+<h4 id="Practice-Problem-2-33"><a href="#Practice-Problem-2-33" class="headerlink" title="Practice Problem 2.33"></a>Practice Problem 2.33</h4><blockquote>
+<p>We can represent a bit pattern of length w = 4 with a single hex digit. For a two’scomplement interpretation of these digits, fill in the following table to determine the additive inverses of the digits shown:</p>
+<table>
+<thead>
+<tr>
+<th>Hex of x</th>
+<th>Decimal of x</th>
+<th>Decimal of -x</th>
+<th>Hex of -x</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>b</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>c</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>What do you observe about the bit patterns generated by two’s-complement and unsigned negation?</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-3"><a href="#My-solution-white-check-mark-3" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><table>
+<thead>
+<tr>
+<th>Hex of x</th>
+<th>Decimal of x</th>
+<th>Decimal of -x</th>
+<th>Hex of -x</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2</td>
+<td>2</td>
+<td>-2</td>
+<td>e</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+<td>-3</td>
+<td>d</td>
+</tr>
+<tr>
+<td>9</td>
+<td>-7</td>
+<td>7</td>
+<td>7</td>
+</tr>
+<tr>
+<td>b</td>
+<td>-5</td>
+<td>5</td>
+<td>5</td>
+</tr>
+<tr>
+<td>c</td>
+<td>-4</td>
+<td>4</td>
+<td>4</td>
+</tr>
+</tbody></table>
+<p>At bit representation perspective, unsigned negation and signed negation are the same</p>
+<h3 id="2-3-4-Unsigned-Multiplication"><a href="#2-3-4-Unsigned-Multiplication" class="headerlink" title="2.3.4 Unsigned Multiplication"></a>2.3.4 Unsigned Multiplication</h3><p>Integers x and y in the range $0 ≤ x, y ≤ 2^{w} − 1$ can be represented as w-bit unsigned numbers, but their product $x \cdot y$ can range between 0 and $(2^w − 1)^2 = 2^{2w} − 2^{w+1} + 1$. This could require as many as 2w bits to represent.</p>
+<p>Instead, unsigned multiplication in C is defined to yield the w-bit value given by the low-order w bits of the 2w-bit integer product.</p>
+<p>We just truncate the high-order w bits.</p>
+<blockquote>
+<p>principle: Unsigned multiplication</p>
+<p>For x and y such that $0 ≤ x,y ≤ UMax_w$:<br>$$<br>x *^u_w y = (x\cdot y) \mod 2^w<br>$$</p>
+</blockquote>
+<h5 id="Example"><a href="#Example" class="headerlink" title="Example:"></a>Example:</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> a = <span class="number">300</span>  , b = <span class="number">400</span>  , c = <span class="number">500</span>  , d = <span class="number">600</span> ;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> product = a * b * c *d ;</span><br><span class="line">    <span class="built_in">printf</span>((<span class="string">&quot;%u\n&quot;</span>) , product);</span><br><span class="line">    <span class="keyword">return</span>  <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//1640261632</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> bitstring <span class="keyword">import</span> BitArray <span class="keyword">as</span> ba</span><br><span class="line">product = <span class="number">300</span> * <span class="number">400</span> * <span class="number">500</span> * <span class="number">600</span></span><br><span class="line">print(product)</span><br><span class="line">p = ba(uint = product , length=<span class="number">64</span>)</span><br><span class="line">print(p.<span class="built_in">bin</span>)</span><br><span class="line">truncated = ba(<span class="built_in">bin</span>=p.<span class="built_in">bin</span>[<span class="number">32</span>:])</span><br><span class="line">print(truncated.uint)</span><br><span class="line"><span class="comment">#36000000000</span></span><br><span class="line"><span class="comment">#0000000000000000000000000000100001100001110001000110100000000000</span></span><br><span class="line"><span class="comment">#1640261632</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-3-5-Two’s-Complement-Multiplication"><a href="#2-3-5-Two’s-Complement-Multiplication" class="headerlink" title="2.3.5 Two’s-Complement Multiplication"></a>2.3.5 Two’s-Complement Multiplication</h3><p>Integers x and y in the range $−2^{w−1} ≤ x,y ≤ 2^{w−1} − 1$ can be represented as w-bit two’s-complement numbers, but their product x . y can range between $−2^{w−1} \cdot (2^{w−1} − 1) = −2^{2w−2} + 2^{w−1}$ and $−2^{w−1} \cdot −2^{w−1} = 2^{2w−2}$. This could require as many as 2w bits to represent in two’s-complement form.</p>
+<p>signed multiplication in C generally is performed by truncating the 2w-bit product to w bits.</p>
+<p>We just truncate the high-order w bits.</p>
+<p>This is same with perform unsigned multiplication first and then convert it to 2’ complement.</p>
+<blockquote>
+<p>principle: Two’s-complement multiplication</p>
+<p>For x and y such that $TMin_w ≤ x,y ≤ TMax_w$:<br>$$<br>x *^t_w y = U2T_w((x \cdot y) \mod 2^w)<br>$$</p>
+</blockquote>
+<p>We claim that the bit-level representation of the product operation is <strong>identical</strong> for both unsigned and two’s-complement multiplication.</p>
+<blockquote>
+<p>principle: Bit-level equivalence of unsigned and two’s-complement multiplication<br>$$<br>T2B_w(x  *^t_w y ) = U2B_w(x *^u_w y)<br>$$<br>The bitlevel representations of both truncated products are identical for both unsigned and two’s-complement multiplication, even though the full 6-bit representations differ.</p>
+<p><img src="/2021/07/18/CSAPP/Ch2PartII/Example.png" alt="Example"></p>
+<p>Derivation:</p>
+<p>assume $x’ ,y’$ are unsigned number , $x,y$ are unsigned conterpart of them.<br>$$<br>(x’ \cdot y’) \mod 2^w  = [(x + x_{w−1}2^w) . (y + y_{w−1}2^w)] \mod 2^w\<br>=(x . y) \mod 2^w<br>$$</p>
+</blockquote>
+<h4 id="Practice-Problem-2-34"><a href="#Practice-Problem-2-34" class="headerlink" title="Practice Problem 2.34"></a>Practice Problem 2.34</h4><blockquote>
+<p>Fill in the following table showing the results of multiplying different 3-bit numbers, in the style of Figure 2.27:</p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>x</th>
+<th>x binary</th>
+<th>y</th>
+<th>y binary</th>
+<th>x*y</th>
+<th>x*y binray</th>
+<th>truncated x*y</th>
+<th>truncated x*y binary</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Unsigned</td>
+<td></td>
+<td>[100]</td>
+<td></td>
+<td>[101]</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2’s complement</td>
+<td></td>
+<td>[100]</td>
+<td></td>
+<td>[101]</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Unsigned</td>
+<td></td>
+<td>[010]</td>
+<td></td>
+<td>[111]</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2’s complement</td>
+<td></td>
+<td>[010]</td>
+<td></td>
+<td>[111]</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Unsigned</td>
+<td></td>
+<td>[110]</td>
+<td></td>
+<td>[110]</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2’s complement</td>
+<td></td>
+<td>[110]</td>
+<td></td>
+<td>[110]</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-4"><a href="#My-solution-white-check-mark-4" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>x</th>
+<th>x binary</th>
+<th>y</th>
+<th>y binary</th>
+<th>x*y</th>
+<th>x*y binray</th>
+<th>truncated x*y</th>
+<th>truncated x*y binary</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Unsigned</td>
+<td>4</td>
+<td>[100]</td>
+<td>5</td>
+<td>[101]</td>
+<td>20</td>
+<td>[010100]</td>
+<td>4</td>
+<td>[100]</td>
+</tr>
+<tr>
+<td>2’s complement</td>
+<td>-4</td>
+<td>[100]</td>
+<td>-3</td>
+<td>[101]</td>
+<td>12</td>
+<td>[001100]</td>
+<td>-4</td>
+<td>[100]</td>
+</tr>
+<tr>
+<td>Unsigned</td>
+<td>2</td>
+<td>[010]</td>
+<td>7</td>
+<td>[111]</td>
+<td>14</td>
+<td>[001110]</td>
+<td>6</td>
+<td>[110]</td>
+</tr>
+<tr>
+<td>2’s complement</td>
+<td>2</td>
+<td>[010]</td>
+<td>-1</td>
+<td>[111]</td>
+<td>-2</td>
+<td>[111110]</td>
+<td>-2</td>
+<td>[110]</td>
+</tr>
+<tr>
+<td>Unsigned</td>
+<td>6</td>
+<td>[110]</td>
+<td>6</td>
+<td>[110]</td>
+<td>36</td>
+<td>[100100]</td>
+<td>4</td>
+<td>[100]</td>
+</tr>
+<tr>
+<td>2’s complement</td>
+<td>-2</td>
+<td>[110]</td>
+<td>-2</td>
+<td>[110]</td>
+<td>4</td>
+<td>[000100]</td>
+<td>-4</td>
+<td>[100]</td>
+</tr>
+</tbody></table>
+<h4 id="Practice-Problem-2-35"><a href="#Practice-Problem-2-35" class="headerlink" title="Practice Problem 2.35"></a>Practice Problem 2.35</h4><blockquote>
+<p>You are given the assignment to develop code for a function <code>tmult_ok</code> that will determine whether two arguments can be multiplied without causing overflow. Here is your solution:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Determine whether arguments can be multiplied without overflow */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">tmult_ok</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line"><span class="keyword">int</span> p = x*y;</span><br><span class="line"><span class="comment">/* Either x is zero, or dividing p by x gives y */</span></span><br><span class="line"><span class="keyword">return</span> !x || p/x == y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>You test this code for a number of values of x and y, and it seems to work properly. Your coworker challenges you, saying, “If I can’t use subtraction to test whether addition has overflowed (see Problem 2.31), then how can you use division to test whether multiplication has overflowed?”</p>
+<p>Devise a mathematical justification of your approach, along the following lines. First, argue that the case x = 0 is handled correctly. </p>
+<p>Otherwise, consider w-bit numbers x (x $\ne$ 0), y, p, and q, where p is the result of performing two’scomplement multiplication on x and y, and q is the result of dividing p by x.</p>
+<ol>
+<li><p>Show that $x \cdot y$, the integer product of x and y, can be written in the form $x \cdot y = p + t2^w$, where t $\ne$ 0 if and only if the computation of p overflows.</p>
+</li>
+<li><p>Show that p can be written in the form $p = x \cdot q + r$, where |r| &lt; |x|. </p>
+</li>
+<li><p>Show that q = y if and only if r = t = 0.</p>
+</li>
+</ol>
+</blockquote>
+<h4 id="My-solution-warning-2"><a href="#My-solution-warning-2" class="headerlink" title="My solution: :warning:"></a>My solution: :warning:</h4><p>if x is 0 , <code>!x</code> is true, the function works fine.</p>
+<p>Otherwise:</p>
+<p>if overflow happens<br>$$<br>\because p = x\cdot y \mod 2 ^w<br>$$</p>
+<p>$$<br>\therefore x\cdot y = p + t\cdot 2^w , t\ne 0<br>$$</p>
+<p>in C integer division gives integer , assume <code>p/x =q </code><br>$$<br>\therefore p = x \cdot q + r<br>$$</p>
+<p>$$<br>\therefore x \cdot y  = x \cdot q + r + t\cdot 2^w<br>$$</p>
+<p>$$<br>\therefore y = q + \frac{r}{x} + \frac{t\cdot 2^w}{x} \text{(here is why we need to check whether x = 0)}<br>$$</p>
+<p>if and only if r=t=0 gives y = q.</p>
+<h4 id="Solution-on-the-book-3"><a href="#Solution-on-the-book-3" class="headerlink" title="Solution on the book:"></a>Solution on the book:</h4><p><img src="/2021/07/18/CSAPP/Ch2PartII/solution.png" alt="solution"></p>
+<h4 id="Practice-Problem-2-36"><a href="#Practice-Problem-2-36" class="headerlink" title="Practice Problem 2.36"></a>Practice Problem 2.36</h4><blockquote>
+<p>For the case where data type int has 32 bits, devise a version of <code>tmult_ok</code> (Problem 2.35) that uses the 64-bit precision of data type int64_t, without using division.</p>
+</blockquote>
+<h4 id="My-solution-warning-3"><a href="#My-solution-warning-3" class="headerlink" title="My solution: :warning:"></a>My solution: :warning:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Determine whether arguments can be multiplied without overflow */</span>    </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">tmult_ok</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>&#123;                  </span><br><span class="line">    <span class="keyword">int64_t</span> p = (<span class="keyword">int64_t</span>)x * (<span class="keyword">int64_t</span>)y;     </span><br><span class="line">    <span class="keyword">int</span> product = x * y ;                                                           </span><br><span class="line">    <span class="keyword">int64_t</span> prod = (<span class="keyword">int64_t</span>)product;                                                </span><br><span class="line">    <span class="keyword">return</span>   !(prod ^ p);                                                           </span><br><span class="line">&#125;        </span><br></pre></td></tr></table></figure>
+<h4 id="Solution-on-the-book-4"><a href="#Solution-on-the-book-4" class="headerlink" title="Solution on the book :"></a>Solution on the book :</h4><p>With 64 bits, we can perform the multiplication without overflowing. We then test whether casting the product to 32 bits changes the value:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Determine whether the arguments can be multiplied</span></span><br><span class="line"><span class="comment"> without overflow */</span></span><br><span class="line"> <span class="function"><span class="keyword">int</span> <span class="title">tmult_ok</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line"> <span class="comment">/* Compute product without overflow */</span></span><br><span class="line"> <span class="keyword">int64_t</span> pll = (<span class="keyword">int64_t</span>) x*y;</span><br><span class="line"> <span class="comment">/* See if casting to int preserves value */</span></span><br><span class="line"> <span class="keyword">return</span> pll == (<span class="keyword">int</span>) pll;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>Note that the casting on the right-hand side of line 5 is critical. If we instead wrote the line as <code>int64_t pll = x*y;</code></p>
+<p>the product would be computed as a 32-bit value (possibly overflowing) and then sign extended to 64 bits.</p>
+<h4 id="Practice-Problem-2-37"><a href="#Practice-Problem-2-37" class="headerlink" title="Practice Problem 2.37"></a>Practice Problem 2.37</h4><blockquote>
+<p>You are given the task of patching the vulnerability in the XDR code shown in the aside on page 136 for the case where both data types <code>int</code> and <code>size_t</code> are 32 bits. You decide to eliminate the possibility of the multiplication overflowing by computing the number of bytes to allocate using data type <code>uint64_t</code>. You replace the original call to <code>malloc (line 9)</code> as follows:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">uint64_t</span> asize = ele_cnt * (<span class="keyword">uint64_t</span>) ele_size;</span><br><span class="line"><span class="keyword">void</span> *result = <span class="built_in">malloc</span>(asize);</span><br></pre></td></tr></table></figure>
+
+<p>Recall that the argument to malloc has type <code>size_t</code>. </p>
+<p>A. Does your code provide any improvement over the original? </p>
+<p>B. How would you change the code to eliminate the vulnerability?</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-5"><a href="#My-solution-white-check-mark-5" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><p>A : It doesn’t. Since the <code>malloc</code> has argument type <code>size_t</code> which is 32 bits, convert from <code>uint64_t</code> to <code>size_t</code> still truncate the high-order 32 bits.</p>
+<p>B : If overflow happens, there is no way to handle the situation correctly.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">uint64_t</span> asize = ele_cnt * (<span class="keyword">uint64_t</span>) ele_size;</span><br><span class="line"><span class="keyword">if</span> (asize != (<span class="keyword">size_t</span>)asize) <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">void</span> * result = <span class="built_in">malloc</span>(asize);</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-6-Multiplying-by-Constants"><a href="#2-3-6-Multiplying-by-Constants" class="headerlink" title="2.3.6 Multiplying by Constants"></a>2.3.6 Multiplying by Constants</h3><p>Historically, the integer <strong>multiply instruction</strong> on many machines was fairly <strong>slow</strong>, requiring 10 or more clock cycles, whereas <strong>other integer operations</strong>—such as addition, subtraction, bit-level operations, and shifting—required <strong>only 1 clock cycle.</strong> </p>
+<p> As a consequence, one <strong>important optimization</strong> used by compilers is to attempt to replace multiplications by constant factors with combinations of shift and addition operations.</p>
+<blockquote>
+<p>principle: Multiplication by a power of 2</p>
+<p>Let x be the unsigned integer represented by bit pattern $[x_{w−1}, x_{w−2},…,x_0]$. Then for any k ≥ 0, the w + k-bit unsigned representation of $x2^k$ is given by $[x_{w−1}, x_{w−2},…,x_0, 0,…, 0]$, where k zeros have been added to the right.</p>
+</blockquote>
+<blockquote>
+<p>principle: Unsigned multiplication by a power of 2</p>
+<p>For C variables x and k with unsigned values x and k, such that 0 ≤ k &lt; w, the C expression <code>x &lt;&lt; k</code> yields the value $x *^u_w 2^k$</p>
+</blockquote>
+<p>Since the bit-level operation of fixed-size two’s-complement arithmetic is equivalent to that for unsigned arithmetic, we can make a similar statement about the relationship between left shifts and multiplication by a power of 2 for two’scomplement arithmetic:</p>
+<blockquote>
+<p>principle: Two’s-complement multiplication by a power of 2</p>
+<p>For C variables x and k with two’s-complement value x and unsigned value k, such that 0 ≤ k &lt; w , the C expression <code>x &lt;&lt; k</code> yields the value $x *^t_w 2 ^ k $.</p>
+</blockquote>
+<p>For example, suppose a program contains the expression <code>x*14</code>. Recognizing that $14 = 2^3 + 2^2 + 2^1$, the compiler can rewrite the multiplication as <code>(x&lt;&lt;3) + (x&lt;&lt;2) + (x&lt;&lt;1)</code>, replacing one multiplication with three shifts and two additions</p>
+<p> Even better, the compiler can also use the property $14 = 2^4 − 2^1$ to rewrite the multiplication as <code>(x&lt;&lt;4) - (x&lt;&lt;1)</code>, requiring only two shifts and a subtraction.</p>
+<h4 id="Practice-Problem-2-38"><a href="#Practice-Problem-2-38" class="headerlink" title="Practice Problem 2.38"></a>Practice Problem 2.38</h4><blockquote>
+<p>As we will see in Chapter 3, the <code>lea</code> instruction can perform computations of the form <code>(a &lt;&lt; k) + b</code>, where k s either 0, 1, 2, or 3, and b is either 0 or some program value. The compiler often uses this instruction to perform multiplications by constant factors. For example, we can compute <code>3*a</code> as <code>(a&lt;&lt;1) + a</code>.</p>
+<p>Considering cases where b is either 0 or equal to a, and all possible values of k, what multiples of <code>a</code> can be computed with a single <code>lea</code> instruction?</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-6"><a href="#My-solution-white-check-mark-6" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><p>when b is 0:</p>
+<table>
+<thead>
+<tr>
+<th>k</th>
+<th>expression</th>
+<th>result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>a &lt;&lt; 0</td>
+<td>a</td>
+</tr>
+<tr>
+<td>1</td>
+<td>a &lt;&lt; 1</td>
+<td>2a</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a &lt;&lt; 2</td>
+<td>4a</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a &lt;&lt; 3</td>
+<td>8a</td>
+</tr>
+</tbody></table>
+<p>when b equals to a:</p>
+<table>
+<thead>
+<tr>
+<th>k</th>
+<th>expression</th>
+<th>result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>a &lt;&lt; 0 + a</td>
+<td>2a</td>
+</tr>
+<tr>
+<td>1</td>
+<td>a &lt;&lt; 1 + a</td>
+<td>3a</td>
+</tr>
+<tr>
+<td>2</td>
+<td>a &lt;&lt; 2 + a</td>
+<td>5a</td>
+</tr>
+<tr>
+<td>3</td>
+<td>a &lt;&lt; 3 + a</td>
+<td>9a</td>
+</tr>
+</tbody></table>
+<hr>
+<p>Generalizing from our example, consider the task of <strong><em>generating code for the expression <code>x * K</code>, for some constant K</em></strong></p>
+<ol>
+<li><p>The compiler can express the binary representation of K as an alternating sequence of zeros and ones : [(0 … 0) (1 … 1) (0 … 0) … (1 … 1)]</p>
+</li>
+<li><p>Consider a run of ones from bit position n down to bit position m (n ≥ m).</p>
+<p>For example, 14 can be written as [(0 … 0)(111)(0)],we have (n = 3 and m = 1.)</p>
+</li>
+<li><p>We can compute the effect of these bits on the product using either of two different forms:</p>
+<p>Form A: <code>(x&lt;&lt;n) + (x &lt;&lt; (n-1)) + ... + (x &lt;&lt; m)</code></p>
+<p>Form B:<code>(x&lt;&lt;(n+1)) - (x&lt;&lt;m)</code> </p>
+</li>
+</ol>
+<p>Of course, the trade-off between using combinations of shifting, adding, and subtracting versus a single multiplication instruction depends on the relative speeds of these instructions, and these can be highly machine dependent. </p>
+<p>Most compilers only perform this optimization when a <strong>small number of shifts, adds, and subtractions suffice</strong>.</p>
+<h4 id="Practice-Problem-2-39"><a href="#Practice-Problem-2-39" class="headerlink" title="Practice Problem 2.39"></a>Practice Problem 2.39</h4><blockquote>
+<p>How could we modify the expression for form B for the case where bit position n is the most significant bit?</p>
+</blockquote>
+<h4 id="My-solution-x-1"><a href="#My-solution-x-1" class="headerlink" title="My solution : :x:"></a>My solution : :x:</h4><h4 id="Solution-on-the-book-5"><a href="#Solution-on-the-book-5" class="headerlink" title="Solution on the book :"></a>Solution on the book :</h4><p>The expression simply becomes <code>-(x&lt;&lt;m)</code>. To see this, let the word size be w so that n = w − 1. Form B states that we should compute <code>(x&lt;&lt;w)-(x&lt;&lt;m)</code>, but shifting x to the left by w will yield the value 0.</p>
+<h4 id="Practice-Problem-2-40"><a href="#Practice-Problem-2-40" class="headerlink" title="Practice Problem 2.40"></a>Practice Problem 2.40</h4><blockquote>
+<p>For each of the following values of K, find ways to express <code>x * K</code> using only the specified number of operations, where we consider both additions and subtractions to have comparable cost. You may need to use some tricks beyond the simple form A and B rules we have considered so far.</p>
+<table>
+<thead>
+<tr>
+<th>K</th>
+<th>Shifts</th>
+<th>Add/Subs</th>
+<th>Expression</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>7</td>
+<td>1</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>30</td>
+<td>4</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td>28</td>
+<td>2</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>55</td>
+<td>2</td>
+<td>2</td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-7"><a href="#My-solution-white-check-mark-7" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><table>
+<thead>
+<tr>
+<th>K</th>
+<th>Shifts</th>
+<th>Add/Subs</th>
+<th>Expression</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>7</td>
+<td>1</td>
+<td>1</td>
+<td><code>(x&lt;&lt;3)-x</code></td>
+</tr>
+<tr>
+<td>30</td>
+<td>4</td>
+<td>3</td>
+<td><code>(x&lt;&lt;4)+(x&lt;&lt;3)+(x&lt;&lt;2)+(x&lt;&lt;1)</code></td>
+</tr>
+<tr>
+<td>28</td>
+<td>2</td>
+<td>1</td>
+<td><code>(x&lt;&lt;5)-(x&lt;&lt;2)</code></td>
+</tr>
+<tr>
+<td>55</td>
+<td>2</td>
+<td>2</td>
+<td><code>(x&lt;&lt;6)-(x&lt;&lt;3)-x</code></td>
+</tr>
+</tbody></table>
+<h4 id="Practice-Problem-2-41"><a href="#Practice-Problem-2-41" class="headerlink" title="Practice Problem 2.41"></a>Practice Problem 2.41</h4><blockquote>
+<p>For a run of ones starting at bit position n down to bit position m (n ≥ m), we saw that we can generate two forms of code, A and B. How should the compiler decide which form to use?</p>
+</blockquote>
+<h4 id="My-solution-x-2"><a href="#My-solution-x-2" class="headerlink" title="My solution: :x:"></a>My solution: :x:</h4><p>when K is odd number, generate form A, otherwise generate form B.</p>
+<h4 id="Solution-on-the-book-6"><a href="#Solution-on-the-book-6" class="headerlink" title="Solution on the book:"></a>Solution on the book:</h4><p>Assuming that addition and subtraction have the same performance, the rule is to choose form A when n = m, either form when n = m + 1, and form B when n&gt;m + 1. </p>
+<p>The justification for this rule is as follows. </p>
+<p>Assume first that m &gt; 0. When n = m, form A requires only a single shift, while form B requires two shifts and a subtraction. </p>
+<p>When n = m + 1, both forms require two shifts and either an addition or a subtraction. </p>
+<p>When n&gt;m + 1, form B requires only two shifts and one subtraction, while form A requires n − m + 1 &gt; 2 shifts and n − m &gt; 1 additions. </p>
+<p>For the case of m = 0, we get one fewer shift for both forms A and B, and so the same rules apply for choosing between the two.</p>
+<hr>
+<h3 id="2-3-7-Dividing-by-Powers-of-2"><a href="#2-3-7-Dividing-by-Powers-of-2" class="headerlink" title="2.3.7 Dividing by Powers of 2"></a>2.3.7 Dividing by Powers of 2</h3><p>Integer division on most machines is even <strong>slower than integer multiplication</strong>— requiring 30 or more clock cycles.</p>
+<p>Integer division always rounds toward zero</p>
+<ul>
+<li>For x ≥ 0 and y &gt; 0, integer division should yield $\lfloor x/y \rfloor$</li>
+<li>while for x &lt; 0 and y &gt; 0, it should yield $\lceil x/y \rceil $.</li>
+<li>That is, it should round down a positive result but round up a negative one.</li>
+</ul>
+<blockquote>
+<p>principle: Unsigned division by a power of 2</p>
+<p>For C variables x and k with unsigned values x and k, such that 0 ≤ k&lt;w, the C expression <code>x &gt;&gt; k</code> yields the value $\lfloor x/2^k \rfloor$.</p>
+</blockquote>
+<blockquote>
+<p>principle: Two’s-complement division by a power of 2, rounding down</p>
+<p>Let C variables x and k have two’s-complement value x and unsigned value k, respectively, such that 0 ≤ k &lt; w, The C expression <code>x &gt;&gt; k</code>, when the shift is performed <strong>arithmetically</strong>, yields the value $\lfloor x/2^k \rfloor $ .</p>
+<p>positive signed number works fine, but negative number should be rounding up ranther than rounding down. <strong>We will need to adjust our strategy to handle division for negative values of x.</strong></p>
+</blockquote>
+<p>We can correct for the improper rounding that occurs when a negative number is shifted right by “biasing” the value before shifting.</p>
+<blockquote>
+<p>principle: Two’s-complement division by a power of 2, rounding up</p>
+<p>Let C variables x and k have two’s-complement value x and unsigned value k, respectively, such that 0 ≤ k &lt; w , The C expression <code> (x + (1 &lt;&lt; k) - 1) &gt;&gt; k</code> , when the shift is performed arithmetically, yields the value x/2k.</p>
+</blockquote>
+<p>The biasing technique exploits the property that $\lceil x/y \rceil =\lfloor (x + y − 1)/y \rfloor$ for integers x and y such that y &gt; 0.</p>
+<p>Returning to the case where $y = 2^k$, the C expression <code>x + (1 &lt;&lt; k) - 1</code> yields the value $x + 2^k − 1$. Shifting this right arithmetically by k therefore yields $\lceil x/2^k \rceil $We can use the following expression for signed division by 2’s power</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(x&lt;<span class="number">0</span> ? x+(<span class="number">1</span>&lt;&lt;k)<span class="number">-1</span> : x) &gt;&gt; k</span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-2-42"><a href="#Practice-Problem-2-42" class="headerlink" title="Practice Problem 2.42"></a>Practice Problem 2.42</h4><blockquote>
+<p>Write a function <code>div16</code> that returns the value x/16 for integer argument x. </p>
+<p>Your function should not use division, modulus, multiplication, any conditionals (<code>if</code> or <code>?:</code>), any comparison operators (e.g., &lt;, &gt;, or ==), or any loops. </p>
+<p>You may assume that data type <code>int</code> is 32 bits long and uses a two’s-complement representation, and that right shifts are performed arithmetically</p>
+</blockquote>
+<h4 id="My-solution-x-3"><a href="#My-solution-x-3" class="headerlink" title="My solution : :x:"></a>My solution : :x:</h4><h4 id="Solution-on-the-book-7"><a href="#Solution-on-the-book-7" class="headerlink" title="Solution on the book :"></a>Solution on the book :</h4><p><span style="color:red">The only challenge here is to compute the bias without any testing or conditional operations. </span></p>
+<p>We use the trick that the expression x &gt;&gt; 31 generates a word with all ones if x is negative, and all zeros otherwise. By masking off the appropriate bits, we get the desired bias value.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">div16</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line"><span class="comment">/* Compute bias to be either 0 (x &gt;= 0) or 15 (x &lt; 0) */</span></span><br><span class="line"><span class="keyword">int</span> bias = (x &gt;&gt; <span class="number">31</span>) &amp; <span class="number">0xF</span>;</span><br><span class="line"><span class="keyword">return</span> (x + bias) &gt;&gt; <span class="number">4</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>Unfortunately, this approach does not generalize to division by arbitrary constants. Unlike multiplication, we <strong>CANNOT</strong> express division by arbitrary constants K in terms of division by powers of 2.</p>
+<h4 id="Practice-Problem-2-43"><a href="#Practice-Problem-2-43" class="headerlink" title="Practice Problem 2.43"></a>Practice Problem 2.43</h4><blockquote>
+<p>In the following code, we have omitted the definitions of constants M and N:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> M <span class="comment">/* Mystery number 1 */</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N <span class="comment">/* Mystery number 2 */</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">arith</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">	result = x*M + y/N; <span class="comment">/* M and N are mystery numbers. */</span></span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>We compiled this code for particular values of M and N. The compiler optimized the multiplication and division using the methods we have discussed. The following is a translation of the generated machine code back into C:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Translation of assembly code for arith */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">optarith</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line"><span class="keyword">int</span> t = x;</span><br><span class="line">x &lt;&lt;= <span class="number">5</span>;</span><br><span class="line">x -= t;</span><br><span class="line"><span class="keyword">if</span> (y &lt; <span class="number">0</span>) y += <span class="number">7</span>;</span><br><span class="line">y &gt;&gt;= <span class="number">3</span>; <span class="comment">/* Arithmetic shift */</span></span><br><span class="line"><span class="keyword">return</span> x+y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>What are the values of M and N?</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-8"><a href="#My-solution-white-check-mark-8" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Translation of assembly code for arith */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">optarith</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> t = x;</span><br><span class="line">	x &lt;&lt;= <span class="number">5</span>; <span class="comment">// x = 32 * x</span></span><br><span class="line">	x -= t; <span class="comment">// x = 31*x 	M = 31</span></span><br><span class="line">	<span class="keyword">if</span> (y &lt; <span class="number">0</span>) y += <span class="number">7</span>; <span class="comment">// 7 = 2**3 - 1</span></span><br><span class="line">	y &gt;&gt;= <span class="number">3</span>; <span class="comment">// y = y / 8 N = 8</span></span><br><span class="line">	<span class="keyword">return</span> x+y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// M = 31</span></span><br><span class="line"><span class="comment">// N = 8</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="2-3-8-Final-Thoughts-on-Integer-Arithmetic"><a href="#2-3-8-Final-Thoughts-on-Integer-Arithmetic" class="headerlink" title="2.3.8 Final Thoughts on Integer Arithmetic"></a>2.3.8 Final Thoughts on Integer Arithmetic</h3><p>As we have seen, the “integer” arithmetic performed by computers is really a form of modular arithmetic. The finite word size used to represent numbers limits the range of possible values, and the resulting operations can overflow.</p>
+<h4 id="Practice-Problem-2-44"><a href="#Practice-Problem-2-44" class="headerlink" title="Practice Problem 2.44"></a>Practice Problem 2.44</h4><blockquote>
+<p>Assume data type <code>int</code> is 32 bits long and uses a two’s-complement representation for signed values. Right shifts are performed arithmetically for signed values and logically for unsigned values. The variables are declared and initialized as follows:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> x = foo(); <span class="comment">/* Arbitrary value */</span></span><br><span class="line"><span class="keyword">int</span> y = bar(); <span class="comment">/* Arbitrary value */</span></span><br><span class="line"><span class="keyword">unsigned</span> ux = x;</span><br><span class="line"><span class="keyword">unsigned</span> uy = y;</span><br></pre></td></tr></table></figure>
+
+<p>For each of the following C expressions, either (1) argue that it is true (evaluates to 1) for all values of x and y, or (2) give values of x and y for which it is false (evaluates to 0):</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">A. (x &gt; <span class="number">0</span>) || (x<span class="number">-1</span> &lt; <span class="number">0</span>)</span><br><span class="line">B. (x &amp; <span class="number">7</span>) != <span class="number">7</span> || (x&lt;&lt;<span class="number">29</span> &lt; <span class="number">0</span>)</span><br><span class="line">C. (x * x) &gt;= <span class="number">0</span></span><br><span class="line">D. x &lt; <span class="number">0</span> || -x &lt;= <span class="number">0</span></span><br><span class="line">E. x &gt; <span class="number">0</span> || -x &gt;= <span class="number">0</span></span><br><span class="line">F. x+y == uy+ux</span><br><span class="line">G. x*~y + uy*ux == -x</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark-9"><a href="#My-solution-white-check-mark-9" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A</span><br><span class="line"><span class="keyword">if</span> x &gt; <span class="number">0</span> : the expression <span class="keyword">is</span> <span class="literal">True</span></span><br><span class="line"><span class="keyword">if</span> x == <span class="number">0</span> : x-<span class="number">1</span> = <span class="number">1111.</span>.<span class="number">.1111</span> &lt; <span class="number">0</span> <span class="keyword">is</span> <span class="literal">True</span>, the expression <span class="keyword">is</span> <span class="literal">True</span></span><br><span class="line"><span class="keyword">if</span> INT32_MIN &lt; x &lt; <span class="number">0</span>: the expression <span class="keyword">is</span> <span class="literal">True</span></span><br><span class="line">only when x == INT32_MIN  the expression <span class="keyword">is</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">B</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">any</span> x != <span class="number">7</span>, expression (x &amp; <span class="number">7</span>) != <span class="number">7</span> will be <span class="literal">True</span></span><br><span class="line"><span class="keyword">if</span> x == <span class="number">7</span> , (x&lt;&lt;<span class="number">29</span>) = <span class="number">11100.</span>.<span class="number">.00</span> &lt; <span class="number">0</span></span><br><span class="line">the expression <span class="keyword">is</span> always <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">C</span><br><span class="line"><span class="keyword">for</span> some x*x leads to overflow the expression will give out False</span><br><span class="line"><span class="keyword">for</span> example, x = <span class="number">46341</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span> , <span class="number">46341</span> * <span class="number">46341</span>  );</span><br><span class="line"><span class="comment">//-2147479015</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">D</span><br><span class="line"><span class="keyword">if</span> x &lt; <span class="number">0</span>, the expression is <span class="literal">true</span></span><br><span class="line"><span class="keyword">if</span> x == <span class="number">0</span> , -x is <span class="number">0</span> == <span class="number">0</span>, the expression is <span class="literal">true</span></span><br><span class="line"><span class="keyword">if</span> x &gt; <span class="number">0</span>, every <span class="keyword">signed</span> postive number has its own additive inverse, so -x &lt; <span class="number">0</span> is <span class="literal">true</span></span><br><span class="line">the expression is always <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">E</span><br><span class="line"><span class="keyword">if</span> x &gt; <span class="number">0</span>, the expression is <span class="literal">true</span></span><br><span class="line"><span class="keyword">if</span> x == <span class="number">0</span> , -x is <span class="number">0</span> == <span class="number">0</span>, the expression is <span class="literal">true</span></span><br><span class="line"><span class="keyword">if</span> x &lt; <span class="number">0</span>, every <span class="keyword">signed</span> negative number has its own additive inverse except INT32_MIN</span><br><span class="line">-INT32_MIN == INT32_MIN &lt; <span class="number">0</span></span><br><span class="line">when x = INT32_MIN the expression is <span class="literal">false</span>, otherwise <span class="literal">true</span></span><br><span class="line">----------------------------------------------------------------</span><br><span class="line"><span class="keyword">int</span> x = INT32_MIN;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span> ,x &gt; <span class="number">0</span> || -x &gt;= <span class="number">0</span> )</span><br><span class="line"><span class="comment">//0</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">F</span><br><span class="line">in bit level representation, <span class="keyword">signed</span> <span class="keyword">and</span> <span class="keyword">unsigned</span> addition have no difference. When compare <span class="keyword">signed</span> <span class="keyword">and</span> <span class="keyword">unsigned</span>, <span class="keyword">signed</span> is converted to <span class="keyword">unsigned</span>, so the expression is always <span class="literal">true</span>.</span><br><span class="line">-----------------------------------------------------------------                                            </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; <span class="number">10</span> ; i ++)&#123;                     </span><br><span class="line">		<span class="keyword">int</span> x = rand(); <span class="comment">/* Arbitrary value */</span>                                                    </span><br><span class="line">		<span class="keyword">int</span> y = rand(); <span class="comment">/* Arbitrary value */</span>                                                    </span><br><span class="line">		<span class="keyword">unsigned</span> ux = x;                                                                         </span><br><span class="line">		<span class="keyword">unsigned</span> uy = y;                                                                         </span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d%c&quot;</span>, x+y == uy+ux , i==<span class="number">9</span>?<span class="string">&#x27;\n&#x27;</span>:<span class="string">&#x27; &#x27;</span>);    </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//1 1 1 1 1 1 1 1 1 1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">G</span><br><span class="line">I am too lazy to write the comprehensive derivation, just an example to illustrate the expression is always <span class="literal">true</span>.</span><br><span class="line">assume y = <span class="number">0b11110000000000000000000000000111</span></span><br><span class="line">then  ~y = <span class="number">0b00001111111111111111111111111000</span></span><br><span class="line">x * ~y = (x&lt;&lt;<span class="number">28</span>)-(x&lt;&lt;<span class="number">3</span>)</span><br><span class="line">ux * uy = (x&lt;&lt;<span class="number">32</span>)-(x&lt;&lt;<span class="number">28</span>) + (x&lt;&lt;<span class="number">3</span>) - (x&lt;&lt;<span class="number">0</span>)</span><br><span class="line">x * ~y + ux * uy = (x&lt;&lt;<span class="number">32</span>) - (x&lt;&lt;<span class="number">0</span>) = <span class="number">0</span> - x = -x</span><br></pre></td></tr></table></figure>
+<h4 id="Solution-on-the-book-8"><a href="#Solution-on-the-book-8" class="headerlink" title="Solution on the book :"></a>Solution on the book :</h4><p>G:</p>
+<p>G. <code>x*~y + uy*ux == -x</code> True. <code>~y</code> equals <code>-y-1</code>. <code>uy*ux</code> equals <code>x*y</code>. Thus, the left-hand side is equivalent to <code>x*-y-x+x*y</code>.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/07/18/CSAPP/Ch2PartII/" data-id="ckr93kcep0000kgyqgsfv9ky2" data-title="Ch2PartII" class="article-share-link">Share</a>
+      <a data-url="http://rubbish-and-world.github.io/2021/07/18/CSAPP/Ch2PartII/" data-id="ckr93kcep0000kgyqgsfv9ky2" data-title="Ch2PartII" class="article-share-link">Compartir</a>
       
       
       
@@ -120,7 +1052,7 @@
   
   
     <a href="/2021/07/12/Math/Discrete/Graph/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">Viejo</strong>
       <div class="article-nav-title">Graph</div>
     </a>
   
@@ -136,7 +1068,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
+    <h3 class="widget-title">Categorías</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/1-Whetting-your-appetite/">1.Whetting your appetite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/11-Brief-Tour-of-the-Standard-Library-%E2%80%94-Part-II/">11.Brief Tour of the Standard Library — Part II</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/12-Virtual-Environments-and-Packages/">12.Virtual Environments and Packages</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/13-What-Now-The-Rest-of-The-Tutorial/">13.What Now & The Rest of The Tutorial</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/2-Using-the-Python-Interpreter/">2.Using the Python Interpreter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/4-More-Control-Flow-Tools/">4.More Control Flow Tools</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/5-Data-Structures/">5.Data Structures</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/6-Modules/">6.Modules</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/7-Input-and-Output/">7.Input and Output</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/8-Errors-and-Exceptions/">8.Errors and Exceptions</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/9-Classes/">9.Classes</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/introduction/">introduction</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
     </div>
@@ -156,7 +1088,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
+    <h3 class="widget-title">Nube de Tags</h3>
     <div class="widget tagcloud">
       <a href="/tags/game/" style="font-size: 10px;">game</a>
     </div>
@@ -165,7 +1097,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
+    <h3 class="widget-title">Archivos</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
     </div>
@@ -175,7 +1107,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">Posts recientes</h3>
     <div class="widget">
       <ul>
         
@@ -213,7 +1145,7 @@
     <div id="footer-info" class="inner">
       
       &copy; 2021 rubbish<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+      Construido por <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
