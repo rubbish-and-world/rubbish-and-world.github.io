@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Ch2PartIII | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Representing and Manipulating Information (Part III) MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  2.4 Floating PointA floating-point representation encodes ratio">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ch2PartIII">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/07/24/CSAPP/Ch2PartIII/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Representing and Manipulating Information (Part III) MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  2.4 Floating PointA floating-point representation encodes ratio">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/24/CSAPP/Ch2PartIII/point.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/24/CSAPP/Ch2PartIII/3parts.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/24/CSAPP/Ch2PartIII/cases.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/24/CSAPP/Ch2PartIII/range.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/24/CSAPP/Ch2PartIII/8bits.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/24/CSAPP/Ch2PartIII/modes.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/24/CSAPP/Ch2PartIII/cast.png">
+<meta property="article:published_time" content="2021-07-24T06:25:02.000Z">
+<meta property="article:modified_time" content="2021-07-25T09:38:13.386Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/07/24/CSAPP/Ch2PartIII/point.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Rechercher"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSAPP/Ch2PartIII" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/07/24/CSAPP/Ch2PartIII/" class="article-date">
+  <time class="dt-published" datetime="2021-07-24T06:25:02.000Z" itemprop="datePublished">2021-07-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/csapp/">csapp</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Ch2PartIII
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Representing-and-Manipulating-Information-Part-III"><a href="#Representing-and-Manipulating-Information-Part-III" class="headerlink" title="Representing and Manipulating Information (Part III)"></a>Representing and Manipulating Information (Part III)</h1><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+<h2 id="2-4-Floating-Point"><a href="#2-4-Floating-Point" class="headerlink" title="2.4 Floating Point"></a>2.4 Floating Point</h2><p>A floating-point representation encodes rational numbers of the form $V = x \times 2^y$.</p>
+<p>It is useful for performing computations involving very large numbers ,numbers very close to 0 , and more generally as an approximation to real arithmetic.</p>
+<a id="more"></a>
+
+<p>Up until the 1980s, every computer manufacturer devised its own conventions<br>for how floating-point numbers were represented and the details of the operations<br>performed on them.</p>
+<p>All of this changed around 1985 with the advent of IEEE Standard 754.</p>
+<h3 id="2-4-1-Fractional-Binary-Numbers"><a href="#2-4-1-Fractional-Binary-Numbers" class="headerlink" title="2.4.1 Fractional Binary Numbers"></a>2.4.1 Fractional Binary Numbers</h3><p>Like decimal, binary number can have a binary point.</p>
+<p><img src="/2021/07/24/CSAPP/Ch2PartIII/point.png" alt="binary point"><br>$$<br>b = \sum_{i=-n}^m (b_i \times 2^i)<br>$$</p>
+<ul>
+<li>shifting the binary point one position to the <strong>left</strong> has the effect of <strong>dividing</strong> the number by 2.</li>
+<li>shifting the binary point one position to the <strong>right</strong> has the effect of <strong>multiplying</strong> the number by 2.</li>
+</ul>
+<p>Note that numbers of the form $(0.11 . . . 1)_2$ represent numbers just below 1. For<br>example, $(0.111111)_2$ represents$\frac{63}{64}$. We will use the shorthand notation $1.0 − \epsilon$ to<br>represent such values.</p>
+<p>Assuming we consider only finite-length encodings, decimal notation cannot<br>represent numbers such as $\frac{1}{3}$ and $\frac{5}{7}$exactly. Similarly, fractional binary notation<br>can only represent numbers that can be written $x \times  2^y$. Other values can only be<br>approximated. </p>
+<h4 id="Practice-Problem-2-45"><a href="#Practice-Problem-2-45" class="headerlink" title="Practice Problem 2.45"></a>Practice Problem 2.45</h4><blockquote>
+<p>Fill in the missing information in the following table:</p>
+<table>
+<thead>
+<tr>
+<th>Fractional value</th>
+<th>Binary Representation</th>
+<th>Decimal representation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$\frac{1}{8}$</td>
+<td>0.001</td>
+<td>0.125</td>
+</tr>
+<tr>
+<td>$\frac{3}{4}$</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$\frac{5}{16}$</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>10.1011</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>1.001</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>5.875</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>3.1875</td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark"><a href="#My-solution-white-check-mark" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><table>
+<thead>
+<tr>
+<th>Fractional value</th>
+<th>Binary Representation</th>
+<th>Decimal representation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$\frac{1}{8}$</td>
+<td>0.001</td>
+<td>0.125</td>
+</tr>
+<tr>
+<td>$\frac{3}{4}$</td>
+<td>0.11</td>
+<td>0.75</td>
+</tr>
+<tr>
+<td>$\frac{5}{16}$</td>
+<td>0.0101</td>
+<td>0.3125</td>
+</tr>
+<tr>
+<td>$2\frac{11}{16}$</td>
+<td>10.1011</td>
+<td>2.6875</td>
+</tr>
+<tr>
+<td>$1\frac{1}{8}$</td>
+<td>1.001</td>
+<td>1.125</td>
+</tr>
+<tr>
+<td>$5\frac{7}{8}$</td>
+<td>101.111</td>
+<td>5.875</td>
+</tr>
+<tr>
+<td>$3\frac{3}{16}$</td>
+<td>11.0011</td>
+<td>3.1875</td>
+</tr>
+</tbody></table>
+<h4 id="Practice-Problem-2-46"><a href="#Practice-Problem-2-46" class="headerlink" title="Practice Problem 2.46"></a>Practice Problem 2.46</h4><blockquote>
+<p>The imprecision of floating-point arithmetic can have disastrous effects. </p>
+<p>On February 25, 1991, during the first Gulf War, an American Patriot Missile battery in Dharan, Saudi Arabia, failed to intercept an incoming Iraqi Scud missile. The Scud struck an American Army barracks and killed 28 soldiers. The US General  Accounting Office (GAO) conducted a detailed analysis of the failure and determined that the underlying cause was an imprecision in a numeric calculation. In this exercise, you will reproduce part of the GAO’s analysis.</p>
+<p>The Patriot system contains an internal clock, implemented as a counter<br>that is incremented every 0.1 seconds. To determine the time in seconds, the<br>program would multiply the value of this counter by a 24-bit quantity that was<br>a fractional binary approximation to $\frac{1}{10}$. In particular, the binary representation of $\frac{1}{10}$ is the nonterminating sequence $(0.000110011[0011] . . . )_2$, where the portion in brackets is repeated indefinitely. The program approximated 0.1, as a value x, by  considering just the first 23 bits of the sequence to the right of the binary point: x = 0.00011001100110011001100</p>
+<p>A. What is the binary representation of 0.1 − x?</p>
+<p>B. What is the approximate decimal value of 0.1 − x?</p>
+<p>C. The clock starts at 0 when the system is first powered up and keeps counting up from there. In this case, the system had been running for around 100 hours. What was the difference between the actual time and the time computed by the software?</p>
+<p>D. The system predicts where an incoming missile will appear based on its<br>velocity and the time of the last radar detection. Given that a Scud travels<br>at around 2,000 meters per second, how far off was its prediction?</p>
+<p>Normally, a slight error in the absolute time reported by a clock reading would<br>not affect a tracking computation. Instead, it should depend on the relative time between two successive readings. The problem was that the Patriot software had been upgraded to use a more accurate function for reading time, but not all of the function calls had been replaced by the new code. As a result, the tracking software used the accurate time for one reading and the inaccurate time for the other.</p>
+</blockquote>
+<h4 id="My-solution-x"><a href="#My-solution-x" class="headerlink" title="My solution: :x:"></a>My solution: :x:</h4><p>A✓<br>$$<br>0.1 - x = (0.000110011[0011] . . . )_2-(0.00011001100110011001100)_2\<br>=0.00000000000000000000000 011[0011]…<br>$$<br>B✗<br>$$<br>0.1 - x \approx 2^{-25}+2^{-26}  = 0.000000044703483581542968750000<br>$$<br>C✗</p>
+<p>100 hours = 36000 seconds = 360000 * 0.1 seconds<br>$$<br>360000 \times (0.1 -x ) \approx 0.1609325408935547<br>$$<br>D✗<br>$$<br>0.1609325408935547 \times 2000 = 321.8650817871094 \approx321<br>$$</p>
+<h4 id="Solution-on-the-book"><a href="#Solution-on-the-book" class="headerlink" title="Solution on the book:"></a>Solution on the book:</h4><p>B. Comparing this to the binary representation of $\frac{1}{10}$ , we can see that it is simply<br>$2^{−20} × \frac{1}{10}$, which is around $9.54 × 10^{−8}$.</p>
+<p>($0.1 - (0.00011001100110011001100)_2$)</p>
+<p>C. 9.54 × 10^{−8} × 100 × 60 × 60 × 10 ≈ 0.343 seconds.<br>D. 0 .343 × 2,000 ≈ 687 meters.</p>
+<hr>
+<h3 id="2-4-2-IEEE-Floating-Point-Representation"><a href="#2-4-2-IEEE-Floating-Point-Representation" class="headerlink" title="2.4.2 IEEE Floating-Point Representation"></a>2.4.2 IEEE Floating-Point Representation</h3><p>Positional notation such as considered in the previous section would not be efficient for representing very large numbers. For example, the representation of<br>$5 × 2^{100}$ would consist of the bit pattern 101 followed by 100 zeros. Instead, we<br>would like to represent numbers in a form $x × 2^y$ by giving the values of x and y.</p>
+<p><img src="/2021/07/24/CSAPP/Ch2PartIII/3parts.png" alt="float and double"></p>
+<ul>
+<li>In the single-precision floating-point format (a <code>float</code> in C), fields s, exp, and frac are 1, k = 8, and n = 23 bits each, yielding a 32-bit representation. </li>
+<li>In the double-precision floating-point format (a <code>double</code> in C), fields s, exp, and frac are 1, k = 11, and n = 52 bits each, yielding a 64-bit representation.</li>
+</ul>
+<p>The value encoded by a given bit representation can be divided into three<br>different cases (the latter having two variants), depending on the value of <code>exp</code>.</p>
+<p><img src="/2021/07/24/CSAPP/Ch2PartIII/cases.png" alt="cases"></p>
+<h5 id="Case-1-Normalized-Values"><a href="#Case-1-Normalized-Values" class="headerlink" title="Case 1: Normalized Values"></a>Case 1: Normalized Values</h5><p><em>This is the most common case.</em></p>
+<ul>
+<li>It occurs when the bit pattern of exp is neither all zeros nor all ones.</li>
+<li> the exponent field is interpreted as representing a <strong>signed</strong> integer in biased form. That is, the exponent value is <strong>E = e − Bias</strong>, where e is the <strong>unsigned</strong> number having bit representation $e_{k−1} . . . e_1e_0$ and Bias is a bias value equal to $2^{k−1} − 1$ </li>
+<li>The fraction field <code>frac</code> is interpreted as representing the fractional value f. The significand is defined to be M = 1 + f</li>
+<li>since we can always adjust the exponent E so that significand M is in the range 1 ≤ M &lt; 2 (assuming there is no overflow). We therefore do not need to explicitly represent the leading bit, since it always equals 1.</li>
+</ul>
+<h5 id="Case-2-Denormalized-Values"><a href="#Case-2-Denormalized-Values" class="headerlink" title="Case 2: Denormalized Values"></a>Case 2: Denormalized Values</h5><p><em>When the exponent field is all zeros, the represented number is in denormalized<br>form.</em></p>
+<ul>
+<li>In this case, the exponent value is <strong>E = 1 − Bias</strong>, and the significand value is<br>M = f , that is, <strong>the value of the fraction field without an implied leading 1.</strong></li>
+<li>Denormalized numbers serve two purposes<ul>
+<li>First, they provide a way to represent numeric value 0, since with a normalized number we must always have M ≥ 1, and hence we cannot represent 0.<ul>
+<li>0000…0000 for +0.0</li>
+<li>1000….0000 for -0.0</li>
+<li>With IEEE floating-point format, the values −0.0 and +0.0 are considered different in some ways and the same in others.</li>
+</ul>
+</li>
+<li>A second function of denormalized numbers is to represent numbers that are very close to 0.0.</li>
+</ul>
+</li>
+</ul>
+<h5 id="Case-3-Special-Values"><a href="#Case-3-Special-Values" class="headerlink" title="Case 3: Special Values"></a>Case 3: Special Values</h5><p><em>A final category of values occurs when the exponent field is all ones.</em></p>
+<ul>
+<li>s = 0 for $+\infin$</li>
+<li>s = 1 for $-\infin$</li>
+<li>Infinity can represent results that overflow, as when we multiply two very large numbers, or when we divide by zero.</li>
+<li>When the fraction field is nonzero, the resulting value is called a NaN , short for “not a number.” <ul>
+<li>Such values are returned as the result of an operation where the result cannot be given as a real number or as infinity, as when computing $\sqrt{-1}$ or $\infin − \infin$ </li>
+<li>They can also be useful in some applications for representing uninitialized data. </li>
+</ul>
+</li>
+</ul>
+<h3 id="2-4-3-Example-Numbers"><a href="#2-4-3-Example-Numbers" class="headerlink" title="2.4.3 Example Numbers"></a>2.4.3 Example Numbers</h3><p><img src="/2021/07/24/CSAPP/Ch2PartIII/range.png" alt="example"></p>
+<p><img src="/2021/07/24/CSAPP/Ch2PartIII/8bits.png" alt="8 bits"></p>
+<h4 id="Practice-Problem-2-47"><a href="#Practice-Problem-2-47" class="headerlink" title="Practice Problem 2.47"></a>Practice Problem 2.47</h4><blockquote>
+<p>Consider a 5-bit floating-point representation based on the IEEE floating-point<br>format, with one sign bit, two exponent bits (k = 2), and two fraction bits (n = 2). The exponent bias is $2^{2−1} − 1 = 1$.<br>The table that follows enumerates the entire nonnegative range for this 5-bit<br>floating-point representation. Fill in the blank table entries using the following<br>directions:</p>
+<p>e: The value represented by considering the exponent field to be an unsigned<br>integer</p>
+<p>E: The value of the exponent after biasing</p>
+<p>$2^E$: The numeric weight of the exponent</p>
+<p>f : The value of the fraction</p>
+<p>M: The value of the significand</p>
+<p>$2^E × M$: The (unreduced) fractional value of the number</p>
+<p>V : The reduced fractional value of the number</p>
+<p>Decimal: The decimal representation of the number</p>
+<p>Express the values of 2E, f , M, 2 E × M, and V either as integers (when<br>possible) or as fractions of the form x/y , where y is a power of 2. You need not<br>fill in entries marked X</p>
+<table>
+<thead>
+<tr>
+<th>Bits</th>
+<th>e</th>
+<th>E</th>
+<th>$2^E$</th>
+<th>f</th>
+<th>M</th>
+<th>$2^E\times M$</th>
+<th>V</th>
+<th>Decimal</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0 00 00</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0 00 01</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0 00 10</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0 00 11</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0 01 00</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0 01 01</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>$\frac{1}{4}$</td>
+<td>$\frac{5}{4}$</td>
+<td>$\frac{5}{4}$</td>
+<td>$\frac{5}{4}$</td>
+<td>1.25</td>
+</tr>
+<tr>
+<td>0 01 10</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0 01 11</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0 10 00</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0 10 01</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0 10 10</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0 10 11</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>0 11 00</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>0 11 01</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>0 11 10</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+</tr>
+<tr>
+<td>0 11 11</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td></td>
+<td>X</td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-warning"><a href="#My-solution-warning" class="headerlink" title="My solution : :warning:"></a>My solution : :warning:</h4><table>
+<thead>
+<tr>
+<th>Bits</th>
+<th>e</th>
+<th>E</th>
+<th>$2^E$</th>
+<th>f</th>
+<th>M</th>
+<th>$2^E\times M$</th>
+<th>V</th>
+<th>Decimal</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0 00 00</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>0 00 01</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>$\frac{1}{4}$</td>
+<td>$\frac{1}{4}$</td>
+<td>$\frac{1}{4}$</td>
+<td>$\frac{1}{4}$</td>
+<td>0.25</td>
+</tr>
+<tr>
+<td>0 00 10</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>$\frac{1}{2}$</td>
+<td>$\frac{1}{2}$</td>
+<td>$\frac{1}{2}$</td>
+<td>$\frac{1}{2}$</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>0 00 11</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>$\frac{3}{4}$</td>
+<td>$\frac{3}{4}$</td>
+<td>$\frac{3}{4}$</td>
+<td>$\frac{3}{4}$</td>
+<td>0.75</td>
+</tr>
+<tr>
+<td>0 01 00</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0 01 01</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>$\frac{1}{4}$</td>
+<td>$\frac{5}{4}$</td>
+<td>$\frac{5}{4}$</td>
+<td>$\frac{5}{4}$</td>
+<td>1.25</td>
+</tr>
+<tr>
+<td>0 01 10</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>$\frac{1}{2}$</td>
+<td>$\frac{3}{2}$</td>
+<td>$\frac{3}{2}$</td>
+<td>$\frac{3}{2}$</td>
+<td>1.5</td>
+</tr>
+<tr>
+<td>0 01 11</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>$\frac{3}{4}$</td>
+<td>$\frac{7}{4}$</td>
+<td>$\frac{7}{4}$</td>
+<td>$\frac{7}{4}$</td>
+<td>1.75</td>
+</tr>
+<tr>
+<td>0 10 00</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>0 10 01</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>$\frac{1}{4}$</td>
+<td>$\frac{5}{4}$</td>
+<td>$\frac{5}{2}$</td>
+<td>$\frac{5}{2}$</td>
+<td>2.5</td>
+</tr>
+<tr>
+<td>0 10 10</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>$\frac{1}{2}$</td>
+<td>$\frac{3}{2}$</td>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>0 10 11</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>$\frac{3}{4}$</td>
+<td>$\frac{7}{4}$</td>
+<td>$\frac{7}{2}$</td>
+<td>$\frac{7}{2}$</td>
+<td>3.5</td>
+</tr>
+<tr>
+<td>0 11 00</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>$\infin$</td>
+<td>X</td>
+</tr>
+<tr>
+<td>0 11 01</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>$NaN$</td>
+<td>X</td>
+</tr>
+<tr>
+<td>0 11 10</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>$NaN$</td>
+<td>X</td>
+</tr>
+<tr>
+<td>0 11 11</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>$NaN$</td>
+<td>X</td>
+</tr>
+</tbody></table>
+<p>$2^E\times M$ shouldn’t be reduced.</p>
+<p>Beware of <code>exp</code>==1111…111</p>
+<h4 id="Practice-Problem-2-48"><a href="#Practice-Problem-2-48" class="headerlink" title="Practice Problem 2.48"></a>Practice Problem 2.48</h4><blockquote>
+<p>As mentioned in Problem 2.6, the integer 3,510,593 has hexadecimal represen-<br>tation 0x00359141, while the single-precision floating-point number 3,510,593.0 has hexadecimal representation 0x4A564504. Derive this floating point representation and explain the correlation between the bits of the integer and floating-point representations.</p>
+</blockquote>
+<h4 id="My-solution"><a href="#My-solution" class="headerlink" title="My solution:"></a>My solution:</h4><p>convert 3510593 to IEEE float point<br>$$<br>(3510593)_{10} = (1101011001000101000001)_2<br>$$<br>Nomoralize it<br>$$<br>(1101011001000101000001)_2 = 1.101011001000101000001 \times 2 ^{21}<br>$$<br>We can now get the mantissa is $101011001000101000001 00$ by padding to 23 bits with 0<br>$$<br>21 + (2^7-1)=(10010100)_2<br>$$<br>Now we have the exponent part is $10010100$</p>
+<p>Since the value is positive, we have the sign bit equals to 0</p>
+<p>3510593 in IEEE float point representation is $0 10010100 10101100100010100000100$, hexadecimal format is 4A564504</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">00000000001101011001000101000001</span><br><span class="line">           *********************</span><br><span class="line">  01001010010101100100010100000100</span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-2-49"><a href="#Practice-Problem-2-49" class="headerlink" title="Practice Problem 2.49"></a>Practice Problem 2.49</h4><blockquote>
+<p>A. For a floating-point format with an n-bit fraction, give a formula for the<br>smallest positive integer that cannot be represented exactly (because it<br>would require an (n + 1)-bit fraction to be exact). </p>
+<p>Assume the exponent field size k is large enough that the range of representable exponents does not provide a limitation for this problem.</p>
+<p>B. What is the numeric value of this integer for single-precision format (n =<br>23)?</p>
+</blockquote>
+<h4 id="My-solution-x-1"><a href="#My-solution-x-1" class="headerlink" title="My solution : :x:"></a>My solution : :x:</h4><p>A</p>
+<p>Think about the smallest positive integer which can be represented,1, we know f part will be $000…0000$, gives that $M = 1$.</p>
+<p>So we can see that the largest positive integer which can be represented will have f part equals 111….1, gives that $ f= \frac{2^n-1}{2^{n}} , M =\frac{2^{n+1}-1}{2^{n}} $ </p>
+<p>Therefore the smallest positive integer which can not be represented is $(2^{n+1}-1) + 1 = 2^{n+1}$</p>
+<p>B<br>$$<br>2^{24} = 16777216<br>$$<br><span style="color:red">this value can be expressed by adjusting exponent!</span></p>
+<h4 id="Solution-on-the-book-1"><a href="#Solution-on-the-book-1" class="headerlink" title="Solution on the book:"></a>Solution on the book:</h4><p>A. The number has binary representation 1, followed by n zeros, followed by 1,<br>giving value $2^{n+1} + 1$.<br>B. When n = 23, the value is $2^{24} + 1 = 16,777,217$.</p>
+<hr>
+<h3 id="2-4-4-Rounding"><a href="#2-4-4-Rounding" class="headerlink" title="2.4.4 Rounding"></a>2.4.4 Rounding</h3><p>Floating-point arithmetic can only approximate real arithmetic, since the representation has limited range and precision. Thus, for a value x, we generally want a systematic method of finding the “closest” matching value x′ that can be represented in the desired floating-point format.</p>
+<p> The IEEE floating-point format defines four different rounding modes. <strong>The default method finds a closest match(round-to-even),</strong> while the other three can be used for computing upper and lower bounds.</p>
+<p><img src="/2021/07/24/CSAPP/Ch2PartIII/modes.png" alt="round modes"></p>
+<ul>
+<li>Round-to-even mode adopts the convention that it rounds the number either upward or downward such that the least significant digit of the result is even.</li>
+<li>Round-toward-zero mode rounds positive numbers downward and negative numbers upward.</li>
+<li>Round-down mode rounds both positive and negative numbers downward</li>
+<li>Round-up mode rounds both positive and negative numbers upward</li>
+</ul>
+<h5 id="Round-to-even"><a href="#Round-to-even" class="headerlink" title="Round to even"></a>Round to even</h5><p><em>Round-to-even at first seems like it has a rather arbitrary goal—why is there<br>any reason to prefer even numbers?</em></p>
+<ul>
+<li>Imaging scenarios in which rounding a set of data values would then introduce a statistical <strong>bias</strong> into the computation of an average of the values. Rounding to even will round upward about 50% of the time and round downward about<br>50% of the time, trying to keep the minimus bias.</li>
+<li>Round-to-even rounding can be applied even when we are not rounding to<br>a whole number. For example, when rounding decimal numbers to the nearest<br>hundredth, we would round both 1.2350000 and 1.2450000 to 1.24, since 4 is even.</li>
+<li>Similarly, round-to-even rounding can be applied to binary fractional num-<br>bers.For example, We would round 10.11100 up to 11 .00 and 10.10100 down to 10.10, since these values are halfway between two possible results, and we prefer to have the least significant bit equal to zero.</li>
+<li>Note that only when the value to be rounded is <strong>exactly the half</strong> between boundaries should we prefer to even, otherwise round to the nestest.</li>
+</ul>
+<h4 id="Practice-Problem-2-50"><a href="#Practice-Problem-2-50" class="headerlink" title="Practice Problem 2.50"></a>Practice Problem 2.50</h4><blockquote>
+<p>Show how the following binary fractional values would be rounded to the nearest half (1 bit to the right of the binary point), according to the round-to-even rule.<br>In each case, show the numeric values, both before and after rounding.</p>
+<p>A. 10.111<br>B. 11.010<br>C. 11.000<br>D. 10.110</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-1"><a href="#My-solution-white-check-mark-1" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><table>
+<thead>
+<tr>
+<th>Binary</th>
+<th>Binary after rounding</th>
+<th>Decimal before rounding</th>
+<th>Decimal after rounding</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10.111</td>
+<td>11.0</td>
+<td>2.875</td>
+<td>3.0</td>
+</tr>
+<tr>
+<td>11.010</td>
+<td>11.0</td>
+<td>3.25</td>
+<td>3.0</td>
+</tr>
+<tr>
+<td>11.000</td>
+<td>11.0</td>
+<td>3.0</td>
+<td>3.0</td>
+</tr>
+<tr>
+<td>10.110</td>
+<td>11.0</td>
+<td>2.75</td>
+<td>3.0</td>
+</tr>
+</tbody></table>
+<h4 id="Practice-Problem-2-51"><a href="#Practice-Problem-2-51" class="headerlink" title="Practice Problem 2.51"></a>Practice Problem 2.51</h4><blockquote>
+<p>We saw in Problem 2.46 that the Patriot missile software approximated 0.1 as x =0.00011001100110011001100. Suppose instead that they had used IEEE round-to-even mode to determine an approximation x′ to 0.1 with 23 bits to the right of the binary point.</p>
+<p>A. What is the binary representation of x′?</p>
+<p>B. What is the approximate decimal value of x′ − 0.1?</p>
+<p>C. How far off would the computed clock have been after 100 hours of opera-<br>tion?</p>
+<p>D. How far off would the program’s prediction of the position of the Scud<br>missile have been?</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-2"><a href="#My-solution-white-check-mark-2" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><p>A<br>$$<br>x’=0.00011001100110011001101<br>$$<br>B<br>$$<br>x’-0.1 = 0.00000002384185791<br>$$<br>C<br>$$<br>0.085830688476<br>$$<br>D<br>$$<br>171.661376952<br>$$</p>
+<h4 id="Practice-Problem-2-52"><a href="#Practice-Problem-2-52" class="headerlink" title="Practice Problem 2.52"></a>Practice Problem 2.52</h4><blockquote>
+<p>Consider the following two 7-bit floating-point representations based on the IEEE floating-point format. Neither has a sign bit—they can only represent nonnegative numbers.</p>
+<ol>
+<li>Format A<br>There are k = 3 exponent bits. The exponent bias is 3.<br>There are n = 4 fraction bits.</li>
+<li>Format B<br>There are k = 4 exponent bits. The exponent bias is 7.<br>There are n = 3 fraction bits.</li>
+</ol>
+<p>Below, you are given some bit patterns in format A, and your task is to convert<br>them to the closest value in format B. If necessary, you should apply the round-to-even rounding rule. In addition, give the values of numbers given by the format A and format B bit patterns. Give these as whole numbers (e.g., 17) or as fractions (e.g., 17/64).</p>
+<p>Format A</p>
+<table>
+<thead>
+<tr>
+<th>Bits</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>011 0000</td>
+<td>1</td>
+</tr>
+<tr>
+<td>101 1110</td>
+<td></td>
+</tr>
+<tr>
+<td>010 1001</td>
+<td></td>
+</tr>
+<tr>
+<td>110 1111</td>
+<td></td>
+</tr>
+<tr>
+<td>000 0001</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>Format B</p>
+<table>
+<thead>
+<tr>
+<th>Bits</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0111 000</td>
+<td>1</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-3"><a href="#My-solution-white-check-mark-3" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><p>Format A</p>
+<table>
+<thead>
+<tr>
+<th>Bits</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>011 0000</td>
+<td>1</td>
+</tr>
+<tr>
+<td>101 1110</td>
+<td>$\frac{15}{2}$</td>
+</tr>
+<tr>
+<td>010 1001</td>
+<td>$\frac{25}{32}$</td>
+</tr>
+<tr>
+<td>110 1111</td>
+<td>$\frac{31}{2}$</td>
+</tr>
+<tr>
+<td>000 0001</td>
+<td>$\frac{1}{64} $</td>
+</tr>
+</tbody></table>
+<p>Format B</p>
+<table>
+<thead>
+<tr>
+<th>Bits</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0111 000</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1001 111</td>
+<td>$\frac{15}{2}$</td>
+</tr>
+<tr>
+<td>0110 100</td>
+<td>$\frac{3}{4}$</td>
+</tr>
+<tr>
+<td>1011 000</td>
+<td>16</td>
+</tr>
+<tr>
+<td>0001 000</td>
+<td>$\frac{1}{64}$</td>
+</tr>
+</tbody></table>
+<h3 id="2-4-5-Floating-Point-Operations"><a href="#2-4-5-Floating-Point-Operations" class="headerlink" title="2.4.5 Floating-Point Operations"></a>2.4.5 Floating-Point Operations</h3><p><em>One strength of the IEEE standard’s method of specifying the behavior of floating-point operations is that it is independent of any particular hardware or software realization.</em></p>
+<ul>
+<li><p>Addition over real numbers <strong>also forms an abelian group</strong>, but we must consider what effect rounding has on these properties</p>
+<p>We define $x +^f y  = \text{round-to-even(x+y)}$</p>
+<ul>
+<li><p>The operation is commutative, but NOT associative.</p>
+<p>For example, <code>(3.14+1e10)-1e10</code> will yield 0(3.14 is lost during rounding), while <code>3.14 + (1e10 - 1e10)</code> gives 0</p>
+<p>As a result compilers tend to be very conservative, avoiding any optimizations that could have even the slightest effect on functionality.</p>
+</li>
+<li><p>On the other hand, floating-point addition satisfies the following monotonicity property:</p>
+<p>if a ≥ b, then $x +^f a ≥ x +^f b$ for any values of a, b, and x other than NaN.</p>
+</li>
+</ul>
+</li>
+<li><p>Floating-point multiplication also obeys many of the properties one normally associates with multiplication</p>
+<ul>
+<li><p>it is commutative, and it has 1.0 as a multiplicative identity</p>
+</li>
+<li><p>it is not associative, due to the possibility of overflow or the loss of precision due to rounding. </p>
+</li>
+<li><p>floating-point multiplication does not distribute over addition. </p>
+<p>For example, with single-precision floating point, the expression <code>1e20*(1e20- 1e20)</code> evaluates to 0.0, while <code>1e20*1e20-1e20*1e20 </code>evaluates to NaN</p>
+</li>
+<li><p>On the other hand, floating-point multiplication satisfies the following monotonicity properties for any values of a, b, and c other than NaN:</p>
+<p>a ≥ b and c ≥ 0 ⇒ a *f c ≥ b *f c</p>
+<p>a ≥ b and c ≤ 0 ⇒ a *f c ≤ b *f c</p>
+</li>
+<li><p>In addition, we are also guaranteed that a *f a ≥ 0, as long as a = NaN.</p>
+</li>
+</ul>
+</li>
+<li><p>As we saw earlier, none of these monotonicity properties hold for unsigned or two’scomplement multiplication.</p>
+</li>
+<li><p>This <strong>lack of associativity and distributivity</strong> is of serious concern to scientific programmers and to compiler writers. Even such a seemingly simple task as writing code to determine whether two lines intersect in three-dimensional space can be a major challenge.</p>
+</li>
+</ul>
+<h3 id="2-4-6-Floating-Point-in-C"><a href="#2-4-6-Floating-Point-in-C" class="headerlink" title="2.4.6 Floating Point in C"></a>2.4.6 Floating Point in C</h3><p><em>All versions of C provide two different floating-point data types: float and double.</em> </p>
+<ul>
+<li><p>On machines that support IEEE floating point, these data types correspond to single- and double-precision floating point. In addition, the machines use the round-to-even rounding mode. </p>
+</li>
+<li><p>Unfortunately, since the C standards do not require the machine to use IEEE floating point, there are no standard methods to change the rounding mode or to get special values such as −0, +∞, −∞, or NaN. </p>
+<p>Most systems provide a combination of include (.h) files and procedure libraries to provide access to these features, but the details vary from one system to another.</p>
+</li>
+</ul>
+<h4 id="Practice-Problem-2-53"><a href="#Practice-Problem-2-53" class="headerlink" title="Practice Problem 2.53"></a>Practice Problem 2.53</h4><blockquote>
+<p>Fill in the following macro definitions to generate the double-precision values +∞, −∞, and −0:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> POS_INFINITY</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NEG_INFINITY</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NEG_ZERO</span></span><br></pre></td></tr></table></figure>
+
+<p>You cannot use any include files (such as math.h), but you can make use of the fact that the largest finite number that can be represented with double precision is around $1.8 × 10^{308}$.</p>
+</blockquote>
+<h4 id="My-solution-1"><a href="#My-solution-1" class="headerlink" title="My solution :"></a>My solution :</h4><h4 id="Solution-on-the-book-2"><a href="#Solution-on-the-book-2" class="headerlink" title="Solution on the book :"></a>Solution on the book :</h4><p>In general, it is better to use a library macro rather than inventing your own code. This code seems to work on a variety of machines, however. We assume that the value 1e400 overflows to infinity</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> POS_INFINITY 1e400</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NEG_INFINITY (-POS_INFINITY)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NEG_ZERO (-1.0/POS_INFINITY)</span></span><br></pre></td></tr></table></figure>
+<hr>
+<p>When casting values between int, float, and double formats, the program changes the numeric values and the bit representations as follows (assuming data type int is 32 bits):</p>
+<p><img src="/2021/07/24/CSAPP/Ch2PartIII/cast.png" alt="casting rules"></p>
+<h4 id="Practice-Problem-2-54"><a href="#Practice-Problem-2-54" class="headerlink" title="Practice Problem 2.54"></a>Practice Problem 2.54</h4><blockquote>
+<p>Assume variables <code>x</code>,<code> f</code>, and <code>d</code> are of type <code>int</code>,<code> float</code>, and <code>double</code>, respectively. Their values are arbitrary, except that neither <code>f</code> nor <code>d</code> equals +∞, −∞, or NaN. </p>
+<p>For each of the following C expressions, either argue that it will always be true (i.e., evaluate to 1) or give a value for the variables such that it is not true (i.e., evaluates to 0).</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">A. x == (<span class="keyword">int</span>)(<span class="keyword">double</span>) x</span><br><span class="line">B. x == (<span class="keyword">int</span>)(<span class="keyword">float</span>) x</span><br><span class="line">C. d == (<span class="keyword">double</span>)(<span class="keyword">float</span>) d</span><br><span class="line">D. f == (<span class="keyword">float</span>)(<span class="keyword">double</span>) f</span><br><span class="line">E. f == -(-f)</span><br><span class="line">F. <span class="number">1.0</span>/<span class="number">2</span> == <span class="number">1</span>/<span class="number">2.0</span></span><br><span class="line">G. d*d &gt;= <span class="number">0.0</span></span><br><span class="line">H. (f+d)-f == d</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark-4"><a href="#My-solution-white-check-mark-4" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">A: <span class="literal">True</span></span><br><span class="line">B: <span class="literal">False</span></span><br><span class="line">C: <span class="literal">False</span></span><br><span class="line">D: <span class="literal">True</span></span><br><span class="line">E: <span class="literal">True</span></span><br><span class="line">F: <span class="literal">True</span></span><br><span class="line">G: <span class="literal">True</span></span><br><span class="line">H: <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<h4 id="Solution-on-the-book-3"><a href="#Solution-on-the-book-3" class="headerlink" title="Solution on the book:"></a>Solution on the book:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">A. x == (<span class="keyword">int</span>)(<span class="keyword">double</span>) x</span><br><span class="line">Yes, since <span class="keyword">double</span> has greater precision <span class="keyword">and</span> range than <span class="keyword">int</span>.</span><br><span class="line">    </span><br><span class="line">B. x == (<span class="keyword">int</span>)(<span class="keyword">float</span>) x</span><br><span class="line">No. For example, when x is TMax.</span><br><span class="line">    </span><br><span class="line">C. d == (<span class="keyword">double</span>)(<span class="keyword">float</span>) d</span><br><span class="line">No. For example, when d is <span class="number">1e40</span>, we will get +∞ on the right.</span><br><span class="line">    </span><br><span class="line">D. f == (<span class="keyword">float</span>)(<span class="keyword">double</span>) f</span><br><span class="line">Yes, since <span class="keyword">double</span> has greater precision <span class="keyword">and</span> range than <span class="keyword">float</span>.</span><br><span class="line">    </span><br><span class="line">E. f == -(-f)</span><br><span class="line">Yes, since a floating-point number is negated by simply inverting its sign bit</span><br><span class="line">    </span><br><span class="line">F. <span class="number">1.0</span>/<span class="number">2</span> == <span class="number">1</span>/<span class="number">2.0</span></span><br><span class="line">Yes, the numerators <span class="keyword">and</span> denominators will both be converted to floatingpoint representations before the division is performed.</span><br><span class="line">    </span><br><span class="line">G. d*d &gt;= <span class="number">0.0</span></span><br><span class="line">Yes, although it may overflow to +∞.</span><br><span class="line">    </span><br><span class="line">H. (f+d)-f == d</span><br><span class="line">No. For example, when f is <span class="number">1.0e20</span> <span class="keyword">and</span> d is <span class="number">1.0</span>, the expression f+d will be rounded to <span class="number">1.0e20</span>, <span class="keyword">and</span> so the expression on the left-hand side will evaluate to <span class="number">0.0</span>, <span class="keyword">while</span> the right-hand side will be <span class="number">1.0</span>.</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/07/24/CSAPP/Ch2PartIII/" data-id="ckrlrphh30001f8yq0opg5ko3" data-title="Ch2PartIII" class="article-share-link">Partager</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/07/25/CSAPP/floatingpoint/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          floatingpoint
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/07/23/CSAPP/bitsbytesintegers/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">bitsbytesintegers</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/1-Whetting-your-appetite/">1.Whetting your appetite</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/11-Brief-Tour-of-the-Standard-Library-%E2%80%94-Part-II/">11.Brief Tour of the Standard Library — Part II</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/12-Virtual-Environments-and-Packages/">12.Virtual Environments and Packages</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/13-What-Now-The-Rest-of-The-Tutorial/">13.What Now & The Rest of The Tutorial</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/2-Using-the-Python-Interpreter/">2.Using the Python Interpreter</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/4-More-Control-Flow-Tools/">4.More Control Flow Tools</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/5-Data-Structures/">5.Data Structures</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/6-Modules/">6.Modules</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/7-Input-and-Output/">7.Input and Output</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/8-Errors-and-Exceptions/">8.Errors and Exceptions</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/9-Classes/">9.Classes</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/introduction/">introduction</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/26/CSAPP/datalab/">datalab</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/25/CSAPP/floatingpoint/">floatingpoint</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/24/CSAPP/Ch2PartIII/">Ch2PartIII</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/23/CSAPP/bitsbytesintegers/">bitsbytesintegers</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/18/CSAPP/Ch2PartII/">Ch2PartII</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Propulsé par <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
