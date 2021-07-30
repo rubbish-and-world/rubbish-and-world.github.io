@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Ch3 | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Machine-Level Representation of ProgramsIn this chapter, we will take a close look at machine code and its human-re">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ch3">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/07/28/CSAPP/Ch3/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Machine-Level Representation of ProgramsIn this chapter, we will take a close look at machine code and its human-re">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/28/CSAPP/Ch3/sizeof.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/28/CSAPP/Ch3/registers.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/28/CSAPP/Ch3/operands.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/28/CSAPP/Ch3/mov.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/28/CSAPP/Ch3/movz.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/28/CSAPP/Ch3/movs.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/28/CSAPP/Ch3/pushpop.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/28/CSAPP/Ch3/stack.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/28/CSAPP/Ch3/arithmetic.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/28/CSAPP/Ch3/special.png">
+<meta property="article:published_time" content="2021-07-28T07:44:37.000Z">
+<meta property="article:modified_time" content="2021-07-30T13:39:16.054Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/07/28/CSAPP/Ch3/sizeof.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSAPP/Ch3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/07/28/CSAPP/Ch3/" class="article-date">
+  <time class="dt-published" datetime="2021-07-28T07:44:37.000Z" itemprop="datePublished">2021-07-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/csapp/">csapp</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Ch3
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+<h1 id="Machine-Level-Representation-of-Programs"><a href="#Machine-Level-Representation-of-Programs" class="headerlink" title="Machine-Level Representation of Programs"></a>Machine-Level Representation of Programs</h1><p><em>In this chapter, we will take a close look at machine code and its human-readable representation as assembly code.</em></p>
+<a id="more"></a>
+
+<p>Best of all, a program written in a high-level language can be compiled and executed on a number of different machines, whereas assembly code is highly <strong>machine specific</strong>.</p>
+<p>Our presentation is based on <code>x86-64</code>, the machine language for most of the processors found in today’s laptop and desktop machines, as well as those that power very large data centers and supercomputers. </p>
+<h2 id="3-1-A-Historical-Perspective"><a href="#3-1-A-Historical-Perspective" class="headerlink" title="3.1 A Historical Perspective"></a>3.1 A Historical Perspective</h2><p>The Intel processor line, colloquially referred to as x86, has followed a long evolutionary development.</p>
+<ul>
+<li><p> It started with one of the first <strong>single-chip 16-bit microprocessors</strong>, where many compromises had to be made due to the limited capabilities of integrated circuit technology at the time.</p>
+</li>
+<li><p>Since then, it has grown to take advantage of technology improvements as well as to satisfy the demands for higher performance and for supporting more advanced operating systems.</p>
+<ul>
+<li><p><code>8086</code> (1978, 29 K transistors). </p>
+<p>One of the first single-chip, <strong>16-bit</strong> microprocessors. The 8088, a variant of the 8086 with an 8-bit external bus, formed the heart of the original IBM personal computers. IBM contracted with then-tiny Microsoft to develop the <strong>MS-DOS operating system</strong>. The original models came with 32,768 bytes of memory and two floppy drives (no hard drive). Architecturally, the machines were limited to a 655,360-byte address space—addresses were only 20 bits long (1,048,576 bytes addressable), and the operating system reserved 393,216 bytes for its own use. In 1980, Intel introduced the 8087 floating-point coprocessor (45 K transistors) to operate alongside an 8086 or 8088 processor, executing the floating-point instructions. The 8087 established the floating-point model for the x86 line, often referred to as “x87.”</p>
+</li>
+<li><p><code>80286</code> (1982, 134 K transistors). </p>
+<p>Added more (and now obsolete) addressing modes. Formed the basis of the IBM PC-AT personal computer, the original platform for MS Windows.</p>
+</li>
+<li><p><code>i386</code> (1985, 275 K transistors). </p>
+<p>Expanded the architecture to <strong>32 bits</strong>. Added the flat addressing model used by Linux and recent versions of the Windows operating system. This was the first machine in the series that could <strong>fully support a Unix operating system</strong></p>
+</li>
+<li><p><code>i486</code> (1989, 1.2 M transistors).</p>
+<p>Improved performance and integrated the floating-point unit onto the processor chip but did not significantly change the instruction set.</p>
+</li>
+<li><p><code>Pentium</code> (1993, 3.1 M transistors). </p>
+<p>Improved performance but only added minor extensions to the instruction set.</p>
+</li>
+<li><p><code>PentiumPro</code> (1995, 5.5 M transistors). </p>
+<p>Introduced <strong>a radically new processor design, internally known as the P6 microarchitecture</strong>. Added a class of “conditional move” instructions to the instruction set.</p>
+</li>
+<li><p><code>Pentium/MMX</code> (1997, 4.5 M transistors). </p>
+<p>Added new class of instructions to the Pentium processor for manipulating <strong>vectors of integers</strong>. Each datum can be 1, 2, or 4 bytes long. Each vector totals 64 bits.</p>
+</li>
+<li><p><code>Pentium II</code> (1997, 7 M transistors). </p>
+<p>Continuation of the P6 microarchitecture.</p>
+</li>
+<li><p><code>Pentium III</code> (1999, 8.2 M transistors). </p>
+<p>Introduced <strong>SSE, a class of instructions for manipulating vectors of integer or floating-point data</strong>. Each datum can be 1, 2, or 4 bytes, packed into vectors of 128 bits. Later versions of this chip went up to 24 M transistors, due to the incorporation of the level-2 cache on chip.</p>
+</li>
+<li><p><code>Pentium 4</code> (2000, 42 M transistors). </p>
+<p>Extended SSE to SSE2, adding new data types (including double-precision floating point), along with 144 new instructions for these formats. With these extensions, compilers can use SSE instructions, rather than x87 instructions, to compile floating-point code</p>
+</li>
+<li><p><code>Pentium 4E</code> (2004, 125 M transistors). </p>
+<p>Added <strong>hyperthreading</strong>, a method to run two programs simultaneously on a single processor, as well as <strong>EM64T, Intel’s implementation of a 64-bit extension to IA32 developed by Advanced Micro Devices (AMD), which we refer to as x86-64.</strong></p>
+</li>
+<li><p><code>Core 2</code> (2006, 291 M transistors).</p>
+<p> Returned to a microarchitecture similar to P6. First <strong>multi-core</strong> Intel microprocessor, where multiple processors are implemented on a single chip. Did not support hyperthreading.</p>
+</li>
+<li><p><code>Core i7, Nehalem</code> (2008, 781 M transistors).</p>
+<p>Incorporated <strong>both hyperthreading and multi-core</strong>, with the initial version supporting two executing programs on each core and up to four cores on each chip.</p>
+</li>
+<li><p><code>Core i7, Sandy Bridge</code> (2011, 1.17 G transistors).</p>
+<p>Introduced AVX, an extension of the SSE to support data packed into 256-bit vectors.</p>
+</li>
+<li><p><code>Core i7, Haswell</code> (2013, 1.4 G transistors).</p>
+<p>Extended AVX to AVX2, adding more instructions and instruction formats.</p>
+</li>
+</ul>
+</li>
+<li><p>Each successive processor has been designed to be backward compatible— able to run code compiled for any earlier version.</p>
+</li>
+<li><p>Intel has had several names for their processor line, including IA32, for “Intel Architecture 32-bit” and most recently Intel64, the 64-bit extension to IA32, which we will refer to as x86-64.</p>
+</li>
+<li><p> The memory model provided in the original 8086 and its extensions in the 80286 became obsolete with the i386. The original x87 floating-point instructions became obsolete with the introduction of SSE2.</p>
+</li>
+</ul>
+<h2 id="3-2-Program-Encodings"><a href="#3-2-Program-Encodings" class="headerlink" title="3.2 Program Encodings"></a>3.2 Program Encodings</h2><p>Suppose we write a C program as two files p1.c and p2.c. We can then compile this code using a Unix command line:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">linux&gt; gcc -Og -o p p1.c p2.c</span><br></pre></td></tr></table></figure>
+<ul>
+<li>The command-line option <code>-Og</code> instructs the compiler to apply a level of optimization that yields machine code that follows the overall structure of the original C code. </li>
+<li>Invoking higher levels of optimization can generate code that is so heavily transformed that the relationship between the generated machine code and the original source code is difficult to understand.</li>
+<li>We will therefore use <code>-Og</code> optimization as a learning tool and then see what happens as we increase the level of optimization. In practice, higher levels of optimization (e.g., specified with the option <code>-O1</code> or <code>-O2</code>) are considered a better choice in terms of the resulting program performance.</li>
+</ul>
+<h3 id="3-2-1-Machine-Level-Code"><a href="#3-2-1-Machine-Level-Code" class="headerlink" title="3.2.1 Machine-Level Code"></a>3.2.1 Machine-Level Code</h3><p>In the abstract model of computer, two of these are especially important for machine-level programming. </p>
+<ul>
+<li>First, the format and behavior of a machine-level program is defined by the instruction set architecture, or ISA, defining the processor state, the format of the instructions, and the effect each of these instructions will have on the state.</li>
+<li>Second, the memory addresses used by a machine-level program are virtual addresses, providing a memory model that appears to be a very large byte array</li>
+</ul>
+<p>Being able to understand assembly code and how it relates to the original C code is a key step in understanding how computers execute programs.</p>
+<p>The machine code for x86-64 differs greatly from the original C code. Parts of the processor state are visible that normally are hidden from the C programmer:</p>
+<ul>
+<li><p>The program counter (commonly referred to as the PC, and called <code>%rip</code> in x86- 64) indicates the address in memory of the next instruction to be executed.</p>
+</li>
+<li><p>The integer register file contains 16 named locations storing 64-bit values.</p>
+<p>These registers can hold addresses (corresponding to C pointers) or integer data. Some registers are used to keep track of critical parts of the program state, while others are used to hold temporary data, such as the arguments and local variables of a procedure, as well as the value to be returned by a function.</p>
+</li>
+<li><p>The condition code registers hold status information about the most recently executed arithmetic or logical instruction. </p>
+<p>These are used to implement conditional changes in the control or data flow, such as is required to implement <code>if</code> and <code>while</code> statements.</p>
+</li>
+<li><p>A set of vector registers can each hold one or more integer or floating-point values.</p>
+</li>
+</ul>
+<p>Whereas C provides a model in which objects of different data types can be declared and allocated in memory, machine code views the memory as simply a large byte-addressable array</p>
+<p>Aggregate data types in C such as arrays and structures are represented in machine code as contiguous collections of bytes. </p>
+<p>Even for scalar data types, assembly code makes no distinctions between signed or unsigned integers, between different types of pointers, or even between pointers and integers.</p>
+<p><em>(No “type” here !)</em></p>
+<hr>
+<p> As mentioned earlier, the program memory is addressed using virtual addresses. </p>
+<p>At any given time, only limited subranges of virtual addresses are considered valid. </p>
+<p>For example, x86-64 virtual addresses are represented by 64-bit words. In current implementations of these machines, the upper 16 bits must be set to zero, and so an address can potentially specify a byte over a range of $2^{48}$, or 64 terabytes.</p>
+<p>The operating system manages this virtual address space, translating virtual addresses into the physical addresses of values in the actual processor memory.</p>
+<hr>
+<p>The compiler must generate sequences of instructions to implement program constructs such as arithmetic expression evaluation, loops, or procedure calls and returns.</p>
+<p>The opensource community supporting gcc keeps changing the code generator, attempting to generate more efficient code according to changing code guidelines provided by the microprocessor manufacturers.</p>
+<p>Our goal in studying the examples shown in our presentation is to demonstrate how to examine assembly code and map it back to the constructs found in high-level programming languages. You will need to adapt these techniques to the style of code generated by your particular compiler.</p>
+<h3 id="3-2-2-Code-Examples"><a href="#3-2-2-Code-Examples" class="headerlink" title="3.2.2 Code Examples"></a>3.2.2 Code Examples</h3><p>Suppose we write a C code file <code>mstore.c</code> containing the following function definition:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">mult2</span><span class="params">(<span class="keyword">long</span>, <span class="keyword">long</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">multstore</span><span class="params">(<span class="keyword">long</span> x, <span class="keyword">long</span> y, <span class="keyword">long</span> *dest)</span> </span>&#123;</span><br><span class="line"><span class="keyword">long</span> t = mult2(x, y);</span><br><span class="line">*dest = t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>To see the assembly code generated by the C compiler</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -Og -S mstore.c</span><br></pre></td></tr></table></figure>
+<p><code>-S</code> will cause gcc to run the compiler, generating an assembly file mstore.s, and go no further.</p>
+<p>The assembly-code file contains various declarations, including the following set of lines:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">multstore:</span><br><span class="line">	pushq	%rbx</span><br><span class="line">	movq	%rdx, %rbx</span><br><span class="line">	call	mult2@PLT</span><br><span class="line">	movq	%rax, (%rbx)</span><br><span class="line">	popq	%rbx</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>Each indented line in the code corresponds to a single machine instruction.</p>
+</li>
+<li><p>All information about local variable names or data types has been stripped away.</p>
+</li>
+</ul>
+<p>If we use the <code>-c</code> command-line option, gcc will both compile and assemble the code</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -Og -c mstore.c</span><br></pre></td></tr></table></figure>
+<p>This will give us a binary file <code>mstore.o</code></p>
+<p>Embedded within the 1,368 bytes of the file <code>mstore.o</code> is a 14-byte sequence with the hexadecimal representation</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexdump -C mstore.o | grep <span class="string">&#x27;53 48 89 d3 e8 00 00 00  00 48 89 03 5b c3&#x27;</span></span><br><span class="line">00000040  53 48 89 d3 e8 00 00 00  00 48 89 03 5b c3 00 47  |SH.......H..[..G|</span><br></pre></td></tr></table></figure>
+<p>This is the object code corresponding to the assembly instructions listed previously</p>
+<p>A key lesson to learn from this is that the <strong>program executed by the machine is simply a sequence of bytes encoding a series of instructions</strong>. <strong>The machine has very little information about the source code from which these instructions were generated.</strong></p>
+<p>Programs call disassembler generate a format similar to assembly code from the machine code.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ objdump -d mstore.o</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mstore.o:     file format elf64-x86-64</span><br><span class="line"></span><br><span class="line">Disassembly of section .text:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;multstore&gt;:</span><br><span class="line">   0:	53                   	push   %rbx</span><br><span class="line">   1:	48 89 d3             	mov    %rdx,%rbx</span><br><span class="line">   4:	e8 00 00 00 00       	callq  9 &lt;multstore+0x9&gt;</span><br><span class="line">   9:	48 89 03             	mov    %rax,(%rbx)</span><br><span class="line">   c:	5b                   	pop    %rbx</span><br><span class="line">   d:	c3                   	retq   </span><br></pre></td></tr></table></figure>
+<p>Several features about machine code and its disassembled representation are worth noting:</p>
+<ul>
+<li><p><code>x86-64</code> instructions can <strong>range in length from 1 to 15 bytes</strong>. The instruction encoding is designed so that commonly used instructions and those with fewer operands require a smaller number of bytes than do less common ones or ones with more operands.</p>
+</li>
+<li><p>The instruction format is designed in such a way that from a given starting position, there is a <strong>unique decoding of the bytes into machine instructions</strong>. For example, only the instruction <code>pushq %rbx</code> can start with byte value 53.</p>
+</li>
+<li><p>The disassembler determines the assembly code based purely on the byte sequences in the machine-code file. It does not require access to the source or assembly-code versions of the program.</p>
+</li>
+<li><p>The disassembler uses a slightly different naming convention for the instructions than does the assembly code generated by <code>gcc</code>. </p>
+<p>In our example, it has omitted the suffix <code>q</code> from many of the instructions. These suffixes are <strong>size designators and can be omitted in most cases</strong>. Conversely, the disassembler adds the suffix <code>q</code> to the call and ret instructions. Again, these suffixes can safely be omitted.</p>
+</li>
+</ul>
+<hr>
+<p>Generating the actual executable code requires running a linker on the set of object-code files, one of which must contain a function <code>main</code>.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//source of main.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">multstore</span><span class="params">(<span class="keyword">long</span>, <span class="keyword">long</span>, <span class="keyword">long</span> *)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="keyword">long</span> d;</span><br><span class="line">multstore(<span class="number">2</span>, <span class="number">3</span>, &amp;d);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;2 * 3 --&gt; %ld\n&quot;</span>, d);</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">mult2</span><span class="params">(<span class="keyword">long</span> a, <span class="keyword">long</span> b)</span> </span>&#123;</span><br><span class="line"><span class="keyword">long</span> s = a * b;</span><br><span class="line"><span class="keyword">return</span> s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -Og -o prog main.c mstore.c</span><br></pre></td></tr></table></figure>
+<p>The file prog has grown to 8,655 bytes, since it contains not just the machine code for the procedures we provided but also <strong>code used to start and terminate the program as well as to interact with the operating system</strong>.</p>
+<p> We can disassemble the file prog:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ objdump -d prog</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br></pre></td><td class="code"><pre><span class="line">prog:     file format elf64-x86-64</span><br><span class="line">Disassembly of section .init:</span><br><span class="line"></span><br><span class="line">0000000000000570 &lt;_init&gt;:</span><br><span class="line"> 570:	48 83 ec 08          	sub    $0x8,%rsp</span><br><span class="line"> 574:	48 8b 05 6d 0a 20 00 	mov    0x200a6d(%rip),%rax        # 200fe8 &lt;__gmon_start__&gt;</span><br><span class="line"> 57b:	48 85 c0             	test   %rax,%rax</span><br><span class="line"> 57e:	74 02                	je     582 &lt;_init+0x12&gt;</span><br><span class="line"> 580:	ff d0                	callq  *%rax</span><br><span class="line"> 582:	48 83 c4 08          	add    $0x8,%rsp</span><br><span class="line"> 586:	c3                   	retq   </span><br><span class="line">Disassembly of section .plt:</span><br><span class="line"></span><br><span class="line">0000000000000590 &lt;.plt&gt;:</span><br><span class="line"> 590:	ff 35 22 0a 20 00    	pushq  0x200a22(%rip)        # 200fb8 &lt;_GLOBAL_OFFSET_TABLE_+0x8&gt;</span><br><span class="line"> 596:	ff 25 24 0a 20 00    	jmpq   *0x200a24(%rip)        # 200fc0 &lt;_GLOBAL_OFFSET_TABLE_+0x10&gt;</span><br><span class="line"> 59c:	0f 1f 40 00          	nopl   0x0(%rax)</span><br><span class="line"></span><br><span class="line">00000000000005a0 &lt;__stack_chk_fail@plt&gt;:</span><br><span class="line"> 5a0:	ff 25 22 0a 20 00    	jmpq   *0x200a22(%rip)        # 200fc8 &lt;__stack_chk_fail@GLIBC_2.4&gt;</span><br><span class="line"> 5a6:	68 00 00 00 00       	pushq  $0x0</span><br><span class="line"> 5ab:	e9 e0 ff ff ff       	jmpq   590 &lt;.plt&gt;</span><br><span class="line"></span><br><span class="line">00000000000005b0 &lt;__printf_chk@plt&gt;:</span><br><span class="line"> 5b0:	ff 25 1a 0a 20 00    	jmpq   *0x200a1a(%rip)        # 200fd0 &lt;__printf_chk@GLIBC_2.3.4&gt;</span><br><span class="line"> 5b6:	68 01 00 00 00       	pushq  $0x1</span><br><span class="line"> 5bb:	e9 d0 ff ff ff       	jmpq   590 &lt;.plt&gt;</span><br><span class="line"></span><br><span class="line">Disassembly of section .plt.got:</span><br><span class="line"></span><br><span class="line">00000000000005c0 &lt;__cxa_finalize@plt&gt;:</span><br><span class="line"> 5c0:	ff 25 32 0a 20 00    	jmpq   *0x200a32(%rip)        # 200ff8 &lt;__cxa_finalize@GLIBC_2.2.5&gt;</span><br><span class="line"> 5c6:	66 90                	xchg   %ax,%ax</span><br><span class="line"></span><br><span class="line">Disassembly of section .text:</span><br><span class="line"></span><br><span class="line">00000000000005d0 &lt;_start&gt;:</span><br><span class="line"> 5d0:	31 ed                	xor    %ebp,%ebp</span><br><span class="line"> 5d2:	49 89 d1             	mov    %rdx,%r9</span><br><span class="line"> 5d5:	5e                   	pop    %rsi</span><br><span class="line"> 5d6:	48 89 e2             	mov    %rsp,%rdx</span><br><span class="line"> 5d9:	48 83 e4 f0          	and    $0xfffffffffffffff0,%rsp</span><br><span class="line"> 5dd:	50                   	push   %rax</span><br><span class="line"> 5de:	54                   	push   %rsp</span><br><span class="line"> 5df:	4c 8d 05 da 01 00 00 	lea    0x1da(%rip),%r8        # 7c0 &lt;__libc_csu_fini&gt;</span><br><span class="line"> 5e6:	48 8d 0d 63 01 00 00 	lea    0x163(%rip),%rcx        # 750 &lt;__libc_csu_init&gt;</span><br><span class="line"> 5ed:	48 8d 3d e6 00 00 00 	lea    0xe6(%rip),%rdi        # 6da &lt;main&gt;</span><br><span class="line"> 5f4:	ff 15 e6 09 20 00    	callq  *0x2009e6(%rip)        # 200fe0 &lt;__libc_start_main@GLIBC_2.2.5&gt;</span><br><span class="line"> 5fa:	f4                   	hlt    </span><br><span class="line"> 5fb:	0f 1f 44 00 00       	nopl   0x0(%rax,%rax,1)</span><br><span class="line"></span><br><span class="line">0000000000000600 &lt;deregister_tm_clones&gt;:</span><br><span class="line"> 600:	48 8d 3d 09 0a 20 00 	lea    0x200a09(%rip),%rdi        # 201010 &lt;__TMC_END__&gt;</span><br><span class="line"> 607:	55                   	push   %rbp</span><br><span class="line"> 608:	48 8d 05 01 0a 20 00 	lea    0x200a01(%rip),%rax        # 201010 &lt;__TMC_END__&gt;</span><br><span class="line"> 60f:	48 39 f8             	cmp    %rdi,%rax</span><br><span class="line"> 612:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line"> 615:	74 19                	je     630 &lt;deregister_tm_clones+0x30&gt;</span><br><span class="line"> 617:	48 8b 05 ba 09 20 00 	mov    0x2009ba(%rip),%rax        # 200fd8 &lt;_ITM_deregisterTMCloneTable&gt;</span><br><span class="line"> 61e:	48 85 c0             	test   %rax,%rax</span><br><span class="line"> 621:	74 0d                	je     630 &lt;deregister_tm_clones+0x30&gt;</span><br><span class="line"> 623:	5d                   	pop    %rbp</span><br><span class="line"> 624:	ff e0                	jmpq   *%rax</span><br><span class="line"> 626:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)</span><br><span class="line"> 62d:	00 00 00 </span><br><span class="line"> 630:	5d                   	pop    %rbp</span><br><span class="line"> 631:	c3                   	retq   </span><br><span class="line"> 632:	0f 1f 40 00          	nopl   0x0(%rax)</span><br><span class="line"> 636:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)</span><br><span class="line"> 63d:	00 00 00 </span><br><span class="line"></span><br><span class="line">0000000000000640 &lt;register_tm_clones&gt;:</span><br><span class="line"> 640:	48 8d 3d c9 09 20 00 	lea    0x2009c9(%rip),%rdi        # 201010 &lt;__TMC_END__&gt;</span><br><span class="line"> 647:	48 8d 35 c2 09 20 00 	lea    0x2009c2(%rip),%rsi        # 201010 &lt;__TMC_END__&gt;</span><br><span class="line"> 64e:	55                   	push   %rbp</span><br><span class="line"> 64f:	48 29 fe             	sub    %rdi,%rsi</span><br><span class="line"> 652:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line"> 655:	48 c1 fe 03          	sar    $0x3,%rsi</span><br><span class="line"> 659:	48 89 f0             	mov    %rsi,%rax</span><br><span class="line"> 65c:	48 c1 e8 3f          	shr    $0x3f,%rax</span><br><span class="line"> 660:	48 01 c6             	add    %rax,%rsi</span><br><span class="line"> 663:	48 d1 fe             	sar    %rsi</span><br><span class="line"> 666:	74 18                	je     680 &lt;register_tm_clones+0x40&gt;</span><br><span class="line"> 668:	48 8b 05 81 09 20 00 	mov    0x200981(%rip),%rax        # 200ff0 &lt;_ITM_registerTMCloneTable&gt;</span><br><span class="line"> 66f:	48 85 c0             	test   %rax,%rax</span><br><span class="line"> 672:	74 0c                	je     680 &lt;register_tm_clones+0x40&gt;</span><br><span class="line"> 674:	5d                   	pop    %rbp</span><br><span class="line"> 675:	ff e0                	jmpq   *%rax</span><br><span class="line"> 677:	66 0f 1f 84 00 00 00 	nopw   0x0(%rax,%rax,1)</span><br><span class="line"> 67e:	00 00 </span><br><span class="line"> 680:	5d                   	pop    %rbp</span><br><span class="line"> 681:	c3                   	retq   </span><br><span class="line"> 682:	0f 1f 40 00          	nopl   0x0(%rax)</span><br><span class="line"> 686:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)</span><br><span class="line"> 68d:	00 00 00 </span><br><span class="line"></span><br><span class="line">0000000000000690 &lt;__do_global_dtors_aux&gt;:</span><br><span class="line"> 690:	80 3d 79 09 20 00 00 	cmpb   $0x0,0x200979(%rip)        # 201010 &lt;__TMC_END__&gt;</span><br><span class="line"> 697:	75 2f                	jne    6c8 &lt;__do_global_dtors_aux+0x38&gt;</span><br><span class="line"> 699:	48 83 3d 57 09 20 00 	cmpq   $0x0,0x200957(%rip)        # 200ff8 &lt;__cxa_finalize@GLIBC_2.2.5&gt;</span><br><span class="line"> 6a0:	00 </span><br><span class="line"> 6a1:	55                   	push   %rbp</span><br><span class="line"> 6a2:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line"> 6a5:	74 0c                	je     6b3 &lt;__do_global_dtors_aux+0x23&gt;</span><br><span class="line"> 6a7:	48 8b 3d 5a 09 20 00 	mov    0x20095a(%rip),%rdi        # 201008 &lt;__dso_handle&gt;</span><br><span class="line"> 6ae:	e8 0d ff ff ff       	callq  5c0 &lt;__cxa_finalize@plt&gt;</span><br><span class="line"> 6b3:	e8 48 ff ff ff       	callq  600 &lt;deregister_tm_clones&gt;</span><br><span class="line"> 6b8:	c6 05 51 09 20 00 01 	movb   $0x1,0x200951(%rip)        # 201010 &lt;__TMC_END__&gt;</span><br><span class="line"> 6bf:	5d                   	pop    %rbp</span><br><span class="line"> 6c0:	c3                   	retq   </span><br><span class="line"> 6c1:	0f 1f 80 00 00 00 00 	nopl   0x0(%rax)</span><br><span class="line"> 6c8:	f3 c3                	repz retq </span><br><span class="line"> 6ca:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)</span><br><span class="line"></span><br><span class="line">00000000000006d0 &lt;frame_dummy&gt;:</span><br><span class="line"> 6d0:	55                   	push   %rbp</span><br><span class="line"> 6d1:	48 89 e5             	mov    %rsp,%rbp</span><br><span class="line"> 6d4:	5d                   	pop    %rbp</span><br><span class="line"> 6d5:	e9 66 ff ff ff       	jmpq   640 &lt;register_tm_clones&gt;</span><br><span class="line"></span><br><span class="line">00000000000006da &lt;main&gt;:</span><br><span class="line"> 6da:	48 83 ec 18          	sub    $0x18,%rsp</span><br><span class="line"> 6de:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax</span><br><span class="line"> 6e5:	00 00 </span><br><span class="line"> 6e7:	48 89 44 24 08       	mov    %rax,0x8(%rsp)</span><br><span class="line"> 6ec:	31 c0                	xor    %eax,%eax</span><br><span class="line"> 6ee:	48 89 e2             	mov    %rsp,%rdx</span><br><span class="line"> 6f1:	be 03 00 00 00       	mov    $0x3,%esi</span><br><span class="line"> 6f6:	bf 02 00 00 00       	mov    $0x2,%edi</span><br><span class="line"> 6fb:	e8 41 00 00 00       	callq  741 &lt;multstore&gt;</span><br><span class="line"> 700:	48 8b 14 24          	mov    (%rsp),%rdx</span><br><span class="line"> 704:	48 8d 35 c9 00 00 00 	lea    0xc9(%rip),%rsi        # 7d4 &lt;_IO_stdin_used+0x4&gt;</span><br><span class="line"> 70b:	bf 01 00 00 00       	mov    $0x1,%edi</span><br><span class="line"> 710:	b8 00 00 00 00       	mov    $0x0,%eax</span><br><span class="line"> 715:	e8 96 fe ff ff       	callq  5b0 &lt;__printf_chk@plt&gt;</span><br><span class="line"> 71a:	48 8b 4c 24 08       	mov    0x8(%rsp),%rcx</span><br><span class="line"> 71f:	64 48 33 0c 25 28 00 	xor    %fs:0x28,%rcx</span><br><span class="line"> 726:	00 00 </span><br><span class="line"> 728:	75 0a                	jne    734 &lt;main+0x5a&gt;</span><br><span class="line"> 72a:	b8 00 00 00 00       	mov    $0x0,%eax</span><br><span class="line"> 72f:	48 83 c4 18          	add    $0x18,%rsp</span><br><span class="line"> 733:	c3                   	retq   </span><br><span class="line"> 734:	e8 67 fe ff ff       	callq  5a0 &lt;__stack_chk_fail@plt&gt;</span><br><span class="line"></span><br><span class="line">0000000000000739 &lt;mult2&gt;:</span><br><span class="line"> 739:	48 89 f8             	mov    %rdi,%rax</span><br><span class="line"> 73c:	48 0f af c6          	imul   %rsi,%rax</span><br><span class="line"> 740:	c3                   	retq   </span><br><span class="line"></span><br><span class="line">0000000000000741 &lt;multstore&gt;:</span><br><span class="line"> 741:	53                   	push   %rbx</span><br><span class="line"> 742:	48 89 d3             	mov    %rdx,%rbx</span><br><span class="line"> 745:	e8 ef ff ff ff       	callq  739 &lt;mult2&gt;</span><br><span class="line"> 74a:	48 89 03             	mov    %rax,(%rbx)</span><br><span class="line"> 74d:	5b                   	pop    %rbx</span><br><span class="line"> 74e:	c3                   	retq   </span><br><span class="line"> 74f:	90                   	nop</span><br><span class="line"></span><br><span class="line">0000000000000750 &lt;__libc_csu_init&gt;:</span><br><span class="line"> 750:	41 57                	push   %r15</span><br><span class="line"> 752:	41 56                	push   %r14</span><br><span class="line"> 754:	49 89 d7             	mov    %rdx,%r15</span><br><span class="line"> 757:	41 55                	push   %r13</span><br><span class="line"> 759:	41 54                	push   %r12</span><br><span class="line"> 75b:	4c 8d 25 4e 06 20 00 	lea    0x20064e(%rip),%r12        # 200db0 &lt;__frame_dummy_init_array_entry&gt;</span><br><span class="line"> 762:	55                   	push   %rbp</span><br><span class="line"> 763:	48 8d 2d 4e 06 20 00 	lea    0x20064e(%rip),%rbp        # 200db8 &lt;__init_array_end&gt;</span><br><span class="line"> 76a:	53                   	push   %rbx</span><br><span class="line"> 76b:	41 89 fd             	mov    %edi,%r13d</span><br><span class="line"> 76e:	49 89 f6             	mov    %rsi,%r14</span><br><span class="line"> 771:	4c 29 e5             	sub    %r12,%rbp</span><br><span class="line"> 774:	48 83 ec 08          	sub    $0x8,%rsp</span><br><span class="line"> 778:	48 c1 fd 03          	sar    $0x3,%rbp</span><br><span class="line"> 77c:	e8 ef fd ff ff       	callq  570 &lt;_init&gt;</span><br><span class="line"> 781:	48 85 ed             	test   %rbp,%rbp</span><br><span class="line"> 784:	74 20                	je     7a6 &lt;__libc_csu_init+0x56&gt;</span><br><span class="line"> 786:	31 db                	xor    %ebx,%ebx</span><br><span class="line"> 788:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)</span><br><span class="line"> 78f:	00 </span><br><span class="line"> 790:	4c 89 fa             	mov    %r15,%rdx</span><br><span class="line"> 793:	4c 89 f6             	mov    %r14,%rsi</span><br><span class="line"> 796:	44 89 ef             	mov    %r13d,%edi</span><br><span class="line"> 799:	41 ff 14 dc          	callq  *(%r12,%rbx,8)</span><br><span class="line"> 79d:	48 83 c3 01          	add    $0x1,%rbx</span><br><span class="line"> 7a1:	48 39 dd             	cmp    %rbx,%rbp</span><br><span class="line"> 7a4:	75 ea                	jne    790 &lt;__libc_csu_init+0x40&gt;</span><br><span class="line"> 7a6:	48 83 c4 08          	add    $0x8,%rsp</span><br><span class="line"> 7aa:	5b                   	pop    %rbx</span><br><span class="line"> 7ab:	5d                   	pop    %rbp</span><br><span class="line"> 7ac:	41 5c                	pop    %r12</span><br><span class="line"> 7ae:	41 5d                	pop    %r13</span><br><span class="line"> 7b0:	41 5e                	pop    %r14</span><br><span class="line"> 7b2:	41 5f                	pop    %r15</span><br><span class="line"> 7b4:	c3                   	retq   </span><br><span class="line"> 7b5:	90                   	nop</span><br><span class="line"> 7b6:	66 2e 0f 1f 84 00 00 	nopw   %cs:0x0(%rax,%rax,1)</span><br><span class="line"> 7bd:	00 00 00 </span><br><span class="line"></span><br><span class="line">00000000000007c0 &lt;__libc_csu_fini&gt;:</span><br><span class="line"> 7c0:	f3 c3                	repz retq </span><br><span class="line"></span><br><span class="line">Disassembly of section .fini:</span><br><span class="line"></span><br><span class="line">00000000000007c4 &lt;_fini&gt;:</span><br><span class="line"> 7c4:	48 83 ec 08          	sub    $0x8,%rsp</span><br><span class="line"> 7c8:	48 83 c4 08          	add    $0x8,%rsp</span><br><span class="line"> 7cc:	c3                   	retq </span><br></pre></td></tr></table></figure>
+<p>Note that this the codes of <code>multstore</code> hold.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">0000000000000741 &lt;multstore&gt;:</span><br><span class="line"> 741:	53                   	push   %rbx</span><br><span class="line"> 742:	48 89 d3             	mov    %rdx,%rbx</span><br><span class="line"> 745:	e8 ef ff ff ff       	callq  739 &lt;mult2&gt;</span><br><span class="line"> 74a:	48 89 03             	mov    %rax,(%rbx)</span><br><span class="line"> 74d:	5b                   	pop    %rbx</span><br><span class="line"> 74e:	c3                   	retq   </span><br><span class="line"> 74f:	90                   	nop</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>One important difference is that the <strong>addresses</strong> listed along the left are different— the linker has shifted the location of this code to a different range of addresses. </p>
+</li>
+<li><p>A second difference is that the linker has filled in the address that the <code>callq </code>instruction should use in calling the function <code>mult2</code>. One task for the linker is to match function calls with the locations of the executable code for those functions. </p>
+</li>
+<li><p>A final difference is that we see one additional lines of code <code>nop</code>. This instruction will have no effect on the program, since it occurs after the return instruction.</p>
+<p>It has been inserted to grow the code, enabling a better placement of the next block of code in terms of memory system performance.</p>
+</li>
+</ul>
+<h3 id="3-2-3-Notes-on-Formatting"><a href="#3-2-3-Notes-on-Formatting" class="headerlink" title="3.2.3 Notes on Formatting"></a>3.2.3 Notes on Formatting</h3><p>The assembly code generated by <code>gcc</code>  contains <u>information with which we need not be concerned</u> and <u>does not provide any description of the program or how it works.</u></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat mstore.s</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">	.file	&quot;mstore.c&quot;</span><br><span class="line">	.text</span><br><span class="line">	.globl	multstore</span><br><span class="line">	.type	multstore, @function</span><br><span class="line">multstore:</span><br><span class="line">.LFB0:</span><br><span class="line">	.cfi_startproc</span><br><span class="line">	pushq	%rbx</span><br><span class="line">	.cfi_def_cfa_offset 16</span><br><span class="line">	.cfi_offset 3, -16</span><br><span class="line">	movq	%rdx, %rbx</span><br><span class="line">	call	mult2@PLT</span><br><span class="line">	movq	%rax, (%rbx)</span><br><span class="line">	popq	%rbx</span><br><span class="line">	.cfi_def_cfa_offset 8</span><br><span class="line">	ret</span><br><span class="line">	.cfi_endproc</span><br><span class="line">.LFE0:</span><br><span class="line">	.size	multstore, .-multstore</span><br><span class="line">	.ident	&quot;GCC: (Ubuntu 7.5.0-3ubuntu1~18.04) 7.5.0&quot;</span><br><span class="line">	.section	.note.GNU-stack,&quot;&quot;,@progbits</span><br></pre></td></tr></table></figure>
+<p><span style="color:red"><strong>All of the lines beginning with ‘.’ are directives to guide the assembler and linker. We can generally ignore these.</strong></span></p>
+<p>We will do two main task:</p>
+<ol>
+<li><p>omits most of the directives which begin with ‘.’</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python3</span></span><br><span class="line"><span class="comment"># source of wash.py</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">clothes = sys.argv[<span class="number">1</span>]</span><br><span class="line">f = <span class="built_in">open</span>(clothes , <span class="string">&#x27;rt&#x27;</span>)</span><br><span class="line">after = <span class="built_in">open</span>(<span class="string">&#x27;clean_&#x27;</span> + clothes , <span class="string">&#x27;wt&#x27;</span> )</span><br><span class="line">ls = []</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">    <span class="keyword">if</span> line.strip()[<span class="number">0</span>] != <span class="string">&#x27;.&#x27;</span>:</span><br><span class="line">        ls.append(line)</span><br><span class="line">after.writelines(ls)</span><br><span class="line">f.close()</span><br><span class="line">after.close()</span><br></pre></td></tr></table></figure></li>
+<li><p>add some annotation(Unfortunately, this can only be done manually)</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#void multstore(long x, long y, long *dest)</span><br><span class="line">#x in %rdi, y in %rsi, dest in %rdx</span><br><span class="line">multstore:</span><br><span class="line"> pushq %rbx 		;Save %rbx</span><br><span class="line"> movq %rdx, %rbx 	;Copy dest to %rbx</span><br><span class="line"> call mult2 		;Call mult2(x, y)</span><br><span class="line"> movq %rax, (%rbx) 	;Store result at *dest</span><br><span class="line"> popq %rbx 			;Restore %rbx</span><br><span class="line"> ret 				;Return</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">; intel format</span><br><span class="line">multstore:</span><br><span class="line">	push	rbx</span><br><span class="line">	mov	rbx, rdx</span><br><span class="line">	call	mult2@PLT</span><br><span class="line">	mov	QWORD PTR [rbx], rax</span><br><span class="line">	pop	rbx</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<hr>
+<blockquote>
+<p>Difference between ATT format and intel format</p>
+<p>ATT(name after AT&amp;T) fomat  is the default format for gcc, objdump, and the other tools we will consider.</p>
+<p>intel format is from Microsoft, it can be shown by telling <code>gcc</code> <code>-masm=intel</code></p>
+<ul>
+<li>The Intel code omits the size designation suffixes. We see instruction <code>push</code> and <code>mov</code> instead of <code>pushq</code> and <code>movq</code>.</li>
+<li>The Intel code omits the <code>%</code> character in front of register names, using <code>rbx</code> instead of <code>%rbx</code></li>
+<li>The Intel code has a different way of describing locations in memory—for example, <code>QWORD PTR [rbx]</code> rather than <code>(%rbx)</code>.</li>
+<li><strong><em>Instructions with multiple operands list them in the <u>reverse order</u>. This can be very confusing when switching between the two formats!!!</em></strong></li>
+</ul>
+</blockquote>
+<h2 id="3-3-Data-Formats"><a href="#3-3-Data-Formats" class="headerlink" title="3.3 Data Formats"></a>3.3 Data Formats</h2><p><em>Intel uses the term “word” to refer to a 16-bit data type. Based on this, they refer to 32- bit quantities as “double words,” and 64-bit quantities as “quad words.”</em></p>
+<p><img src="/2021/07/28/CSAPP/Ch3/sizeof.png" alt="sizeof"></p>
+<p>Microprocessors in the x86 family historically implemented all floating-point operations with a special 80-bit floating-point format. This format can be specified in C programs using the declaration <code>long double</code>. </p>
+<p>We recommend against using this format, however. </p>
+<ul>
+<li>It is not portable to other classes of machines</li>
+<li>it is typically not implemented with the same high-performance hardware as is the case for single- and double-precision arithmetic.</li>
+</ul>
+<p><strong>most assembly-code instructions generated by gcc have a single-character suffix denoting the size of the operand.</strong></p>
+<p> For example, the data movement instruction has four variants: </p>
+<ul>
+<li><code>movb</code> (move byte), <code>movw</code> (move word), <code>movl</code> (move double word), and <code>movq </code>(move quad word).</li>
+<li>The suffix ‘l’ is used for double words, since 32-bit quantities are considered to be “long words.”</li>
+</ul>
+<p><strong>The assembly code uses the suffix <code>l</code> to denote a 4-byte integer as well as an 8-byte double-precision floating-point number.</strong> This causes no ambiguity, since floating-point code involves an entirely different set of instructions and registers.</p>
+<h2 id="3-4-Accessing-Information"><a href="#3-4-Accessing-Information" class="headerlink" title="3.4 Accessing Information"></a>3.4 Accessing Information</h2><p>An x86-64 central processing unit (CPU) contains a set of 16 general-purpose registers storing 64-bit values.</p>
+<ul>
+<li><p>Their names all begin with <code>%r</code>(short for register), but otherwise follow multiple different naming conventions, owing to the historical evolution of the instruction set. </p>
+<ul>
+<li><p>The original 8086 had eight 16-bit registers. Each had a specific purpose, and hence they were given names that reflected how they were to be used.</p>
+</li>
+<li><p>With the extension to IA32, these registers were expanded to 32-bit registers, labeled <code>%eax</code> through <code>%ebp</code>(short for extended).</p>
+</li>
+<li><p>In the extension to x86-64, the original eight registers were expanded to 64 bits, labeled <code>%rax</code> through <code>%rbp</code>.</p>
+</li>
+<li><p>In addition, eight new registers were added, and these were given labels according to a new naming convention: <code>%r8</code> through <code>%r15</code></p>
+</li>
+</ul>
+</li>
+<li><p>instructions can operate on data of different sizes stored in the low-order bytes of the 16 registers. </p>
+<ul>
+<li>Byte-level operations can access the least significant byte, 16-bit operations can access the least significant 2 bytes, 32-bit operations can access the least significant 4 bytes, and 64-bit operations can access entire registers.</li>
+</ul>
+</li>
+<li><p>When  instructions for copying and generating 1-, 2-, 4-, and 8-byte values have registers as destinations, two conventions arise for what happens to the remaining bytes in the register for instructions that generate less than 8 bytes:</p>
+<ul>
+<li>Those that generate 1- or 2-byte quantities leave the remaining bytes unchanged.</li>
+<li>Those that generate 4- byte quantities set the upper 4 bytes of the register to zero.</li>
+<li>The latter convention was adopted as part of the expansion from <code>IA32</code> to <code>x86-64</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="/2021/07/28/CSAPP/Ch3/registers.png" alt="registers"></p>
+<h3 id="3-4-1-Operand-Specifiers"><a href="#3-4-1-Operand-Specifiers" class="headerlink" title="3.4.1 Operand Specifiers"></a>3.4.1 Operand Specifiers</h3><p><em>Most instructions have one or more operands specifying <strong>the source values to use</strong> in performing an operation and <strong>the destination location</strong> into which to place the result</em></p>
+<p>Source values can be given as <strong>constants</strong> or read from <strong>registers</strong> or <strong>memory</strong>. </p>
+<p>Results can be stored in either <strong>registers</strong> or <strong>memory</strong>.</p>
+<p><img src="/2021/07/28/CSAPP/Ch3/operands.png" alt="operand forms"></p>
+<ul>
+<li><p>The first type, <strong>immediate</strong>, is for <strong>constant values</strong>. </p>
+<ul>
+<li>In ATTformat assembly code, these are written with a <code>$</code> followed by an integer using standard C notation—for example, <code>$-577</code> or <code>$0x1F</code>.</li>
+<li>Different instructions allow different ranges of immediate values.</li>
+<li>The assembler will automatically select the most compact way of encoding a value</li>
+</ul>
+</li>
+<li><p>The second type, <strong>register</strong>, denotes the <strong>contents of a register</strong>, one of the sixteen 8-, 4-, 2-, or 1-byte low-order portions of the registers for operands having 64, 32, 16, or 8 bits, respectively.</p>
+<ul>
+<li>we use the notation $r_a$ to denote an arbitrary register a and indicate its value with the reference R[$r_a$​], viewing the set of registers as an array R indexed by register identifiers.</li>
+</ul>
+</li>
+<li><p>The third type of operand is a <strong>memory reference</strong>, in which we access <strong>some memory location according to a computed address</strong>, often called the <em>effective address</em>.</p>
+<ul>
+<li><p>Since we view the memory as a large array of bytes, we use the notation $M_b[Addr]$ to denote a reference to the b-byte value stored in memory starting at address $Addr$. To simplify things, we will generally drop the subscript $b$.</p>
+</li>
+<li><p>There are many different addressing modes allowing different forms of memory references. The most general form is shown at the bottom of the table with syntax $Imm(r_b,r_i,s)$.</p>
+<ul>
+<li><p>Such a reference has four components: an immediate offset $Imm$, a base register $r_b$, an index register $r_i$, and a scale factor s, where s must be 1, 2, 4, or 8. Both the base and index must be 64-bit registers.</p>
+</li>
+<li><p>The effective address is computed as $Imm + R[r_b] + R[r_i] \cdot s$.</p>
+</li>
+<li><p>This general form is often seen when referencing elements of arrays. </p>
+<p>The other forms are simply special cases of this general form where some of the components are omitted.</p>
+</li>
+<li><p>the more complex addressing modes are useful when referencing array and structure elements.</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Practice-Problem-3-1"><a href="#Practice-Problem-3-1" class="headerlink" title="Practice Problem 3.1"></a>Practice Problem 3.1</h3><blockquote>
+<p>Assume the following values are stored at the indicated memory addresses and registers:</p>
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>Value</th>
+<th>Register</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0x100</td>
+<td>0xFF</td>
+<td>%rax</td>
+<td>0x100</td>
+</tr>
+<tr>
+<td>0x104</td>
+<td>0xAB</td>
+<td>%rcx</td>
+<td>0x1</td>
+</tr>
+<tr>
+<td>0x108</td>
+<td>0x13</td>
+<td>%rdx</td>
+<td>0x3</td>
+</tr>
+<tr>
+<td>0x10C</td>
+<td>0x11</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>Fill in the following table showing the values for the indicated operands:</p>
+<table>
+<thead>
+<tr>
+<th>Operand</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%rax</td>
+<td></td>
+</tr>
+<tr>
+<td>0x104</td>
+<td></td>
+</tr>
+<tr>
+<td>$0x108</td>
+<td></td>
+</tr>
+<tr>
+<td>(%rax)</td>
+<td></td>
+</tr>
+<tr>
+<td>4(%rax)</td>
+<td></td>
+</tr>
+<tr>
+<td>9(%rax,%rdx)</td>
+<td></td>
+</tr>
+<tr>
+<td>260(%rcx , %rdx)</td>
+<td></td>
+</tr>
+<tr>
+<td>0xFC(,%rcx,4)</td>
+<td></td>
+</tr>
+<tr>
+<td>(%rax,%rdx,4)</td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark"><a href="#My-solution-white-check-mark" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><table>
+<thead>
+<tr>
+<th>Operand</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%rax</td>
+<td>0x100</td>
+</tr>
+<tr>
+<td>0x104</td>
+<td>0xAB</td>
+</tr>
+<tr>
+<td>$0x108</td>
+<td>0x108</td>
+</tr>
+<tr>
+<td>(%rax)</td>
+<td>0xFF</td>
+</tr>
+<tr>
+<td>4(%rax)</td>
+<td>0xAB</td>
+</tr>
+<tr>
+<td>9(%rax,%rdx)</td>
+<td>0x11</td>
+</tr>
+<tr>
+<td>260(%rcx , %rdx)</td>
+<td>0x13</td>
+</tr>
+<tr>
+<td>0xFC(,%rcx,4)</td>
+<td>0xFF</td>
+</tr>
+<tr>
+<td>(%rax,%rdx,4)</td>
+<td>0x11</td>
+</tr>
+</tbody></table>
+<h3 id="3-4-2-Data-Movement-Instructions"><a href="#3-4-2-Data-Movement-Instructions" class="headerlink" title="3.4.2 Data Movement Instructions"></a>3.4.2 Data Movement Instructions</h3><p><em>Among the most heavily used instructions are those that <strong>copy data from one location to another</strong>.</em></p>
+<p> In our presentation, we group the many different instructions into instruction classes, where the instructions in a class perform the same operation but with different operand sizes.</p>
+<h5 id="mov-class"><a href="#mov-class" class="headerlink" title="mov class"></a><code>mov</code> class</h5><p><em>These instructions copy data from a source location to a destination location, <strong>without any transformation</strong>.</em></p>
+<p><img src="/2021/07/28/CSAPP/Ch3/mov.png" alt="mov"></p>
+<ul>
+<li><p><code>x86-64</code> imposes the restriction that a move instruction cannot have both operands refer to memory locations.</p>
+<ul>
+<li> Copying a value from one memory location to another requires two instructions—the first to load the source value into a register, and the second to write this register value to the destination.</li>
+</ul>
+</li>
+<li><p>For most cases, the <code>mov</code> instructions will only update the <strong>specific register bytes or memory locations indicated by the destination operand</strong>.</p>
+<p>The only exception is that when <code>movl</code> has a register as the destination, it will also set the high-order 4 bytes of the register to 0.</p>
+</li>
+</ul>
+<p>Examples</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">movl $0x4050,%eax 		Immediate--Register, 	4 bytes</span><br><span class="line">movw %bp,%sp 			Register--Register, 	2 bytes</span><br><span class="line">movb (%rdi,%rcx),%al 	Memory--Register, 		1 byte</span><br><span class="line">movb $-17,(%esp) 		Immediate--Memory, 		1 byte</span><br><span class="line">movq %rax,-12(%rbp) 	Register--Memory, 		8 bytes</span><br></pre></td></tr></table></figure>
+<p><strong>The regular <code>movq</code> instruction can only have immediate source operands that can be represented as 32-bit two’s-complement numbers. This value is then sign extended to produce the 64-bit value for the destination.</strong></p>
+<p><strong>The <code>movabsq</code> instruction can have an arbitrary 64-bit immediate value as its source operand and can only have a register as a destination</strong></p>
+<h5 id="movz-and-movs-classes"><a href="#movz-and-movs-classes" class="headerlink" title="movz and movs classes"></a><code>movz</code> and <code>movs</code> classes</h5><p><em>when copying a smaller source value to a larger destination.</em></p>
+<ul>
+<li><p>Instructions in the <code>movz</code> class fill out the remaining bytes of the destination with zeros, while those in the <code>movs</code> class fill them out by sign extension, replicating copies of the most significant bit of the source operand.</p>
+</li>
+<li><p>Each instruction name has size designators as its final two characters—the first specifying the source size, and the second specifying the destination size.</p>
+</li>
+</ul>
+<p><img src="/2021/07/28/CSAPP/Ch3/movz.png" alt="movz"></p>
+<p><img src="/2021/07/28/CSAPP/Ch3/movs.png" alt="movs"></p>
+<ul>
+<li><p>Note the absence of an explicit instruction to zero-extend a 4-byte source value to an 8-byte destination can be  implemented using a <code>movl</code> instruction having a register as the destination, logically if there do exist one, it should be named <code>movzlq</code></p>
+<p>This technique takes advantage of the property that an instruction generating a 4-byte value with a register as the destination will fill the upper 4 bytes with zeros.</p>
+</li>
+<li><p><code>cltq</code> stands for “convert long to quad”, in intel style this will be <code>cdqe</code> (convert double to quad extend), it has the exact same effect as the instruction <code>movslq %eax, %rax</code>, but it has a more compact encoding.</p>
+</li>
+</ul>
+<h4 id="Practice-Problem-3-2"><a href="#Practice-Problem-3-2" class="headerlink" title="Practice Problem 3.2"></a>Practice Problem 3.2</h4><blockquote>
+<p>For each of the following lines of assembly language, determine the appropriate instruction suffix based on the operands. (For example, <code>mov</code> can be rewritten as <code>movb, movw, movl</code>, or <code>movq</code>.)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mov %eax, (%rsp)</span><br><span class="line">mov (%rax), %dx</span><br><span class="line">mov $0xFF, %bl</span><br><span class="line">mov (%rsp,%rdx,4), %dl</span><br><span class="line">mov (%rdx), %rax</span><br><span class="line">mov %dx, (%rax)</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark-1"><a href="#My-solution-white-check-mark-1" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">movl %eax, (%rsp)</span><br><span class="line">movw (%rax) , %dx</span><br><span class="line">movb $0xFF , %bl</span><br><span class="line">movb (%rsp,%rdx,4), %dl</span><br><span class="line">movq (%rdx), %rax</span><br><span class="line">movw %dx, (%rax)</span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-3-3"><a href="#Practice-Problem-3-3" class="headerlink" title="Practice Problem 3.3"></a>Practice Problem 3.3</h4><blockquote>
+<p>Each of the following lines of code generates an error message when we invoke the assembler. Explain what is wrong with each line.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">movb $0xF, (%ebx)</span><br><span class="line">movl %rax, (%rsp)</span><br><span class="line">movw (%rax),4(%rsp)</span><br><span class="line">movb %al,%sl</span><br><span class="line">movq %rax,$0x123</span><br><span class="line">movl %eax,%rdx</span><br><span class="line">movb %si, 8(%rbp)</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark-2"><a href="#My-solution-white-check-mark-2" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">movb $0xF, (%ebx) ;in x86_64 address should always be 64 bits, %ebx is 32 bits</span><br><span class="line">movl %rax, (%rsp) ;%rax is 64 bits , movl should be movq</span><br><span class="line">movw (%rax),4(%rsp) ; direct copy between memory is forbidden</span><br><span class="line">movb %al,%sl ; No register named %sl</span><br><span class="line">movq %rax,$0x123 ; destination can&#39;t be an immediate value</span><br><span class="line">movl %eax,%rdx ; %rdx should be %edx</span><br><span class="line">movb %si, 8(%rbp); %si is 16 bits, movb should be movw</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="3-4-3-Data-Movement-Example"><a href="#3-4-3-Data-Movement-Example" class="headerlink" title="3.4.3 Data Movement Example"></a>3.4.3 Data Movement Example</h3><p>As an example of code that uses data movement instructions, consider the data exchange routine shown in below</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">exchange</span><span class="params">(<span class="keyword">long</span> *xp, <span class="keyword">long</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">long</span> x = *xp;</span><br><span class="line">*xp = y;</span><br><span class="line"><span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">; long exchange(long *xp, long y)</span><br><span class="line">; xp in %rdi, y in %rsi</span><br><span class="line">; exchange:</span><br><span class="line"> movq (%rdi), %rax 	;Get x at xp. Set as return value.</span><br><span class="line"> movq %rsi, (%rdi) 	;Store y at xp.</span><br><span class="line"> ret 				;Return.</span><br></pre></td></tr></table></figure>
+<ul>
+<li>First, we see that what we call “pointers” in C are simply addresses. Dereferencing a pointer involves copying that pointer into a register, and then using this register in a memory reference. </li>
+<li>Second, local variables such as x are often kept in registers rather than stored in memory locations. Register access is much faster than memory access.</li>
+</ul>
+<h4 id="Practice-Problem-3-4"><a href="#Practice-Problem-3-4" class="headerlink" title="Practice Problem 3.4"></a>Practice Problem 3.4</h4><blockquote>
+<p>Assume variables sp and dp are declared with types</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">src_t</span> *sp;</span><br><span class="line"><span class="keyword">dest_t</span> *dp;</span><br></pre></td></tr></table></figure>
+
+<p>where <code>src_t</code> and <code>dest_t</code> are data types declared with <code>typedef</code>. We wish to use the appropriate pair of data movement instructions to implement the operation</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*dp = (<span class="keyword">dest_t</span>) *sp;</span><br></pre></td></tr></table></figure>
+
+<p>Assume that the values of <code>sp</code> and <code>dp</code> are stored in registers <code>%rdi</code> and <code>%rsi</code>, respectively.</p>
+<p>For each entry in the table, show the two instructions that implement the specified data movement.</p>
+<p> The first instruction in the sequence should read from memory, do the appropriate conversion, and set the appropriate portion of register <code>%rax</code>.</p>
+<p>The second instruction should then write the appropriate portion of <code>%rax</code> to memory. In both cases, the portions may be <code>%rax, %eax, %ax</code>, or <code>%al</code>, and they may differ from one another. </p>
+<p>Recall that when performing a cast that involves both a size change and a change of “signedness” in C, the operation should change the size first</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">src_t 			dest_t 			Instruction</span><br><span class="line">long 			long 			movq (%rdi), %rax</span><br><span class="line">								movq %rax, (%rsi)			</span><br><span class="line">char 			int				</span><br><span class="line"></span><br><span class="line">char 			unsigned</span><br><span class="line"></span><br><span class="line">unsigned char 	long</span><br><span class="line"></span><br><span class="line">int 			char</span><br><span class="line"></span><br><span class="line">unsigned 		unsigned char</span><br><span class="line"></span><br><span class="line">char 			short</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark-3"><a href="#My-solution-white-check-mark-3" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">src_t 			dest_t 			Instruction</span><br><span class="line">long 			long 			movq (%rdi), %rax</span><br><span class="line">								movq %rax, (%rsi)			</span><br><span class="line">char 			int				movsbl (%rdi),%eax</span><br><span class="line">								movl %eax,(%rsi)</span><br><span class="line">char 			unsigned		movsbl (%rdi),%eax</span><br><span class="line">								movl %eax , (%rsi)</span><br><span class="line">unsigned char 	long			movzbl (%rdi),%eax</span><br><span class="line">								movq %rax, (%rsi)</span><br><span class="line">int 			char			movl (%rdi) , %eax</span><br><span class="line">								movb %al , (%rsi)</span><br><span class="line">unsigned 		unsigned char	movl (%rdi) , %eax</span><br><span class="line">								movb %al , (%rsi)</span><br><span class="line">char 			short			movsbw (%rdi) , %ax</span><br><span class="line">								movw %ax,(%rsi)</span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-3-5"><a href="#Practice-Problem-3-5" class="headerlink" title="Practice Problem 3.5"></a>Practice Problem 3.5</h4><blockquote>
+<p>You are given the following information. A function with prototype</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">decode1</span><span class="params">(<span class="keyword">long</span> *xp, <span class="keyword">long</span> *yp, <span class="keyword">long</span> *zp)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>is compiled into assembly code, yielding the following:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">;void decode1(long *xp, long *yp, long *zp)</span><br><span class="line">;xp in %rdi, yp in %rsi, zp in %rdx</span><br><span class="line">decode1:</span><br><span class="line">movq (%rdi), %r8</span><br><span class="line">movq (%rsi), %rcx</span><br><span class="line">movq (%rdx), %rax</span><br><span class="line">movq %r8, (%rsi)</span><br><span class="line">movq %rcx, (%rdx)</span><br><span class="line">movq %rax, (%rdi)</span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
+
+<p>Parameters <code>xp</code>,<code> yp</code>, and <code>zp</code> are stored in registers <code>%rdi</code>, <code>%rsi</code>, and <code>%rdx</code>, respectively. </p>
+<p>Write C code for <code>decode1</code> that will have an effect equivalent to the assembly code shown.</p>
+</blockquote>
+<h4 id="My-solution"><a href="#My-solution" class="headerlink" title="My solution :"></a>My solution :</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">; %rdi &#x3D; xp</span><br><span class="line">; %rsi &#x3D; yp</span><br><span class="line">; %rdx &#x3D; zp</span><br><span class="line">movq (%rdi) , %r8. ; long temp &#x3D; *xp    %r8 &#x3D; *xp</span><br><span class="line">movq (%rsi) , %rcx ; long temp2 &#x3D; *yp   %rcx &#x3D; *yp</span><br><span class="line">movq (%rdx) , %rax ; long temp3 &#x3D; *zp   %rax &#x3D; *zp</span><br><span class="line">movq %r8, (%rsi)   ; *yp &#x3D; temp</span><br><span class="line">movq %rcx , (%rdx) ; *zp &#x3D; temp2</span><br><span class="line">movq %rax, (%rdi)  ; *xp &#x3D; temp3</span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">decode1</span><span class="params">(<span class="keyword">long</span> *xp, <span class="keyword">long</span> *yp, <span class="keyword">long</span> *zp)</span></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> temp  = *xp ;</span><br><span class="line">    <span class="keyword">long</span> temp2 = *yp ;</span><br><span class="line">    <span class="keyword">long</span> temp3 = *zp ;</span><br><span class="line">    *yp = temp ;</span><br><span class="line">    *zp = temp2;</span><br><span class="line">    *xp = temp3;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//or </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">decode2</span><span class="params">(<span class="keyword">long</span> *xp, <span class="keyword">long</span> *yp, <span class="keyword">long</span> *zp)</span></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> temp = *xp ;</span><br><span class="line">    *xp = *zp;</span><br><span class="line">    *zp = *yp;</span><br><span class="line">    *yp = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Verification-white-check-mark"><a href="#Verification-white-check-mark" class="headerlink" title="Verification: :white_check_mark:"></a>Verification: :white_check_mark:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -Og -S decode.c &amp;&amp; ./wash.py decode.s &amp;&amp; cat clean_decode.s</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">decode1:</span><br><span class="line">	movq	(%rdi), %r8</span><br><span class="line">	movq	(%rsi), %rcx</span><br><span class="line">	movq	(%rdx), %rax</span><br><span class="line">	movq	%r8, (%rsi)</span><br><span class="line">	movq	%rcx, (%rdx)</span><br><span class="line">	movq	%rax, (%rdi)</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -Og -S decode2.c &amp;&amp; ./wash.py decode2.s &amp;&amp; cat clean_decode2.s</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">decode2:</span><br><span class="line">	movq	(%rdi), %rax</span><br><span class="line">	movq	(%rdx), %rcx</span><br><span class="line">	movq	%rcx, (%rdi)</span><br><span class="line">	movq	(%rsi), %rcx</span><br><span class="line">	movq	%rcx, (%rdx)</span><br><span class="line">	movq	%rax, (%rsi)</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<p>Although use two less variables, we still get 7 instruction, no optimization !!!</p>
+<hr>
+<h3 id="3-4-4-Pushing-and-Popping-Stack-Data"><a href="#3-4-4-Pushing-and-Popping-Stack-Data" class="headerlink" title="3.4.4 Pushing and Popping Stack Data"></a>3.4.4 Pushing and Popping Stack Data</h3><p><em>The final two data movement operations are used to push data onto and pop data from the program stack, as documented in Figure.</em></p>
+<p> The stack plays a vital role in <strong>the handling of procedure calls</strong>.</p>
+<p><img src="/2021/07/28/CSAPP/Ch3/pushpop.png" alt="push pop"></p>
+<p>With x86-64, the program stack is stored in some region of memory. </p>
+<p>The stack grows <strong><em>downward</em></strong> such that the <strong>top element of the stack has the lowest address of all stack elements</strong></p>
+<p><img src="/2021/07/28/CSAPP/Ch3/stack.png" alt="stack"></p>
+<ul>
+<li>The stack pointer <code>%rsp</code> holds the address of the top stack element</li>
+<li>The <code>pushq</code> instruction provides the ability to push data onto the stack, while the <code>popq</code> instruction pops it. Each of these instructions takes a single operand—the data source for pushing and the data destination for popping.</li>
+</ul>
+<h5 id="Push"><a href="#Push" class="headerlink" title="Push"></a>Push</h5><p>Pushing a quad word value onto the stack involves</p>
+<ol>
+<li> decrementing the stack pointer by 8 </li>
+<li>writing the value at the new top-of-stack address.</li>
+</ol>
+<p>Therefore, the behavior of the instruction <code>pushq %rbp</code> is equivalent to </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">subq $8 , %rsp  	;Decrement stack pointer</span><br><span class="line">movq %rbp , (%rsp) 	;Store %rbp on stack</span><br></pre></td></tr></table></figure>
+<p>The <code>pushq</code> instruction is encoded in the machine code as a single byte, whereas the pair of instructions shown above requires a total of 8 bytes.</p>
+<h5 id="Pop"><a href="#Pop" class="headerlink" title="Pop"></a>Pop</h5><p>Popping a quad word involves</p>
+<ol>
+<li> reading from the top-of-stack location</li>
+<li> incrementing the stack pointer by 8.</li>
+</ol>
+<p>Therefore, the instruction <code>popq %rax</code> is equivalent to the following pair of instructions:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">movq (%rsp),%rax 	;Read %rax from stack</span><br><span class="line">addq $8,%rsp 		;Increment stack pointer</span><br></pre></td></tr></table></figure>
+<p><strong>As shown in the figure, the ‘old’ stack top value remains in memory until it is overwritten</strong></p>
+<h5 id="Stack"><a href="#Stack" class="headerlink" title="Stack"></a>Stack</h5><p>Since the stack is contained in the same memory as the program code and other forms of program data, <strong><em>programs can access arbitrary positions within the stack using the standard memory addressing methods</em></strong>. </p>
+<h2 id="3-5-Arithmetic-and-Logical-Operations"><a href="#3-5-Arithmetic-and-Logical-Operations" class="headerlink" title="3.5 Arithmetic and Logical Operations"></a>3.5 Arithmetic and Logical Operations</h2><p><em>Most of the operations are given as instruction classes, as they can have different variants with different operand sizes. Only <code>leaq</code> has no other size variants.(Address will always be 64 bits)</em></p>
+<p> The operations are divided into four groups: <strong>load effective address, unary, binary, and shifts.</strong></p>
+<p><img src="/2021/07/28/CSAPP/Ch3/arithmetic.png" alt="arithmetic operations"></p>
+<h3 id="3-5-1-Load-Effective-Address"><a href="#3-5-1-Load-Effective-Address" class="headerlink" title="3.5.1 Load Effective Address"></a>3.5.1 Load Effective Address</h3><p><em>The load effective address instruction <code>leaq</code> is actually a variant of the <code>movq</code> instruction.</em></p>
+<p> It has the form of an instruction that reads from memory to a register, but it <strong>does not reference memory at all !!!</strong></p>
+<ul>
+<li><p>Its first operand appears to be a memory reference, but instead of reading from the designated location, the instruction copies the effective address to the destination. </p>
+</li>
+<li><p>The instruction can be interpreted as C expression</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//leaq S,D</span></span><br><span class="line">Type * D = &amp;S;</span><br></pre></td></tr></table></figure>
+<p>This instruction can be used to <strong>generate pointers</strong> for later memory references</p>
+</li>
+<li><p>In addition, it can be used to compactly describe common arithmetic operations, as it shown in Chapter 2 <code>D = x &lt;&lt; y + z</code></p>
+<ul>
+<li>For example, if register <code>%rdx</code> contains value <code>x</code>, then the instruction <code>leaq 7(%rdx,%rdx,4), %rax</code> will set register %rax to <code>5x + 7</code>.</li>
+<li><code>%rax = 7 + %rdx + %rdx * 4 = 5* %rdx + 7</code> </li>
+<li>Compilers often find clever uses of <code>leaq</code> that <strong>have nothing to do with effective address</strong> computations.</li>
+</ul>
+</li>
+<li><p>The destination operand must be a register.</p>
+</li>
+</ul>
+<h4 id="Practice-Problem-3-6"><a href="#Practice-Problem-3-6" class="headerlink" title="Practice Problem 3.6"></a>Practice Problem 3.6</h4><blockquote>
+<p>Suppose register <code>%rbx</code> holds value <code>p</code> and <code>%rdx</code> holds value <code>q</code>. Fill in the table below with formulas indicating the value that will be stored in register <code>%rax</code> for each of the given assembly-code instructions:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Instruction 					Result</span><br><span class="line">leaq 	9(%rdx), %rax</span><br><span class="line">leaq 	(%rdx,%rbx), %rax</span><br><span class="line">leaq 	(%rdx,%rbx,3), %rax</span><br><span class="line">leaq 	2(%rbx,%rbx,7), %rax</span><br><span class="line">leaq 	0xE(,%rdx,3), %rax</span><br><span class="line">leaq 	6(%rbx,%rdx,7), %rax</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark-4"><a href="#My-solution-white-check-mark-4" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#%rbx &#x3D; p</span><br><span class="line">#%rdx &#x3D; q</span><br><span class="line">Instruction 					Result</span><br><span class="line">leaq 	9(%rdx), %rax			9 + q</span><br><span class="line">leaq 	(%rdx,%rbx), %rax		q + p</span><br><span class="line">leaq 	(%rdx,%rbx,3), %rax		q + 3p</span><br><span class="line">leaq 	2(%rbx,%rbx,7), %rax	2 + 8p</span><br><span class="line">leaq 	0xE(,%rdx,3), %rax		14 + 3q</span><br><span class="line">leaq 	6(%rbx,%rdx,7), %rax	6 + p + 7q</span><br></pre></td></tr></table></figure>
+<hr>
+<p>As an illustration of the use of <code>leaq</code> in compiled code, consider the following C program:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">scale</span><span class="params">(<span class="keyword">long</span> x, <span class="keyword">long</span> y, <span class="keyword">long</span> z)</span> </span>&#123;</span><br><span class="line"><span class="keyword">long</span> t = x + <span class="number">4</span> * y + <span class="number">12</span> * z;</span><br><span class="line"><span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>When compiled, the arithmetic operations of the function are implemented by a sequence of three <code>leaq</code> functions</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># long scale(long x, long y, long z)</span><br><span class="line"># x in %rdi, y in %rsi, z in %rdx</span><br><span class="line">scale:</span><br><span class="line">leaq (%rdi,%rsi,4), %rax 	#x + 4*y</span><br><span class="line">leaq (%rdx,%rdx,2), %rdx 	#z + 2*z &#x3D; 3*z</span><br><span class="line">leaq (%rax,%rdx,4), %rax 	#(x+4*y) + 4*(3*z) &#x3D; x + 4*y + 12*z</span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
+<p>(When compiling the codes, <code>-O1</code> argument should be used)</p>
+<hr>
+<h4 id="Practice-Problem-3-7"><a href="#Practice-Problem-3-7" class="headerlink" title="Practice Problem 3.7"></a>Practice Problem 3.7</h4><blockquote>
+<p>Consider the following code, in which we have omitted the expression being computed:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">short</span> <span class="title">scale3</span><span class="params">(<span class="keyword">short</span> x, <span class="keyword">short</span> y, <span class="keyword">short</span> z)</span> </span>&#123;</span><br><span class="line"><span class="keyword">short</span> t =   ___________ ;</span><br><span class="line"><span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Compiling the actual function with gcc yields the following assembly code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># short scale3(short x, short y, short z)</span><br><span class="line"># x in %rdi, y in %rsi, z in %rdx</span><br><span class="line">scale3:</span><br><span class="line">leaq (%rsi,%rsi,9), %rbx</span><br><span class="line">leaq (%rbx,%rdx), %rbx</span><br><span class="line">leaq (%rbx,%rdi,%rsi), %rbx</span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
+
+<p>Fill in the missing expression in the C code.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-5"><a href="#My-solution-white-check-mark-5" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># short scale3(short x, short y, short z)</span><br><span class="line"># x in %rdi, y in %rsi, z in %rdx</span><br><span class="line">scale3:</span><br><span class="line">leaq (%rsi,%rsi,9), %rbx  # %rbx &#x3D; 10 * y</span><br><span class="line">leaq (%rbx,%rdx), %rbx	  # %rbx &#x3D; 10*y + z</span><br><span class="line">leaq (%rbx,%rdi,%rsi), %rbx # %rbx &#x3D; 10 *y + z + x*y</span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">short</span> <span class="title">scale3</span><span class="params">(<span class="keyword">short</span> x, <span class="keyword">short</span> y, <span class="keyword">short</span> z)</span> </span>&#123;</span><br><span class="line"><span class="keyword">short</span> t =   <span class="number">10</span> * y + z +  y * x ;</span><br><span class="line"><span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Verification"><a href="#Verification" class="headerlink" title="Verification:"></a>Verification:</h4><p>However, verification failed, the given assembly codes seems to be wrong. It should have <code>long</code> as parameter type instead of <code>short</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -Og -S scale3.c &amp;&amp; ./wash.py scale3.s &amp;&amp; cat clean_scale3.s</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">scale3:</span><br><span class="line">	leal	10(%rdi), %eax  	# %eax &#x3D; 10 + x</span><br><span class="line">	imull	%eax, %esi			# %esi &#x3D; (10 + x) * y</span><br><span class="line">	leal	(%rsi,%rdx), %eax	# %eax &#x3D; (10 + x) * y + z</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -O1 -S scale3.c &amp;&amp; ./wash.py scale3.s &amp;&amp; cat clean_scale3.s</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">scale3:</span><br><span class="line">	leaq	(%rsi,%rsi,4), %rax  # %rax &#x3D; 5y</span><br><span class="line">	leaq	(%rdx,%rax,2), %rax	 # %rax &#x3D; 10y + z</span><br><span class="line">	imulq	%rdi, %rsi			 # %rsi &#x3D; x*y</span><br><span class="line">	addq	%rsi, %rax			 # %rax &#x3D; 10y + z + x*y</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<h3 id="3-5-2-Unary-and-Binary-Operations"><a href="#3-5-2-Unary-and-Binary-Operations" class="headerlink" title="3.5.2 Unary and Binary Operations"></a>3.5.2 Unary and Binary Operations</h3><h5 id="Unary-Operation"><a href="#Unary-Operation" class="headerlink" title="Unary Operation"></a>Unary Operation</h5><p><em>Operations in the second group are unary operations, with the single operand serving as both source and destination.</em></p>
+<ul>
+<li>This operand can be either a register or a memory location. </li>
+<li>For example, the instruction <code>incq (%rsp) </code></li>
+<li> This syntax is reminiscent of the C increment <code>++</code> and decrement <code>--</code> operators</li>
+</ul>
+<h5 id="Binary-Operation"><a href="#Binary-Operation" class="headerlink" title="Binary Operation"></a>Binary Operation</h5><p>The third group consists of binary operations, where the second operand is used as both a source and a destination.</p>
+<ul>
+<li>This syntax is reminiscent of the C assignment operators, such as <code>x -= y</code>.</li>
+<li>Observe, however, that the source operand is given first and the destination second.For example, the instruction <code>subq %rax,%rdx</code> decrements register <code>%rdx</code> by the value in <code>%rax</code>. (It helps to read the instruction as “Subtract <code>%rax</code> from <code>%rdx</code>.”)  </li>
+<li> The first operand can be either an immediate value, a register, or a memory location. The second can be either a register or a memory location. As with the mov instructions, the two operands cannot both be memory locations.</li>
+</ul>
+<h4 id="Practice-Problem-3-8"><a href="#Practice-Problem-3-8" class="headerlink" title="Practice Problem 3.8"></a>Practice Problem 3.8</h4><blockquote>
+<p>Assume the following values are stored at the indicated memory addresses and registers:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Address 	Value 	Register 	Value</span><br><span class="line">0x100 		0xFF 	%rax 		0x100</span><br><span class="line">0x108 		0xAB 	%rcx 		0x1</span><br><span class="line">0x110 		0x13 	%rdx 		0x3</span><br><span class="line">0x118 		0x11</span><br></pre></td></tr></table></figure>
+
+<p>Fill in the following table showing the effects of the following instructions, in terms of both the register or memory location that will be updated and the resulting value:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Instruction 			Destination 			Value</span><br><span class="line">addq %rcx,(%rax)		</span><br><span class="line">subq %rdx,8(%rax)</span><br><span class="line">imulq $16,(%rax,%rdx,8)</span><br><span class="line">incq 16(%rax)</span><br><span class="line">decq %rcx</span><br><span class="line">subq %rdx,%rax</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark-6"><a href="#My-solution-white-check-mark-6" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Instruction 			Destination 			Value</span><br><span class="line">addq %rcx,(%rax)		Memory at 0x100			0x100</span><br><span class="line">subq %rdx,8(%rax)		Memory at 0x108			0xA8</span><br><span class="line">imulq $16,(%rax,%rdx,8)	Memory at 0x118			0x110</span><br><span class="line">incq 16(%rax)			Memory at 0x110			0x14</span><br><span class="line">decq %rcx				Register %rcx			0x0</span><br><span class="line">subq %rdx,%rax			Register %rax			0xFD</span><br></pre></td></tr></table></figure>
+<h3 id="3-5-3-Shift-Operations"><a href="#3-5-3-Shift-Operations" class="headerlink" title="3.5.3 Shift Operations"></a>3.5.3 Shift Operations</h3><p><em>The final group consists of shift operations, where the shift amount is given first and the value to shift is given second. Both arithmetic and logical right shifts are possible</em></p>
+<ul>
+<li><p> The different shift instructions can specify the shift amount either as an immediate value or with the single-byte register <code>%cl</code>. (These instructions are unusual in <strong>only allowing this specific register as the operand</strong>.) </p>
+</li>
+<li><p>With x86-64, a shift instruction operating on data values that are w bits long determines the shift amount from the low-order m bits of register <code>%cl</code>, where $m = \log _2 w$. The higher-order bits are ignored.</p>
+<p>So, for example, when register <code>%cl</code> has hexadecimal value 0xFF, then instruction <code>salb</code> would shift by 7, while salw would shift by 15, <code>sall</code> would shift by 31, and <code>salq</code> would shift by 63.</p>
+</li>
+<li><p><code>sal</code> stands for arithmetic shift left</p>
+<p><code>shl</code> shand for (logical shift left)</p>
+</li>
+</ul>
+<h4 id="Practice-Problem-3-9"><a href="#Practice-Problem-3-9" class="headerlink" title="Practice Problem 3.9"></a>Practice Problem 3.9</h4><blockquote>
+<p>Suppose we want to generate assembly code for the following C function:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">shift_left4_rightn</span><span class="params">(<span class="keyword">long</span> x, <span class="keyword">long</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">x &lt;&lt;= <span class="number">4</span>;</span><br><span class="line">x &gt;&gt;= n;</span><br><span class="line"><span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The code that follows is a portion of the assembly code that performs the actual shifts and leaves the final value in register <code>%rax</code>. Two key instructions have been omitted. Parameters x and n are stored in registers <code>%rdi</code> and <code>%rsi</code>, respectively</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># long shift_left4_rightn(long x, long n)</span><br><span class="line"># x in %rdi, n in %rsi</span><br><span class="line">shift_left4_rightn:</span><br><span class="line">movq %rdi, %rax 	# Get x</span><br><span class="line">_______________		# x &lt;&lt;&#x3D; 4 </span><br><span class="line">movl %esi, %ecx 	# Get n (4 bytes)</span><br><span class="line">_______________		# x &gt;&gt;&#x3D; n</span><br></pre></td></tr></table></figure>
+
+<p>Fill in the missing instructions, following the annotations on the right. The right shift should be performed arithmetically.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-7"><a href="#My-solution-white-check-mark-7" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># long shift_left4_rightn(long x, long n)</span><br><span class="line"># x in %rdi, n in %rsi</span><br><span class="line">shift_left4_rightn:</span><br><span class="line">movq %rdi, %rax 	# Get x</span><br><span class="line">shlq  $4 , %rax		# x &lt;&lt;&#x3D; 4 </span><br><span class="line">movl %esi, %ecx 	# Get n (4 bytes)</span><br><span class="line">sarq  %cl , %rax		# x &gt;&gt;&#x3D; n</span><br></pre></td></tr></table></figure>
+<h4 id="Verification-1"><a href="#Verification-1" class="headerlink" title="Verification:"></a>Verification:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -Og -S shift.c &amp;&amp; ./wash.py shift.s &amp;&amp; cat clean_shift.s</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">shift_left4_rightn:</span><br><span class="line">	movq	%rdi, %rax</span><br><span class="line">	salq	$4, %rax</span><br><span class="line">	movl	%esi, %ecx</span><br><span class="line">	sarq	%cl, %rax</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<p>It might seem odd to use a movl instruction, given that n is eight bytes long, but keep in mind that only the least significant byte is required to specify the shift amount.</p>
+<h3 id="3-5-4-Discussion"><a href="#3-5-4-Discussion" class="headerlink" title="3.5.4 Discussion"></a>3.5.4 Discussion</h3><p><em>compilers generate code that <strong>uses individual registers for multiple program values</strong> and <strong>moves program values among the registers</strong>.</em></p>
+<h4 id="Practice-Problem-3-10"><a href="#Practice-Problem-3-10" class="headerlink" title="Practice Problem 3.10"></a>Practice Problem 3.10</h4><blockquote>
+<p>Consider the following code, in which we have omitted the expression being computed:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">short</span> <span class="title">arith3</span><span class="params">(<span class="keyword">short</span> x, <span class="keyword">short</span> y, <span class="keyword">short</span> z)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">short</span> p1 = ?;</span><br><span class="line"><span class="keyword">short</span> p2 = ?;</span><br><span class="line"><span class="keyword">short</span> p3 = ?;</span><br><span class="line"><span class="keyword">short</span> p4 = ?;</span><br><span class="line"><span class="keyword">return</span> p4;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The portion of the generated assembly code implementing these expressions is as follows:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># short arith3(short x, short y, short z)</span><br><span class="line"># x in %rdi, y in %rsi, z in %rdx</span><br><span class="line">arith3:</span><br><span class="line">orq %rsi, %rdx</span><br><span class="line">sarq $9, %rdx</span><br><span class="line">notq %rdx</span><br><span class="line">movq %rsi, %rax</span><br><span class="line">subq %rdx, %rax</span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
+
+<p>Based on this assembly code, fill in the missing portions of the C code</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-8"><a href="#My-solution-white-check-mark-8" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># short arith3(short x, short y, short z)</span><br><span class="line"># x in %rdi, y in %rsi, z in %rdx</span><br><span class="line"># %rdi &#x3D; x , %rsi &#x3D; y , %rdx &#x3D; z</span><br><span class="line">arith3:</span><br><span class="line">orq %rsi, %rdx		# z &#x3D; z | y</span><br><span class="line">sarq $9, %rdx		# z &gt;&gt;&#x3D; 9 </span><br><span class="line">notq %rdx			# z &#x3D; ~z</span><br><span class="line">movq %rsi, %rax		# %rax &#x3D; y</span><br><span class="line">subq %rdx, %rax		# y -&#x3D; z</span><br><span class="line">ret					# return y</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">short</span> <span class="title">arith3</span><span class="params">(<span class="keyword">short</span> x, <span class="keyword">short</span> y, <span class="keyword">short</span> z)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">short</span> p1 = z | y;</span><br><span class="line"><span class="keyword">short</span> p2 = p1 &gt;&gt; <span class="number">9</span>;</span><br><span class="line"><span class="keyword">short</span> p3 = ~p2;</span><br><span class="line"><span class="keyword">short</span> p4 = y - p3;</span><br><span class="line"><span class="keyword">return</span> p4;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Verification-2"><a href="#Verification-2" class="headerlink" title="Verification"></a>Verification</h4><p>Again, the give C code should have type <code>long</code> instead of <code>short</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -Og -S arith.c &amp;&amp; ./wash.py arith.s &amp;&amp; cat clean_arith.s</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">arith3:</span><br><span class="line">	orl		%esi, %edx</span><br><span class="line">	sarw	$9, %dx</span><br><span class="line">	notl	%edx</span><br><span class="line">	movl	%esi, %eax</span><br><span class="line">	subl	%edx, %eax</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">arith3:</span><br><span class="line">	orq		%rsi, %rdx</span><br><span class="line">	sarq	$9, %rdx</span><br><span class="line">	notq	%rdx</span><br><span class="line">	movq	%rsi, %rax</span><br><span class="line">	subq	%rdx, %rax</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-3-11"><a href="#Practice-Problem-3-11" class="headerlink" title="Practice Problem 3.11"></a>Practice Problem 3.11</h4><blockquote>
+<p>It is common to find assembly-code lines of the form</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xorq %rcx,%rcx</span><br></pre></td></tr></table></figure>
+
+<p>in code that was generated from C where no exclusive-or operations were present.</p>
+<p>A. Explain the effect of this particular exclusive-or instruction and what useful operation it implements. </p>
+<p>B. What would be the more straightforward way to express this operation in assembly code? </p>
+<p>C. Compare the number of bytes to encode any two of these three different implementations of the same operation.</p>
+</blockquote>
+<h4 id="My-solution-warning"><a href="#My-solution-warning" class="headerlink" title="My solution : :warning:"></a>My solution : :warning:</h4><p>A : According to boolean algebra, $a\oplus a = 0$, so this instruction means clear <code>%rcx</code></p>
+<p>B : <code>movq $0,%rcx</code></p>
+<p>C :</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ objdump -d xor.o</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">xor.o:     file format elf64-x86-64</span><br><span class="line"></span><br><span class="line">Disassembly of section .text:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;.text&gt;:</span><br><span class="line">   0:	48 c7 c1 00 00 00 00 	mov    $0x0,%rcx</span><br><span class="line">   7:	48 31 c9             	xor    %rcx,%rcx</span><br></pre></td></tr></table></figure>
+<p>The <code>xor</code> version is apparently shorter</p>
+<h4 id="Solution-on-book"><a href="#Solution-on-book" class="headerlink" title="Solution on book:"></a>Solution on book:</h4><p>C : </p>
+<p>Other ways to set <code>%rcx</code> to zero rely on the property that any instruction that updates the lower 4 bytes will cause the high-order bytes to be set to zero. Thus, we could use either <code>xorl %ecx,%ecx</code> (2 bytes) or <code>movl $0,%ecx</code> (5 bytes).</p>
+<h3 id="3-5-5-Special-Arithmetic-Operations"><a href="#3-5-5-Special-Arithmetic-Operations" class="headerlink" title="3.5.5 Special Arithmetic Operations"></a>3.5.5 Special Arithmetic Operations</h3><p>As we saw in Section 2.3, multiplying two 64-bit signed or unsigned integers can yield a product that requires 128 bits to represent.</p>
+<p>The x86-64 instruction set provides limited support for operations involving 128-bit (16-byte) numbers. Continuing with the naming convention of word (2 bytes), double word (4 bytes), and quad word (8 bytes), Intel refers to a 16-byte quantity as an <code>oct word</code>.</p>
+<p><img src="/2021/07/28/CSAPP/Ch3/special.png" alt="special arithmetic operations"></p>
+<h5 id="Multiplication-instruction-class"><a href="#Multiplication-instruction-class" class="headerlink" title="Multiplication instruction class"></a>Multiplication instruction class</h5><p><em>The imulq instruction has two different forms</em></p>
+<ul>
+<li><p><code>imulq S,D</code>In this form, it serves as a “two operand” multiply instruction, generating a 64-bit product from two 64-bit operands. </p>
+<ul>
+<li> Both unsigned multiply and two’s-complement multiply have the same bit-level behavior, so there is only one instruction.</li>
+<li>High-order bits in result are truncated</li>
+</ul>
+</li>
+<li><p><code>imulq S</code> and <code>mulq S</code> Compute the full 128-bit product of two 64-bit values— <code>mulq</code> for unsigned  and <code>imulq</code> for two’s-complement</p>
+<ul>
+<li><p>For both of these instructions, one argument must be in register <code>%rax</code>, and the other is given as the instruction source operand</p>
+</li>
+<li><p>The product is then stored in registers<code> %rdx</code> (high-order 64 bits) and <code>%rax </code>(low-order 64 bits).</p>
+</li>
+<li><p>Although the name <code>imulq</code> is used for two distinct multiplication operations, the assembler can tell which one is intended by counting the number of operands.</p>
+</li>
+<li><p>Example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;inttypes.h&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> __int128 <span class="keyword">uint128_t</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">store_uprod</span><span class="params">(<span class="keyword">uint128_t</span> *dest, <span class="keyword">uint64_t</span> x, <span class="keyword">uint64_t</span> y)</span> </span>&#123;</span><br><span class="line">*dest=x* (<span class="keyword">uint128_t</span>) y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#void store_uprod(uint128_t *dest, uint64_t x, uint64_t y)</span><br><span class="line">#dest in %rdi, x in %rsi, y in %rdx</span><br><span class="line">store_uprod:</span><br><span class="line"> movq %rsi, %rax 		#Copy x to multiplicand</span><br><span class="line"> mulq %rdx 				#Multiply by y</span><br><span class="line"> movq %rax, (%rdi) 		#Store lower 8 bytes at dest</span><br><span class="line"> movq %rdx, 8(%rdi) 	#Store upper 8 bytes at dest+8</span><br><span class="line"> ret</span><br></pre></td></tr></table></figure>
+<h5 id="Division-instruction-class"><a href="#Division-instruction-class" class="headerlink" title="Division instruction class"></a>Division instruction class</h5></li>
+</ul>
+</li>
+</ul>
+<p><em>division and modulus operations are provided by the singleoperand divide instructions similar to the single-operand multiply instructions.</em></p>
+<ul>
+<li><p>The signed division instruction <code>idivl</code> takes as its dividend the 128-bit quantity in registers <code>%rdx</code> (high-order 64 bits) and <code>%rax</code> (low-order 64 bits). The divisor is given as the instruction operand. </p>
+</li>
+<li><p>The instruction stores the quotient in register <code>%rax</code> and the remainder in register<code> %rdx</code>.</p>
+</li>
+<li><p>Usually, the dividend is given as a 64-bit value. This value should be stored in register <code>%rax</code>. The bits of <code>%rdx</code> should then be set to either all zeros (unsigned arithmetic) or the sign bit of %rax (signed arithmetic).</p>
+<p>The latter operation can be performed using the instruction <code>cqto</code>. This instruction takes no operands—it implicitly reads the sign bit from <code>%rax</code> and copies it across all of <code>%rdx</code>.</p>
+</li>
+<li><p>Example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">remdiv</span><span class="params">(<span class="keyword">long</span> x, <span class="keyword">long</span> y,<span class="keyword">long</span> *qp, <span class="keyword">long</span> *rp)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">long</span> q = x/y;</span><br><span class="line">	<span class="keyword">long</span> r = x%y;</span><br><span class="line">	*qp = q;</span><br><span class="line">	*rp = r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># void remdiv(long x, long y, long *qp, long *rp)</span><br><span class="line"># x in %rdi, y in %rsi, qp in %rdx, rp in %rcx</span><br><span class="line">remdiv:</span><br><span class="line">  movq %rdx, %r8 	# Copy qp, %rdx is required for the division operation</span><br><span class="line">  movq %rdi, %rax 	# Move x to lower 8 bytes of dividend</span><br><span class="line">  cqto 				# Sign-extend to upper 8 bytes of dividend</span><br><span class="line">  idivq %rsi 		# Divide by y</span><br><span class="line">  movq %rax, (%r8) 	# Store quotient at qp</span><br><span class="line">  movq %rdx, (%rcx) # Store remainder at rp</span><br><span class="line">  ret</span><br></pre></td></tr></table></figure></li>
+<li><p><code>idivq</code> for signed, <code>divq</code> for unsigned, the processes are the same.</p>
+</li>
+</ul>
+<h4 id="Practice-Problem-3-12"><a href="#Practice-Problem-3-12" class="headerlink" title="Practice Problem 3.12"></a>Practice Problem 3.12</h4><blockquote>
+<p>Consider the following function for computing the quotient and remainder of two unsigned 64-bit numbers:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">uremdiv</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">long</span> x, <span class="keyword">unsigned</span> <span class="keyword">long</span> y,</span></span></span><br><span class="line"><span class="function"><span class="params"><span class="keyword">unsigned</span> <span class="keyword">long</span> *qp, <span class="keyword">unsigned</span> <span class="keyword">long</span> *rp)</span> </span>&#123;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> q = x/y;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> r = x%y;</span><br><span class="line">*qp = q;</span><br><span class="line">*rp = r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Modify the assembly code shown for signed division to implement this function</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-9"><a href="#My-solution-white-check-mark-9" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># void uremdiv(unsigned long x, unsigned long y, unsigned long *qp, unsigned long *rp)</span><br><span class="line"># x in %rdi, y in %rsi, qp in %rdx, rp in %rcx</span><br><span class="line">uremdiv:</span><br><span class="line">  movq %rdx, %r8 	# Copy qp, %rdx is required for the division operation</span><br><span class="line">  movq %rdi, %rax 	# Move x to lower 8 bytes of dividend</span><br><span class="line">  xorl %edx, %edx	# clear %rdx</span><br><span class="line">  divq %rsi 		# Divide by y</span><br><span class="line">  movq %rax, (%r8) 	# Store quotient at qp</span><br><span class="line">  movq %rdx, (%rcx) # Store remainder at rp</span><br><span class="line">  ret</span><br></pre></td></tr></table></figure>
+<h4 id="Verification-3"><a href="#Verification-3" class="headerlink" title="Verification:"></a>Verification:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -O2 -S uremdiv.c &amp;&amp; ./wash.py uremdiv.s &amp;&amp; cat uremdiv.s</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">uremdiv:</span><br><span class="line">	movq	%rdi, %rax</span><br><span class="line">	movq	%rdx, %rdi</span><br><span class="line">	xorl	%edx, %edx</span><br><span class="line">	divq	%rsi</span><br><span class="line">	movq	%rax, (%rdi)</span><br><span class="line">	movq	%rdx, (%rcx)</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<h4 id="Solution-on-the-book"><a href="#Solution-on-the-book" class="headerlink" title="Solution on the book :"></a>Solution on the book :</h4><p>(compiled with <code>-O1</code>)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#void uremdiv(unsigned long x, unsigned long y, unsigned long *qp, unsigned long *rp)</span><br><span class="line">#x in %rdi, y in %rsi, qp in %rdx, rp in %rcx</span><br><span class="line"> uremdiv:</span><br><span class="line"> movq %rdx, %r8 	#Copy qp</span><br><span class="line"> movq %rdi, %rax 	#Move x to lower 8 bytes of dividend</span><br><span class="line"> movl $0, %edx 		#Set upper 8 bytes of dividend to 0</span><br><span class="line"> divq %rsi 			#Divide by y</span><br><span class="line"> movq %rax, (%r8) 	#Store quotient at qp</span><br><span class="line"> movq %rdx, (%rcx) 	#Store remainder at rp</span><br><span class="line"> ret</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/07/28/CSAPP/Ch3/" data-id="ckrqe7sux0000mkyqea8k71ik" data-title="Ch3" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/07/26/CSAPP/datalab/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">datalab</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/introduction/">introduction</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/28/CSAPP/Ch3/">Ch3</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/26/CSAPP/datalab/">datalab</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/25/CSAPP/floatingpoint/">floatingpoint</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/24/CSAPP/Ch2PartIII/">Ch2PartIII</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/23/CSAPP/bitsbytesintegers/">bitsbytesintegers</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
