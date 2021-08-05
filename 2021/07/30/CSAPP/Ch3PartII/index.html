@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Ch3PartII | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  3.6 Control">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ch3PartII">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/07/30/CSAPP/Ch3PartII/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  3.6 Control">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/30/CSAPP/Ch3PartII/cmptest.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/30/CSAPP/Ch3PartII/set.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/30/CSAPP/Ch3PartII/jumps.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/30/CSAPP/Ch3PartII/example.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/30/CSAPP/Ch3PartII/mvdata.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/30/CSAPP/Ch3PartII/aside.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/30/CSAPP/Ch3PartII/cmov.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/30/CSAPP/Ch3PartII/dowhile.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/30/CSAPP/Ch3PartII/whileloop.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/30/CSAPP/Ch3PartII/guardeddo.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/30/CSAPP/Ch3PartII/switch.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/30/CSAPP/Ch3PartII/switchass.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/07/30/CSAPP/Ch3PartII/jumptable.png">
+<meta property="article:published_time" content="2021-07-30T13:42:22.000Z">
+<meta property="article:modified_time" content="2021-08-05T09:45:03.803Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/07/30/CSAPP/Ch3PartII/cmptest.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Buscar"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSAPP/Ch3PartII" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/07/30/CSAPP/Ch3PartII/" class="article-date">
+  <time class="dt-published" datetime="2021-07-30T13:42:22.000Z" itemprop="datePublished">2021-07-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/csapp/">csapp</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Ch3PartII
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+<h2 id="3-6-Control"><a href="#3-6-Control" class="headerlink" title="3.6 Control"></a>3.6 Control</h2><a id="more"></a>
+
+<p><em>Machine code provides two basic low-level mechanisms for implementing conditional behavior: it tests data values and then <strong>alters</strong> either the <strong>control flow</strong> or the <strong>data flow</strong> based on the results of these tests.</em></p>
+<p><strong>Data-dependent control flow</strong> is the <strong>more general</strong> and more common approach for implementing conditional behavior</p>
+<p>[TOC]</p>
+<h3 id="3-6-1-Condition-Codes"><a href="#3-6-1-Condition-Codes" class="headerlink" title="3.6.1 Condition Codes"></a>3.6.1 Condition Codes</h3><p><em>In addition to the integer registers, the CPU maintains <strong>a set of single-bit condition code registers</strong> describing attributes of the most recent arithmetic or logical operation.</em></p>
+<ul>
+<li><code>CF</code>: Carry flag. The most recent operation generated a carry out of the most significant bit. Used to detect overflow for unsigned operations.</li>
+<li><code>ZF</code>: Zero flag. The most recent operation yielded zero.</li>
+<li><code>SF</code>: Sign flag. The most recent operation yielded a negative value.</li>
+<li><code>OF</code>: Overflow flag. The most recent operation caused a two’s-complement overflow—either negative or positive.</li>
+</ul>
+<p>For example, suppose we used one of the add instructions to perform the equivalent of the C assignment <code>t = a+b</code>, where variables a, b, and t are integers.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CF (<span class="keyword">unsigned</span>) t &lt; (<span class="keyword">unsigned</span>) 			<span class="comment">//a Unsigned overflow</span></span><br><span class="line">ZF (t == <span class="number">0</span>) 							<span class="comment">//Zero</span></span><br><span class="line">SF (t &lt; <span class="number">0</span>) 								<span class="comment">//Negative</span></span><br><span class="line">OF (a &lt; <span class="number">0</span> == b &lt; <span class="number">0</span>) &amp;&amp; (t &lt; <span class="number">0</span> != a &lt; <span class="number">0</span>) <span class="comment">//Signed overflow</span></span><br></pre></td></tr></table></figure>
+<p>The <code>leaq</code> instruction <strong>does NOT alter any condition codes</strong>, since it is intended to be used in address computations. </p>
+<p>Otherwise, <strong>ALL</strong> of the instructions listed in Figure 3.10 cause the condition codes to be set</p>
+<ul>
+<li>For the <strong>logical operations</strong>, such as <code>xor</code>, the <code>CF</code> and <code>OF</code> are set to zero</li>
+<li>For the shift operations, the <code>CF</code> is set to the last bit shifted out, while the <code>OF</code> is set to zero</li>
+<li>For reasons that we will not delve into, the <code>inc</code> and <code>dec</code> instructions set the <code>OF</code> and <code>ZF</code>, but they leave the <code>CF</code> unchanged.</li>
+</ul>
+<h5 id="cmp-classes"><a href="#cmp-classes" class="headerlink" title="cmp classes"></a><code>cmp</code> classes</h5><p><em>They behave in the same way as the <code>sub</code> instructions, except that they set the condition codes without updating their destinations.</em></p>
+<ul>
+<li>These instructions set the zero flag if the two operands are equal.</li>
+<li>The other flags can be used to determine ordering relations between the two operands.</li>
+</ul>
+<h5 id="test-classes"><a href="#test-classes" class="headerlink" title="test classes"></a><code>test</code> classes</h5><p><em>The test instructions behave in the same manner as the <code>and</code> instructions, except that they set the condition codes without altering their destinations.</em></p>
+<ul>
+<li>Typically, the same operand is repeated (e.g., <code>testq %rax,%rax</code> to see whether <code>%rax</code> is negative, zero, or positive)</li>
+<li>Or one of the operands is a mask indicating which bits should be tested.</li>
+</ul>
+<p><img src="/2021/07/30/CSAPP/Ch3PartII/cmptest.png" alt="compare and test"></p>
+<h3 id="3-6-2-Accessing-the-Condition-Codes"><a href="#3-6-2-Accessing-the-Condition-Codes" class="headerlink" title="3.6.2 Accessing the Condition Codes"></a>3.6.2 Accessing the Condition Codes</h3><p>Rather than reading the condition codes directly, there are three common ways of using the condition codes:</p>
+<ul>
+<li>we can <strong>set a single byte to 0 or 1</strong> depending on some combination of the condition codes<ul>
+<li>We refer to this entire class of instructions as the <code>set</code> instructions</li>
+<li> they differ from one another based on <strong>which combinations of condition codes they consider,</strong> as indicated by the different suffixes for the instruction names.</li>
+<li>For example, instructions <code>setl</code> and <code>setb</code> denote “set less” and “set below,” not “set long word” or “set byte.”</li>
+</ul>
+</li>
+<li>we can conditionally jump to some other part of the program</li>
+<li>we can conditionally transfer data</li>
+</ul>
+<h5 id="set-classes"><a href="#set-classes" class="headerlink" title="set classes"></a><code>set</code> classes</h5><p><img src="/2021/07/30/CSAPP/Ch3PartII/set.png" alt="set instructions"></p>
+<p><em>A <code>set</code> instruction has either one of the low-order single-byte register elements or a single-byte memory location as its destination, setting this byte to either 0 or 1.</em></p>
+<ul>
+<li><p>To generate a 32-bit or 64-bit result, we must also clear the high-order bits.</p>
+<p>For example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">comp</span><span class="params">(<span class="keyword">data_t</span> a, <span class="keyword">data_t</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a &lt; b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># a in %rdi, b in %rsi</span><br><span class="line">comp:</span><br><span class="line"> cmpq %rsi, %rdi 	# Compare a:b</span><br><span class="line"> setl %al 			# Set low-order byte of %eax to 0 or 1</span><br><span class="line"> movzbl %al, %eax 	# Clear rest of %eax (and rest of %rax)</span><br><span class="line"> ret</span><br></pre></td></tr></table></figure>
+<p>Note the comparison order of the cmpq instruction . Although the arguments are listed in the order <code>%rsi</code> (b), then <code>%rdi</code> (a), the comparison is really between a and b(subtract b from a)</p>
+</li>
+<li><p>For some of the instructions, there are multiple possible names, which listed as “synonyms.” </p>
+<p>For example, both <code>setg</code>  and <code>setnle</code> refer to the same machine instruction. Compilers and disassemblers make arbitrary choices of which names to use.</p>
+</li>
+<li><p>Although all arithmetic and logical operations set the condition codes, the descriptions of the different set instructions <strong>apply to the case where a comparison instruction has been executed</strong>, setting the condition codes according to the computation <code>t = a-b</code>.</p>
+</li>
+</ul>
+<p>Machine codes do not distinguish signed and unsigned value because the arithmetic of them are the same at bit level. If distinguish do matter, it use different instructions, such as using different versions of right shifts, division and multiplication instructions, and different combinations of condition codes.</p>
+<h4 id="Practice-Problem-3-13"><a href="#Practice-Problem-3-13" class="headerlink" title="Practice Problem 3.13"></a>Practice Problem 3.13</h4><blockquote>
+<p>The C code</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">comp</span><span class="params">(<span class="keyword">data_t</span> a, <span class="keyword">data_t</span> b)</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> a COMP b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>shows a general comparison between arguments a and b, where <code>data_t</code>, the data type of the arguments, is defined (via <code>typedef</code>) to be one of the integer data types listed in Figure 3.1 and either signed or unsigned. The comparison COMP is defined via <code>#define</code>.</p>
+<p>Suppose a is in some portion of <code>%rdx</code> while b is in some portion of <code>%rsi</code>. For each of the following instruction sequences, determine which data types <code>data_t</code> and which comparisons <code>COMP</code> could cause the compiler to generate this code. (There can be multiple correct answers; you should list them all.)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">A. </span><br><span class="line">cmpl %esi, %edi</span><br><span class="line">setl %al</span><br><span class="line">B. </span><br><span class="line">cmpw %si, %di</span><br><span class="line">setge %al</span><br><span class="line">C. </span><br><span class="line">cmpb %sil, %dil</span><br><span class="line">setbe %al</span><br><span class="line">D. </span><br><span class="line">cmpq %rsi, %rdi</span><br><span class="line">setne %al</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark"><a href="#My-solution-white-check-mark" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//A</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">data_t</span> <span class="keyword">int</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> COMP &lt; </span></span><br><span class="line"><span class="comment">//B</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">data_t</span> <span class="keyword">short</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> COMP &gt;=</span></span><br><span class="line"><span class="comment">//C</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">data_t</span> <span class="keyword">unsigned</span> <span class="keyword">char</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> COMP &lt;=</span></span><br><span class="line"><span class="comment">//D</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">data_t</span> <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="comment">//or long or pointer of any type</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> COMP !=</span></span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-3-14"><a href="#Practice-Problem-3-14" class="headerlink" title="Practice Problem 3.14"></a>Practice Problem 3.14</h4><blockquote>
+<p>The C code</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">test</span><span class="params">(<span class="keyword">data_t</span> a)</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> a TEST <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>shows a general comparison between argument <code>a</code> and <code>0</code>, where we can set the data type of the argument by declaring <code>data_t</code> with a <code>typedef</code>, and the nature of the comparison by declaring <code>TEST</code> with a <code>#define</code> declaration. The following instruction sequences implement the comparison, where a is held in some portion of register <code>%rdi</code>. For each sequence, determine which data types <code>data_t</code> and which comparisons <code>TEST</code> could cause the compiler to generate this code. (There can be multiple correct answers; list all correct ones.)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">A. </span><br><span class="line">testq %rdi, %rdi</span><br><span class="line">setge %al</span><br><span class="line">B. </span><br><span class="line">testw %di, %di</span><br><span class="line">sete %al</span><br><span class="line">C. </span><br><span class="line">testb %dil, %dil</span><br><span class="line">seta %al</span><br><span class="line">D. </span><br><span class="line">testl %edi, %edi</span><br><span class="line">setle %al</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark-1"><a href="#My-solution-white-check-mark-1" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//A</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">data_t</span> <span class="keyword">long</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TEST &gt;=</span></span><br><span class="line"><span class="comment">//B</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">data_t</span> <span class="keyword">short</span> <span class="comment">// or unsigned short</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TEST ==</span></span><br><span class="line"><span class="comment">//C</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">data_t</span> <span class="keyword">unsigned</span> <span class="keyword">char</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TEST &gt;</span></span><br><span class="line"><span class="comment">//D</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">data_t</span> <span class="keyword">int</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> TEST &lt;=</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-6-3-Jump-Instructions"><a href="#3-6-3-Jump-Instructions" class="headerlink" title="3.6.3 Jump Instructions"></a>3.6.3 Jump Instructions</h3><p><em>A <code>jump</code> instruction can cause the execution to switch to a completely new position in the program.</em></p>
+<p>These jump destinations are generally indicated in assembly code by a <strong>Label</strong></p>
+<p>For example</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">	movq $0,%rax 	#Set %rax to 0</span><br><span class="line">	jmp .L1 		#Goto .L1</span><br><span class="line">	movq (%rax),%rdx#Null pointer dereference (skipped)</span><br><span class="line">.L1:</span><br><span class="line">	popq %rdx 		#Jump target</span><br></pre></td></tr></table></figure>
+<p>In generating the object-code file, the assembler determines the addresses of all labeled instructions and encodes the jump targets (the addresses of the destination instructions) as part of the jump instructions.</p>
+<p><img src="/2021/07/30/CSAPP/Ch3PartII/jumps.png" alt="jump instructions"></p>
+<ul>
+<li><p>The<code> jmp</code> instruction jumps unconditionally.</p>
+<ul>
+<li><p>It can be either a direct jump, where the jump target is encoded as part of the instruction</p>
+<ul>
+<li>Direct jumps are written in assembly code by giving a label as the jump target, for example, the label <code>.L1</code> in the code shown.</li>
+</ul>
+</li>
+<li><p>or an indirect jump, where the jump target is read from a register or a memory location</p>
+<ul>
+<li><p>Indirect jumps are written using ‘*’ followed by an operand specifier, for exmple</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jmp *%rax  # uses the value in register %rax as the jump target</span><br><span class="line">jmp *(%rax)# reads the jump target from memory, using the value in %rax as the read address</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>The remaining jump instructions in the table are conditional—they either jump or continue executing at the next instruction in the code sequence, depending on some combination of the condition codes</p>
+<ul>
+<li>Conditional jumps can only be direct</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-6-4-Jump-Instruction-Encodings"><a href="#3-6-4-Jump-Instruction-Encodings" class="headerlink" title="3.6.4 Jump Instruction Encodings"></a>3.6.4 Jump Instruction Encodings</h3><p><em>understanding how the targets of jump instructions are encoded will become important when we study linking in Chapter 7</em></p>
+<p> There are several different encodings for jumps, but some of the most commonly used ones are <strong>PC relative</strong></p>
+<ul>
+<li>That is, they encode the difference between the address of the target instruction and the address of the instruction immediately following the jump.</li>
+<li>These offsets can be encoded using 1, 2, or 4 bytes. </li>
+</ul>
+<p>A second encoding method is to give an “absolute” address, using 4 bytes to directly specify the target.</p>
+<p> The assembler and linker select the appropriate encodings of the jump destinations.</p>
+<h5 id="Example-of-PC-relative"><a href="#Example-of-PC-relative" class="headerlink" title="Example of PC relative"></a>Example of PC relative</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">movq %rdi, %rax</span><br><span class="line"> jmp .L2 </span><br><span class="line">.L3:</span><br><span class="line"> sarq %rax</span><br><span class="line">.L2:</span><br><span class="line"> testq %rax, %rax</span><br><span class="line"> jg .L3 </span><br><span class="line"> rep; ret </span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">0: 48 89 f8 	mov %rdi,%rax    </span><br><span class="line">3: eb 03 		jmp 8 &lt;loop+0x8&gt;      </span><br><span class="line">5: 48 d1 f8 	sar %rax      </span><br><span class="line">8: 48 85 c0 	test %rax,%rax      </span><br><span class="line">b: 7f f8 		jg 5 &lt;loop+0x5&gt;      </span><br><span class="line">d: f3 c3 		repz retq </span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>loop</code> is the name of this session, indicating the address of start point of these instructions</p>
+</li>
+<li><p><code>&lt;loop + x&gt;</code> indicates the instruction <code>x</code> bytes away from the start point</p>
+</li>
+<li><p>on line 3, <code>&lt;loop + 8&gt;</code> is encoded to <code>03</code> calculated by <code>target address - next instruction address = 0x8 - 0x5 = 0x3</code></p>
+<p>on line b, <code>&lt;loop + 0x5</code> is encoded to <code>f8</code> calculated by <code>0x5 - 0xd = -8 = 0b11111000 = 0xf8</code> </p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># after linking</span><br><span class="line">4004d0: 48 89 f8 	mov %rdi,%rax</span><br><span class="line">4004d3: eb 03 		jmp 4004d8 &lt;loop+0x8&gt;</span><br><span class="line">4004d5: 48 d1 f8 	sar %rax</span><br><span class="line">4004d8: 48 85 c0 	test %rax,%rax</span><br><span class="line">4004db: 7f f8 		jg 4004d5 &lt;loop+0x5&gt;</span><br><span class="line">4004dd: f3 c3 		repz retq</span><br></pre></td></tr></table></figure>
+<p>The instructions have been relocated to different addresses, but the encodings of the jump targets in lines 2 and 5 remain unchanged.</p>
+<h5 id="Advantages-of-PC-relative-encoding"><a href="#Advantages-of-PC-relative-encoding" class="headerlink" title="Advantages of PC relative encoding"></a>Advantages of PC relative encoding</h5><ul>
+<li>the instructions can be compactly encoded (requiring just 2 bytes)</li>
+<li>the object code can be shifted to different positions in memory without alteration.</li>
+</ul>
+<h4 id="Practice-Problem-3-15"><a href="#Practice-Problem-3-15" class="headerlink" title="Practice Problem 3.15"></a>Practice Problem 3.15</h4><blockquote>
+<p>In the following excerpts from a disassembled binary, some of the information has been replaced by X’s. Answer the following questions about these instructions.</p>
+<p>A. What is the target of the <code>je</code> instruction below? (You do not need to know anything about the <code>callq</code> instruction here</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">4003fa: 74 02 je XXXXXX</span><br><span class="line">4003fc: ff d0 callq *%rax</span><br></pre></td></tr></table></figure>
+
+<p>B. What is the target of the <code>je</code> instruction below?</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">40042f: 74 f4 je XXXXXX</span><br><span class="line">400431: 5d pop %rbp</span><br></pre></td></tr></table></figure>
+
+<p>C. What is the address of the <code>ja</code> and <code>pop</code> instructions?</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">XXXXXX: 77 02 ja 400547</span><br><span class="line">XXXXXX: 5d pop %rbp</span><br></pre></td></tr></table></figure>
+
+<p>D. In the code that follows, the jump target is encoded in PC-relative form as a 4- byte two’s-complement number. The bytes are listed from least significant to most, reflecting the little-endian byte ordering of x86-64. What is the address of the jump target?</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">4005e8: e9 73 ff ff ff jmpq XXXXXXX</span><br><span class="line">4005ed: 90 nop</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark-2"><a href="#My-solution-white-check-mark-2" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># A</span><br><span class="line">4003fa: 74 02 je 0x4003fe # 0x4003fc + 0x02 &#x3D; 0x4003fe</span><br><span class="line">4003fc: ff d0 callq *%rax</span><br><span class="line"># B</span><br><span class="line">40042f: 74 f4 je 0x400425 # 0x400431 + -0xc &#x3D; 0x400425</span><br><span class="line">400431: 5d pop %rbp</span><br><span class="line"># C</span><br><span class="line">400543: 77 02 ja 400547 # xxxxxx+0x02 &#x3D; 0x400547</span><br><span class="line">400545: 5d pop %rbp	# 0x400545 - 0x2 (bytes) &#x3D; 0x400543</span><br><span class="line"># D</span><br><span class="line">4005e8: e9 73 ff ff ff jmpq 0x400560# 0x4005ed + -0x8d &#x3D; 0x400560</span><br><span class="line">4005ed: 90 nop</span><br></pre></td></tr></table></figure>
+<h3 id="3-6-5-Implementing-Conditional-Branches-with-Conditional-Control"><a href="#3-6-5-Implementing-Conditional-Branches-with-Conditional-Control" class="headerlink" title="3.6.5 Implementing Conditional Branches with Conditional Control"></a>3.6.5 Implementing Conditional Branches with Conditional Control</h3><p><em>The most general way to translate conditional expressions and statements from C into machine code is to use <strong>combinations of conditional and unconditional jumps.</strong></em></p>
+<p><code>goto</code> statement in C is similar to unconditional jump in assembly. Using <code>goto</code> statements is generally considered a bad programming style, since their use can make code very difficult to read and debug.</p>
+<p><img src="/2021/07/30/CSAPP/Ch3PartII/example.png" alt="example codes"></p>
+<p>Assembly <code>if-else</code> constructure in C style codes</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">t = test-expr;</span><br><span class="line"><span class="keyword">if</span> (!t)</span><br><span class="line">	<span class="keyword">goto</span> <span class="literal">false</span>;</span><br><span class="line">	then-statement</span><br><span class="line">	<span class="keyword">goto</span> done;</span><br><span class="line"><span class="literal">false</span>:</span><br><span class="line">	<span class="keyword">else</span>-statement</span><br><span class="line">done:</span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-3-16"><a href="#Practice-Problem-3-16" class="headerlink" title="Practice Problem 3.16"></a>Practice Problem 3.16</h4><blockquote>
+<p>When given the C code</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">cond</span><span class="params">(<span class="keyword">short</span> a, <span class="keyword">short</span> *p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">if</span> (a &amp;&amp; *p &lt; a)</span><br><span class="line">	*p = a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>gcc generates the following assembly code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># void cond(short a, short *p)</span><br><span class="line"># a in %rdi, p in %rsi</span><br><span class="line">cond:</span><br><span class="line">	testw	%di, %di</span><br><span class="line">	je	.L1</span><br><span class="line">	cmpw	%di, (%rsi)</span><br><span class="line">	jge	.L1</span><br><span class="line">	movw	%di, (%rsi)</span><br><span class="line">.L1:</span><br><span class="line">	rep ret</span><br></pre></td></tr></table></figure>
+
+<p>A. Write a goto version in C that performs the same computation and mimics the control flow of the assembly code, in the style shown in Figure 3.16(b). You might find it helpful to first annotate the assembly code as we have done in our examples. </p>
+<p>B. Explain why the assembly code contains two conditional branches, even though the C code has only one if statement.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-3"><a href="#My-solution-white-check-mark-3" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//A</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">cond</span><span class="params">(<span class="keyword">short</span> a, <span class="keyword">short</span> *p)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (a == <span class="number">0</span>) <span class="keyword">goto</span> L1;</span><br><span class="line">    <span class="keyword">if</span> (*p &gt;= a ) <span class="keyword">goto</span> L1;</span><br><span class="line">    <span class="keyword">else</span> *p = a;    </span><br><span class="line">L1:</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//B</span></span><br><span class="line"><span class="comment">/* Because there are two conditions to be judged */</span></span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-3-17"><a href="#Practice-Problem-3-17" class="headerlink" title="Practice Problem 3.17"></a>Practice Problem 3.17</h4><blockquote>
+<p>An alternate rule for translating if statements into goto code is as follows:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">t &#x3D; test-expr;</span><br><span class="line">if (t)</span><br><span class="line">	goto true;</span><br><span class="line">	else-statement</span><br><span class="line">	goto done;</span><br><span class="line">true:</span><br><span class="line">	then-statement</span><br><span class="line">done:</span><br></pre></td></tr></table></figure>
+
+<p>A. Rewrite the goto version of absdiff_se based on this alternate rule. </p>
+<p>B. Can you think of any reasons for choosing one rule over the other?</p>
+</blockquote>
+<h4 id="My-solution-warning"><a href="#My-solution-warning" class="headerlink" title="My solution : :warning:"></a>My solution : :warning:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">long</span> lt_cnt = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">long</span> ge_cnt = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">gotodiff_se</span><span class="params">(<span class="keyword">long</span> x , <span class="keyword">long</span> y )</span></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> result ;</span><br><span class="line">    <span class="keyword">if</span> (x &lt; y) <span class="keyword">goto</span> True;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">    ge_cnt++;</span><br><span class="line">    result = x - y;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">goto</span> Done;</span><br><span class="line">True:</span><br><span class="line">    lt_cnt++;</span><br><span class="line">    result = y - x ;</span><br><span class="line">Done:</span><br><span class="line">    <span class="keyword">return</span> result ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Put <code>else-statement</code> before <code>then-statement</code> can drop a <code>!</code> Instruction.</p>
+<h4 id="Solution-on-the-book"><a href="#Solution-on-the-book" class="headerlink" title="Solution on the book :"></a>Solution on the book :</h4><p>In most respects, the choice is <strong>arbitrary</strong>. But the original rule works better for the common case where there is no else statement</p>
+<h4 id="Practice-Problem-3-18"><a href="#Practice-Problem-3-18" class="headerlink" title="Practice Problem 3.18"></a>Practice Problem 3.18</h4><blockquote>
+<p>Starting with C code of the form</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">short</span> <span class="title">test</span><span class="params">(<span class="keyword">short</span> x, <span class="keyword">short</span> y, <span class="keyword">short</span> z)</span> </span>&#123;</span><br><span class="line"><span class="keyword">short</span> val = ________;</span><br><span class="line"><span class="keyword">if</span> (______) &#123;</span><br><span class="line">	<span class="keyword">if</span> (_______)</span><br><span class="line">		val = ________;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		val = ________;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (________)</span><br><span class="line">	val = ________;</span><br><span class="line"><span class="keyword">return</span> val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>gcc generates the following assembly code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#short test(short x, short y, short z)</span><br><span class="line">#x in %rdi, y in %rsi, z in %rdx</span><br><span class="line">test:</span><br><span class="line">	leal	(%rdx,%rsi), %eax</span><br><span class="line">	subl	%edi, %eax</span><br><span class="line">	cmpw	$5, %dx</span><br><span class="line">	jle	.L2</span><br><span class="line">	cmpw	$2, %si</span><br><span class="line">	jle	.L3</span><br><span class="line">	movswl	%di, %eax</span><br><span class="line">	movswl	%dx, %ecx</span><br><span class="line">	cltd</span><br><span class="line">	idivl	%ecx</span><br><span class="line">	ret</span><br><span class="line">.L3:</span><br><span class="line">	movswl	%di, %eax</span><br><span class="line">	movswl	%si, %esi</span><br><span class="line">	cltd</span><br><span class="line">	idivl	%esi</span><br><span class="line">	ret</span><br><span class="line">.L2:</span><br><span class="line">	cmpw	$2, %dx</span><br><span class="line">	jg	.L1</span><br><span class="line">	movswl	%dx, %eax</span><br><span class="line">	movswl	%si, %esi</span><br><span class="line">	cltd</span><br><span class="line">	idivl	%esi</span><br><span class="line">.L1:</span><br><span class="line">	rep ret</span><br></pre></td></tr></table></figure>
+
+<p>Fill in the missing expressions in the C code.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-4"><a href="#My-solution-white-check-mark-4" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">short</span> <span class="title">test</span><span class="params">(<span class="keyword">short</span> x, <span class="keyword">short</span> y, <span class="keyword">short</span> z)</span> </span>&#123;</span><br><span class="line"><span class="keyword">short</span> val = y + z - x;</span><br><span class="line"><span class="keyword">if</span> ( z &gt; <span class="number">5</span> ) &#123;</span><br><span class="line">	<span class="keyword">if</span> ( y &gt; <span class="number">2</span>)</span><br><span class="line">		val = x / z;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		val = x / y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (z &lt;= <span class="number">2</span>)</span><br><span class="line">	val = z / y;</span><br><span class="line"><span class="keyword">return</span> val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Verification"><a href="#Verification" class="headerlink" title="Verification"></a>Verification</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ diff -s my.s test.s</span><br><span class="line">1c1</span><br><span class="line">&lt; 	.file	<span class="string">&quot;my.c&quot;</span></span><br><span class="line">---</span><br><span class="line">&gt; 	.file	<span class="string">&quot;test.c&quot;</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="3-6-6-Implementing-Conditional-Branches-with-Conditional-Moves"><a href="#3-6-6-Implementing-Conditional-Branches-with-Conditional-Moves" class="headerlink" title="3.6.6 Implementing Conditional Branches with Conditional Moves"></a>3.6.6 Implementing Conditional Branches with Conditional Moves</h3><p><em>The transfer of control is simple but also inefficient. Modern processors prefer a conditional move of data</em></p>
+<ul>
+<li>This approach computes both outcomes of a conditional operation and then selects one based on whether or not the condition holds.</li>
+<li><strong>This strategy makes sense only in restricted cases</strong></li>
+</ul>
+<p><img src="/2021/07/30/CSAPP/Ch3PartII/mvdata.png" alt="transfer data codes"></p>
+<p>The key is that the single <code>cmovge</code> instruction of the assembly code. It will transfer the data from the source register to the destination, only if the <code>cmpq</code> instruction indicates that the condition holds (as indicated by the suffix)</p>
+<h5 id="Why-data-transfer-outperform-control-transfer"><a href="#Why-data-transfer-outperform-control-transfer" class="headerlink" title="Why data-transfer outperform control-transfer ?"></a>Why data-transfer outperform control-transfer ?</h5><ul>
+<li><p>Modern computers use <em>pipline</em> to execute instructions. To do this requires being able to determine the sequence of instructions to be executed well ahead of time in order to keep the pipeline full of instructions to be executed.</p>
+<p>Data transfer do not have <code>jmp</code></p>
+</li>
+<li><p>When a <code>jmp</code> instruction appears, the processor do not know the following instruction sequence</p>
+</li>
+<li><p>Although the processor can guess the condition will hold or not via “branch prediction logic”, once the prediction is wrong, all previous work based on the prediction is wasted.</p>
+</li>
+</ul>
+<p><strong><em>The flow of control does not depend on data, and this makes it easier for the processor to keep its pipeline full.</em></strong></p>
+<h4 id="Practice-Problem-3-19"><a href="#Practice-Problem-3-19" class="headerlink" title="Practice Problem 3.19"></a>Practice Problem 3.19</h4><blockquote>
+<p>Running on a new processor model, our code required around 45 cycles when the branching pattern was random, and around 25 cycles when the pattern was highly predictable.</p>
+<p>A. What is the approximate miss penalty? </p>
+<p>B. How many cycles would the function require when the branch is mispredicted?</p>
+<p><img src="/2021/07/30/CSAPP/Ch3PartII/aside.png" alt="aside"></p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-5"><a href="#My-solution-white-check-mark-5" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><p>$$<br>Tavg(0.5) = Tok+0.5Tmp =45<br>$$</p>
+<p>$$<br>Tok=25<br>$$</p>
+<p>$$<br>\therefore Tmp = 40 (\text{clock cycle})<br>$$</p>
+<p>A : approximate miss penalty is 40 clock<br>$$<br>Tran = Tavg(1) = Tok + Tmp = 65<br>$$<br>B : 65 clock cycles needed.</p>
+<hr>
+<h5 id="Conditional-move-instructions"><a href="#Conditional-move-instructions" class="headerlink" title="Conditional move instructions"></a>Conditional move instructions</h5><p><img src="/2021/07/30/CSAPP/Ch3PartII/cmov.png" alt="cmov"></p>
+<ul>
+<li><p>The source value is read from either memory or the source register, but it is copied to the destination only if the specified condition holds.</p>
+</li>
+<li><p>The source and destination values can be 16, 32, or 64 bits long. Singlebyte conditional moves are not supported.</p>
+<p>The processor can infer the data size from the destination, so the same instruction name can be used for all operand lengths.</p>
+</li>
+<li><p>Unlike conditional jumps, the processor can execute conditional move instructions <strong>without having to predict the outcome of the test</strong>. The processor simply reads the source value (possibly from memory), checks the condition code, and then either updates the destination register or keeps it the same.</p>
+</li>
+</ul>
+<h5 id="Standard-form"><a href="#Standard-form" class="headerlink" title="Standard form"></a>Standard form</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">v = test-expr ? then-expr : <span class="keyword">else</span>-expr;</span><br></pre></td></tr></table></figure>
+<p>will be converted to</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">v = then-expr;</span><br><span class="line">ve = <span class="keyword">else</span>-expr;</span><br><span class="line">t = test-expr;</span><br><span class="line"><span class="keyword">if</span> (!t) v = ve;</span><br></pre></td></tr></table></figure>
+<p>The final statement in this sequence is implemented with a conditional move— value<code> ve</code> is copied to <code>v</code> only if test condition t does not hold.</p>
+<h5 id="Two-disadvantages"><a href="#Two-disadvantages" class="headerlink" title="Two disadvantages"></a>Two disadvantages</h5><ul>
+<li><p>data-transfer evalute both expressions regardless of the condition, if one of those two expressions could possibly generate an error condition or a side effect, this could lead to invalid behavior. </p>
+<p>For example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">cread</span><span class="params">(<span class="keyword">long</span> *xp)</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> (xp ? *xp : <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># Invalid implementation of function cread !!!</span><br><span class="line">cread:</span><br><span class="line"> movq (%rdi), %rax 		# v &#x3D; *xp</span><br><span class="line"> testq %rdi, %rdi 		# Test x</span><br><span class="line"> movl $0, %edx 			# Set ve &#x3D; 0</span><br><span class="line"> cmove %rdx, %rax 		# If x&#x3D;&#x3D;0, v &#x3D; ve</span><br><span class="line"> ret</span><br></pre></td></tr></table></figure>
+<p>Actual <code>gcc</code> output</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	testq	%rdi, %rdi</span><br><span class="line">	je	.L3</span><br><span class="line">	movq	(%rdi), %rax</span><br><span class="line">	ret</span><br><span class="line">.L3:</span><br><span class="line">	movl	$0, %eax</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure></li>
+<li><p>Data-transfer do not always improve code efficiency,  if either the then-expr or the else-expr evaluation requires a significant computation, then this effort is wasted when the corresponding condition does not hold</p>
+</li>
+</ul>
+<p><code>gcc</code>  only uses conditional moves when the two expressions can be computed very easily, for example, with single add instructions. </p>
+<h4 id="Practice-Problem-3-20"><a href="#Practice-Problem-3-20" class="headerlink" title="Practice Problem 3.20"></a>Practice Problem 3.20</h4><blockquote>
+<p>In the following C function, we have left the definition of operation <code>OP</code> incomplete:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> OP _________ <span class="comment">/* Unknown operator */</span></span></span><br><span class="line"><span class="function"><span class="keyword">short</span> <span class="title">arith</span><span class="params">(<span class="keyword">short</span> x)</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> x OP <span class="number">16</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>When compiled, gcc generates the following assembly code</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># short arith(short x)</span><br><span class="line"># x in %rdi</span><br><span class="line">arith:</span><br><span class="line">	leaq 15(%rdi), %rbx</span><br><span class="line">	testq %rdi, %rdi</span><br><span class="line">	cmovns %rdi, %rbx</span><br><span class="line">	sarq $4, %rbx</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+
+<p>A. What operation is OP? </p>
+<p>B. Annotate the code to explain how it works</p>
+</blockquote>
+<h4 id="My-solution-x"><a href="#My-solution-x" class="headerlink" title="My solution : :x:"></a>My solution : :x:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># short arith(short x)</span><br><span class="line"># x in %rdi</span><br><span class="line">arith:</span><br><span class="line">	leaq 15(%rdi), %rbx		# %rbx &#x3D; 15 + x</span><br><span class="line">	testq %rdi, %rdi		# x &amp; x</span><br><span class="line">	cmovns %rdi, %rbx		# if (x &gt;&#x3D; 0) %rbx &#x3D; x</span><br><span class="line">	sarq $4, %rbx			# %rbx &gt;&gt; 4</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">short</span> <span class="title">arith</span><span class="params">(<span class="keyword">short</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">short</span> res1 = (<span class="number">15</span> + x ) &gt;&gt; <span class="number">4</span> ;</span><br><span class="line">    <span class="keyword">short</span> res2 = (x) &gt;&gt; <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">if</span> (x &gt;= <span class="number">0</span> ) res1 = res2 ;</span><br><span class="line">    <span class="keyword">return</span> res1;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//return x &lt; 0 ?  (15 + x) &gt;&gt; 4 : x/ 16;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> OP <span class="meta-string">&lt;0?(15+x)&gt;&gt;4:x/</span></span></span><br></pre></td></tr></table></figure>
+<h4 id="Solution-on-the-book-1"><a href="#Solution-on-the-book-1" class="headerlink" title="Solution on the book:"></a>Solution on the book:</h4><p> The operator is ‘/’. The program creates a temporary value equal to x + 15, in anticipation of x being negative and therefore requiring biasing.</p>
+<h4 id="Practice-Problem-3-21"><a href="#Practice-Problem-3-21" class="headerlink" title="Practice Problem 3.21"></a>Practice Problem 3.21</h4><blockquote>
+<p>Starting with C code of the form</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">short</span> <span class="title">test</span><span class="params">(<span class="keyword">short</span> x, <span class="keyword">short</span> y)</span> </span>&#123;</span><br><span class="line"><span class="keyword">short</span> val = _______;</span><br><span class="line"><span class="keyword">if</span> (_______) &#123;</span><br><span class="line">	<span class="keyword">if</span> (_______)</span><br><span class="line">		val = ________;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		val = ________;</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (________)</span><br><span class="line">	val = __________;</span><br><span class="line"><span class="keyword">return</span> val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>gcc generates the following assembly code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"># short test(short x, short y)</span><br><span class="line"># x in %rdi, y in %rsi</span><br><span class="line">test:</span><br><span class="line">	leal	12(%rsi), %eax</span><br><span class="line">	testw	%di, %di</span><br><span class="line">	js	.L5</span><br><span class="line">	cmpw	$10, %si</span><br><span class="line">	jle	.L1</span><br><span class="line">	movswl	%di, %eax</span><br><span class="line">	movswl	%si, %esi</span><br><span class="line">	cltd</span><br><span class="line">	idivl	%esi</span><br><span class="line">.L1:</span><br><span class="line">	rep ret</span><br><span class="line">.L5:</span><br><span class="line">	cmpw	%di, %si</span><br><span class="line">	jle	.L3</span><br><span class="line">	movl	%edi, %eax</span><br><span class="line">	imull	%esi, %eax</span><br><span class="line">	ret</span><br><span class="line">.L3:</span><br><span class="line">	movl	%esi, %eax</span><br><span class="line">	orl	%edi, %eax</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+
+<p>Fill in the missing expressions in the C code.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-6"><a href="#My-solution-white-check-mark-6" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">short</span> <span class="title">test</span><span class="params">(<span class="keyword">short</span> x, <span class="keyword">short</span> y)</span> </span>&#123;</span><br><span class="line"><span class="keyword">short</span> val = y + <span class="number">12</span> ;</span><br><span class="line"><span class="keyword">if</span> ( x &lt; <span class="number">0</span> ) &#123;</span><br><span class="line">	<span class="keyword">if</span> ( x &lt; y)</span><br><span class="line">		val = y * x;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		val = x | y;</span><br><span class="line">&#125; </span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> ( y &gt; <span class="number">10</span> )</span><br><span class="line">	val = x / y;</span><br><span class="line"><span class="keyword">return</span> val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/57998998/csapp-example-uses-idivq-with-two-operands">fuck you, global edition, but I am too poor to buy the NA version…</a></p>
+<h3 id="3-6-7-Loops"><a href="#3-6-7-Loops" class="headerlink" title="3.6.7 Loops"></a>3.6.7 Loops</h3><p><em>combinations of conditional tests and jumps are used to implement the effect of loops</em></p>
+<h4 id="Do-While-Loops"><a href="#Do-While-Loops" class="headerlink" title="Do-While Loops"></a>Do-While Loops</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">do</span>&#123;</span><br><span class="line">    body-statement;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span> (test-expr);</span><br><span class="line"><span class="comment">//equivalent to</span></span><br><span class="line">loop:</span><br><span class="line">	body-statement</span><br><span class="line">	t = test-expr;</span><br><span class="line">	<span class="keyword">if</span> (t)</span><br><span class="line">		<span class="keyword">goto</span> loop;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/07/30/CSAPP/Ch3PartII/dowhile.png" alt="dowhileloop"></p>
+<h4 id="Practice-Problem-3-22-white-check-mark"><a href="#Practice-Problem-3-22-white-check-mark" class="headerlink" title="Practice Problem 3.22 :white_check_mark:"></a>Practice Problem 3.22 :white_check_mark:</h4><blockquote>
+<p>A. Try to calculate 14! with a 32-bit int. Verify whether the computation of 14! overflows.</p>
+<p>B. What if the computation is done with a 64-bit long int?</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">factorial</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">    res *= n;</span><br><span class="line">    n--;</span><br><span class="line">&#125;<span class="keyword">while</span>(n &gt; <span class="number">1</span> );</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc , <span class="keyword">char</span> * argv [])</span></span>&#123;</span><br><span class="line">   <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span> , factorial(atoi(argv[<span class="number">1</span>]))); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ./<span class="built_in">test</span> 14</span><br><span class="line">1278945280</span><br><span class="line">$ python3 -c <span class="string">&quot;import math;print(math.factorial(14))&quot;</span></span><br><span class="line">87178291200</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>realres = math.factorial(<span class="number">14</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>m = <span class="number">2</span>**<span class="number">32</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>intres = realres % m</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>intres</span><br><span class="line"><span class="number">1278945280</span></span><br></pre></td></tr></table></figure>
+<p>Overflow happens.</p>
+<p>When using <code>long</code>, the result is correct</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./<span class="built_in">test</span> 14</span><br><span class="line">87178291200</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>factorial(<span class="number">14</span>) &lt; <span class="number">2</span>**<span class="number">64</span></span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-3-23"><a href="#Practice-Problem-3-23" class="headerlink" title="Practice Problem 3.23"></a>Practice Problem 3.23</h4><blockquote>
+<p>For the C code</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">short</span> <span class="title">dw_loop</span><span class="params">(<span class="keyword">short</span> x)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">short</span> y = x/<span class="number">9</span>;</span><br><span class="line">	<span class="keyword">short</span> *p = &amp;x;</span><br><span class="line">	<span class="keyword">short</span> n = <span class="number">4</span>*x;</span><br><span class="line">	<span class="keyword">do</span> &#123;</span><br><span class="line">		x += y;</span><br><span class="line">		(*p) += <span class="number">5</span>;</span><br><span class="line">		n -= <span class="number">2</span>;</span><br><span class="line">	&#125; <span class="keyword">while</span> (n &gt; <span class="number">0</span>);</span><br><span class="line">	<span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>gcc generates the following assembly code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">dw_loop:</span><br><span class="line">	movl	%edi, %eax</span><br><span class="line">	movswl	%di, %ecx</span><br><span class="line">	imull	$7282, %ecx, %ecx</span><br><span class="line">	shrl	$16, %ecx</span><br><span class="line">	movl	%edi, %edx</span><br><span class="line">	sarw	$15, %dx</span><br><span class="line">	subl	%edx, %ecx</span><br><span class="line">	sall	$2, %edi</span><br><span class="line">.L2:</span><br><span class="line">	leal	5(%rcx,%rax), %eax</span><br><span class="line">	leal	-2(%rdi), %edx</span><br><span class="line">	movl	%edx, %edi</span><br><span class="line">	testw	%dx, %dx</span><br><span class="line">	jg	.L2</span><br><span class="line">	rep ret</span><br></pre></td></tr></table></figure>
+
+<p>A. Which registers are used to hold program values <code>x</code>, <code>y</code>, and <code>n</code>?</p>
+<p>B. How has the compiler eliminated the need for pointer variable <code>p</code> and the pointer dereferencing implied by the expression <code>(*p)+=5</code>? </p>
+<p>C. Add annotations to the assembly code describing the operation of the program, similar to those shown in Figure 3.19(c).</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-7"><a href="#My-solution-white-check-mark-7" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># short dw_loop(short x)</span><br><span class="line"># x in %di</span><br><span class="line"># The three operand form multiplies %ecx and 7282 together and stores the result in %ecx</span><br><span class="line"># 7282 here is a magic number to replace division</span><br><span class="line"># see more details at https:&#x2F;&#x2F;homepage.divms.uiowa.edu&#x2F;~jones&#x2F;bcd&#x2F;divide.html</span><br><span class="line">dw_loop:</span><br><span class="line">	movl	%edi, %eax	# int res &#x3D; x;</span><br><span class="line">	movswl	%di, %ecx	# int cot &#x3D; x;</span><br><span class="line">	imull	$7282, %ecx, %ecx # cot *&#x3D; 7282</span><br><span class="line">	shrl	$16, %ecx	# cot &#x2F;&#x3D; 65536</span><br><span class="line">	movl	%edi, %edx	# int d &#x3D; x;</span><br><span class="line">	sarw	$15, %dx	# d &#x2F;&#x3D; 32768</span><br><span class="line">	subl	%edx, %ecx	# cot -&#x3D; d</span><br><span class="line">	sall	$2, %edi 	# x *&#x3D; 4 </span><br><span class="line">.L2:</span><br><span class="line">	leal	5(%rcx,%rax), %eax # res &#x3D; 5 + cot + res</span><br><span class="line">	leal	-2(%rdi), %edx	# d -&#x3D; 2</span><br><span class="line">	movl	%edx, %edi		# x &#x3D; d</span><br><span class="line">	testw	%dx, %dx		# if ( d &gt; 0) goto L2;</span><br><span class="line">	jg	.L2</span><br><span class="line">	rep ret</span><br></pre></td></tr></table></figure>
+<p>A: As we can see that <code>y = cot</code>, in <code>%ecx</code>,<code>n = d</code> in<code>%edx</code>, and finally <code>x</code> in <code>%edi</code></p>
+<p>B: Since the pointer holds the address of a local variable, there is no need to really access memory, so just another temporary variable saver is OK. In this case, <code>x += y; (*p) += 5</code> is merged into <code>x = x + y + 5</code></p>
+<h4 id="While-Loops"><a href="#While-Loops" class="headerlink" title="While Loops"></a>While Loops</h4><p><em>There are a number of ways to translate a while loop into machine code, two of which are used in code generated by gcc. Same structure but differ in how to implement the initial test.</em></p>
+<h5 id="jump-to-middle"><a href="#jump-to-middle" class="headerlink" title="jump to middle"></a>jump to middle</h5><p><em>The first translation method, which we refer to as jump to middle, performs the initial test by performing an unconditional jump to the test at the end of the loop.</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	<span class="keyword">goto</span> test;</span><br><span class="line">loop:</span><br><span class="line">	body-statement</span><br><span class="line">test:</span><br><span class="line">	t = test-expr;</span><br><span class="line">	<span class="keyword">if</span> (t)</span><br><span class="line">		<span class="keyword">goto</span> loop;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/07/30/CSAPP/Ch3PartII/whileloop.png" alt="while loop codes example"></p>
+<h4 id="Practice-Problem-3-24"><a href="#Practice-Problem-3-24" class="headerlink" title="Practice Problem 3.24"></a>Practice Problem 3.24</h4><blockquote>
+<p>For C code having the general form</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">short</span> <span class="title">loop_while</span><span class="params">(<span class="keyword">short</span> a, <span class="keyword">short</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">short</span> result = _________;</span><br><span class="line">	<span class="keyword">while</span> (______) &#123;</span><br><span class="line">		result = _________;</span><br><span class="line">		a = ___________;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>gcc, run with command-line option <code>-Og</code>, produces the following code</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">while_loop:</span><br><span class="line">	movl	$0, %eax</span><br><span class="line">	jmp	.L2</span><br><span class="line">.L3:</span><br><span class="line">	movl	%esi, %edx</span><br><span class="line">	imull	%edi, %edx</span><br><span class="line">	addl	%edx, %eax</span><br><span class="line">	subl	$1, %edi</span><br><span class="line">.L2:</span><br><span class="line">	cmpw	%si, %di</span><br><span class="line">	jg	.L3</span><br><span class="line">	rep ret</span><br></pre></td></tr></table></figure>
+
+<p>We can see that the compiler used a jump-to-middle translation, using the <code>jmp</code> instruction  to jump to the test starting with label .L2. Fill in the missing parts of the C code.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-8"><a href="#My-solution-white-check-mark-8" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">short</span> <span class="title">loop_while</span><span class="params">(<span class="keyword">short</span> a, <span class="keyword">short</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">short</span> result = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">while</span> (a &gt; b) &#123;</span><br><span class="line">		result = result + a*b;</span><br><span class="line">		a = a - <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="guarded-do"><a href="#guarded-do" class="headerlink" title="guarded do"></a>guarded do</h5><p><em>first transforms the code into a do-while loop by using a conditional branch to skip over the loop if the initial test fails, used by higher optimization option</em></p>
+<p>Using this implementation strategy, the compiler can often optimize the initial test, for example, determining that the test condition will always hold.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	t = test-expr;</span><br><span class="line">	<span class="keyword">if</span> (!t)</span><br><span class="line">		<span class="keyword">goto</span> done;</span><br><span class="line">	<span class="keyword">do</span></span><br><span class="line">		body-statement</span><br><span class="line">	<span class="keyword">while</span> (test-expr);</span><br><span class="line">done:</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/07/30/CSAPP/Ch3PartII/guardeddo.png" alt="guardeddo"></p>
+<h4 id="Practice-Problem-3-25"><a href="#Practice-Problem-3-25" class="headerlink" title="Practice Problem 3.25"></a>Practice Problem 3.25</h4><blockquote>
+<p>For C code having the general form</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">loop_while2</span><span class="params">(<span class="keyword">long</span> a, <span class="keyword">long</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">long</span> result = _______;</span><br><span class="line">	<span class="keyword">while</span> (________) &#123;</span><br><span class="line">		result = _________;</span><br><span class="line">		b = _______;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>gcc, run with command-line option <code>-O1</code>, produces the following code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">loop_while2:</span><br><span class="line">	testq	%rsi, %rsi</span><br><span class="line">	jle	.L4</span><br><span class="line">	movq	%rsi, %rax</span><br><span class="line">.L3:</span><br><span class="line">	imulq	%rdi, %rax</span><br><span class="line">	subq	%rdi, %rsi</span><br><span class="line">	testq	%rsi, %rsi</span><br><span class="line">	jg	.L3</span><br><span class="line">	rep ret</span><br><span class="line">.L4:</span><br><span class="line">	movq	%rsi, %rax</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+
+<p>Fill in the missing parts of the C code. Note that the control structure in the assembly code does not exactly match what would be obtained by a direct translation of the C code according to our translation rules.  However, you can fill out the missing portions of the C code in a way that it will have equivalent behavior to the assembly code.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-9"><a href="#My-solution-white-check-mark-9" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">loop_while2</span><span class="params">(<span class="keyword">long</span> a, <span class="keyword">long</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">long</span> result = b;</span><br><span class="line">	<span class="keyword">while</span> (b &gt; <span class="number">0</span>) &#123;</span><br><span class="line">		result = result * a;</span><br><span class="line">		b = b - a;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-3-26"><a href="#Practice-Problem-3-26" class="headerlink" title="Practice Problem 3.26"></a>Practice Problem 3.26</h4><blockquote>
+<p>A function <code>test_one</code> has the following overall structure:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">short</span> <span class="title">test_one</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">short</span> x)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">short</span> val = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span> ( ... ) &#123;</span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> ...;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The gcc C compiler generates the following assembly code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">test_one:</span><br><span class="line">	jmp	.L2</span><br><span class="line">.L3:</span><br><span class="line">	shrw	%di</span><br><span class="line">.L2:</span><br><span class="line">	testw	%di, %di</span><br><span class="line">	jne	.L3</span><br><span class="line">	movl	$0, %eax</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+
+<p>Reverse engineer the operation of this code and then do the following:</p>
+<p>A. Determine what loop translation method was used. </p>
+<p>B. Use the assembly-code version to fill in the missing parts of the C code. </p>
+<p>C. Describe in English what this function computes</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-10"><a href="#My-solution-white-check-mark-10" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// shr with only one operand implies that you are shifting only one bit.</span></span><br><span class="line"><span class="function"><span class="keyword">short</span> <span class="title">test_one</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">short</span> x)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">short</span> val = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span> ( x != <span class="number">0</span> ) &#123;</span><br><span class="line">        x &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>A : jump-to-middle</p>
+<h4 id="For-Loops"><a href="#For-Loops" class="headerlink" title="For Loops"></a>For Loops</h4><p>The C language standard states (with one exception, highlighted in Problem 3.29) that the behavior of such a loop is identical to the codes using a while loop</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (init_expression ; test_expr ; update_expr)&#123;</span><br><span class="line">    body_expressions ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// equivalent to</span></span><br><span class="line">init_expression ;</span><br><span class="line"><span class="keyword">while</span>(test_expr)&#123;</span><br><span class="line">    body_expression ;</span><br><span class="line">    update_expr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The code generated by <code>gcc</code> for a for loop then follows one of our two translation strategies for <code>while</code> loops, depending on the optimization level. </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//jump to middle strategy</span></span><br><span class="line">	init-expr;</span><br><span class="line">	<span class="keyword">goto</span> test;</span><br><span class="line">loop:</span><br><span class="line">	body-statement</span><br><span class="line">	update-expr;</span><br><span class="line">test:</span><br><span class="line">	t = test-expr;</span><br><span class="line">	<span class="keyword">if</span> (t)</span><br><span class="line">	<span class="keyword">goto</span> loop;</span><br><span class="line"><span class="comment">//guarded do strategy</span></span><br><span class="line">	init-expr;</span><br><span class="line">	t = test-expr;</span><br><span class="line">	<span class="keyword">if</span> (!t)</span><br><span class="line">		<span class="keyword">goto</span> done;</span><br><span class="line">loop:</span><br><span class="line">	body-statement</span><br><span class="line">	update-expr;</span><br><span class="line">	t = test-expr;</span><br><span class="line">	<span class="keyword">if</span> (t)</span><br><span class="line">		<span class="keyword">goto</span> loop;</span><br><span class="line">done:</span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-3-27"><a href="#Practice-Problem-3-27" class="headerlink" title="Practice Problem 3.27"></a>Practice Problem 3.27</h4><blockquote>
+<p>Write <code>goto</code> code for a function called<code> fibonacci</code> to print fibonacci numbers using a while loop. Apply the guarded-do transformation.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-11"><a href="#My-solution-white-check-mark-11" class="headerlink" title="My solution :  :white_check_mark:"></a>My solution :  :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fibonacci</span><span class="params">(<span class="keyword">int</span> cot)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> one = <span class="number">0</span> ;</span><br><span class="line">    <span class="keyword">int</span> two = <span class="number">1</span> ;</span><br><span class="line">    <span class="keyword">if</span> (cot &lt;= <span class="number">0</span> ) <span class="keyword">goto</span> Done ; <span class="comment">//guard</span></span><br><span class="line">Loop:</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span> , one);</span><br><span class="line">        two += one ;</span><br><span class="line">        one = two - one ;</span><br><span class="line">        cot--;</span><br><span class="line">    <span class="keyword">if</span> (cot != <span class="number">0</span>) <span class="keyword">goto</span> Loop;</span><br><span class="line">Done:</span><br><span class="line">    <span class="keyword">return</span> ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>We see from this presentation that all three forms of loops in C—do-while, while, and for—can be translated by a simple strategy, generating code that contains one or more conditional branches.</p>
+<h4 id="Practice-Problem-3-28"><a href="#Practice-Problem-3-28" class="headerlink" title="Practice Problem 3.28"></a>Practice Problem 3.28</h4><blockquote>
+<p>A function <code>test_two</code> has the following overall structure:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">short</span> <span class="title">test_two</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">short</span> x)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">short</span> val = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">short</span> i;</span><br><span class="line">	<span class="keyword">for</span> ( ... ; ... ; ... ) &#123;</span><br><span class="line">		...</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The gcc C compiler generates the following assembly code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">test_two:</span><br><span class="line">	movl	$64, %edx</span><br><span class="line">	movl	$0, %eax</span><br><span class="line">	jmp	.L2</span><br><span class="line">.L3:</span><br><span class="line">	addq	%rax, %rax</span><br><span class="line">	movq	%rdi, %rcx</span><br><span class="line">	andl	$1, %ecx</span><br><span class="line">	orq		%rcx, %rax</span><br><span class="line">	shrq	%rdi</span><br><span class="line">	subq	$1, %rdx</span><br><span class="line">.L2:</span><br><span class="line">	testq	%rdx, %rdx</span><br><span class="line">	jne	.L3</span><br><span class="line">	rep ret</span><br></pre></td></tr></table></figure>
+
+<p>Reverse engineer the operation of this code and then do the following:</p>
+<p>A. Use the assembly-code version to fill in the missing parts of the C code. </p>
+<p>B. Explain why there is neither an initial test before the loop nor an initial jump to the test portion of the loop. </p>
+<p>C. Describe in English what this function computes.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-12"><a href="#My-solution-white-check-mark-12" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">short</span> <span class="title">test_two</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">short</span> x)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">short</span> val = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">short</span> i;</span><br><span class="line">	<span class="keyword">for</span> ( i = <span class="number">64</span> ; i != <span class="number">0</span> ; i-- ) &#123;</span><br><span class="line">		val &lt;&lt;= <span class="number">1</span> ; <span class="comment">//val = val + val</span></span><br><span class="line">        val = (x &amp; <span class="number">1</span>) | val;</span><br><span class="line">        x &gt;&gt;= <span class="number">1</span>;       </span><br><span class="line">&#125;</span><br><span class="line">	<span class="keyword">return</span> val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>This function reverse the bits of x, which means <code>0b111001 -&gt; 0b100111</code></p>
+<h4 id="Practice-Problem-3-29"><a href="#Practice-Problem-3-29" class="headerlink" title="Practice Problem 3.29"></a>Practice Problem 3.29</h4><blockquote>
+<p>Executing a <code>continue</code> statement in C causes the program to jump to the end of the current loop iteration. The stated rule for translating a <code>for</code> loop into a <code>while</code> loop needs some refinement when dealing with <code>continue</code> statements. For example, consider the following code:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Example of for loop containing a continue statement */</span></span><br><span class="line"><span class="comment">/* Sum even numbers between 0 and 9 */</span></span><br><span class="line"><span class="keyword">long</span> sum = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">long</span> i;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line"><span class="keyword">if</span> (i &amp; <span class="number">1</span>)</span><br><span class="line"><span class="keyword">continue</span>;</span><br><span class="line">sum += i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>A. What would we get if we naively applied our rule for translating the for loop into a while loop? What would be wrong with this code? </p>
+<p>B. How could you replace the continue statement with a goto statement to ensure that the while loop correctly duplicates the behavior of the for loop?</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-13"><a href="#My-solution-white-check-mark-13" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//naive translation</span></span><br><span class="line"><span class="comment">//The updata-expression won&#x27;t be executed !</span></span><br><span class="line"><span class="keyword">long</span> sum = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">long</span> i ;</span><br><span class="line">i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">goto</span> Test;</span><br><span class="line">Loop:</span><br><span class="line">	<span class="keyword">if</span> (i &amp; <span class="number">1</span>) <span class="keyword">goto</span> Test;</span><br><span class="line">	sum += i;</span><br><span class="line">	i++;</span><br><span class="line">Test:</span><br><span class="line">	<span class="keyword">if</span> (i &lt; <span class="number">10</span>) <span class="keyword">goto</span> Loop;</span><br><span class="line">	<span class="keyword">return</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//My translation</span></span><br><span class="line"><span class="keyword">long</span> sum = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">long</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span> (i &gt;= <span class="number">10</span>) <span class="keyword">goto</span> Done;</span><br><span class="line">Loop:</span><br><span class="line">	<span class="keyword">if</span> (i &amp; <span class="number">1</span>) <span class="keyword">goto</span> Continue;</span><br><span class="line">	sum += i;</span><br><span class="line">Continue:</span><br><span class="line">	i++;</span><br><span class="line">Done:</span><br><span class="line">	<span class="keyword">return</span> </span><br></pre></td></tr></table></figure>
+<h4 id="Solution-on-the-book-2"><a href="#Solution-on-the-book-2" class="headerlink" title="Solution on the book:"></a>Solution on the book:</h4><p>The general solution is to replace the <code>continue</code> statement with a <code>goto </code>statement that skips the rest of the loop body and <strong>goes directly to the update portion</strong></p>
+<hr>
+<h3 id="3-6-8-Switch-Statements"><a href="#3-6-8-Switch-Statements" class="headerlink" title="3.6.8 Switch Statements"></a>3.6.8 Switch Statements</h3><p><em>A switch statement provides a multiway branching capability based on the value of an integer index.</em></p>
+<p>Not only do they make the C code more readable, but they also allow an efficient implementation using a data structure called a <strong>jump table</strong></p>
+<ul>
+<li>A jump table is an array where entry <code>i</code> is the address of a code segment implementing the action the program should take when the switch index equals <code>i</code>.</li>
+<li>The advantage of using a jump table over a long sequence of <code>if-else</code> statements is that the time taken to perform the switch is <strong>independent of the number of switch cases</strong></li>
+<li>in <code>gcc</code>  jump tables are used when there are a number of cases (e.g., four or more) and they span a small range of values.</li>
+</ul>
+<p><img src="/2021/07/30/CSAPP/Ch3PartII/switch.png" alt="switch case codes"></p>
+<ul>
+<li><p>In making this extension, the authors of gcc created a new operator <code>&amp;&amp;</code> to create a pointer for a code location.</p>
+</li>
+<li><p>The compiler first shifts the range to between 0 and 6 by subtracting 100 from n</p>
+</li>
+<li><p>It further simplifies the branching possibilities by treating index as an unsigned value, making use of the fact that negative numbers in a two’s-complement representation map to large positive numbers in an unsigned representation</p>
+</li>
+<li><p>This computed goto is supported by gcc as an extension to the C language in line 16</p>
+</li>
+<li><p>Observe that the jump table handles duplicate cases by simply having the same code label (<code>loc_D</code>) for entries 4 and 6, and it handles missing cases by using the label for the default case (<code>loc_def</code>) as entries 1 and 5.</p>
+</li>
+</ul>
+<p><img src="/2021/07/30/CSAPP/Ch3PartII/switchass.png" alt="switch case assembly codes"></p>
+<p><img src="/2021/07/30/CSAPP/Ch3PartII/jumptable.png" alt="jump table"></p>
+<ul>
+<li>These declarations state that within the segment of the object-code file called <code>.rodata</code> (for “read-only data”), there should be a sequence of seven “quad” (8- byte) words, where the value of each word is given by the instruction address associated with the indicated assembly-code labels (e.g., .L3)</li>
+</ul>
+<h4 id="Practice-Problem-3-30"><a href="#Practice-Problem-3-30" class="headerlink" title="Practice Problem 3.30"></a>Practice Problem 3.30</h4><blockquote>
+<p>In the C function that follows, we have omitted the body of the switch statement. In the C code, the case labels did not span a contiguous range, and some cases had multiple labels.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">switch2</span><span class="params">(<span class="keyword">short</span> x, <span class="keyword">short</span> *dest)</span> </span>&#123;</span><br><span class="line"><span class="keyword">short</span> val = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">switch</span> (x) &#123; </span><br><span class="line">        <span class="comment">//Body of switch statement omitted</span></span><br><span class="line">&#125;</span><br><span class="line">*dest = val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In compiling the function, gcc generates the assembly code that follows for the initial part of the procedure, with variable <code>x</code> in <code>%rdi</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#void switch2(short x, short *dest)</span><br><span class="line">#x in %rdi</span><br><span class="line"> switch2:</span><br><span class="line"> addq $2, %rdi</span><br><span class="line"> cmpq $8, %rdi</span><br><span class="line"> ja .L2</span><br><span class="line"> jmp *.L4(,%rdi,8)</span><br></pre></td></tr></table></figure>
+
+<p>It generates the following code for the jump table:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">.L4:</span><br><span class="line"> .quad .L9</span><br><span class="line"> .quad .L5</span><br><span class="line"> .quad .L6</span><br><span class="line"> .quad .L7</span><br><span class="line"> .quad .L2</span><br><span class="line"> .quad .L7</span><br><span class="line"> .quad .L8</span><br><span class="line"> .quad .L2</span><br><span class="line"> .quad .L5</span><br></pre></td></tr></table></figure>
+
+<p>Based on this information, answer the following questions:</p>
+<p>A. What were the values of the case labels in the switch statement? </p>
+<p>B. What cases had multiple labels in the C code?</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-14"><a href="#My-solution-white-check-mark-14" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#void switch2(short x, short *dest)</span><br><span class="line">#x in %rdi</span><br><span class="line"> switch2:</span><br><span class="line"> addq $2, %rdi		# x +&#x3D; 2</span><br><span class="line"> cmpq $8, %rdi		# if(x &gt; 8) return </span><br><span class="line"> ja .L2</span><br><span class="line"> jmp *.L4(,%rdi,8)	# goto (.L4 + 8 * x)</span><br><span class="line"></span><br><span class="line"># x+2 &#x3D;&#x3D; 0 : .L9</span><br><span class="line"># x+2 &#x3D;&#x3D; 1 : .L5</span><br><span class="line"># x+2 &#x3D;&#x3D; 2 : .L6</span><br><span class="line"># x+2 &#x3D;&#x3D; 3 : .L7</span><br><span class="line"># x+2 &#x3D;&#x3D; 4 : .L2</span><br><span class="line"># x+2 &#x3D;&#x3D; 5 : .L7</span><br><span class="line"># x+2 &#x3D;&#x3D; 6 : .L8</span><br><span class="line"># x+2 &#x3D;&#x3D; 7 : .L2</span><br><span class="line"># x+2 &#x3D;&#x3D; 8 : .L5</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">switch2</span><span class="params">(<span class="keyword">short</span> x, <span class="keyword">short</span> *dest)</span> </span>&#123;</span><br><span class="line"><span class="keyword">short</span> val = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">switch</span> (x) &#123; </span><br><span class="line">    <span class="keyword">case</span> <span class="number">-2</span>:&#123;</span><br><span class="line">        ....</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">6</span> :</span><br><span class="line">    <span class="keyword">case</span> <span class="number">-1</span>:&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">0</span>:&#123;</span><br><span class="line">        ....</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">    <span class="keyword">case</span> <span class="number">1</span>:&#123;</span><br><span class="line">        ....</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">4</span>:&#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">default</span>:&#123;</span><br><span class="line">        ....</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">	*dest = val;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//case 6 and -1</span></span><br><span class="line"><span class="comment">//case 3 and 1</span></span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-3-31"><a href="#Practice-Problem-3-31" class="headerlink" title="Practice Problem 3.31"></a>Practice Problem 3.31</h4><blockquote>
+<p>For a C function switcher with the general structure</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">switcher</span><span class="params">(<span class="keyword">long</span> a, <span class="keyword">long</span> b, <span class="keyword">long</span> c, <span class="keyword">long</span> *dest)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">long</span> val;</span><br><span class="line"><span class="keyword">switch</span>(a) &#123;</span><br><span class="line"><span class="keyword">case</span> : <span class="comment">/* Case A */</span></span><br><span class="line">	c = ;</span><br><span class="line">	<span class="comment">/* Fall through */</span></span><br><span class="line"><span class="keyword">case</span> : <span class="comment">/* Case B */</span></span><br><span class="line">	val = ;</span><br><span class="line">	<span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">case</span> : <span class="comment">/* Case C */</span></span><br><span class="line"><span class="keyword">case</span> : <span class="comment">/* Case D */</span></span><br><span class="line">	val = ;</span><br><span class="line">	<span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">case</span> : <span class="comment">/* Case E */</span></span><br><span class="line">	val = ;</span><br><span class="line">	<span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">	val = ;</span><br><span class="line">&#125;</span><br><span class="line">*dest = val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>gcc generates the assembly code and jump table shown below. Fill in the missing parts of the C code. Except for the ordering of case labels C and D, there is only one way to fit the different cases into the template.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">switcher:</span><br><span class="line">	cmpq	$7, %rdi</span><br><span class="line">	ja	.L2</span><br><span class="line">	leaq	.L4(%rip), %r8</span><br><span class="line">	movslq	(%r8,%rdi,4), %rax</span><br><span class="line">	addq	%r8, %rax</span><br><span class="line">	jmp	*%rax</span><br><span class="line">	.section	.rodata</span><br><span class="line">	.align 4</span><br><span class="line">	.align 4</span><br><span class="line">.L4:</span><br><span class="line">	.long	.L3-.L4</span><br><span class="line">	.long	.L2-.L4</span><br><span class="line">	.long	.L5-.L4</span><br><span class="line">	.long	.L2-.L4</span><br><span class="line">	.long	.L6-.L4</span><br><span class="line">	.long	.L7-.L4</span><br><span class="line">	.long	.L2-.L4</span><br><span class="line">	.long	.L5-.L4</span><br><span class="line">	.text</span><br><span class="line">.L6:</span><br><span class="line">	movq	%rdi, %rsi</span><br><span class="line">	jmp	.L2</span><br><span class="line">.L7:</span><br><span class="line">	movq	%rsi, %rdx</span><br><span class="line">	xorq	$15, %rdx</span><br><span class="line">.L3:</span><br><span class="line">	leaq	112(%rdx), %rsi</span><br><span class="line">.L2:</span><br><span class="line">	movq	%rsi, (%rcx)</span><br><span class="line">	ret</span><br><span class="line">.L5:</span><br><span class="line">	addq	%rdx, %rsi</span><br><span class="line">	salq	$2, %rsi</span><br><span class="line">	jmp	.L2</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark-15"><a href="#My-solution-white-check-mark-15" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cmpq	$7, %rdi		# if ( (unsigned long)a &gt; 7 ) default </span><br><span class="line">ja	.L2</span><br><span class="line">leaq	.L4(%rip), %r8	# %r8 &#x3D; .L4 + %rip</span><br><span class="line">movslq	(%r8,%rdi,4), %rax	# %rax &#x3D; .L4 + %rip + 4*a</span><br><span class="line">addq	%r8, %rax	# %rax &#x3D; (.L4 + %rip)*2 + 4*a </span><br><span class="line">jmp	*%rax</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">switcher</span><span class="params">(<span class="keyword">long</span> a, <span class="keyword">long</span> b, <span class="keyword">long</span> c, <span class="keyword">long</span> *dest)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">long</span> val;</span><br><span class="line"><span class="keyword">switch</span>(a) &#123;</span><br><span class="line"><span class="keyword">case</span> <span class="number">5</span>: <span class="comment">/* Case A */</span></span><br><span class="line">	c = b ^ <span class="number">15</span>;</span><br><span class="line">	<span class="comment">/* Fall through */</span></span><br><span class="line"><span class="keyword">case</span> <span class="number">0</span>: <span class="comment">/* Case B */</span></span><br><span class="line">	val = <span class="number">112</span> + c;</span><br><span class="line">	<span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">case</span> <span class="number">2</span>: <span class="comment">/* Case C */</span></span><br><span class="line"><span class="keyword">case</span> <span class="number">7</span>: <span class="comment">/* Case D */</span></span><br><span class="line">	val = (b+c) &lt;&lt; <span class="number">2</span>;</span><br><span class="line">	<span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">case</span> <span class="number">4</span>: <span class="comment">/* Case E */</span></span><br><span class="line">	val = a;</span><br><span class="line">	<span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">default</span>:</span><br><span class="line">	val = b;</span><br><span class="line">&#125;</span><br><span class="line">*dest = val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Verification-1"><a href="#Verification-1" class="headerlink" title="Verification:"></a>Verification:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ diff -s my.s test.s</span><br><span class="line">1c1</span><br><span class="line">&lt; 	.file	<span class="string">&quot;my.c&quot;</span></span><br><span class="line">---</span><br><span class="line">&gt; 	.file	<span class="string">&quot;test.c&quot;</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="Recapitulation"><a href="#Recapitulation" class="headerlink" title="Recapitulation"></a>Recapitulation</h2><ul>
+<li><p>For the <strong>logical operations</strong>, such as <code>xor</code>, the <code>CF</code> and <code>OF</code> are set to zero</p>
+</li>
+<li><p><code>lea</code> do NOT change the conditional flags</p>
+</li>
+<li><p><code>set</code> instruction only change 8 bits(can only have 8 bits operand), setting it either <code>0x00</code> or <code>0x01</code></p>
+<p>often used like this</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">setl %al # other bits in %rax remain unchanged</span><br><span class="line">movzbl %al, %eax</span><br></pre></td></tr></table></figure></li>
+<li><p>When result of computation is 32 bits, the high order 32 bits of a register are set to 0.</p>
+</li>
+<li><p><code>for</code> loop is equivalent to <code>while</code> loop, you can make conversion between them</p>
+<ul>
+<li>in <code>for</code> loop, the first test of condition almost always holds, so in <code>O1</code> optimization, the compiler will figure this out and throw away the “guard part” of a “guarded-do” implementation</li>
+<li><code>continue</code> in <code>for</code> loop will NOT ignore the update-expression</li>
+</ul>
+</li>
+<li><p>Case code in <code>switch</code> do NOT need curly brackets to specify the region</p>
+<p>However, the value to be switched must be <strong>numerical</strong> value.</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/07/30/CSAPP/Ch3PartII/" data-id="ckryqh9jz0000gxyqfpo7bjsp" data-title="Ch3PartII" class="article-share-link">Compartir</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/07/28/CSAPP/Ch3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Viejo</strong>
+      <div class="article-nav-title">Ch3</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categorías</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nube de Tags</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archivos</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Posts recientes</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/07/30/CSAPP/Ch3PartII/">Ch3PartII</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/28/CSAPP/Ch3/">Ch3</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/26/CSAPP/datalab/">datalab</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/25/CSAPP/floatingpoint/">floatingpoint</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/24/CSAPP/Ch2PartIII/">Ch2PartIII</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Construido por <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
