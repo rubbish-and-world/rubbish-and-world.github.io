@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Ch3PartIII | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  3.7 ProceduresProcedures are a key abstraction in software. They provide a way to package code that implements som">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ch3PartIII">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/08/05/CSAPP/Ch3PartIII/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  3.7 ProceduresProcedures are a key abstraction in software. They provide a way to package code that implements som">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/05/CSAPP/Ch3PartIII/stack.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/05/CSAPP/Ch3PartIII/callret.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/05/CSAPP/Ch3PartIII/arguments.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/05/CSAPP/Ch3PartIII/stackframe.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/05/CSAPP/Ch3PartIII/localinstack.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/05/CSAPP/Ch3PartIII/passargu.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/05/CSAPP/Ch3PartIII/localinregister.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/05/CSAPP/Ch3PartIII/recursion.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/05/CSAPP/Ch3PartIII/ptrarith.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/05/CSAPP/Ch3PartIII/rowmajor.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/05/CSAPP/Ch3PartIII/optimization.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/05/CSAPP/Ch3PartIII/struct.png">
+<meta property="article:published_time" content="2021-08-05T12:09:50.000Z">
+<meta property="article:modified_time" content="2021-08-09T08:26:30.430Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/08/05/CSAPP/Ch3PartIII/stack.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSAPP/Ch3PartIII" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/08/05/CSAPP/Ch3PartIII/" class="article-date">
+  <time class="dt-published" datetime="2021-08-05T12:09:50.000Z" itemprop="datePublished">2021-08-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/csapp/">csapp</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Ch3PartIII
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+<h2 id="3-7-Procedures"><a href="#3-7-Procedures" class="headerlink" title="3.7 Procedures"></a>3.7 Procedures</h2><p><em>Procedures are a key abstraction in software. They provide a way to package code that implements some functionality with a designated set of arguments and an optional return value.</em></p>
+<a id="more"></a>
+
+<p>Procedures come in many guises in different programming languages—functions, methods, subroutines, handlers, and so on—but they all share a general set of features</p>
+<p>suppose procedure P calls procedure Q, and Q then executes and returns back to P. These actions involve one or more of the following mechanisms:</p>
+<ul>
+<li><strong>Passing control</strong>. The program counter must be set to the starting address of the code for Q upon entry and then set to the instruction in P following the call to Q upon return.</li>
+<li><strong>Passing data</strong>. P must be able to provide one or more parameters to Q, and Q must be able to return a value back to P.</li>
+<li><strong>Allocating and deallocating memory</strong>. Q may need to allocate space for local variables when it begins and then free that storage before it returns.</li>
+</ul>
+<h3 id="3-7-1-The-Run-Time-Stack"><a href="#3-7-1-The-Run-Time-Stack" class="headerlink" title="3.7.1 The Run-Time Stack"></a>3.7.1 The Run-Time Stack</h3><p><em>A key feature of the procedure-calling mechanism of C, and of most other languages, is that it can make use of the last-in, first-out memory management discipline provided by a <strong>stack data structure</strong></em></p>
+<p>As P calls Q, control and data information are added to the end of the stack. This information gets deallocated when P returns.</p>
+<p>When an x86-64 procedure requires storage beyond what it can hold in registers, it allocates space on the stack. This region is referred to as the procedure’s <strong>stack frame</strong></p>
+<p><img src="/2021/08/05/CSAPP/Ch3PartIII/stack.png" alt="stack digram"></p>
+<ul>
+<li><p>The frame for the currently executing procedure is always at the top of the stack.</p>
+</li>
+<li><p>When procedure P calls procedure Q, it will <strong>push the return address</strong> onto the stack, indicating where within P the program should resume execution once Q returns. We consider the return address to be part of P’s stack frame, since it holds state relevant to P.</p>
+</li>
+<li><p>The stack frames for most procedures are of fixed size, allocated at the beginning of the procedure. Some procedures, however, require variable-size frames. This issue is discussed in Section 3.10.5.</p>
+</li>
+<li><p>many procedures have six or fewer arguments, and so all of their parameters can be passed in registers. Thus the “argument build area” can be omitted.</p>
+<p>If more than 6 arguments are required, they can be stored by calling procedure within its stack frame prior to the call.</p>
+</li>
+<li><p>many functions do not even require a stack frame. This occurs when all of the local variables can be held in registers and the function does not call any other functions (sometimes referred to as a leaf procedure, in reference to the tree structure of procedure calls).</p>
+</li>
+</ul>
+<h3 id="3-7-2-Control-Transfer"><a href="#3-7-2-Control-Transfer" class="headerlink" title="3.7.2 Control Transfer"></a>3.7.2 Control Transfer</h3><p><em>Passing control from function P to function Q involves simply setting the program counter (PC) to the starting address of the code for Q</em></p>
+<p> However, when it later comes time for Q to return, the processor must have some record of the code location where it should resume the execution of P.</p>
+<p><code>call</code> instruction pushes an address A onto the stack and sets the PC to the beginning of Q. The pushed address A is referred to as the return address and is computed as the address of the instruction immediately following the <code>call</code> instruction.</p>
+<p>The counterpart instruction <code>ret</code> pops an address A off the stack and sets the PC to A</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">call Lable		# direct procedure call</span><br><span class="line">call *Operand	# indirect procedure call</span><br><span class="line">ret				# return from call</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/08/05/CSAPP/Ch3PartIII/callret.png" alt="call and ret"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#Beginning of function multstore</span><br><span class="line"> 0000000000400540 &lt;multstore&gt;: </span><br><span class="line"> 400540: 53 		push %rbx </span><br><span class="line"> 400541: 48 89 d3 	mov %rdx,%rbx </span><br><span class="line">...</span><br><span class="line">#Return from function multstore</span><br><span class="line"> 40054d: c3 		retq </span><br><span class="line">...</span><br><span class="line">#Call to multstore from main </span><br><span class="line"> 400563: e8 d8 ff ff ff 	callq 400540 &lt;multstore&gt; </span><br><span class="line"> 400568: 48 8b 54 24 08 	mov 0x8(%rsp),%rdx</span><br></pre></td></tr></table></figure>
+<ul>
+<li>The effect of the <code>call</code> is<ul>
+<li>push the return address 0x400568 onto the stack </li>
+<li>jump to the first instruction in function multstore, at address 0x0400540</li>
+</ul>
+</li>
+<li>The effect of the <code>ret</code> is <ul>
+<li>pops the value 0x400568 from the stack and jumps to this address, resuming the execution of main just after the call instruction </li>
+</ul>
+</li>
+</ul>
+<h4 id="Practice-Problem-3-32"><a href="#Practice-Problem-3-32" class="headerlink" title="Practice Problem 3.32"></a>Practice Problem 3.32</h4><blockquote>
+<p>The disassembled code for two functions <code>first</code> and <code>last</code> is shown below, along with the code for a call of first by function <code>main</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># Disassembly of last(long u, long v)</span><br><span class="line"># u in %rdi, v in %rsi</span><br><span class="line"> 0000000000400540 &lt;last&gt;: </span><br><span class="line"> 400540: 48 89 f8 		mov %rdi,%rax 		#L1: u </span><br><span class="line"> 400543: 48 0f af c6 	imul %rsi,%rax 		#L2: u*v </span><br><span class="line"> 400547: c3 			retq 				#L3: Return </span><br><span class="line"># Disassembly of last(long x)</span><br><span class="line"># x in %rdi</span><br><span class="line">  0000000000400548 &lt;first&gt;: </span><br><span class="line"> 400548: 48 8d 77 01 	lea 0x1(%rdi),%rsi 	#F1: x+1 </span><br><span class="line"> 40054c: 48 83 ef 01 	sub $0x1,%rdi 		#F2: x-1 </span><br><span class="line"> 400550: e8 eb ff ff ff callq 400540 &lt;last&gt; #F3: Call last(x-1,x+1) </span><br><span class="line"> 400555: f3 c3 			repz retq 			#F4: Return </span><br><span class="line">....</span><br><span class="line">&lt;main&gt;:</span><br><span class="line"> 400560: e8 e3 ff ff ff callq 400548 &lt;first&gt;#M1: Call first(10)   </span><br><span class="line"> 400565: 48 89 c2 		mov %rax,%rdx 		#M2: Resume  </span><br></pre></td></tr></table></figure>
+
+<p>Each of these instructions is given a label. Starting with the calling of <code>first(10) </code>by <code>main</code>, fill in the following table to trace instruction execution through to the point where the program returns back to <code>main</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Label</th>
+<th>PC</th>
+<th>Instruction</th>
+<th><code>%rdi</code></th>
+<th><code>%rsi</code></th>
+<th><code>%rax</code></th>
+<th><code>%rsp</code></th>
+<th><code>*%rsp</code></th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>M1</td>
+<td>0x400560</td>
+<td><code> callq</code></td>
+<td>10</td>
+<td>X</td>
+<td>X</td>
+<td>0x7fffffffe820</td>
+<td>X</td>
+<td>Call <code>first(10)</code></td>
+</tr>
+<tr>
+<td>F1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>F2</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>F3</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>L1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>L2</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>L3</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>F4</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>M2</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark"><a href="#My-solution-white-check-mark" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><table>
+<thead>
+<tr>
+<th>Label</th>
+<th>PC</th>
+<th>Instruction</th>
+<th><code>%rdi</code></th>
+<th><code>%rsi</code></th>
+<th><code>%rax</code></th>
+<th><code>%rsp</code></th>
+<th><code>*%rsp</code></th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>M1</td>
+<td>0x400560</td>
+<td><code> callq</code></td>
+<td>10</td>
+<td>X</td>
+<td>X</td>
+<td>0x7fffffffe820</td>
+<td>X</td>
+<td>Call <code>first(10)</code></td>
+</tr>
+<tr>
+<td>F1</td>
+<td>0x400548</td>
+<td><code>lea</code></td>
+<td>10</td>
+<td>X</td>
+<td>X</td>
+<td>0x7fffffffe818</td>
+<td>0x400565</td>
+<td>x + 1</td>
+</tr>
+<tr>
+<td>F2</td>
+<td>0x40054c</td>
+<td><code>sub</code></td>
+<td>10</td>
+<td>11</td>
+<td>X</td>
+<td>0x7fffffffe818</td>
+<td>0x400565</td>
+<td>x - 1</td>
+</tr>
+<tr>
+<td>F3</td>
+<td>0x400550</td>
+<td><code>callq</code></td>
+<td>9</td>
+<td>11</td>
+<td>X</td>
+<td>0x7fffffffe818</td>
+<td>0x400565</td>
+<td>Call <code>last(x-1,x+1) </code></td>
+</tr>
+<tr>
+<td>L1</td>
+<td>0x400540</td>
+<td><code>mov</code></td>
+<td>9</td>
+<td>11</td>
+<td>X</td>
+<td>0x7fffffffe810</td>
+<td>0x400555</td>
+<td>u</td>
+</tr>
+<tr>
+<td>L2</td>
+<td>0x400543</td>
+<td><code>imul</code></td>
+<td>9</td>
+<td>11</td>
+<td>9</td>
+<td>0x7fffffffe810</td>
+<td>0x400555</td>
+<td><code>u*v</code></td>
+</tr>
+<tr>
+<td>L3</td>
+<td>0x400547</td>
+<td><code>retq</code></td>
+<td>9</td>
+<td>11</td>
+<td>99</td>
+<td>0x7fffffffe810</td>
+<td>0x400555</td>
+<td>Return</td>
+</tr>
+<tr>
+<td>F4</td>
+<td>0x400555</td>
+<td><code>repz retq</code></td>
+<td>9</td>
+<td>11</td>
+<td>99</td>
+<td>0x7fffffffe818</td>
+<td>0x400565</td>
+<td>Return</td>
+</tr>
+<tr>
+<td>M2</td>
+<td>0x400565</td>
+<td><code>mov</code></td>
+<td>9</td>
+<td>11</td>
+<td>99</td>
+<td>0x7fffffffe820</td>
+<td>X</td>
+<td>Resume</td>
+</tr>
+</tbody></table>
+<h3 id="3-7-3-Data-Transfer"><a href="#3-7-3-Data-Transfer" class="headerlink" title="3.7.3 Data Transfer"></a>3.7.3 Data Transfer</h3><p><em>procedure calls may involve passing data as arguments, and returning from a procedure may also involve returning a value</em></p>
+<ul>
+<li><p>With x86-64, most of these data passing to and from procedures take place <strong>via registers.</strong>  </p>
+</li>
+<li><p>With x86-64, up to <em>six</em> <strong>integral (i.e., integer and pointer) arguments</strong> can be passed via registers.</p>
+<p>They are used in a specified order.</p>
+<p><img src="/2021/08/05/CSAPP/Ch3PartIII/arguments.png" alt="arguments registers"></p>
+</li>
+<li><p>When a function has more than six integral arguments, the other ones are passed on the stack.</p>
+<ul>
+<li><p>The order of arguments are reversed, as shown in figure 3.25</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> a1 , <span class="keyword">int</span> a2 , <span class="keyword">int</span> a3 , <span class="keyword">int</span> a4 , <span class="keyword">int</span> a5 , <span class="keyword">int</span> a6 , <span class="keyword">int</span> a7 , <span class="keyword">int</span> a8 , <span class="keyword">int</span> a9 )</span></span>;</span><br><span class="line"><span class="comment">//When calling fun</span></span><br><span class="line">rdi = a1;</span><br><span class="line">rsi = a2;</span><br><span class="line">rdx = a3;</span><br><span class="line">rcx = a4;</span><br><span class="line">r8 = a5;</span><br><span class="line">r9 = a6;</span><br><span class="line">|-------<span class="built_in">stack</span>-------|</span><br><span class="line">|      ......       |</span><br><span class="line">|_________a9________|</span><br><span class="line">|_________a8________|</span><br><span class="line">|_________a7________|</span><br><span class="line">|_____resume addr___|</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>When passing parameters on the stack, all data sizes are rounded up to be multiples of eight.</p>
+</li>
+<li><p>Example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">proc</span><span class="params">(<span class="keyword">long</span> a1, <span class="keyword">long</span> *a1p,<span class="keyword">int</span> a2, <span class="keyword">int</span> *a2p,</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">short</span> a3, <span class="keyword">short</span> *a3p,<span class="keyword">char</span> a4, <span class="keyword">char</span> *a4p)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">*a1p += a1;</span><br><span class="line">*a2p += a2;</span><br><span class="line">*a3p += a3;</span><br><span class="line">*a4p += a4;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line">Arguments passed as follows:</span><br><span class="line">a1 in %rdi (64 bits)</span><br><span class="line">a1p in %rsi (64 bits)</span><br><span class="line">a2 in %edx (32 bits)</span><br><span class="line">a2p in %rcx (64 bits)</span><br><span class="line">a3 in %r8w (16 bits)</span><br><span class="line">a3p in %r9 (64 bits)</span><br><span class="line">a4 at %rsp+8 ( 8 bits)</span><br><span class="line">a4p at %rsp+16 (64 bits)</span><br><span class="line">*&#x2F;</span><br><span class="line">proc:</span><br><span class="line">	movq	16(%rsp), %rax</span><br><span class="line">	addq	%rdi, (%rsi)</span><br><span class="line">	addl	%edx, (%rcx)</span><br><span class="line">	addw	%r8w, (%r9)</span><br><span class="line">	movl	8(%rsp), %edx</span><br><span class="line">	addb	%dl, (%rax)</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/08/05/CSAPP/Ch3PartIII/stackframe.png" alt="stack frame"></p>
+</li>
+</ul>
+<h4 id="Practice-Problem-3-33"><a href="#Practice-Problem-3-33" class="headerlink" title="Practice Problem 3.33"></a>Practice Problem 3.33</h4><blockquote>
+<p>A C function <code>procprob</code> has four arguments <code>u, a, v</code>, and <code>b</code>. Each is either a signed number or a pointer to a signed number, where the numbers have different sizes. The function has the following body</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">*u += a;</span><br><span class="line">*v += b;</span><br><span class="line"><span class="keyword">return</span> <span class="keyword">sizeof</span>(a) + <span class="keyword">sizeof</span>(b);</span><br></pre></td></tr></table></figure>
+
+<p>It compiles to the following x86-64 code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">procprob:</span><br><span class="line">	movslq %edi, %rdi</span><br><span class="line">	addq %rdi, (%rdx)</span><br><span class="line">	addb %sil, (%rcx)</span><br><span class="line">	movl $6, %eax</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+
+<p>Determine a valid ordering and types of the four parameters. There are two correct answers</p>
+</blockquote>
+<h4 id="My-solution-x"><a href="#My-solution-x" class="headerlink" title="My solution : :x:"></a>My solution : :x:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">procprob:</span><br><span class="line">	movslq %edi, %rdi </span><br><span class="line">	addq %rdi, (%rdx)	# *p +&#x3D; ..	%rdi is a or b</span><br><span class="line">	addb %sil, (%rcx)	# *p +&#x3D; ..	%rsi is a or b</span><br><span class="line">	movl $6, %eax		# sizeof(a) + sizeof(b) &#x3D; 6</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<p><span style="color:red"><code>addb %sil,(%rcx)</code> just use <code>%rsi</code>‘s lower-order byte, so type of the second argument is unknown!</span></p>
+<h4 id="Solution-on-the-book"><a href="#Solution-on-the-book" class="headerlink" title="Solution on the book:"></a>Solution on the book:</h4><p>Let us first describe one answer and then explain the second possibility. If we assume the first addition (line 3) implements *u += a, while the second (line 4) implements *v += b, then we can see that a was passed as the first argument in %edi and converted from 4 bytes to 8 before adding it to the 8 bytes pointed to by %rdx. This implies that a must be of type int and u must be of type long *. We can also see that the low-order byte of argument b is added to the byte pointed to by %rcx. This implies that v must be of type char *, but the type of b is ambiguous—it could be 1, 2, 4, or 8 bytes long. This ambiguity is resolved by noting the return value of 6, computed as the sum of the sizes of a and b. Since we know a is 4 bytes long, we can deduce that b must be 2.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">procprobl</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">short</span> b, <span class="keyword">long</span> *u, <span class="keyword">char</span> *v)</span></span></span><br></pre></td></tr></table></figure>
+<p>Alternatively, we can see that the same assembly code would be valid if the two sums were computed in the assembly code in the opposite ordering as they are in the C code. This would result in interchanging arguments a and b and arguments u and v, yielding the following prototype:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">procprob</span><span class="params">(<span class="keyword">int</span> b, <span class="keyword">short</span> a, <span class="keyword">long</span> *v, <span class="keyword">char</span> *u)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="3-7-4-Local-Storage-on-the-Stack"><a href="#3-7-4-Local-Storage-on-the-Stack" class="headerlink" title="3.7.4 Local Storage on the Stack"></a>3.7.4 Local Storage on the Stack</h3><p><em>Typically, a procedure <strong>allocates space on the stack frame by decrementing the stack pointer</strong>. This results in the portion of the stack frame labeled “Local variables” in Figure 3.25.</em></p>
+<p><img src="/2021/08/05/CSAPP/Ch3PartIII/localinstack.png" alt="example"></p>
+<p><img src="/2021/08/05/CSAPP/Ch3PartIII/passargu.png" alt="Example2"></p>
+<p>As shown in Figure 3.30, arguments 7 and 8 are now at offsets 8 and 16 relative to the stack pointer, because the return address was pushed onto the stack.</p>
+<h3 id="3-7-5-Local-Storage-in-Registers"><a href="#3-7-5-Local-Storage-in-Registers" class="headerlink" title="3.7.5 Local Storage in Registers"></a>3.7.5 Local Storage in Registers</h3><p><em>Although only one procedure can be active at a given time, we must make sure that when one procedure (the caller) calls another (the callee), the callee does not overwrite some register value that the caller planned to use later.</em></p>
+<ul>
+<li><p>By convention, registers <code>%rbx, %rbp</code>, and <code>%r12–%r15</code> are classified as <strong>callee-saved registers</strong>. When procedure P calls procedure Q, Q must <strong>preserve</strong> the values of these registers, ensuring that they have the same values when Q returns to P as they did when Q was called. </p>
+<ul>
+<li><p>Procedure Q can preserve a register value by either <u>not changing it at all</u> or by <u>pushing the original value on the stack, altering it, and then popping the old value from the stack before returning</u></p>
+</li>
+<li><p>(The pushing of register values has the effect of creating the portion of the stack frame labeled “Saved registers” in Figure 3.25)(They are in Q’s frame, it is Q’s responsibility to save them!)</p>
+</li>
+</ul>
+</li>
+<li><p>All other registers, except for the stack pointer <code>%rsp</code>, are classified as <strong>caller-saved</strong> registers. This means that <strong>they can be modified by any function</strong></p>
+<ul>
+<li>Q can use these register freely</li>
+<li>It is incumbent upon P (the caller) to first save the data(move data from caller-saved to callee-saved ) before it makes the call.</li>
+</ul>
+</li>
+</ul>
+<p>As an example, consider the function <code>P</code> shown in Figure 3.34(a). It calls <code>Q </code>twice. During the first call, it must retain the value of <code>x</code> for use later. Similarly, during the second call, it must retain the value computed for <code>Q(y)</code>.</p>
+<p><img src="/2021/08/05/CSAPP/Ch3PartIII/localinregister.png" alt="Example"></p>
+<ul>
+<li> Note how they are popped in the reverse order from how they were pushed, to account for the last-in, first-out discipline of a stack.</li>
+<li>what the purpose of <code>subq $8,%rsp</code> and <code>addq    $8, %rsp</code> without using <code>%rsp</code> at all ? <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1061818/stack-allocation-padding-and-alignment">answer</a><ul>
+<li>In order to align stack frame to $2^4=16$​, 4 is gcc’s default value, this can be specified by  <code>-mpreferred-stack-boundary=n</code></li>
+<li>In this example, 8 bytes already for P’s return address, so P should allocate $16 -8 = 8$ bytes more.</li>
+</ul>
+</li>
+</ul>
+<h4 id="Practice-Problem-3-34"><a href="#Practice-Problem-3-34" class="headerlink" title="Practice Problem 3.34"></a>Practice Problem 3.34</h4><blockquote>
+<p>Consider a function P, which generates local values, named <code>a0–a8</code>. It then calls function Q using these generated values as arguments. Gcc produces the following code for the first part of P:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># long P(long x)</span><br><span class="line"># x in %rdi</span><br><span class="line">P:  </span><br><span class="line">    pushq %r15</span><br><span class="line">    pushq %r14</span><br><span class="line">    pushq %r13</span><br><span class="line">    pushq %r12</span><br><span class="line">    pushq %rbp</span><br><span class="line">    pushq %rbx</span><br><span class="line">    subq $24, %rsp</span><br><span class="line">    movq %rdi, %rbx</span><br><span class="line">    leaq 1(%rdi), %r15 </span><br><span class="line">    leaq 2(%rdi), %r14 </span><br><span class="line">    leaq 3(%rdi), %r13 </span><br><span class="line">    leaq 4(%rdi), %r12 </span><br><span class="line">    leaq 5(%rdi), %rbp </span><br><span class="line">    leaq 6(%rdi), %rax </span><br><span class="line">    movq %rax, (%rsp) </span><br><span class="line">    leaq 7(%rdi), %rdx </span><br><span class="line">    movq %rdx, 8(%rsp) </span><br><span class="line">    movl $0, %eax </span><br><span class="line">    call Q </span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>A. Identify which local values get stored in callee-saved registers. </p>
+<p>B. Identify which local values get stored on the stack. </p>
+<p>C. Explain why the program could not store all of the local values in callee-saved registers.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-1"><a href="#My-solution-white-check-mark-1" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">  	subq $24, %rsp			# 16 bytes for save local value, 8 bytes for alignment to 2^4</span><br><span class="line">    movq %rdi, %rbx			# save first argument,x, in %rbx</span><br><span class="line">    leaq 1(%rdi), %r15 		# save x+1 in %r15</span><br><span class="line">    leaq 2(%rdi), %r14  	# save x+2 in %r14</span><br><span class="line">    leaq 3(%rdi), %r13  	# save x+3 in %r13</span><br><span class="line">    leaq 4(%rdi), %r12  	# save x+4 in %r12</span><br><span class="line">    leaq 5(%rdi), %rbp  	# save x+5 in %rbp</span><br><span class="line">    leaq 6(%rdi), %rax  	# save x+6 in stack, (%rsp)</span><br><span class="line">    movq %rax, (%rsp)</span><br><span class="line">    leaq 7(%rdi), %rdx		# save x+7 in stack, 8(%rsp) </span><br><span class="line">    movq %rdx, 8(%rsp)</span><br><span class="line">    movl $0, %eax </span><br><span class="line">    call Q </span><br><span class="line"># only finite callee-saved registers can be used. </span><br></pre></td></tr></table></figure>
+<h3 id="3-7-6-Recursive-Procedures"><a href="#3-7-6-Recursive-Procedures" class="headerlink" title="3.7.6 Recursive Procedures"></a>3.7.6 Recursive Procedures</h3><p><em>The conventions we have described for using the registers and the stack allow x86-64 procedures to call themselves recursively</em></p>
+<p>This method of implementing function calls and returns even works for more complex patterns, including mutual recursion (e.g., when procedure P calls Q, which in turn calls P).</p>
+<p><img src="/2021/08/05/CSAPP/Ch3PartIII/recursion.png" alt="recursion example"></p>
+<h4 id="Practice-Problem-3-35"><a href="#Practice-Problem-3-35" class="headerlink" title="Practice Problem 3.35"></a>Practice Problem 3.35</h4><blockquote>
+<p>For a C function having the general structure</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">rfun</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">long</span> x)</span> </span>&#123;</span><br><span class="line"><span class="keyword">if</span> ( _____ )</span><br><span class="line"><span class="keyword">return</span> _______;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> nx = __________;</span><br><span class="line"><span class="keyword">long</span> rv = rfun(nx);</span><br><span class="line"><span class="keyword">return</span> __________;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>gcc generates the following assembly code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">rfun:</span><br><span class="line">	testq	%rdi, %rdi</span><br><span class="line">	jne	.L8</span><br><span class="line">	movl	$0, %eax</span><br><span class="line">	ret</span><br><span class="line">.L8:</span><br><span class="line">	pushq	%rbx</span><br><span class="line">	movq	%rdi, %rbx</span><br><span class="line">	shrq	$2, %rdi</span><br><span class="line">	call	rfun</span><br><span class="line">	addq	%rbx, %rax</span><br><span class="line">	popq	%rbx</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+
+<p>A. What value does <code>rfun</code> store in the callee-saved register <code>%rbx</code>? </p>
+<p>B. Fill in the missing expressions in the C code shown above.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-2"><a href="#My-solution-white-check-mark-2" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># long rfun(unsigned long x) </span><br><span class="line">rfun:</span><br><span class="line">	testq	%rdi, %rdi	# if (x &#x3D;&#x3D; 0) return 0;</span><br><span class="line">	jne	.L8</span><br><span class="line">	movl	$0, %eax</span><br><span class="line">	ret</span><br><span class="line">.L8:</span><br><span class="line">	pushq	%rbx		</span><br><span class="line">	movq	%rdi, %rbx	# save x in %rbx</span><br><span class="line">	shrq	$2, %rdi	# x &gt;&gt;&#x3D; 2;</span><br><span class="line">	call	rfun		# rfun(x);</span><br><span class="line">	addq	%rbx, %rax	# return rfun(x) + %rbx</span><br><span class="line">	popq	%rbx</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">rfun</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">long</span> x)</span> </span>&#123;</span><br><span class="line"><span class="keyword">if</span> ( x== <span class="number">0</span> )</span><br><span class="line"><span class="keyword">return</span> x;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> nx = x &gt;&gt; <span class="number">2</span>;</span><br><span class="line"><span class="keyword">long</span> rv = rfun(nx);</span><br><span class="line"><span class="keyword">return</span> rv + x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3-8-Array-Allocation-and-Access"><a href="#3-8-Array-Allocation-and-Access" class="headerlink" title="3.8 Array Allocation and Access"></a>3.8 Array Allocation and Access</h2><p><em>Arrays in C are one means of aggregating scalar data into larger data types. C uses a particularly simple implementation of arrays, and hence the translation into machine code is fairly straightforward</em></p>
+<h3 id="3-8-1-Basic-Principles"><a href="#3-8-1-Basic-Principles" class="headerlink" title="3.8.1 Basic Principles"></a>3.8.1 Basic Principles</h3><p>For data type <code>T</code> and integer constant <code>N</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T A [N];</span><br></pre></td></tr></table></figure>
+<p>The declaration has two effects.</p>
+<ul>
+<li><p>it allocates a contiguous region of $L \times N$ bytes in memory, where L is the size (in bytes) of data type T.</p>
+</li>
+<li><p>It introduces an identifier <code>A</code> that can be used as a pointer to the beginning of the array.</p>
+<p>Array element i will be stored at address  $A + L \times i$</p>
+</li>
+</ul>
+<p>The memory referencing instructions of x86-64 are designed to simplify array access.</p>
+<p> For example, suppose <code>E</code> is an array of values of type <code>int</code> and we wish to evaluate <code>E[i]</code>, where the address of E is stored in register <code>%rdx</code> and i is stored in register <code>%rcx</code>. Then the instruction</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">movl (%rdx,%rcx,4),%eax</span><br></pre></td></tr></table></figure>
+<p>will perform the address computation <code>E + 4*i</code>, read that memory location, and copy the result to register <code>%eax</code>. The allowed scaling factors of 1, 2, 4, and 8 cover the sizes of the common primitive data types.</p>
+<h4 id="Practice-Problem-3-36"><a href="#Practice-Problem-3-36" class="headerlink" title="Practice Problem 3.36"></a>Practice Problem 3.36</h4><blockquote>
+<p>Consider the following declarations:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> P[<span class="number">5</span>];</span><br><span class="line"><span class="keyword">short</span> Q[<span class="number">2</span>];</span><br><span class="line"><span class="keyword">int</span> **R[<span class="number">9</span>];</span><br><span class="line"><span class="keyword">double</span> *S[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">short</span> *T[<span class="number">2</span>];</span><br></pre></td></tr></table></figure>
+
+<p>Fill in the following table describing the element size, the total size, and the address of element i for each of these arrays.</p>
+<table>
+<thead>
+<tr>
+<th>Array</th>
+<th>Element size</th>
+<th>Total size</th>
+<th>Start address</th>
+<th>Element i</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Q</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>R</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>S</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>T</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-3"><a href="#My-solution-white-check-mark-3" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><table>
+<thead>
+<tr>
+<th>Array</th>
+<th>Element size</th>
+<th>Total size</th>
+<th>Start address</th>
+<th>Element i</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P</td>
+<td>4</td>
+<td>20</td>
+<td>$x_p$</td>
+<td>$x_p + 4 \times i$</td>
+</tr>
+<tr>
+<td>Q</td>
+<td>2</td>
+<td>4</td>
+<td>$x_q$</td>
+<td>$x_q + 2 \times i$​</td>
+</tr>
+<tr>
+<td>R</td>
+<td>8</td>
+<td>72</td>
+<td>$x_r$</td>
+<td>$x_r + 8 \times i$​</td>
+</tr>
+<tr>
+<td>S</td>
+<td>8</td>
+<td>80</td>
+<td>$x_s$</td>
+<td>$x_s + 8 \times i$​</td>
+</tr>
+<tr>
+<td>T</td>
+<td>8</td>
+<td>16</td>
+<td>$x_t$</td>
+<td>$x_t + 8 \times i$​</td>
+</tr>
+</tbody></table>
+<h3 id="3-8-2-Pointer-Arithmetic"><a href="#3-8-2-Pointer-Arithmetic" class="headerlink" title="3.8.2 Pointer Arithmetic"></a>3.8.2 Pointer Arithmetic</h3><p><em>C allows arithmetic on pointers, where the computed value is <strong>scaled according to the size of the data type referenced by the pointer</strong>.</em></p>
+<p>That is, if <code>p</code> is a pointer to data of type T , and the value of p is $x_p$, then the expression <code>p+i</code> has value $x_p + L \times i$, where L is the size of data type T .</p>
+<p>The array subscripting operation can be applied to both arrays and pointers. The array reference <code>A[i]</code> is identical to the expression <code>*(A+i)</code>.</p>
+<p><img src="/2021/08/05/CSAPP/Ch3PartIII/ptrarith.png" alt="example"></p>
+<ul>
+<li>The final example shows that one can compute the difference of two pointers within the same data structure, with the result being data having type long and value equal to the difference of the two addresses divided by the size of the data type.</li>
+</ul>
+<p>Note that <code>&amp;a</code> will make a pointer with type a.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> int Type</span></span><br><span class="line">Type a ;</span><br><span class="line"><span class="comment">//&amp;a have type of Type*</span></span><br></pre></td></tr></table></figure>
+<p>Example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">int</span> <span class="built_in">array</span> [<span class="number">10</span>] ;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;start address : \t%p\n&quot;</span> , <span class="built_in">array</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;address of array[7] :\t%p\n&quot;</span> , &amp;<span class="built_in">array</span>[<span class="number">7</span>]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;address of array+7 :\t%p\n&quot;</span> , <span class="built_in">array</span>+<span class="number">7</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;address of &amp;array[0] :\t%p\n&quot;</span> , &amp;<span class="built_in">array</span>[<span class="number">0</span>]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;address of &amp;array[0] + 1 :\t%p\n&quot;</span> , &amp;<span class="built_in">array</span>[<span class="number">0</span>] + <span class="number">1</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;address of &amp;array[0] + 7*4 :\t%p\n&quot;</span> , &amp;<span class="built_in">array</span>[<span class="number">0</span>] + <span class="number">7</span> *<span class="number">4</span> );</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;sizeof(&amp;array[0] + 1) == 8 ?  %u\t\n&quot;</span> , <span class="keyword">sizeof</span>(&amp;<span class="built_in">array</span>[<span class="number">0</span>] + <span class="number">7</span>*<span class="number">4</span>) == <span class="number">8</span> );</span><br><span class="line"><span class="comment">/* output</span></span><br><span class="line"><span class="comment">start address : 				0x7ffeefa45ae0</span></span><br><span class="line"><span class="comment">address of array[7] :			0x7ffeefa45afc</span></span><br><span class="line"><span class="comment">address of array+7 :			0x7ffeefa45afc</span></span><br><span class="line"><span class="comment">address of &amp;array[0] :			0x7ffeefa45ae0</span></span><br><span class="line"><span class="comment">address of &amp;array[0] + 1 :		0x7ffeefa45ae4</span></span><br><span class="line"><span class="comment">address of &amp;array[0] + 7*4 :	0x7ffeefa45b50</span></span><br><span class="line"><span class="comment">sizeof(&amp;array[0] + 1) == 8 ?  	1</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-3-37"><a href="#Practice-Problem-3-37" class="headerlink" title="Practice Problem 3.37"></a>Practice Problem 3.37</h4><blockquote>
+<p>Suppose $x_P$​, the address of short integer array P, and long integer index i are stored in registers <code>%rdx</code> and <code>%rcx</code>, respectively. For each of the following expressions, give its type, a formula for its value, and an assembly-code implementation. The result should be stored in register <code>%rax</code> if it is a pointer and register element <code>%ax</code> if it has data type <code>short</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Type</th>
+<th>Value</th>
+<th>Assembly code</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>P[1]</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>P+3+i</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>P[i * 6 - 5]</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>P[2]</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>&amp;P[i + 2]</code></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-4"><a href="#My-solution-white-check-mark-4" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Type</th>
+<th>Value</th>
+<th>Assembly code</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>P[1]</code></td>
+<td><code>short</code></td>
+<td>$M[x_P + 2]$</td>
+<td><code>movw 2(%rdx),%ax</code></td>
+</tr>
+<tr>
+<td><code>P+3+i</code></td>
+<td><code>short*</code></td>
+<td>$x_P + (3+i) \times 2$</td>
+<td><code>leaq 6(%rdx,%rcx,2), %rax</code></td>
+</tr>
+<tr>
+<td><code>P[i * 6 - 5]</code></td>
+<td><code>short</code></td>
+<td>$M[ x_P + (i\times 6 - 5)\times 2]$​</td>
+<td></td>
+</tr>
+<tr>
+<td><code>P[2]</code></td>
+<td><code>short</code></td>
+<td>$M[x_P + 2\times 2]$</td>
+<td><code>movw 4(%rdx),%ax</code></td>
+</tr>
+<tr>
+<td><code>&amp;P[i + 2]</code></td>
+<td><code>short*</code></td>
+<td>$x_P + (i+2) \times 2$</td>
+<td><code>leaq 4(%rdx,%rcx,2),%rax</code></td>
+</tr>
+</tbody></table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># P[i*6 -5]</span><br><span class="line">leaq	(%rcx,%rcx,2), %rcx</span><br><span class="line">leaq	0(,%rcx,4), %rax</span><br><span class="line">movzwl	-10(%rdx,%rax), %eax</span><br></pre></td></tr></table></figure>
+<h3 id="3-8-3-Nested-Arrays"><a href="#3-8-3-Nested-Arrays" class="headerlink" title="3.8.3 Nested Arrays"></a>3.8.3 Nested Arrays</h3><p><em>The general principles of array allocation and referencing hold even when we create arrays of arrays</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> A[<span class="number">5</span>][<span class="number">3</span>];</span><br><span class="line"><span class="comment">//equivalent to</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> <span class="keyword">row3_t</span>[<span class="number">3</span>];</span><br><span class="line"><span class="keyword">row3_t</span> A[<span class="number">5</span>];</span><br><span class="line"><span class="comment">//but this type of alias is a bad idea</span></span><br><span class="line"><span class="comment">//the following one would be better</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">array</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> x [<span class="number">3</span>];</span><br><span class="line">&#125;<span class="keyword">row3_t</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Data type <code>row3_t</code> is defined to be an array of three integers</li>
+<li> Array A contains five such elements, each requiring 12 bytes to store the three integers. The total array size is then $4 \times 5  \times 3 = 60$ bytes.</li>
+</ul>
+<p>The array elements are ordered in memory in <strong>row-major</strong> order, meaning all elements of row 0, which can be written A[0], followed by all elements of row 1 (A[1]), and so on</p>
+<p><img src="/2021/08/05/CSAPP/Ch3PartIII/rowmajor.png" alt="row major storage"></p>
+<p>This ordering is a consequence of our nested declaration. Viewing A as an array of five elements, each of which is an array of three int’s, we first have A[0], followed by A[1], and so on.</p>
+<p>For an array declared as <code>T D[R][C];</code><br>$$<br>&amp;D[i][j] = D + L\times(C \times i + j)<br>$$</p>
+<blockquote>
+<p>Programming languages or their standard libraries that support multi-dimensional arrays typically have a native row-major or column-major storage order for these arrays.</p>
+<p>Row-major order is used in <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/C_(programming_language)">C</a>/<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/C%2B%2B">C++</a>/<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Objective-C">Objective-C</a> (for C-style arrays), <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/PL/I">PL/I</a>,[<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Row-_and_column-major_order#cite_note-4">4]</a> <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Pascal_(programming_language)">Pascal</a>,[<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Row-_and_column-major_order#cite_note-5">5]</a> <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Speakeasy_(computational_environment)">Speakeasy</a>,[*<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Wikipedia:Citation_needed">citation needed</a>*] <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/SAS_language">SAS</a>,[<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Row-_and_column-major_order#cite_note-6">6]</a> and <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Rasdaman">Rasdaman</a>.[<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Row-_and_column-major_order#cite_note-7">7]</a></p>
+<p>Column-major order is used in <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Fortran">Fortran</a>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/MATLAB">MATLAB</a>,[<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Row-_and_column-major_order#cite_note-8">8]</a> <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/GNU_Octave">GNU Octave</a>, <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/S-Plus">S-Plus</a>,[<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Row-_and_column-major_order#cite_note-WinBUGS-9">9]</a> <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/R_(programming_language)">R</a>,[<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Row-_and_column-major_order#cite_note-10">10]</a> <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Julia_(programming_language)">Julia</a>,[<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Row-_and_column-major_order#cite_note-11">11]</a> and <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Scilab">Scilab</a>.[<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Row-_and_column-major_order#cite_note-12">12]</a></p>
+<p>So there is no way to declare a “column major” array in C</p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/32160943/column-major-array-storage-in-c-compilers">details</a></p>
+</blockquote>
+<h4 id="Practice-Problem-3-38"><a href="#Practice-Problem-3-38" class="headerlink" title="Practice Problem 3.38"></a>Practice Problem 3.38</h4><blockquote>
+<p>Consider the following source code, where M and N are constants declared with</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span>: ??</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">long</span> P[M][N];</span><br><span class="line"><span class="keyword">long</span> Q[N][M];</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">sum_element</span><span class="params">(<span class="keyword">long</span> i, <span class="keyword">long</span> j)</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> P[i][j] + Q[j][i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In compiling this program, gcc generates the following assembly code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#long sum_element(long i, long j)</span><br><span class="line">#i in %rdi, j in %rsi</span><br><span class="line"> sum_element: </span><br><span class="line">	leaq	0(,%rdi,8), %rdx</span><br><span class="line">	subq	%rdi, %rdx</span><br><span class="line">	addq	%rsi, %rdx</span><br><span class="line">	leaq	(%rsi,%rsi,4), %rax</span><br><span class="line">	addq	%rax, %rdi</span><br><span class="line">	leaq	Q(%rip), %rax</span><br><span class="line">	movq	(%rax,%rdi,8), %rax</span><br><span class="line">	leaq	P(%rip), %rcx</span><br><span class="line">	addq	(%rcx,%rdx,8), %rax</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+
+<p>Use your reverse engineering skills to determine the values of M and N based on this assembly code.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-5"><a href="#My-solution-white-check-mark-5" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#long sum_element(long i, long j)</span><br><span class="line">#i in %rdi, j in %rsi</span><br><span class="line"> sum_element: </span><br><span class="line">	leaq	0(,%rdi,8), %rdx		# %rdx &#x3D; 8*i</span><br><span class="line">	subq	%rdi, %rdx				# %rdx &#x3D; 7*i</span><br><span class="line">	addq	%rsi, %rdx				# %rdx &#x3D; 7*i + j</span><br><span class="line">	leaq	(%rsi,%rsi,4), %rax		# %rax &#x3D; 5*j</span><br><span class="line">	addq	%rax, %rdi				# %rdi &#x3D; i+5*j</span><br><span class="line">	leaq	Q(%rip), %rax</span><br><span class="line">	movq	(%rax,%rdi,8), %rax		# %rax &#x3D; M[Q + 8*(5*j+i)]</span><br><span class="line">	leaq	P(%rip), %rcx</span><br><span class="line">	addq	(%rcx,%rdx,8), %rax		# %rax +&#x3D; M[P + 8 * (7*i+j)]</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> P[i][j] + Q[j][i];</span><br><span class="line"><span class="comment">// &lt;==&gt;</span></span><br><span class="line"><span class="comment">//*(P+8*(N*i+j)) + *(Q+8*(M*j+i))</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 7</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> M 5</span></span><br></pre></td></tr></table></figure>
+<h5 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 7</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> M 5</span></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">traversal1</span><span class="params">()</span></span>&#123;	<span class="comment">//access with row major order</span></span><br><span class="line">    <span class="keyword">long</span> P[M][N];</span><br><span class="line">    <span class="keyword">long</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; M ; i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span> ; j &lt; N ; j++)&#123;</span><br><span class="line">                sum += P[i][j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">traversal2</span><span class="params">()</span></span>&#123;  <span class="comment">//access with column major order</span></span><br><span class="line">    <span class="keyword">long</span> P[M][N];</span><br><span class="line">    <span class="keyword">long</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; N ; j++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; M ; i++)&#123;</span><br><span class="line">                sum += P[i][j];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">traversal1:</span><br><span class="line">	movl	$0, %r8d # int i &#x3D; 0;</span><br><span class="line">	movl	$0, %eax # long sum &#x3D; 0;</span><br><span class="line">.L7:</span><br><span class="line">	cmpl	$4, %r8d # if (i &gt; 4 ) goto .L12</span><br><span class="line">	jg	.L12</span><br><span class="line">	movl	$0, %ecx # int j &#x3D; 0 ;</span><br><span class="line">	cmpl	$6, %ecx # if (j &gt; 6 ) goto .L13</span><br><span class="line">	jg	.L13</span><br><span class="line">	subq	$168, %rsp # first allocate 168 bytes, 8 bytes used to align stack</span><br><span class="line">.L3:</span><br><span class="line">	movslq	%ecx, %rdi </span><br><span class="line">	movslq	%r8d, %rsi</span><br><span class="line">	leaq	0(,%rsi,8), %rdx # %rdx &#x3D; 8*i</span><br><span class="line">	subq	%rsi, %rdx       # %rdx &#x3D; 7*i</span><br><span class="line">	addq	%rdi, %rdx       # %rdx &#x3D; 7*i + j</span><br><span class="line">	addq	-120(%rsp,%rdx,8), %rax # sum +&#x3D; array[7*i + j] , allocate 120 bytes, array size &#x3D; (5*7)*8 &#x3D; 160 + 120 &#x3D; 280, and the content is uninitialized.</span><br><span class="line">	addl	$1, %ecx         # j++;</span><br><span class="line">.L4:</span><br><span class="line">	cmpl	$6, %ecx         # if(j &lt;&#x3D; 6) goto .L3 &#x2F;&#x2F;loop continue</span><br><span class="line">	jle	.L3</span><br><span class="line">	addl	$1, %r8d         # i++;</span><br><span class="line">	cmpl	$4, %r8d         # if (i &gt; 4) goto .L1&#x2F;&#x2F;break</span><br><span class="line">	jg	.L14</span><br><span class="line">	movl	$0, %ecx         # j &#x3D; 0 ;</span><br><span class="line">	jmp	.L4</span><br><span class="line">.L14:</span><br><span class="line">	addq	$168, %rsp       # deallocate stack space</span><br><span class="line">	ret</span><br><span class="line">.L13:</span><br><span class="line">	addl	$1, %r8d        # j++;</span><br><span class="line">	jmp	.L7</span><br><span class="line">.L12:</span><br><span class="line">	ret</span><br><span class="line">traversal2:</span><br><span class="line">	movl	$0, %r8d   # int j &#x3D; 0</span><br><span class="line">	movl	$0, %eax   # long sum &#x3D; 0;</span><br><span class="line">	jmp	.L21</span><br><span class="line">.L28:</span><br><span class="line">	addq	$168, %rsp # deallocate 168 bytes</span><br><span class="line">	ret</span><br><span class="line">.L27:</span><br><span class="line">	addl	$1, %r8d  # j++</span><br><span class="line">.L21:</span><br><span class="line">	cmpl	$6, %r8d  # if (j &gt; 6) goto .L26 &#x2F;&#x2F;break</span><br><span class="line">	jg	.L26</span><br><span class="line">	movl	$0, %esi  # int i &#x3D; 0;</span><br><span class="line">	cmpl	$4, %esi  # if (i &gt; 4) goto .L27</span><br><span class="line">	jg	.L27</span><br><span class="line">	subq	$168, %rsp # allocate 168 bytes for array</span><br><span class="line">.L17:</span><br><span class="line">	movslq	%r8d, %rdx # %rdx &#x3D; j</span><br><span class="line">	movslq	%esi, %rdi # %rdi &#x3D; i</span><br><span class="line">	leaq	0(,%rdi,8), %rcx # %rcx &#x3D; 8*i</span><br><span class="line">	subq	%rdi, %rcx # %rcx &#x3D; 7*i</span><br><span class="line">	addq	%rcx, %rdx # %rdx &#x3D; j + 7*i</span><br><span class="line">	addq	-120(%rsp,%rdx,8), %rax # allocate 120 bytes, sum +&#x3D; array[7*i + j] , gcc optimize the codes ... there&#39;s no difference between the two version....</span><br><span class="line">	addl	$1, %esi </span><br><span class="line">.L18:</span><br><span class="line">	cmpl	$4, %esi</span><br><span class="line">	jle	.L17</span><br><span class="line">	addl	$1, %r8d</span><br><span class="line">	cmpl	$6, %r8d</span><br><span class="line">	jg	.L28</span><br><span class="line">	movl	$0, %esi</span><br><span class="line">	jmp	.L18</span><br><span class="line">.L26:</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<p>Even without optimization, gcc generate almost the same code for <code>traversal1</code> and <code>traversal2</code>, the difference in time consuming do not show in machine level code. They have much to do with the <strong>cache mechanism</strong>.</p>
+<h3 id="3-8-4-Fixed-Size-Arrays"><a href="#3-8-4-Fixed-Size-Arrays" class="headerlink" title="3.8.4 Fixed-Size Arrays"></a>3.8.4 Fixed-Size Arrays</h3><p><em>The C compiler is able to make many optimizations for code operating on multidimensional arrays of fixed size.</em></p>
+<p><img src="/2021/08/05/CSAPP/Ch3PartIII/optimization.png" alt="optimization example"></p>
+<h4 id="Practice-Problem-3-40"><a href="#Practice-Problem-3-40" class="headerlink" title="Practice Problem 3.40"></a>Practice Problem 3.40</h4><blockquote>
+<p>The following C code sets the diagonal elements of one of our fixed-size arrays to val:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 16</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> fix_matrix[N][N];</span><br><span class="line"><span class="comment">/* Set all diagonal elements to val */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fix_set_diag</span><span class="params">(fix_matrix A, <span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line"><span class="keyword">long</span> i;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; N; i++)</span><br><span class="line">A[i][i] = val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>When compiled with optimization level -O1, gcc generates the following assembly code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">fix_set_diag:</span><br><span class="line">	movq	%rdi, %rax</span><br><span class="line">	addq	$1088, %rdi</span><br><span class="line">.L2:</span><br><span class="line">	movl	%esi, (%rax)</span><br><span class="line">	addq	$68, %rax</span><br><span class="line">	cmpq	%rdi, %rax</span><br><span class="line">	jne	.L2</span><br><span class="line">	rep ret</span><br></pre></td></tr></table></figure>
+
+<p>Create a C code program <code>fix_set_diag_opt</code> that uses optimizations similar to those in the assembly code, in the same style as the code in Figure 3.37(b). Use expressions involving the parameter N rather than integer constants, so that your code will work correctly if N is redefined.</p>
+</blockquote>
+<h4 id="My-solution"><a href="#My-solution" class="headerlink" title="My solution :"></a>My solution :</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">fix_set_diag:</span><br><span class="line">	movq	%rdi, %rax		# %rax &#x3D; A</span><br><span class="line">	addq	$1088, %rdi		# A +&#x3D; 1088 (1088 &#x3D; 16*16*4+16*4)</span><br><span class="line">	# 16*16*4 is the size of the matrix, +(16*4) gives the next access address </span><br><span class="line">.L2:</span><br><span class="line">	movl	%esi, (%rax)	# *A &#x3D; val</span><br><span class="line">	addq	$68, %rax		# A +&#x3D; 68 (68 &#x3D; 16 * 4 + 4)</span><br><span class="line">	# skip the last accessed space (4 bytes) , add a row (16*4)</span><br><span class="line">	cmpq	%rdi, %rax		# if ( A !&#x3D; 1088) continue</span><br><span class="line">	jne	.L2</span><br><span class="line">	rep ret</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 16</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> fix_matrix[N][N];</span><br><span class="line"><span class="comment">/* Set all diagonal elements to val */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fix_set_diag</span><span class="params">(fix_matrix A, <span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> * start = &amp;A[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line">	<span class="keyword">for</span> ( <span class="keyword">int</span> i = <span class="number">0</span> ; i != (N*N + N) ; i += (N+<span class="number">1</span>))&#123;</span><br><span class="line">        *(start+i) = val;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ diff my.s test.s</span><br><span class="line">1c1</span><br><span class="line">&lt; 	.file	<span class="string">&quot;my.c&quot;</span></span><br><span class="line">---</span><br><span class="line">&gt; 	.file	<span class="string">&quot;test.c&quot;</span></span><br></pre></td></tr></table></figure>
+<h4 id="Solution-on-the-book-1"><a href="#Solution-on-the-book-1" class="headerlink" title="Solution on the book:"></a>Solution on the book:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Set all diagonal elements to val */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fix_set_diag_opt</span><span class="params">(fix_matrix A, <span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line"><span class="keyword">int</span> *Abase = &amp;A[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line"><span class="keyword">long</span> i = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">long</span> iend = N*(N+<span class="number">1</span>);</span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">Abase[i] = val;</span><br><span class="line">i += (N+<span class="number">1</span>);</span><br><span class="line">&#125; <span class="keyword">while</span> (i != iend);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//use do-while to indicate that the initial test can be omitted</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-8-5-Variable-Size-Arrays"><a href="#3-8-5-Variable-Size-Arrays" class="headerlink" title="3.8.5 Variable-Size Arrays"></a>3.8.5 Variable-Size Arrays</h3><p><em>Historically, C only supported multidimensional arrays where the sizes (with the possible exception of the first dimension) could be determined at compile time.</em></p>
+<ul>
+<li><p>Programmers requiring variable-size arrays had to allocate storage for these arrays using functions such as <code>malloc</code> or <code>calloc</code>, and they had to explicitly encode the mapping of multidimensional arrays into single-dimension ones via row-major indexing</p>
+</li>
+<li><p>ISO C99 introduced the capability of having array dimension expressions that are computed as the array is being allocated.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> n ;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span> , &amp;n);</span><br><span class="line"><span class="keyword">int</span> <span class="built_in">array</span> [n];</span><br><span class="line"><span class="comment">//These codes will compile without error</span></span><br></pre></td></tr></table></figure></li>
+<li><p><code>int A[expr1][expr2]</code>.The dimensions of the array are determined by evaluating the expressions expr1 and expr2 at the time the declaration is encountered.</p>
+<p>For example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//The parameter n must precede the parameter A[n][n], so that the function can compute the array dimensions as the parameter is encountered.</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">var_ele</span><span class="params">(<span class="keyword">long</span> n, <span class="keyword">int</span> A[n][n], <span class="keyword">long</span> i, <span class="keyword">long</span> j)</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> A[i][j];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#int var_ele(long n, int A[n][n], long i, long j)</span><br><span class="line">#n in %rdi, A in %rsi, i in %rdx, j in %rcx</span><br><span class="line">var_ele:</span><br><span class="line"> imulq %rdx, %rdi 			#Compute n*i</span><br><span class="line"> leaq (%rsi,%rdi,4), %rax 	#Compute A + 4(n*i)</span><br><span class="line"> movl (%rax,%rcx,4), %eax 	#Read from M[xA + 4(n*i) + 4j ]</span><br><span class="line"> ret</span><br></pre></td></tr></table></figure>
+<p>The dynamic version <strong>must use a multiplication instruction</strong> to scale i by n, rather than a series of shifts and adds. In some processors, this multiplication can incur a significant performance penalty, but it is unavoidable in this case.</p>
+</li>
+<li><p>When variable-size arrays are referenced within a loop, the compiler can often optimize the index computations by exploiting the regularity of the access patterns.</p>
+<p>Example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Compute i,k of variable matrix product */</span></span><br><span class="line"> <span class="function"><span class="keyword">int</span> <span class="title">var_prod_ele</span><span class="params">(<span class="keyword">long</span> n, <span class="keyword">int</span> A[n][n], <span class="keyword">int</span> B[n][n], <span class="keyword">long</span> i, <span class="keyword">long</span> k)</span> </span>&#123;</span><br><span class="line"> <span class="keyword">long</span> j;</span><br><span class="line"> <span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; n; j++)</span><br><span class="line"> result += A[i][j] * B[j][k];</span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># compiled with -O1</span><br><span class="line">var_prod_ele:</span><br><span class="line">	testq	%rdi, %rdi		# if(n&lt;&#x3D;0) return 0;</span><br><span class="line">	jle	.L4</span><br><span class="line">	salq	$2, %rcx		# %rcx &#x3D; 4*i</span><br><span class="line">	imulq	%rdi, %rcx		# %rcx &#x3D; 4*i * n</span><br><span class="line">	addq	%rcx, %rsi		# %rsi &#x3D; A + 4*i * n</span><br><span class="line">	leaq	0(,%rdi,4), %r9	# %r9 &#x3D; 4*n</span><br><span class="line">	leaq	(%rdx,%r8,4), %r8	# %r8 &#x3D; B + 4*k </span><br><span class="line">	movl	$0, %edx		# %rdx &#x3D; 0 &#x2F;&#x2F;j &#x3D; 0</span><br><span class="line">	movl	$0, %eax		# %rax &#x3D; 0</span><br><span class="line">.L3:</span><br><span class="line">	movl	(%rsi,%rdx,4), %ecx	# %rax &#x3D; A[i * n + j]</span><br><span class="line">	imull	(%r8), %ecx			# %rcx &#x3D; B[k]*A[i*n + j]</span><br><span class="line">	addl	%ecx, %eax			# res +&#x3D; %rcx</span><br><span class="line">	addq	$1, %rdx			# j++</span><br><span class="line">	addq	%r9, %r8			# %r8 &#x3D; B + 4*k + 4*n</span><br><span class="line">	cmpq	%rdx, %rdi			# if(n &#x3D;&#x3D; j)  break</span><br><span class="line">	jne	.L3						# else continue</span><br><span class="line">	rep ret</span><br><span class="line">.L4:</span><br><span class="line">	movl	$0, %eax</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">var_prod_ele</span><span class="params">(<span class="keyword">long</span> n, <span class="keyword">int</span> A[n][n], <span class="keyword">int</span> B[n][n], <span class="keyword">long</span> i, <span class="keyword">long</span> k)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n&lt;=<span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> j = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> * start_A = &amp;A[i][j];</span><br><span class="line">    <span class="keyword">int</span> * start_B = &amp;B[j][k];</span><br><span class="line">    <span class="keyword">do</span>&#123;</span><br><span class="line">        res += (*(start_A+j)) * (*start_B + n*j);</span><br><span class="line">		 j++;</span><br><span class="line">    &#125;<span class="keyword">while</span>(j != n);</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Whether <code>gcc</code> generates the pointer-based code of Figure 3.37(b) or the array-based code of Figure 3.38(b), these optimizations will significantly improve program performance.</p>
+</li>
+</ul>
+<h2 id="3-9-Heterogeneous-Data-Structures"><a href="#3-9-Heterogeneous-Data-Structures" class="headerlink" title="3.9 Heterogeneous Data Structures"></a>3.9 Heterogeneous Data Structures</h2><p><em>C provides two mechanisms for creating data types by combining objects of different types:</em></p>
+<ul>
+<li><code>struct</code>  aggregate multiple objects into a single unit</li>
+<li><code>union</code> allow an object to be referenced using several different types.</li>
+</ul>
+<h3 id="3-9-1-Structures"><a href="#3-9-1-Structures" class="headerlink" title="3.9.1 Structures"></a>3.9.1 Structures</h3><p><em>The implementation of structures is similar to that of arrays in that all of the components of a structure are stored in a contiguous region of memory and a pointer to a structure is the address of its first byte</em></p>
+<p>The compiler maintains information about each structure type indicating <strong>the byte offset of each field.</strong></p>
+<p>For example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rec</span> &#123;</span></span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="keyword">int</span> j;</span><br><span class="line"><span class="keyword">int</span> a[<span class="number">2</span>];</span><br><span class="line"><span class="keyword">int</span> *p;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p> <img src="/2021/08/05/CSAPP/Ch3PartIII/struct.png" alt="struct example"></p>
+<p>To access the fields of a structure, the compiler generates code that adds the appropriate offset to the address of the structure.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rec</span> * <span class="title">r</span> ;</span></span><br><span class="line">r-&gt;j = r-&gt;i;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Registers: r in %rdi</span><br><span class="line">movl (%rdi), %eax 	#Get r-&gt;i</span><br><span class="line">movl %eax, 4(%rdi) 	#Store in r-&gt;j</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> * ptr = &amp;(r-&gt;a[<span class="number">1</span>]);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">leaq 8(%rdi,%rsi,4), %rax 	#Set %rax to &amp;r-&gt;a[i],r in %rdi, i %rsi</span><br></pre></td></tr></table></figure>
+<p>As these examples show, the selection of the different fields of a structure is handled completely at compile time. The machine code contains no information about the field declarations or the names of the fields, <strong>only offset</strong>.</p>
+<h4 id="Practice-Problem-3-41-white-check-mark"><a href="#Practice-Problem-3-41-white-check-mark" class="headerlink" title="Practice Problem 3.41 :white_check_mark:"></a>Practice Problem 3.41 :white_check_mark:</h4><blockquote>
+<p>Consider the following structure declaration:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">test</span> &#123;</span></span><br><span class="line">	<span class="keyword">short</span> *p;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">		<span class="keyword">short</span> x;</span><br><span class="line">		<span class="keyword">short</span> y;</span><br><span class="line">		&#125; s;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">test</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>This declaration illustrates that one structure can be embedded within another, just as arrays can be embedded within structures and arrays can be embedded within arrays.</p>
+<p>The following procedure (with some expressions omitted) operates on this structure:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">st_init</span><span class="params">(struct test *st)</span> </span>&#123;</span><br><span class="line">st-&gt;s.y = ______;</span><br><span class="line">st-&gt;p = ______;</span><br><span class="line">st-&gt;next = _______;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>A. What are the offsets (in bytes) of the following fields?</p>
+<p>B. How many total bytes does the structure require?</p>
+<p>C. The compiler generates the following assembly code for <code>st_init</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">st_init:</span><br><span class="line">	movzwl	8(%rdi), %eax</span><br><span class="line">	movw	%ax, 10(%rdi)</span><br><span class="line">	leaq	10(%rdi), %rax</span><br><span class="line">	movq	%rax, (%rdi)</span><br><span class="line">	movq	%rdi, 16(%rdi)</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+
+<p>On the basis of this information, fill in the missing expressions in the code for <code>st_init</code>.</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//A</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">p:0</span></span><br><span class="line"><span class="comment">s.x:8	</span></span><br><span class="line"><span class="comment">s.y:10</span></span><br><span class="line"><span class="comment">next:12</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="comment">//B</span></span><br><span class="line"><span class="comment">//It requires 20 bytes</span></span><br><span class="line"><span class="comment">//C</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">st_init</span><span class="params">(struct test *st)</span> </span>&#123;</span><br><span class="line">st-&gt;s.y = st-&gt;s.x;</span><br><span class="line">st-&gt;p = &amp;(st-&gt;s.y);</span><br><span class="line">st-&gt;next = st;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Perhaps the compiler pads some space to align with the max size in the struct, that is align to 8.</p>
+<p>gcc gives that <code>sizeof(test) == 24</code> </p>
+<h4 id="Practice-Problem-3-42"><a href="#Practice-Problem-3-42" class="headerlink" title="Practice Problem 3.42"></a>Practice Problem 3.42</h4><blockquote>
+<p>The following code shows the declaration of a structure of type <code>ACE</code> and the prototype for a function <code>test</code>:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ACE</span> &#123;</span></span><br><span class="line"><span class="keyword">short</span> v;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ACE</span> *<span class="title">p</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">short</span> <span class="title">test</span><span class="params">(struct ACE *ptr)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>gcc generates the following assembly code:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">test:</span><br><span class="line">	movl	$1, %eax</span><br><span class="line">	jmp	.L2</span><br><span class="line">.L3:</span><br><span class="line">	imulw	(%rdi), %ax</span><br><span class="line">	movq	8(%rdi), %rdi</span><br><span class="line">.L2:</span><br><span class="line">	testq	%rdi, %rdi</span><br><span class="line">	jne	.L3</span><br><span class="line">	rep ret</span><br></pre></td></tr></table></figure>
+
+<p>A. Use your reverse engineering skills to write C code for test.</p>
+<p>B. Describe the data structure that this structure implements and the operation performed by test.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-6"><a href="#My-solution-white-check-mark-6" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">short</span> <span class="title">test</span><span class="params">(struct ACE *ptr)</span></span>&#123;</span><br><span class="line">	<span class="keyword">short</span> res = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(ptr != <span class="literal">NULL</span>)&#123;</span><br><span class="line">        res *= ptr-&gt;v;</span><br><span class="line">        ptr = ptr-&gt;p;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//the data structure is linked list</span></span><br><span class="line"><span class="comment">//test function traverse the linked list and accumulate the v part</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-9-2-Unions"><a href="#3-9-2-Unions" class="headerlink" title="3.9.2 Unions"></a>3.9.2 Unions</h3><p><em>Unions provide a way to <strong>circumvent the type system of C</strong>, allowing a single object to be referenced according to multiple types.</em></p>
+<ul>
+<li>The syntax of a union declaration is <strong>identical to that for structures</strong></li>
+<li>Rather than having the different fields reference different blocks of memory, they all <strong>reference the same block</strong>.</li>
+<li> the overall size of a union equals the <strong>maximum size of any of its fields</strong>.</li>
+</ul>
+<h5 id="Usage-of-unions"><a href="#Usage-of-unions" class="headerlink" title="Usage of unions"></a>Usage of unions</h5><p><em>Unions can be useful in several contexts. However, they can also lead to nasty bugs, since they bypass the safety provided by the C type system</em></p>
+<ul>
+<li><p>the use of two different fields in a data structure will be mutually exclusive.</p>
+<p>Then, declaring these two fields as part of a union rather than a structure will reduce the total space allocated</p>
+<ul>
+<li><p>For example, suppose we want to implement a binary tree data structure where each leaf node has two double data values and each internal node has pointers to two children but no data.</p>
+</li>
+<li><p>if we declare the node as</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node_s</span> &#123;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node_s</span> *<span class="title">left</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node_s</span> *<span class="title">right</span>;</span></span><br><span class="line"><span class="keyword">double</span> data[<span class="number">2</span>];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>then every node requires 32 bytes, with half the bytes wasted for each type of node.</p>
+</li>
+<li><p>if we declare the node as</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">node_u</span> &#123;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">node_u</span> *<span class="title">left</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">node_u</span> *<span class="title">right</span>;</span></span><br><span class="line">&#125; internal;</span><br><span class="line"><span class="keyword">double</span> data[<span class="number">2</span>];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>then every node will require just 16 bytes</p>
+</li>
+<li><p>However, there is no way to determine whether a given node is a leaf or an internal node.</p>
+</li>
+<li><p>A common method is to introduce an enumerated type defining the different possible choices for the union, and then create a structure containing a tag field and the union:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">enum</span> &#123;</span> N_LEAF, N_INTERNAL &#125; <span class="keyword">nodetype_t</span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node_t</span> &#123;</span></span><br><span class="line"><span class="keyword">nodetype_t</span> type;</span><br><span class="line"><span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node_t</span> *<span class="title">left</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node_t</span> *<span class="title">right</span>;</span></span><br><span class="line">&#125; internal;</span><br><span class="line"><span class="keyword">double</span> data[<span class="number">2</span>];</span><br><span class="line">&#125; info;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>This structure requires a total of 24 bytes: 4 for type, and either 8 each for info.internal.left and info.internal.right or 16 for info.data(additional 4 bytes for padding)</p>
+</li>
+<li><p>In this case, the savings gain of using a union is small relative to the awkwardness of the resulting code. For data structures with more fields, the savings can be more compelling.</p>
+</li>
+</ul>
+</li>
+<li><p>Unions can also be used to access the bit patterns of different data types</p>
+<ul>
+<li><p>For example, suppose we use a function to convert a value <code>d</code> of type <code>double</code> to a value <code>u</code> of type <code>unsigned long</code>:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="title">double2bits</span><span class="params">(<span class="keyword">double</span> d)</span> </span>&#123;</span><br><span class="line"><span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line"><span class="keyword">double</span> d;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> u;</span><br><span class="line">&#125; temp;</span><br><span class="line">temp.d = d;</span><br><span class="line"><span class="keyword">return</span> temp.u;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>In this code, we store the argument in the union using one data type and access it using another</p>
+</li>
+</ul>
+</li>
+<li><p>When using unions to combine data types of different sizes, <strong>byte-ordering</strong> issues can become important.</p>
+<ul>
+<li><p>For example, suppose we write a procedure that will create an 8-byte double using the bit patterns given by two 4-byte unsigned values:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">uu2double</span><span class="params">(<span class="keyword">unsigned</span> word0, <span class="keyword">unsigned</span> word1)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line"><span class="keyword">double</span> d;</span><br><span class="line"><span class="keyword">unsigned</span> u[<span class="number">2</span>];</span><br><span class="line">&#125; temp;</span><br><span class="line">temp.u[<span class="number">0</span>] = word0;</span><br><span class="line">temp.u[<span class="number">1</span>] = word1;</span><br><span class="line"><span class="keyword">return</span> temp.d;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>On a little-endian machine, such as an x86-64 processor, argument word0 will become the low-order 4 bytes of d, while word1 will become the high-order 4 bytes</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="Practice-Problem-3-43"><a href="#Practice-Problem-3-43" class="headerlink" title="Practice Problem 3.43"></a>Practice Problem 3.43</h4><blockquote>
+<p>Suppose you are given the job of checking that a C compiler generates the proper code for structure and union access. You write the following structure declaration:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line"><span class="keyword">long</span> u;</span><br><span class="line"><span class="keyword">short</span> v;</span><br><span class="line"><span class="keyword">char</span> w;</span><br><span class="line">&#125; t1;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line"><span class="keyword">int</span> a[<span class="number">2</span>];</span><br><span class="line"><span class="keyword">char</span> *p;</span><br><span class="line">&#125; t2;</span><br><span class="line">&#125; u_type;</span><br></pre></td></tr></table></figure>
+
+<p>You write a series of functions of the form</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get</span><span class="params">(u_type *up, type *dest)</span> </span>&#123;</span><br><span class="line">*dest = expr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>with different access expressions expr and with destination data type type set according to type associated with expr. You then examine the code generated when compiling the functions to see if they match your expectations.</p>
+<p>Suppose in these functions that <code>up</code> and <code>dest</code> are loaded into registers <code>%rdi </code>and <code>%rsi</code>, respectively. Fill in the following table with data type type and sequences of one to three instructions to compute the expression and store the result at dest.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">expr 				type 				Code</span><br><span class="line">up-&gt;t1.u 			long 				movq (%rdi), %rax</span><br><span class="line">										movq %rax, (%rsi)</span><br><span class="line">up-&gt;t1.v</span><br><span class="line"></span><br><span class="line">&amp;up-&gt;t1.w</span><br><span class="line"></span><br><span class="line">up-&gt;t2.a</span><br><span class="line"></span><br><span class="line">up-&gt;t2.a[up-&gt;t1.u]</span><br><span class="line"></span><br><span class="line">*up-&gt;t2.p</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-warning"><a href="#My-solution-warning" class="headerlink" title="My solution : :warning:"></a>My solution : :warning:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">t1:</span></span><br><span class="line"><span class="comment">0         8     12    16</span></span><br><span class="line"><span class="comment">u________ v__00 w_000</span></span><br><span class="line"><span class="comment">t2:</span></span><br><span class="line"><span class="comment">0         4         8         16</span></span><br><span class="line"><span class="comment">a[0] ____ a[1] ____ p ________</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get1</span><span class="params">(u_type * up, <span class="keyword">long</span> * dest)</span> </span>&#123;</span><br><span class="line">*dest = up-&gt;t1.u;</span><br><span class="line"><span class="comment">// movq (%rdi),%rax</span></span><br><span class="line"><span class="comment">// movq %rax, (%rsi)</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get2</span><span class="params">(u_type * up, <span class="keyword">short</span> * dest)</span> </span>&#123;</span><br><span class="line">*dest = up-&gt;t1.v;</span><br><span class="line"><span class="comment">// movw 8(%rdi),%ax</span></span><br><span class="line"><span class="comment">// movw %ax, (%rsi)</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get3</span><span class="params">(u_type * up, <span class="keyword">char</span>* * dest)</span> </span>&#123;</span><br><span class="line">*dest = &amp;up-&gt;t1.w;</span><br><span class="line"><span class="comment">// leaq 12(%rdi),%rax</span></span><br><span class="line"><span class="comment">// movq %rax, (%rsi)</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get4</span><span class="params">(u_type * up , <span class="keyword">int</span> * * dest )</span></span>&#123;</span><br><span class="line">*dest = up-&gt;t2.a;</span><br><span class="line"><span class="comment">// movq %rdi , (%rsi)</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get5</span><span class="params">(u_type * up , <span class="keyword">int</span>  * dest )</span></span>&#123;</span><br><span class="line">*dest = up-&gt;t2.a[up-&gt;t1.u];</span><br><span class="line"><span class="comment">// movq (%rdi) , %rax</span></span><br><span class="line"><span class="comment">// movl (%rdi , %rax, 4) , %eax</span></span><br><span class="line"><span class="comment">// movl %eax, (%rdi)</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get6</span><span class="params">(u_type * up , <span class="keyword">char</span>  * dest )</span></span>&#123;</span><br><span class="line">*dest = *up-&gt;t2.p;</span><br><span class="line"><span class="comment">// leaq 8(%rdi), %rax</span></span><br><span class="line"><span class="comment">// movb (%rax), %al</span></span><br><span class="line"><span class="comment">// movb %al , (%rsi)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>in <code>get3</code> gcc generate <code>leaq 10(%rdi),%rax</code> rather then add 12 to <code>%rdi</code>, indicating my padding strategy might be wrong.</p>
+<p><code>char</code> ‘s address need to be multiple of 1, that is, any value.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">t1:</span></span><br><span class="line"><span class="comment">0         8   10    16</span></span><br><span class="line"><span class="comment">u________ v__ w_00000</span></span><br><span class="line"><span class="comment">t2:</span></span><br><span class="line"><span class="comment">0         4         8         16</span></span><br><span class="line"><span class="comment">a[0] ____ a[1] ____ p ________</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="3-9-3-Data-Alignment"><a href="#3-9-3-Data-Alignment" class="headerlink" title="3.9.3 Data Alignment"></a>3.9.3 Data Alignment</h3><p><em>Many computer systems place <strong>restrictions on the allowable addresses for the primitive data types</strong>, requiring that the address for some objects must be a multiple of some value K (typically 2, 4, or 8)</em></p>
+<p>For example, suppose a processor always fetches 8 bytes from memory with an address that must be a multiple of 8. If we can guarantee that any <code>double</code> will be aligned to have its address be a multiple of 8, then the value can be read or written with a single memory operation. Otherwise, we may need to perform two memory accesses, since the object might be split across two 8-byte memory blocks.</p>
+<ul>
+<li><p>The x86-64 hardware will work correctly regardless of the alignment of data</p>
+</li>
+<li><p>However, Intel recommends that data be aligned to improve memory system performance</p>
+<p>Their alignment rule is based on the principle that any primitive object of K bytes must have an address that is a multiple of K.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">K 	Types</span><br><span class="line"><span class="number">1</span> 	<span class="keyword">char</span></span><br><span class="line"><span class="number">2</span> 	<span class="keyword">short</span></span><br><span class="line"><span class="number">4</span> 	<span class="keyword">int</span>, <span class="keyword">float</span></span><br><span class="line"><span class="number">8</span> 	<span class="keyword">long</span>, <span class="keyword">double</span>, <span class="keyword">char</span> *</span><br></pre></td></tr></table></figure></li>
+<li><p>The compiler places directives in the assembly code indicating the desired alignment for <strong>global data</strong>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.align 8</span><br></pre></td></tr></table></figure>
+<p>This ensures that <strong>the data following it</strong> will start with an address that is a multiple of 8</p>
+</li>
+</ul>
+<p>For code involving <strong>structures</strong>, the compiler may need to insert gaps in the field allocation to ensure that each structure element satisfies its alignment requirement. </p>
+<ul>
+<li><p>For example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">S1</span> &#123;</span></span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="keyword">char</span> c;</span><br><span class="line"><span class="keyword">int</span> j;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">0	 4 5    9</span></span><br><span class="line"><span class="comment">i____c_j____</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p>This won’t satisfy the align principle. Instead, the compiler inserts a 3-byte gap  between fields <code>c</code> and <code>j</code>:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0	 4    8    12</span><br><span class="line">i____c_000j____</span><br></pre></td></tr></table></figure></li>
+<li><p>In addition, the compiler may need to add padding to the end of the structure so that each element in an array of structures will satisfy its alignment requirement.</p>
+<p>For example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">S2</span> &#123;</span></span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="keyword">int</span> j;</span><br><span class="line"><span class="keyword">char</span> c;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>If we pack this structure into 9 bytes, we can still satisfy the alignment requirements, but the next element in the array won’t stick to the requirement.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0    4    8  9 </span><br><span class="line">i____j____c_ i____....</span><br></pre></td></tr></table></figure>
+<p>So the compiler pads <code>S2</code> to 12 bytes, adding 3 bytes 0 at the end.</p>
+</li>
+</ul>
+<h4 id="Practice-Problem-3-44"><a href="#Practice-Problem-3-44" class="headerlink" title="Practice Problem 3.44"></a>Practice Problem 3.44</h4><blockquote>
+<p>For each of the following structure declarations, determine the offset of each field, the total size of the structure, and its alignment requirement for x86-64:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A. <span class="class"><span class="keyword">struct</span> <span class="title">P1</span> &#123;</span> <span class="keyword">short</span> i; <span class="keyword">int</span> c; <span class="keyword">int</span> *j; <span class="keyword">short</span> *d; &#125;;</span><br><span class="line">B. <span class="class"><span class="keyword">struct</span> <span class="title">P2</span> &#123;</span> <span class="keyword">int</span> i[<span class="number">2</span>]; <span class="keyword">char</span> c[<span class="number">8</span>]; <span class="keyword">short</span> s[<span class="number">4</span>]; <span class="keyword">long</span> *j; &#125;;</span><br><span class="line">C. <span class="class"><span class="keyword">struct</span> <span class="title">P3</span> &#123;</span> <span class="keyword">long</span> w[<span class="number">2</span>]; <span class="keyword">int</span> *c[<span class="number">2</span>] &#125;;</span><br><span class="line">D. <span class="class"><span class="keyword">struct</span> <span class="title">P4</span> &#123;</span> <span class="keyword">char</span> w[<span class="number">16</span>]; <span class="keyword">char</span> *c[<span class="number">2</span>] &#125;;</span><br><span class="line">E. <span class="class"><span class="keyword">struct</span> <span class="title">P5</span> &#123;</span> <span class="class"><span class="keyword">struct</span> <span class="title">P4</span> <span class="title">a</span>[2];</span> <span class="class"><span class="keyword">struct</span> <span class="title">P1</span> <span class="title">t</span> &#125;;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark-7"><a href="#My-solution-white-check-mark-7" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//A</span></span><br><span class="line"><span class="number">0</span>	  <span class="number">4</span>		<span class="number">8</span>		   <span class="number">16</span>		  <span class="number">24</span></span><br><span class="line">i__00 c____ j ________ d ________</span><br><span class="line"><span class="comment">//B</span></span><br><span class="line">	 <span class="number">0</span>     <span class="number">4</span>		<span class="number">8</span>				<span class="number">16</span>				<span class="number">24</span>		 <span class="number">32</span></span><br><span class="line">i[<span class="number">0</span>] ____ i[<span class="number">1</span>] ____ c[<span class="number">0</span>~<span class="number">7</span>] ________ s[<span class="number">0</span>~<span class="number">3</span>] ________ j ________</span><br><span class="line"><span class="comment">//C</span></span><br><span class="line"><span class="number">0</span>				<span class="number">8</span>			 <span class="number">16</span>				<span class="number">24</span>			<span class="number">32</span></span><br><span class="line">w[<span class="number">0</span>] ________ w[<span class="number">1</span>] ________ c[<span class="number">0</span>] ________ c[<span class="number">1</span>] ________</span><br><span class="line"><span class="comment">//D</span></span><br><span class="line"><span class="number">0</span>						 <span class="number">16</span>				<span class="number">24</span>			<span class="number">32</span></span><br><span class="line">w[<span class="number">0</span>~<span class="number">15</span>] ________________ c[<span class="number">0</span>] ________ c[<span class="number">1</span>] ________</span><br><span class="line"><span class="comment">//E</span></span><br><span class="line"><span class="number">0</span>	<span class="number">32</span>	 <span class="number">64</span> <span class="number">88</span></span><br><span class="line">a[<span class="number">0</span>] a[<span class="number">1</span>] t</span><br></pre></td></tr></table></figure>
+<h4 id="Verification"><a href="#Verification" class="headerlink" title="Verification:"></a>Verification:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">P1</span> &#123;</span> <span class="keyword">short</span> i; <span class="keyword">int</span> c; <span class="keyword">int</span> *j; <span class="keyword">short</span> *d; &#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">P2</span> &#123;</span> <span class="keyword">int</span> i[<span class="number">2</span>]; <span class="keyword">char</span> c[<span class="number">8</span>]; <span class="keyword">short</span> s[<span class="number">4</span>]; <span class="keyword">long</span> *j; &#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">P3</span> &#123;</span> <span class="keyword">long</span> w[<span class="number">2</span>]; <span class="keyword">int</span> *c[<span class="number">2</span>]; &#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">P4</span> &#123;</span> <span class="keyword">char</span> w[<span class="number">16</span>]; <span class="keyword">char</span> *c[<span class="number">2</span>] ;&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">P5</span> &#123;</span> <span class="class"><span class="keyword">struct</span> <span class="title">P4</span> <span class="title">a</span>[2];</span> <span class="class"><span class="keyword">struct</span> <span class="title">P1</span> <span class="title">t</span>;</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">access</span><span class="params">(struct P1 * ptr)</span></span>&#123;</span><br><span class="line">    ptr-&gt;i = <span class="number">123</span>;</span><br><span class="line">    ptr-&gt;c = <span class="number">456</span>;</span><br><span class="line">    ptr-&gt;j = <span class="number">0x0</span>;</span><br><span class="line">    ptr-&gt;d = <span class="number">0x0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">access:</span><br><span class="line">	movw	$123, (%rdi)</span><br><span class="line">	movl	$456, 4(%rdi)</span><br><span class="line">	movq	$0, 8(%rdi)</span><br><span class="line">	movq	$0, 16(%rdi)</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-3-45"><a href="#Practice-Problem-3-45" class="headerlink" title="Practice Problem 3.45"></a>Practice Problem 3.45</h4><blockquote>
+<p>Answer the following for the structure declaration</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line"><span class="keyword">int</span> *a;</span><br><span class="line"><span class="keyword">float</span> b;</span><br><span class="line"><span class="keyword">char</span> c;</span><br><span class="line"><span class="keyword">short</span> d;</span><br><span class="line"><span class="keyword">long</span> e;</span><br><span class="line"><span class="keyword">double</span> f;</span><br><span class="line"><span class="keyword">int</span> g;</span><br><span class="line"><span class="keyword">char</span> *h;</span><br><span class="line">&#125; rec;</span><br></pre></td></tr></table></figure>
+
+<p>A. What are the byte offsets of all the fields in the structure? </p>
+<p>B. What is the total size of the structure? </p>
+<p>C. Rearrange the fields of the structure to minimize wasted space, and then show the byte offsets and total size for the rearranged structure.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-8"><a href="#My-solution-white-check-mark-8" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0		   8      12   14   16			24		  32		40</span><br><span class="line">a ________ b ____ c _0 d __ e ________ f ________ g ____0000 h ________ 48</span><br></pre></td></tr></table></figure>
+<p>After rearrangement</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> * a;</span><br><span class="line">    <span class="keyword">char</span> * h;</span><br><span class="line">    <span class="keyword">double</span> f;</span><br><span class="line">    <span class="keyword">long</span> e ;</span><br><span class="line">    <span class="keyword">float</span> b ;</span><br><span class="line">    <span class="keyword">int</span> g;</span><br><span class="line">    <span class="keyword">short</span> d;</span><br><span class="line">    <span class="keyword">char</span> c;</span><br><span class="line">&#125;</span><br><span class="line"><span class="number">0</span>                                                        <span class="number">40</span>   <span class="number">42</span></span><br><span class="line">a ________ h ________ f ________ e ________ b ____ g ____ d __ c _0 <span class="number">0000</span> <span class="number">48</span></span><br></pre></td></tr></table></figure>
+<p>Can’t decrease the size any more.</p>
+<h4 id="Verification-1"><a href="#Verification-1" class="headerlink" title="Verification:"></a>Verification:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> * a;</span><br><span class="line">    <span class="keyword">char</span> * h;</span><br><span class="line">    <span class="keyword">double</span> f;</span><br><span class="line">    <span class="keyword">long</span> e ;</span><br><span class="line">    <span class="keyword">float</span> b ;</span><br><span class="line">    <span class="keyword">int</span> g;</span><br><span class="line">    <span class="keyword">short</span> d;</span><br><span class="line">    <span class="keyword">char</span> c;</span><br><span class="line">&#125; rec;</span><br><span class="line"><span class="comment">/*typedef struct &#123;</span></span><br><span class="line"><span class="comment">int *a;</span></span><br><span class="line"><span class="comment">float b;</span></span><br><span class="line"><span class="comment">char c;</span></span><br><span class="line"><span class="comment">short d;</span></span><br><span class="line"><span class="comment">long e;</span></span><br><span class="line"><span class="comment">double f;</span></span><br><span class="line"><span class="comment">int g;</span></span><br><span class="line"><span class="comment">char *h;</span></span><br><span class="line"><span class="comment">&#125; rec;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">access</span> <span class="params">( rec * ptr )</span></span>&#123;</span><br><span class="line">    ptr-&gt;a = <span class="number">0x0</span>;</span><br><span class="line">    ptr-&gt;b = <span class="number">1.1</span>;</span><br><span class="line">    ptr-&gt;c = <span class="string">&#x27;A&#x27;</span>;</span><br><span class="line">    ptr-&gt;d = <span class="number">123</span>;</span><br><span class="line">    ptr-&gt;e = <span class="number">456</span>;</span><br><span class="line">    ptr-&gt;f = <span class="number">2.2</span>;</span><br><span class="line">    ptr-&gt;g = <span class="number">789</span>;</span><br><span class="line">    ptr-&gt;h = <span class="number">0x0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    rec r;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%lu\n&quot;</span> , <span class="keyword">sizeof</span>(r));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -Og test.c &amp;&amp; ./a.out</span><br><span class="line">48</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/08/05/CSAPP/Ch3PartIII/" data-id="ckseswe690000y3yq55xgfp0l" data-title="Ch3PartIII" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/08/09/CSAPP/Ch3PartIV/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Ch3PartIV
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/07/30/CSAPP/Ch3PartII/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Ch3PartII</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/08/09/CSAPP/Ch3PartIV/">Ch3PartIV</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/05/CSAPP/Ch3PartIII/">Ch3PartIII</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/30/CSAPP/Ch3PartII/">Ch3PartII</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/28/CSAPP/Ch3/">Ch3</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/26/CSAPP/datalab/">datalab</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
