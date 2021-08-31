@@ -14,7 +14,7 @@
 <meta property="og:description" content="Bomb labLet’s do reverse engineering (Unfortunately, we cannot get CMU version bomb … We won’t lose points when the bomb blows up.)">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-08-17T12:44:29.000Z">
-<meta property="article:modified_time" content="2021-08-19T09:40:35.872Z">
+<meta property="article:modified_time" content="2021-08-20T04:38:39.002Z">
 <meta property="article:author" content="rubbish">
 <meta name="twitter:card" content="summary">
   
@@ -63,10 +63,10 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
       </div>
     </div>
   </div>
@@ -220,15 +220,17 @@
 <p>Correct layout of memory values</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># movl to retrive value from memory</span></span><br><span class="line"><span class="comment"># so the data type is int rather than long !!!!</span></span><br><span class="line">d = &#123;</span><br><span class="line">fifth <span class="number">0x6032d0</span> : <span class="number">332</span> <span class="comment"># value</span></span><br><span class="line"><span class="number">0x6032d8</span> : <span class="number">0x6032e0</span> <span class="comment"># pointer</span></span><br><span class="line"><span class="number">0x6032e0</span> : <span class="number">168</span> <span class="comment"># value</span></span><br><span class="line"><span class="number">0x6032e8</span> : <span class="number">0</span> <span class="comment"># pointer</span></span><br><span class="line">first <span class="number">0x6032f0</span> : <span class="number">924</span> <span class="comment"># value</span></span><br><span class="line"><span class="number">0x6032f8</span> : <span class="number">0x603300</span> <span class="comment"># pointer</span></span><br><span class="line">second <span class="number">0x603300</span> : <span class="number">691</span> <span class="comment"># value</span></span><br><span class="line"><span class="number">0x603308</span> : <span class="number">0x603310</span> <span class="comment"># pointer</span></span><br><span class="line">third <span class="number">0x603310</span> : <span class="number">477</span> <span class="comment"># value</span></span><br><span class="line"><span class="number">0x603318</span> : <span class="number">0x603320</span> <span class="comment"># pointer</span></span><br><span class="line">fourth <span class="number">0x603320</span> : <span class="number">443</span> <span class="comment"># value</span></span><br><span class="line"><span class="number">0x603328</span> : <span class="number">0x6032d0</span> <span class="comment"># 0</span></span><br><span class="line"><span class="number">0x603330</span> : <span class="number">0x000000000</span> <span class="comment"># 0</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 4 3 2 1 6 5</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Congratulations! You&#39;ve defused the bomb!</span><br></pre></td></tr></table></figure>
-<p><strong><em>When working with low level codes the most important thing is patient.</em></strong></p>
+<p><strong><em>When working with low level codes the most important thing is patience.</em></strong></p>
 <h4 id="Secret-Phase"><a href="#Secret-Phase" class="headerlink" title="Secret Phase"></a>Secret Phase</h4><p><em>by examing the assembly code  generated by <code>objdump</code>, we can see that there is a call to <code>secret_phase</code> in function <code>phase_defused</code></em></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">00000000004015c4 &lt;phase_defused&gt;:</span><br><span class="line">  4015c4:	48 83 ec 78          	sub    $0x78,%rsp</span><br><span class="line">  # canary</span><br><span class="line">  #4015c8:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax</span><br><span class="line">  #4015cf:	00 00 </span><br><span class="line">  #4015d1:	48 89 44 24 68       	mov    %rax,0x68(%rsp)</span><br><span class="line">  4015d6:	31 c0                	xor    %eax,%eax</span><br><span class="line">  4015d8:	83 3d 81 21 20 00 06 	cmpl   $0x6,0x202181(%rip)        # 603760 &lt;num_input_strings&gt;</span><br><span class="line">  4015df:	75 5e                	jne    40163f &lt;phase_defused+0x7b&gt;</span><br><span class="line">  4015e1:	4c 8d 44 24 10       	lea    0x10(%rsp),%r8</span><br><span class="line">  4015e6:	48 8d 4c 24 0c       	lea    0xc(%rsp),%rcx</span><br><span class="line">  4015eb:	48 8d 54 24 08       	lea    0x8(%rsp),%rdx</span><br><span class="line">  4015f0:	be 19 26 40 00       	mov    $0x402619,%esi</span><br><span class="line">  4015f5:	bf 70 38 60 00       	mov    $0x603870,%edi</span><br><span class="line">  4015fa:	e8 f1 f5 ff ff       	callq  400bf0 &lt;__isoc99_sscanf@plt&gt;</span><br><span class="line">  4015ff:	83 f8 03             	cmp    $0x3,%eax</span><br><span class="line">  401602:	75 31                	jne    401635 &lt;phase_defused+0x71&gt;</span><br><span class="line">  401604:	be 22 26 40 00       	mov    $0x402622,%esi</span><br><span class="line">  401609:	48 8d 7c 24 10       	lea    0x10(%rsp),%rdi</span><br><span class="line">  40160e:	e8 25 fd ff ff       	callq  401338 &lt;strings_not_equal&gt;</span><br><span class="line">  401613:	85 c0                	test   %eax,%eax</span><br><span class="line">  401615:	75 1e                	jne    401635 &lt;phase_defused+0x71&gt;</span><br><span class="line">  401617:	bf f8 24 40 00       	mov    $0x4024f8,%edi</span><br><span class="line">  40161c:	e8 ef f4 ff ff       	callq  400b10 &lt;puts@plt&gt;</span><br><span class="line">  401621:	bf 20 25 40 00       	mov    $0x402520,%edi</span><br><span class="line">  401626:	e8 e5 f4 ff ff       	callq  400b10 &lt;puts@plt&gt;</span><br><span class="line">  40162b:	b8 00 00 00 00       	mov    $0x0,%eax</span><br><span class="line">  401630:	e8 0d fc ff ff       	callq  401242 &lt;secret_phase&gt;</span><br><span class="line">  401635:	bf 58 25 40 00       	mov    $0x402558,%edi</span><br><span class="line">  40163a:	e8 d1 f4 ff ff       	callq  400b10 &lt;puts@plt&gt;</span><br><span class="line">  #check canary</span><br><span class="line">  #40163f:	48 8b 44 24 68       	mov    0x68(%rsp),%rax</span><br><span class="line">  #401644:	64 48 33 04 25 28 00 	xor    %fs:0x28,%rax</span><br><span class="line">  #40164b:	00 00 </span><br><span class="line">  40164d:	74 05                	je     401654 &lt;phase_defused+0x90&gt;</span><br><span class="line">  #40164f:	e8 dc f4 ff ff       	callq  400b30 &lt;__stack_chk_fail@plt&gt;</span><br><span class="line">  401654:	48 83 c4 78          	add    $0x78,%rsp</span><br><span class="line">  401658:	c3                   	retq   </span><br><span class="line">  401659:	90                   	nop</span><br><span class="line">  40165a:	90                   	nop</span><br><span class="line">  40165b:	90                   	nop</span><br><span class="line">  40165c:	90                   	nop</span><br><span class="line">  40165d:	90                   	nop</span><br><span class="line">  40165e:	90                   	nop</span><br><span class="line">  40165f:	90                   	nop</span><br></pre></td></tr></table></figure>
 <p>What is <code>num_input_strings</code> ?</p>
 <ul>
 <li><p>No codes named <code>num_input_string</code> in assembly</p>
 </li>
-<li><p>```bash<br>$ cat symbols | grep ‘num_input_strings’<br>0000000000603760 g   O .bss    0000000000000004       num_input_strings</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">* But what is &#96;.bss&#96; section ?</span><br><span class="line"></span><br><span class="line">  &#96;&#96;&#96;bash</span><br><span class="line">  $ readelf -x .bss bomb</span><br><span class="line">  Section &#39;.bss&#39; has no data to dump.</span><br></pre></td></tr></table></figure></li>
+<li><p>Search the symbols</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cat symbols | grep <span class="string">&#x27;num_input_strings&#x27;</span></span><br><span class="line">0000000000603760 g   O .bss	0000000000000004       num_input_strings</span><br></pre></td></tr></table></figure>
+<p>But what is <code>.bss</code> section ?</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ readelf -x .bss bomb</span><br><span class="line">Section <span class="string">&#x27;.bss&#x27;</span> has no data to dump.</span><br></pre></td></tr></table></figure></li>
 <li><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/1909953/regarding-the-bss-segment-and-data-segment-in-unix">uninitialized static data</a></p>
 </li>
 </ul>
@@ -251,7 +253,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/08/17/CSAPP/bomblab/" data-id="cksiqhgec0000llyq1mitacuf" data-title="bomblab" class="article-share-link">Teilen</a>
+      <a data-url="http://rubbish-and-world.github.io/2021/08/17/CSAPP/bomblab/" data-id="cksiqhgec0000llyq1mitacuf" data-title="bomblab" class="article-share-link">Share</a>
       
       
       
@@ -261,9 +263,18 @@
     
 <nav id="article-nav">
   
+    <a href="/2021/08/20/CSAPP/Ch4/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Ch4
+        
+      </div>
+    </a>
+  
   
     <a href="/2021/08/09/CSAPP/Ch3PartIV/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
+      <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">Ch3PartIV</div>
     </a>
   
@@ -279,7 +290,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Kategorien</h3>
+    <h3 class="widget-title">Categories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
     </div>
@@ -308,7 +319,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
     </div>
@@ -318,9 +329,17 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2021/08/28/CSAPP/Ch4PartII/">Ch4PartII</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/20/CSAPP/Ch4/">Ch4</a>
+          </li>
         
           <li>
             <a href="/2021/08/17/CSAPP/bomblab/">bomblab</a>
@@ -332,14 +351,6 @@
         
           <li>
             <a href="/2021/08/05/CSAPP/Ch3PartIII/">Ch3PartIII</a>
-          </li>
-        
-          <li>
-            <a href="/2021/07/30/CSAPP/Ch3PartII/">Ch3PartII</a>
-          </li>
-        
-          <li>
-            <a href="/2021/07/28/CSAPP/Ch3/">Ch3</a>
           </li>
         
       </ul>

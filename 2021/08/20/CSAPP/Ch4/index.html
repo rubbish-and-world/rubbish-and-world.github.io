@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Ch4 | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Processor ArchitectureModern microprocessors are among the most complex systems ever created by humans. A single s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ch4">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Processor ArchitectureModern microprocessors are among the most complex systems ever created by humans. A single s">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/y86regset.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/y86ISA.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/instructions.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/regid.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/statcode.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/asssum.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/sample.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/yo.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/iaddq.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/bitequal.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/mux.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/wordequal.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/wordmux.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/mux4.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/y86alu.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/split.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/regop.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/regfile.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/mem.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/sample.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/computation.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/memaccess.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/stackcompu.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/controltrans.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/hardware.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/detailedhw.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/2cycle.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/constants.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/fetch.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/decodestage.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/aludesign.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/memhd.png">
+<meta property="article:published_time" content="2021-08-20T07:42:01.000Z">
+<meta property="article:modified_time" content="2021-08-27T08:40:34.136Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/y86regset.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSAPP/Ch4" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/08/20/CSAPP/Ch4/" class="article-date">
+  <time class="dt-published" datetime="2021-08-20T07:42:01.000Z" itemprop="datePublished">2021-08-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/csapp/">csapp</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Ch4
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+<h1 id="Processor-Architecture"><a href="#Processor-Architecture" class="headerlink" title="Processor Architecture"></a>Processor Architecture</h1><p><em>Modern microprocessors are among the most complex systems ever created by humans.</em></p>
+<p><em>A single silicon chip, roughly the size of a fingernail, can contain several high-performance processors, large cache memories, and the logic required to interface them to external devices.</em></p>
+<a id="more"></a>
+
+<ul>
+<li><p>The instructions supported by a particular processor and their byte-level encodings are known as its <strong>instruction set architecture (ISA)</strong>.</p>
+<p>Different “families” of processors, such as Intel IA32 and x86-64, IBM/Freescale Power, and the ARM processor family, have different ISAs. A program compiled for one type of machine will NOT run on another. </p>
+</li>
+<li><p>There are many different models of processors within a single family. Each manufacturer produces processors of ever-growing performance and complexity, but the different models remain compatible at the ISA level.</p>
+</li>
+<li><p>Thus, the ISA provides a conceptual layer of abstraction between compiler writers, who need only know what instructions are permitted and how they are encoded, and processor designers, who must build machines that execute those instructions</p>
+</li>
+</ul>
+<p>In this chapter, we take a brief look at the design of processor hardware. We study the way a hardware system can execute the instructions of a particular ISA.</p>
+<p>One important concept is that the actual way a modern processor operates can be quite different from the model of computation implied by the ISA. </p>
+<ul>
+<li>The ISA model would seem to imply <strong>sequential instruction execution</strong>, where each instruction is fetched and executed to completion before the next one begins.</li>
+<li>By executing different parts of <strong>multiple instructions simultaneously</strong>, the processor can achieve higher performance than if it executed just one instruction at a time.</li>
+<li><strong>Special mechanisms</strong> are used to make sure the processor computes the same results as it would with sequential execution. </li>
+<li>This idea of using clever tricks to <strong>improve performance while maintaining the functionality of a simpler and more abstract model</strong> is well known in computer science. </li>
+</ul>
+<p>There are only fewer than 100 companies worldwide design processor, why should we learn this?</p>
+<ul>
+<li>many design hardware systems that contain processors</li>
+<li>Understanding how the processor works aids in understanding how the overall computer system works.</li>
+</ul>
+<p>In this chapter we design a processor to implement a simple ISA call “Y86_64”, which is inspired by x86_64.</p>
+<p>The implementation is discribed in HCL(Hardware Control Language), which can be automatically converted into Verilog(Web Aside arch:vlog on page 503) and then produce circuit designs for the microprocessors. We are indeed creating a system that can be realized as hardware.(Although it is no practical value due to its low performance)</p>
+<p>We have devised a variety of tools for studying and experimenting with our processor designs</p>
+<ul>
+<li>an assembler for Y86-64</li>
+<li>a simulator for running Y86-64 programs on your machine</li>
+<li>simulators for two sequential and one pipelined processor design.</li>
+<li>The control logic for these designs is described by files in HCL notation.</li>
+</ul>
+<h2 id="4-1-The-Y86-64-Instruction-Set-Architecture"><a href="#4-1-The-Y86-64-Instruction-Set-Architecture" class="headerlink" title="4.1 The Y86-64 Instruction Set Architecture"></a>4.1 The Y86-64 Instruction Set Architecture</h2><p><em>Defining an instruction set architecture, such as Y86-64, includes defining the <u>different components of its state, the set of instructions and their encodings, a set of programming conventions, and the handling of exceptional events.</u></em></p>
+<h3 id="4-1-1-Programmer-Visible-State"><a href="#4-1-1-Programmer-Visible-State" class="headerlink" title="4.1.1 Programmer-Visible State"></a>4.1.1 Programmer-Visible State</h3><p><img src="/2021/08/20/CSAPP/Ch4/y86regset.png" alt="programmer visible state"></p>
+<h4 id="What-is-programmer-visible-state"><a href="#What-is-programmer-visible-state" class="headerlink" title="What is programmer visible state"></a>What is programmer visible state</h4><h5 id="Programmer"><a href="#Programmer" class="headerlink" title="Programmer"></a>Programmer</h5><p>Either someone writing programs in assembly code or a compiler generating machine-level code.</p>
+<h5 id="Visible-state"><a href="#Visible-state" class="headerlink" title="Visible state"></a>Visible state</h5><p>We do not need to represent and organize this state in exactly the manner implied by the ISA, as long as we can make sure that machine-level programs appear to have access to the programmer-visible state when implementing it.</p>
+<h4 id="State"><a href="#State" class="headerlink" title="State"></a>State</h4><p><em>The state for Y86-64 is similar to that for x86-64.</em></p>
+<ul>
+<li><p>There are 15 program registers, 64 bits</p>
+</li>
+<li><p>There are three single-bit condition codes, <code>ZF</code>, <code>SF</code>, and <code>OF</code></p>
+</li>
+<li><p>The program counter (PC) holds the address of the instruction currently being executed.</p>
+</li>
+<li><p>The memory is conceptually a large array of bytes</p>
+<p>(Y86-64 programs reference memory locations using <strong>virtual addresses</strong>, explained in Chatper 9)</p>
+</li>
+<li><p>a status code <code>Stat</code>,  indicating the overall state of program execution.</p>
+<p>It will indicate either normal operation or that some sort of exception has occurred, such as when an instruction attempts to read from an invalid memory address</p>
+</li>
+</ul>
+<h3 id="4-1-2-Y86-64-Instructions"><a href="#4-1-2-Y86-64-Instructions" class="headerlink" title="4.1.2 Y86-64 Instructions"></a>4.1.2 Y86-64 Instructions</h3><p><em>The set of Y86-64 instructions is largely a subset of the x86-64 instruction set. It includes only 8-byte integer operations, has fewer addressing modes, and includes a smaller set of operations.</em></p>
+<p><img src="/2021/08/20/CSAPP/Ch4/y86ISA.png" alt="Y86-64 ISA"></p>
+<ul>
+<li><p>we only use 8-byte data, we can refer to these as “words” without any ambiguity.</p>
+</li>
+<li><p>assembly-code representation of the instructions on the left and the byte encodings on the right.</p>
+</li>
+<li><p>We splite <code>movq</code> into 4 explicitly <code>xxmovq</code> instruction, showing their operands</p>
+</li>
+<li><p>4 integer operation instructions only operate on registers and will set condition codes</p>
+</li>
+<li><p>7 jump instructions : <code>jmp, jle, jl, je, jne, jge, jg</code>.</p>
+</li>
+<li><p>6 conditional move instructions : <code>cmovle, cmovl, cmove, cmovne, cmovge, cmovg</code>, they only work on registers</p>
+</li>
+<li><p><code>call</code> and <code>ret</code> are same with x86</p>
+</li>
+<li><p>The <code>halt</code> instruction stops instruction execution. </p>
+<p>x86-64 has a comparable instruction, called <code>hlt</code>, x86-64 application programs are not permitted to use this instruction, since it causes the entire system to suspend operation. For Y86-64, executing the halt instruction causes the processor to stop, with the status code set to <code>HLT</code>.</p>
+</li>
+</ul>
+<p><img src="/2021/08/20/CSAPP/Ch4/instructions.png" alt="y86 instructions"></p>
+<h3 id="4-1-3-Instruction-Encoding"><a href="#4-1-3-Instruction-Encoding" class="headerlink" title="4.1.3 Instruction Encoding"></a>4.1.3 Instruction Encoding</h3><ul>
+<li>Each instruction requires between 1 and 10 bytes, depending on which fields are required</li>
+<li>Every instruction has an initial byte identifying the instruction type. <ul>
+<li>This byte is split into two 4-bit parts: the high-order, or code part, and the low-order, or function part. </li>
+<li>code part specify it is in which “instruction class”</li>
+<li>function parts are significant only for the cases where a group of related instructions share a common code. </li>
+<li> Observe that <code>rrmovq</code> has the same instruction code as the conditional moves. It can be viewed as an “unconditional move” just as the <code>jmp</code> instruction is an unconditional jump, both having function code 0.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2021/08/20/CSAPP/Ch4/regid.png" alt="register identifiers"></p>
+<ul>
+<li><p>each of the 15 program registers has an associated register identifier (ID) ranging from 0 to 0xE</p>
+<p>The numbering of registers in Y86- 64 matches what is used in x86-64. The program registers are stored within the CPU in a <strong>register file</strong>, <strong>a small random access memory</strong> where the register IDs serve as addresses.</p>
+</li>
+<li><p>The optional register specifier can take up one byte, shown in Figure 2</p>
+</li>
+<li><p>Some instructions require an additional 8-byte constant word</p>
+<ul>
+<li><p>the displacement for <code>rmmovq</code> and <code>mrmovq</code> address specifiers</p>
+</li>
+<li><p>the destination of branches and calls</p>
+<p>(Note that branch and call destinations are given as absolute addresses, rather than using the PC-relative addressing seen in x86-64. Since we are more concerned with simplicity in our presentation, we use absolute addressing. )</p>
+</li>
+</ul>
+</li>
+<li><p>As with x86-64, all integers have a little-endian encoding.</p>
+<p>(When the instruction is written in disassembled form, these bytes appear in reverse order)</p>
+</li>
+</ul>
+<p>For example, let’s try to encode instruction <code>rmmovq %rsp,0x123456789abcd(%rdx)</code></p>
+<ul>
+<li><code>rmmovq -&gt; 0x40</code>, first byte</li>
+<li><code>%rsp -&gt; 0x4 , %rdx -&gt; 0x2</code>, second byte, register specifier, <code>0x42</code></li>
+<li><code>0x123456789abcd</code>, padding to 8 bytes, <code>0x 00 01 23 45 67 89 ab cd</code>, reverse the order to satisfy little endian requirements, <code>0x cd ab 89 67 45 23 01 00</code></li>
+<li>The instruction encode : <code> 0x 40 42  cd ab 89 67 45 23 01 00</code>, note that <strong>only integer part need to be little endian !!!</strong></li>
+</ul>
+<h5 id="Uniqueness"><a href="#Uniqueness" class="headerlink" title="Uniqueness"></a>Uniqueness</h5><p><em>One important property of any instruction set is that the byte encodings must have a unique interpretation.</em></p>
+<p><em>An arbitrary sequence of bytes either <strong>encodes a unique instruction</strong> sequence or <strong>is not a legal byte sequence</strong></em></p>
+<ul>
+<li>This property holds for Y86-64, because every instruction has a unique combination of code and function in its initial byte, and given this byte, we can determine the length and meaning of any additional bytes.</li>
+<li>This property ensures that a processor can execute an objectcode program without any ambiguity about the meaning of the code.</li>
+<li> Even if the code is embedded within other bytes in the program, we can readily determine the instruction sequence as long as we start from the first byte in the sequence.</li>
+<li>On the other hand, if we do not know the starting position of a code sequence, we cannot reliably determine how to split the sequence into individual instructions. This causes problems for disassemblers and other tools that attempt to extract machine-level programs directly from object-code byte sequences.</li>
+</ul>
+<h4 id="Practice-Problem-4-1"><a href="#Practice-Problem-4-1" class="headerlink" title="Practice Problem 4.1"></a>Practice Problem 4.1</h4><blockquote>
+<p>Determine the byte encoding of the Y86-64 instruction sequence that follows. The line <code>.pos 0x100</code> indicates that the starting address of the object code should be <code>0x100</code>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.pos 0x100 # Start code at address 0x100</span><br><span class="line">	irmovq $15,%rbx</span><br><span class="line">	rrmovq %rbx,%rcx</span><br><span class="line">loop:</span><br><span class="line">	rmmovq %rcx,-3(%rbx)</span><br><span class="line">	addq %rbx,%rcx</span><br><span class="line">	jmp loop</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark"><a href="#My-solution-white-check-mark" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">    0x100 : 30 f3 0f 00 00 00 00 00 00 00   irmovq $15,%rbx</span><br><span class="line">    0x10a : 20 31                                       rrmovq %rbx,%rcx</span><br><span class="line">.Loop                                                       </span><br><span class="line">    0x10c : 40 13 fd ff ff ff ff ff ff ff              rmmovq %rcx,-3(%rbx)</span><br><span class="line">    0x116 : 60 31                                        addq %rbx , %rcx</span><br><span class="line">    0x118 : 70 0c 01 00 00 00 00 00 00 00   jmp 0x10c</span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-4-2"><a href="#Practice-Problem-4-2" class="headerlink" title="Practice Problem 4.2"></a>Practice Problem 4.2</h4><blockquote>
+<p>For each byte sequence listed, determine the Y86-64 instruction sequence it encodes. If there is some invalid byte in the sequence, show the instruction sequence up to that point and indicate where the invalid value occurs. For each sequence, we show the starting address, then a colon, and then the byte sequence.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A. 0x100: 30 f3 fc ff ff ff ff ff ff ff 40 63 00 08 00 00 00 00 00 00</span><br><span class="line">B. 0x200: a06f 800c02000000000000  00 30f30a00000000000000</span><br><span class="line">C. 0x300: 50540700000000000000 10 f0 b01f</span><br><span class="line">D. 0x400: 6113 730004000000000000 00</span><br><span class="line">E. 0x500: 6362 a0 f0</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark-1"><a href="#My-solution-white-check-mark-1" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"># A</span><br><span class="line">0x100: irmovq $-4,%rbx</span><br><span class="line">0x10a: rmmovq %rsi,0x800(%rbx)</span><br><span class="line">0x114: halt</span><br><span class="line"># B</span><br><span class="line">0x200: pushq %rsi</span><br><span class="line">0x202: call 0x20c</span><br><span class="line">0x20b: halt</span><br><span class="line">0x20c: irmovq  $0xa,%rbx</span><br><span class="line">0x216: ret</span><br><span class="line"># C</span><br><span class="line">0x300: mrmovq 0x7(%rsp) , %rbp</span><br><span class="line">0x30a: nop</span><br><span class="line">Invalid sequence : f0</span><br><span class="line"># D</span><br><span class="line">0x400: subq %rcx,%rbx</span><br><span class="line">0x402: je 0x400</span><br><span class="line">0x40b: halt</span><br><span class="line"># E</span><br><span class="line">0x500: xorq %rsi,%rdx</span><br><span class="line">invalid sequence : a0 f0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="4-1-4-Y86-64-Exceptions"><a href="#4-1-4-Y86-64-Exceptions" class="headerlink" title="4.1.4 Y86-64 Exceptions"></a>4.1.4 Y86-64 Exceptions</h3><p><img src="/2021/08/20/CSAPP/Ch4/statcode.png" alt="stat codes"></p>
+<p><em>Stat describe the overall state of the executing program</em></p>
+<p>Except <code>AOK</code>, all other codes indicates that some type of exception has occurred.</p>
+<ul>
+<li><code>HLT</code> , indicates that the processor has executed a <code>halt</code> instruction. </li>
+<li><code>ADR</code>,  indicates that the processor attempted to read from or write to an invalid memory address, either while fetching an instruction or while reading or writing data. </li>
+<li><code>INS</code> , indicates that an invalid instruction code has been encountered.</li>
+</ul>
+<p>For Y86-64, we will simply have the processor stop executing instructions when it encounters any of the exceptions listed. In a more complete design, the processor would typically invoke an <strong>exception handler</strong>, a procedure designated to handle the specific type of exception encountered.</p>
+<h3 id="4-1-5-Y86-64-Programs"><a href="#4-1-5-Y86-64-Programs" class="headerlink" title="4.1.5 Y86-64 Programs"></a>4.1.5 Y86-64 Programs</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">sum</span><span class="params">(<span class="keyword">long</span> *start, <span class="keyword">long</span> count)</span>    </span></span><br><span class="line"><span class="function"></span>&#123;      </span><br><span class="line">	<span class="keyword">long</span> sum = <span class="number">0</span>;      </span><br><span class="line">	<span class="keyword">while</span> (count) &#123;      </span><br><span class="line">		sum += *start;      </span><br><span class="line">		start++;      </span><br><span class="line">		count--;      </span><br><span class="line">	&#125;      </span><br><span class="line">	<span class="keyword">return</span> sum;      </span><br><span class="line">&#125;      </span><br></pre></td></tr></table></figure>
+<p><img src="/2021/08/20/CSAPP/Ch4/asssum.png" alt="assembly code for function sum"></p>
+<ul>
+<li><p>The Y86-64 code loads constants into registers (lines 2–3), since it cannot use immediate data in arithmetic instructions.</p>
+<p>So it store the constants into register and then use them as constants</p>
+</li>
+<li><p>The Y86-64 code requires two instructions (lines 8–9) to read a value from memory and add it to a register, whereas the x86-64 code can do this with a single addq instruction (line 5).</p>
+</li>
+<li><p>Our hand-coded Y86-64 implementation takes advantage of the property that the subq instruction (line 11) also sets the condition codes, and so the testq instruction of the gcc-generated code (line 9) is not required.</p>
+<p>For this to work, though, the Y86-64 code must set the condition codes prior to entering the loop with an andq instruction (line 5).</p>
+</li>
+</ul>
+<h5 id="Sample-program"><a href="#Sample-program" class="headerlink" title="Sample program"></a>Sample program</h5><p><img src="/2021/08/20/CSAPP/Ch4/sample.png" alt="sample program"></p>
+<ul>
+<li><p><code>.pos</code> is a <strong>assembler directive</strong>, which tell the assembler to adjust the address at which it is generating code or to insert some words of data.</p>
+<p> The directive <code>.pos 0</code> (line 2) indicates that the assembler should begin generating code starting at address 0. </p>
+</li>
+<li><p>The next instruction (line 3) initializes the stack pointer.(defined at line 40, with <code>.pos 0x200</code> )</p>
+</li>
+<li><p>Lines 8 to 13 of the program declare an array of four words</p>
+</li>
+<li><p>As this example shows, since our only tool for creating Y86-64 code is an assembler, <strong>the programmer must perform tasks we ordinarily delegate to the compiler, linker, and run-time system.</strong></p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./yas main.ys</span><br><span class="line">$ cat main.yo</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/08/20/CSAPP/Ch4/yo.png" alt="main.yo"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ .&#x2F;yis main.yo</span><br><span class="line">Stopped in 34 steps at PC &#x3D; 0x13.  Status &#39;HLT&#39;, CC Z&#x3D;1 S&#x3D;0 O&#x3D;0</span><br><span class="line">Changes to registers:</span><br><span class="line">%rax:	0x0000000000000000	0x0000abcdabcdabcd</span><br><span class="line">%rsp:	0x0000000000000000	0x0000000000000200</span><br><span class="line">%rdi:	0x0000000000000000	0x0000000000000038</span><br><span class="line">%r8:	0x0000000000000000	0x0000000000000008</span><br><span class="line">%r9:	0x0000000000000000	0x0000000000000001</span><br><span class="line">%r10:	0x0000000000000000	0x0000a000a000a000</span><br><span class="line"></span><br><span class="line">Changes to memory:</span><br><span class="line">0x01f0:	0x0000000000000000	0x0000000000000055</span><br><span class="line">0x01f8:	0x0000000000000000	0x0000000000000013</span><br></pre></td></tr></table></figure>
+<ul>
+<li>The first line of the simulation output summarizes the execution and the resulting values of the PC and program status.</li>
+<li>We can see in this output that register <code>%rax</code> contains 0xabcdabcdabcdabcd, the sum of the 4-element array passed to procedure <code>sum</code></li>
+<li> In addition, we can see that the stack, which starts at address 0x200 and grows toward lower addresses, has been used, causing changes to words of memory at addresses 0x1f0–0x1f8.</li>
+</ul>
+<h4 id="Practice-Problem-4-3"><a href="#Practice-Problem-4-3" class="headerlink" title="Practice Problem 4.3"></a>Practice Problem 4.3</h4><blockquote>
+<p>One common pattern in machine-level programs is to add a constant value to a register. With the Y86-64 instructions presented thus far, this requires first using an irmovq instruction to set a register to the constant, and then an addq instruction to add this value to the destination register. Suppose we want to add a new instruction iaddq with the following format:</p>
+<p><img src="/2021/08/20/CSAPP/Ch4/iaddq.png" alt="iaddq instruction"></p>
+<p>This instruction adds the constant value V to register rB.</p>
+<p>Rewrite the Y86-64 sum function of Figure 4.6 to make use of the iaddq instruction. In the original version, we dedicated registers <code>%r8</code> and <code>%r9</code> to hold constant values. Now, we can avoid using those registers altogether.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-2"><a href="#My-solution-white-check-mark-2" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iaddq $8,%rdi</span><br><span class="line">#addq %r8,%rdi # start++</span><br><span class="line">iaddq $-1,%rsi</span><br><span class="line">#subq %r9,%rsi # count--. Set CC</span><br></pre></td></tr></table></figure>
+<h4 id="Verification"><a href="#Verification" class="headerlink" title="Verification:"></a>Verification:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Stopped in 34 steps at PC &#x3D; 0x13.  Status &#39;HLT&#39;, CC Z&#x3D;1 S&#x3D;0 O&#x3D;0</span><br><span class="line">Changes to registers:</span><br><span class="line">%rax:	0x0000000000000000	0x0000abcdabcdabcd</span><br><span class="line">%rsp:	0x0000000000000000	0x0000000000000200</span><br><span class="line">%rdi:	0x0000000000000000	0x0000000000000038</span><br><span class="line">%r8:	0x0000000000000000	0x0000000000000008</span><br><span class="line">%r9:	0x0000000000000000	0x0000000000000001</span><br><span class="line">%r10:	0x0000000000000000	0x0000a000a000a000</span><br><span class="line"></span><br><span class="line">Changes to memory:</span><br><span class="line">0x01f0:	0x0000000000000000	0x0000000000000055</span><br><span class="line">0x01f8:	0x0000000000000000	0x0000000000000013</span><br></pre></td></tr></table></figure>
+<h3 id="4-1-6-Some-Y86-64-Instruction-Details"><a href="#4-1-6-Some-Y86-64-Instruction-Details" class="headerlink" title="4.1.6 Some Y86-64 Instruction Details"></a>4.1.6 Some Y86-64 Instruction Details</h3><p>The <code>pushq</code> instruction both decrements the stack pointer by 8 and writes a register value to memory. It is therefore not totally clear what the processor should do when executing the instruction <code>pushq %rsp</code>, since the register being pushed is being changed by the same instruction</p>
+<p>We can either push the original value of <code>%rsp</code> or push the decrease value of <code>%rsp</code></p>
+<p>Y86-64 and X86-64 adopt the former one, the original <code>%rsp</code></p>
+<h4 id="Practice-Problem-4-7"><a href="#Practice-Problem-4-7" class="headerlink" title="Practice Problem 4.7"></a>Practice Problem 4.7</h4><p><a target="_blank" rel="noopener" href="http://csapp.cs.cmu.edu/3e/waside/waside-embedded-asm.pdf">combine assembly with C in x86</a></p>
+<p>Then you can write code to test the convention used by your machine</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.text</span><br><span class="line">.globl pushtest</span><br><span class="line"> pushtest:</span><br><span class="line"> movq %rsp, %rax #Copy stack pointer</span><br><span class="line"> pushq %rsp #Push stack pointer</span><br><span class="line"> popq %rdx #Pop it back</span><br><span class="line"> subq %rdx, %rax #Return 0 or 4</span><br><span class="line"> ret</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">.text</span><br><span class="line"> .globl poptest</span><br><span class="line"> poptest:</span><br><span class="line"> movq %rsp, %rdi #Save stack pointer</span><br><span class="line"> pushq $0xabcd #Push test value</span><br><span class="line"> popq %rsp #Pop to stack pointer</span><br><span class="line"> movq %rsp, %rax #Set popped value as return value</span><br><span class="line"> movq %rdi, %rsp #Restore stack pointer</span><br><span class="line"> ret</span><br></pre></td></tr></table></figure>
+<hr>
+<p>A similar ambiguity occurs for the instruction <code>popq %rsp</code>. It could either set <code>%rsp</code> to the value read from memory or to the incremented stack pointer.</p>
+<p>Y86-64 and X86-64 adopt the former one, the value read from memory</p>
+<h2 id="4-2-Logic-Design-and-the-Hardware-Control-Language-HCL"><a href="#4-2-Logic-Design-and-the-Hardware-Control-Language-HCL" class="headerlink" title="4.2 Logic Design and the Hardware Control Language HCL"></a>4.2 Logic Design and the Hardware Control Language HCL</h2><p>Three major components are required to implement a digital system: <strong>combinational logic</strong> to compute functions on the bits, <strong>memory elements</strong> to store bits, and <strong>clock signals</strong> to regulate the updating of the memory elements.</p>
+<p>(A complete reference for HCL can be found in Web Aside arch:hcl on page 508.)</p>
+<h3 id="4-2-1-Logic-Gates"><a href="#4-2-1-Logic-Gates" class="headerlink" title="4.2.1 Logic Gates"></a>4.2.1 Logic Gates</h3><p><em>Logic gates are the basic computing elements for digital circuits. They generate an output equal to some Boolean function of the bit values at their inputs.</em></p>
+<ul>
+<li>Logic gates are always active. If some input to a gate changes, then within some small amount of time, the output will change accordingly.</li>
+</ul>
+<h3 id="4-2-2-Combinational-Circuits-and-HCL-Boolean-Expressions"><a href="#4-2-2-Combinational-Circuits-and-HCL-Boolean-Expressions" class="headerlink" title="4.2.2 Combinational Circuits and HCL Boolean Expressions"></a>4.2.2 Combinational Circuits and HCL Boolean Expressions</h3><p><em>By assembling a number of logic gates into a network, we can construct computational blocks known as <strong>combinational circuits</strong>.</em></p>
+<p><img src="/2021/08/20/CSAPP/Ch4/bitequal.png" alt="bit equality"></p>
+<p> Several restrictions are placed on how the networks are constructed:</p>
+<ul>
+<li><p>Every logic gate input must be connected to exactly one of the following: </p>
+<ul>
+<li>one of the system inputs (known as a primary input)(<code>a</code> and <code>b</code> here)</li>
+<li>the output connection of some memory element</li>
+<li>the output of some logic gate.</li>
+</ul>
+</li>
+<li><p>The outputs of two or more logic gates cannot be connected together. </p>
+<p>Otherwise, the two could try to drive the wire toward different voltages, possibly causing an invalid voltage or a circuit malfunction.</p>
+</li>
+<li><p>The network must be <strong>acyclic</strong>. </p>
+<p>That is, there cannot be a path through a series of gates that forms a loop in the network. Such loops can cause ambiguity in the function computed by the network.</p>
+</li>
+</ul>
+<p>HCL of Figure 4.10</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> eq = (a &amp;&amp; b) || (!a &amp;&amp; !b);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>HCL uses C-style syntax, with <code>=</code> associating a signal name with an expression</li>
+<li>Unlike C, however, we do not view this as performing a computation and assigning the result to some memory location. Instead, it is simply a way to <strong>give a name to an expression.</strong></li>
+</ul>
+<h4 id="Practice-Problem-4-9"><a href="#Practice-Problem-4-9" class="headerlink" title="Practice Problem 4.9"></a>Practice Problem 4.9</h4><blockquote>
+<p>Write an HCL expression for a signal <code>xor</code>, equal to the exclusive-or of inputs <code>a</code> and <code>b</code>. What is the relation between the signals <code>xor</code> and <code>eq</code> defined above?</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-3"><a href="#My-solution-white-check-mark-3" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> <span class="keyword">xor</span> = (a &amp;&amp; !b)  || (!a &amp;&amp; b);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">xor</span> == !eq</span><br></pre></td></tr></table></figure>
+<hr>
+<p><img src="/2021/08/20/CSAPP/Ch4/mux.png" alt="bit level mux"></p>
+<p><em>A multiplexor, selects a value from among a set of different data signals, depending on the value of a control input signal.</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> out = (s &amp;&amp; a) || (!s &amp;&amp; b);</span><br></pre></td></tr></table></figure>
+<h5 id="Difference-between-HCL-and-C"><a href="#Difference-between-HCL-and-C" class="headerlink" title="Difference between HCL and C"></a>Difference between HCL and C</h5><ul>
+<li> In HCL, if some input to the circuit changes, then after some delay, the outputs will change accordingly. By contrast, a C expression is only evaluated when it is encountered during the execution of a program.</li>
+<li>Logical expressions in C allow arguments to be arbitrary integers, while HCL only allow 0 and 1</li>
+<li>Logical expressions in C have the property that they might only be partially evaluated.(aka short-cut evaluation). HCL doesn’t have this property.</li>
+</ul>
+<h3 id="4-2-3-Word-Level-Combinational-Circuits-and-HCL-Integer-Expressions"><a href="#4-2-3-Word-Level-Combinational-Circuits-and-HCL-Integer-Expressions" class="headerlink" title="4.2.3 Word-Level Combinational Circuits and HCL Integer Expressions"></a>4.2.3 Word-Level Combinational Circuits and HCL Integer Expressions</h3><p><em>Combinational circuits that perform word-level computations are constructed using logic gates to compute the individual bits of the output word, based on the individual bits of the input words.</em></p>
+<p><img src="/2021/08/20/CSAPP/Ch4/wordequal.png" alt="word equality"></p>
+<ul>
+<li><p>In HCL, we will declare any word-level signal as an <code>int</code>, without specifying the word size.</p>
+<p>(This is done for simplicity. In a full-featured hardware description language, every word can be declared to have a specific number of bits)</p>
+</li>
+<li><p>HCL allows words to be compared for equality</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> Eq = (A == B);</span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-4-10"><a href="#Practice-Problem-4-10" class="headerlink" title="Practice Problem 4.10"></a>Practice Problem 4.10</h4></li>
+</ul>
+<blockquote>
+<p>Suppose you want to implement a word-level equality circuit using the exclusiveor circuits from Problem 4.9 rather than from bit-level equality circuits. Design such a circuit for a 64-bit word consisting of 64 bit-level exclusive-or circuits and two additional logic gates.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-4"><a href="#My-solution-white-check-mark-4" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> Eq = !(<span class="keyword">xor</span>(a1,b1) || <span class="keyword">xor</span>(a2,b2) || ... || <span class="keyword">xor</span>(a64,b64));</span><br></pre></td></tr></table></figure>
+<hr>
+<p><img src="/2021/08/20/CSAPP/Ch4/wordmux.png" alt="word level mux"></p>
+<ul>
+<li>This circuit generates a 64-bit word Out equal to one of the two input words, A or B, depending on the control input <strong>bit</strong> s</li>
+<li>Rather than replicating the bit-level multiplexor 64 times, the word-level version reduces the number of inverters by generating <code>!s</code> once and reusing it at each bit position.</li>
+</ul>
+<p>Multiplexing functions are described in HCL using case expressions. A case expression has the following general form:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">select1 : expr1;</span><br><span class="line">select2 : expr2;</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">selectk : exprk;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>The expression contains a series of cases, where each case i consists of a <strong>Boolean expression selecti</strong>, indicating when this case should be selected, and an <strong>integer expression expri</strong>, indicating the resulting value.</p>
+</li>
+<li><p>Unlike the switch statement of C, we do not require the different selection expressions to be mutually exclusive.</p>
+<p>Logically, the selection expressions are <strong>evaluated in sequence</strong>, and the case for the first one yielding 1 is selected.</p>
+<p>So this is the way to specify a default case in HCL</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">word Out = [</span><br><span class="line">    s : A;</span><br><span class="line">    <span class="number">1</span> : B; <span class="comment">// equivalent to default:B</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure></li>
+<li><p>An actual hardware multiplexor must have mutually exclusive signals controlling which input word should be passed to the output.</p>
+<p>(To translate an HCL case expression into hardware, a logic synthesis program would need to analyze the set of selection expressions and resolve any possible conflicts by making sure that only the first matching case would be selected.)</p>
+</li>
+<li><p>For example</p>
+<p><img src="/2021/08/20/CSAPP/Ch4/mux4.png" alt="mux4"></p>
+  <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">word Out4 = [</span><br><span class="line">!s1 &amp;&amp; !s0 : A; <span class="comment"># 00</span></span><br><span class="line">!s1 : B; <span class="comment"># 01</span></span><br><span class="line">!s0 : C; <span class="comment"># 10</span></span><br><span class="line"><span class="number">1</span> : D; <span class="comment"># 11</span></span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<p>  Observe that the selection expressions can sometimes be simplified, since only the first matching case is selected.</p>
+</li>
+<li><p>A more complex example</p>
+<p>a logic circuit that finds the minimum value among a set of words A, B, and C can be expressed in HCL</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">word Min3 = [</span><br><span class="line">A &lt;= B &amp;&amp; A &lt;= C : A;</span><br><span class="line">B &lt;= A &amp;&amp; B &lt;= C : B;</span><br><span class="line"><span class="number">1</span> : C;</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-4-11"><a href="#Practice-Problem-4-11" class="headerlink" title="Practice Problem 4.11"></a>Practice Problem 4.11</h4></li>
+</ul>
+<blockquote>
+<p>The HCL code given for computing the minimum of three words contains four comparison expressions of the form <code>X &lt;= Y</code>.Rewrite the code to compute the same result, but using only three comparisons.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-5"><a href="#My-solution-white-check-mark-5" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">word Min3 = [</span><br><span class="line">    A &lt;= B &amp;&amp; A &lt;= C :A;</span><br><span class="line">    B &lt;= C : B;</span><br><span class="line">    <span class="number">1</span> : C;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-4-12"><a href="#Practice-Problem-4-12" class="headerlink" title="Practice Problem 4.12"></a>Practice Problem 4.12</h4><blockquote>
+<p>Write HCL code describing a circuit that for word inputs A, B, and C selects the median of the three values. That is, the output equals the word lying between the minimum and maximum of the three inputs</p>
+</blockquote>
+<h4 id="My-solution-x"><a href="#My-solution-x" class="headerlink" title="My solution : :x:"></a>My solution : :x:</h4><h4 id="Solution-on-the-book"><a href="#Solution-on-the-book" class="headerlink" title="Solution on the book:"></a>Solution on the book:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">word Med3 = [</span><br><span class="line">A &lt;= B &amp;&amp; B &lt;= C : B;</span><br><span class="line">C &lt;= B &amp;&amp; B &lt;= A : B;</span><br><span class="line">B &lt;= A &amp;&amp; A &lt;= C : A;</span><br><span class="line">C &lt;= A &amp;&amp; A &lt;= B : A;</span><br><span class="line"><span class="number">1</span> : C;</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="Y86-ALU-arithmetic-logical-unit"><a href="#Y86-ALU-arithmetic-logical-unit" class="headerlink" title="Y86 ALU(arithmetic/logical unit)"></a>Y86 ALU(arithmetic/logical unit)</h5><p><img src="/2021/08/20/CSAPP/Ch4/y86alu.png" alt="alu"></p>
+<p><em>The circuit has three inputs: two data inputs labeled A and B and a control input. Depending on the setting of the control input, the circuit will perform different arithmetic or logical operations on the data inputs.</em></p>
+<ul>
+<li>Observe that the four operations diagrammed for this ALU correspond to the four different integer operations supported by the Y86-64 instruction set, and the control values match the function codes for these instructions </li>
+<li>Note also the ordering of operands for subtraction, where the A input is subtracted from the B input. This ordering is chosen in anticipation of the ordering of arguments in the <code>subq</code> instruction.</li>
+</ul>
+<h3 id="4-2-4-Set-Membership"><a href="#4-2-4-Set-Membership" class="headerlink" title="4.2.4 Set Membership"></a>4.2.4 Set Membership</h3><p>Split control signal into bits:</p>
+<p><img src="/2021/08/20/CSAPP/Ch4/split.png" alt="split"></p>
+<p>We can express the generation of signals s1 and s0 using equality tests based on the possible values of <code>code</code>:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> s1 = code == <span class="number">2</span> || code == <span class="number">3</span>;</span><br><span class="line"><span class="keyword">bool</span> s0 = code == <span class="number">1</span> || code == <span class="number">3</span>;</span><br></pre></td></tr></table></figure>
+<p>A more concise expression can be written that expresses the property that s1 is 1 when code is in the set {2, 3}, and s0 is 1 when code is in the set {1, 3}:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> s1 = code in &#123; <span class="number">2</span>, <span class="number">3</span> &#125;;</span><br><span class="line"><span class="keyword">bool</span> s0 = code in &#123; <span class="number">1</span>, <span class="number">3</span> &#125;;</span><br></pre></td></tr></table></figure>
+<p>The general form of a set membership test is</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iexpr in &#123;iexpr1, iexpr2, ... , iexprk&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-2-5-Memory-and-Clocking"><a href="#4-2-5-Memory-and-Clocking" class="headerlink" title="4.2.5 Memory and Clocking"></a>4.2.5 Memory and Clocking</h3><p><em>To create sequential circuits—that is, systems that have state and perform computations on that state—we must introduce devices that <strong>store information</strong> represented as bits</em></p>
+<p>We consider two classes of memory devices:</p>
+<ul>
+<li><p><strong>Clocked registers</strong> (or simply registers) store individual bits or words. </p>
+<p>The clock signal controls the loading of the register with the value at its input</p>
+</li>
+<li><p><strong>Random access memories</strong> (or simply memories) store multiple words, using an address to select which word should be read or written.</p>
+<ul>
+<li>Address can be the virtual memory system of a processor</li>
+<li>the register file, where register identifiers serve as the addresses</li>
+</ul>
+</li>
+</ul>
+<p>As we can see, the word “register” means two slightly different things when speaking of hardware versus machine-language programming.When necessary to avoid ambiguity, we will call the two classes of registers “hardware registers” and “program registers,” respectively.</p>
+<p><img src="/2021/08/20/CSAPP/Ch4/regop.png" alt="hardware register operation"></p>
+<ul>
+<li>For most of the time, the register remains in a fixed state (shown as x), generating an output equal to its current state</li>
+<li>Signals propagate through the combinational logic preceding the register, creating a new value for the register input (shown as y), but the register output remains fixed as long as the clock is low.(y is also “latched”)</li>
+<li>As the clock rises, the input signals are loaded into the register as its next state (y), and this becomes the new register output until the next rising clock edge.</li>
+<li> Our Y86-64 processors will use clocked registers to hold the program counter (PC), the condition codes (CC), and the program status (Stat).</li>
+</ul>
+<h5 id="Register-files"><a href="#Register-files" class="headerlink" title="Register files"></a>Register files</h5><p><img src="/2021/08/20/CSAPP/Ch4/regfile.png" alt="register file"></p>
+<p>This register file has two read ports, named A and B, and one write port, named W</p>
+<p>Such a <strong>multiported</strong> random access memory allows multiple read and write operations to take place <strong>simultaneously</strong></p>
+<ul>
+<li><p>Each port has an address input, indicating which program register should be selected, and a data output or input giving a value for that program register. </p>
+</li>
+<li><p>Since the register file can be both read and written, a natural question to ask is, “What happens if the circuit attempts to read and write the same register simultaneously?”</p>
+<p> The answer is straightforward: if the same register ID is used for both a read port and the write port, then, as the clock rises, there will be a transition on the read port’s data output from the old value to the new</p>
+</li>
+</ul>
+<h5 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h5><p><img src="/2021/08/20/CSAPP/Ch4/mem.png" alt="memory"></p>
+<ul>
+<li>The error signal will be set to 1 if the address is out of range, and to 0 otherwise</li>
+<li>This signal is generated by combinational logic, since the required bounds checking is purely a function of the address input and does not involve saving any state.</li>
+</ul>
+<p><em>Our processor includes an additional read-only memory for reading instructions. In most actual systems, these memories are merged into a single memory with two ports: one for reading instructions, and the other for reading or writing data.</em></p>
+<h2 id="4-3-Sequential-Y86-64-Implementations"><a href="#4-3-Sequential-Y86-64-Implementations" class="headerlink" title="4.3 Sequential Y86-64 Implementations"></a>4.3 Sequential Y86-64 Implementations</h2><p><em>As a first step, we describe a processor called SEQ (for “sequential” processor).</em></p>
+<ul>
+<li> On each clock cycle, SEQ performs all the steps required to process a complete instruction</li>
+<li>This would require a very long cycle time, however, and so the clock rate would be unacceptably low.</li>
+</ul>
+<h3 id="4-3-1-Organizing-Processing-into-Stages"><a href="#4-3-1-Organizing-Processing-into-Stages" class="headerlink" title="4.3.1 Organizing Processing into Stages"></a>4.3.1 Organizing Processing into Stages</h3><p><em>In general, processing an instruction involves a number of operations.</em></p>
+<p>We organize them in a particular sequence of stages, <strong>attempting to make all instructions follow a uniform sequence</strong>, even though the instructions differ greatly in their actions.</p>
+<p>The following is an informal description of the stages and the operations performed within them:</p>
+<ol>
+<li>Fetch</li>
+</ol>
+<p><em>The fetch stage reads the bytes of an instruction from memory, using the program counter (PC) as the memory address.</em></p>
+<ul>
+<li>From the instruction it extracts the two 4-bit portions of the instruction specifier byte, referred to as icode (the instruction code) and ifun (the instruction function)</li>
+<li>Then it can decide the type of the instruction and extract possible required values such as register specifier byte, 8-byte constant word and so on.</li>
+<li>It computes valP to be the address of the instruction following the current one in sequential order. That is, valP equals the value of the PC plus the length of the fetched instruction.</li>
+</ul>
+<ol start="2">
+<li>Decode</li>
+</ol>
+<p><em>The decode stage reads up to two operands from the register file</em></p>
+<ul>
+<li>Typically, it reads the registers designated by instruction fieldsrA and rB, but for some instructions it reads register %rsp.</li>
+</ul>
+<ol start="3">
+<li>Execute</li>
+</ol>
+<p><em>In the execute stage, the arithmetic/logic unit (ALU) perform one of the following:</em></p>
+<ul>
+<li>the operation specified by the instruction (according to the value of ifun)</li>
+<li>computes the effective address of a memory reference</li>
+<li>increments or decrements the stack pointer.</li>
+</ul>
+<p>The condition codes are possibly set</p>
+<ul>
+<li>For a conditional move instruction, the stage will <strong>evaluate the condition codes and move condition (given by ifun)</strong> and <strong>enable</strong> the updating of the destination register only if the condition holds. </li>
+<li>Similarly, for a jump instruction, it determines whether or not the branch should be taken.</li>
+</ul>
+<ol start="4">
+<li>Memory</li>
+</ol>
+<p><em>The memory stage may write data to memory, or it may read data from memory.</em></p>
+<ol start="5">
+<li>Write back</li>
+</ol>
+<p><em>The write-back stage writes up to two results to the register file</em></p>
+<ol start="6">
+<li>PC update</li>
+</ol>
+<p>The PC is set to the address of the next instruction.</p>
+<ul>
+<li>The processor loops indefinitely, performing these stages</li>
+<li>In our simplified implementation, the processor will stop(<code>halt</code>) when any exception occurs</li>
+<li>Using a very simple and uniform structure is important <strong>when designing hardware</strong>, since we want to <strong>minimize the total amount of hardware</strong> (The cost of duplicating blocks of logic in hardware is much higher than the cost of having multiple copies of code in software)</li>
+</ul>
+<h4 id="Understand-stages-via-an-example"><a href="#Understand-stages-via-an-example" class="headerlink" title="Understand stages via an example"></a>Understand stages via an example</h4><p><img src="/2021/08/20/CSAPP/Ch4/sample.png" alt="sample sequence"></p>
+<p><img src="/2021/08/20/CSAPP/Ch4/computation.png" alt="computation"></p>
+<h5 id="Integer-operation-instruction-OPq-rA-rB"><a href="#Integer-operation-instruction-OPq-rA-rB" class="headerlink" title="Integer-operation instruction(OPq rA,rB)"></a>Integer-operation instruction(<code>OPq rA,rB</code>)</h5><ol>
+<li><strong>Fetch</strong> instruction from memory pointed by <code>PC</code> and extract register specifier byte</li>
+<li><strong>Decode</strong> register specifier byte, reading values from registers</li>
+<li><strong>Execute</strong> the operation specified by <code>ifunc</code> part on retrieved values(set Conditional Code)</li>
+<li><strong>Memory</strong> stage has nothing to do</li>
+<li><strong>Write back</strong> the result of ALU to the destination register</li>
+<li><strong>PC update</strong></li>
+</ol>
+<h5 id="Move-operation-rrmovq-and-irmovq"><a href="#Move-operation-rrmovq-and-irmovq" class="headerlink" title="Move operation(rrmovq and irmovq)"></a>Move operation(<code>rrmovq</code> and <code>irmovq</code>)</h5><ol>
+<li>Fetch instruction</li>
+<li>Read from register, for <code>irmovq</code> there is no register to read from.</li>
+<li>Execute an <strong>addition</strong> of <code>rA</code> and <code>0</code> or <code>instant value</code> and <code>0</code></li>
+<li>Nothing happens at memory stage</li>
+<li>write back the value to destination register</li>
+<li>PC update</li>
+</ol>
+<h4 id="Practice-Problem-4-13"><a href="#Practice-Problem-4-13" class="headerlink" title="Practice Problem 4.13"></a>Practice Problem 4.13</h4><blockquote>
+<p>Fill in the right-hand column of the following table to describe the processing of the irmovq instruction on line 4 of the object code in Figure 4.17:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">         Generic                     Specific</span><br><span class="line">Stage   irmovq V, rB                 irmovq $128, %rsp</span><br><span class="line">Fetch   icode :ifun ← M1[PC]         </span><br><span class="line">             rA :rB ← M1[PC + 1]           </span><br><span class="line">               valC ← M8[PC + 2]           </span><br><span class="line">               valP ← PC + 10     </span><br><span class="line">Decode</span><br><span class="line">Execute        valE ← 0 + valC        </span><br><span class="line">Memory</span><br><span class="line">Write back    R[rB] ← valE       </span><br><span class="line">PC update        PC ← valP          </span><br></pre></td></tr></table></figure>
+
+<p>How does this instruction execution modify the registers and the PC?</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-6"><a href="#My-solution-white-check-mark-6" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">        Generic                     Specific</span><br><span class="line">Stage   irmovq V, rB                 irmovq $128, %rsp</span><br><span class="line">Fetch   icode :ifun ← M1[PC]         icode: ifun ← 0x30 (M[0x16])</span><br><span class="line">             rA :rB ← M1[PC + 1]           rA:rB ← 0xf4 (M[0x17])</span><br><span class="line">               valC ← M8[PC + 2]            valC ← 8000..00(M[0x18])</span><br><span class="line">               valP ← PC + 10               valP ← 0x20</span><br><span class="line">Decode</span><br><span class="line">Execute        valE ← 0 + valC              valE ← 0x80 + 0</span><br><span class="line">Memory</span><br><span class="line">Write back    R[rB] ← valE                  %rsp &#x3D; 0x80</span><br><span class="line">PC update        PC ← valP                    PC &#x3D; 0x20</span><br></pre></td></tr></table></figure>
+<p>The instruction set <code>%rsp</code> to <code>0x80</code> and update PC to <code>0x20</code></p>
+<hr>
+<p><img src="/2021/08/20/CSAPP/Ch4/memaccess.png" alt="memory access instruction computation"></p>
+<h4 id="Memory-access-instructions"><a href="#Memory-access-instructions" class="headerlink" title="Memory access instructions"></a>Memory access instructions</h4><ol>
+<li>Fetch instruction and extract specifiers</li>
+<li>read values from registers</li>
+<li>use ALU to compute effictive address</li>
+<li>Read from/write to memory</li>
+<li>Write back to register in <code>mrmovq</code></li>
+<li>update PC</li>
+</ol>
+<hr>
+<p><img src="/2021/08/20/CSAPP/Ch4/stackcompu.png" alt="computation of stack operate instructions"></p>
+<h5 id="Computation-of-stack-operation-pushq-and-popq"><a href="#Computation-of-stack-operation-pushq-and-popq" class="headerlink" title="Computation of stack operation(pushq and popq)"></a>Computation of stack operation(<code>pushq</code> and <code>popq</code>)</h5><ol>
+<li>Fetch instruction and extract <code>rA</code></li>
+<li>read from <code>R[ra]</code> in <code>pushq</code> and <strong>read the value of <code>%rsp</code> in both of these two instruction !!!</strong></li>
+<li>compute either <code>%rsp + 8</code> or <code>%rsp - 8</code></li>
+<li>Read a value from memory (No write back before write back stage!)or write a value from register to memory</li>
+<li>Write new <code>%rsp</code> (and poped value) back to registers</li>
+<li>update PC</li>
+</ol>
+<p><em>The stack pointer <code>%rsp</code> doesn’t update until write back stage</em></p>
+<hr>
+<p><img src="/2021/08/20/CSAPP/Ch4/controltrans.png" alt="computation of control transfer instructions"></p>
+<h5 id="Control-transfer-instructions-jmp-call-and-ret"><a href="#Control-transfer-instructions-jmp-call-and-ret" class="headerlink" title="Control transfer instructions (jmp, call and ret)"></a>Control transfer instructions (<code>jmp</code>, <code>call</code> and <code>ret</code>)</h5><p><em>As with integer operations, we can process all of the jumps in a uniform manner, since they <strong>differ only when determining whether or not to take the branch</strong>.</em></p>
+<ol>
+<li>Fetch the instruction, extract the jump target</li>
+<li>No register operation</li>
+<li>test the conditional code and yield a 1-bit <code>flag</code> value, determine jump or not</li>
+<li>No memory operation</li>
+<li>No write back</li>
+<li>Set <code>PC = flag ? target : updatedPC</code></li>
+</ol>
+<h4 id="Practice-Problem-4-17"><a href="#Practice-Problem-4-17" class="headerlink" title="Practice Problem 4.17"></a>Practice Problem 4.17</h4><blockquote>
+<p>We can see by the instruction encodings (Figures 4.2 and 4.3) that the <code>rrmovq</code> instruction is the unconditional version of a more general class of instructions that include the conditional moves. Show how you would modify the steps for the <code>rrmovq</code> instruction below to also handle the six conditional move instructions. You may find it useful to see how the implementation of the <code>jXX</code> instructions (Figure 4.21) handles conditional behavior.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Stage                         cmovXX rA, rB</span><br><span class="line">Fetch                         icode :ifun ← M1[PC]</span><br><span class="line">                              rA :rB ← M1[PC + <span class="number">1</span>]</span><br><span class="line">                              valP ← PC + <span class="number">2</span></span><br><span class="line">Decode                        valA ← R[rA]</span><br><span class="line">Execute                       valE ← <span class="number">0</span> + valA</span><br><span class="line">Memory</span><br><span class="line">Write back</span><br><span class="line">                              R[rB] ← valE</span><br><span class="line">PC update                     PC ← valP</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark-7"><a href="#My-solution-white-check-mark-7" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Stage                         cmovXX rA, rB</span><br><span class="line">Fetch                         icode :ifun ← M1[PC]</span><br><span class="line">                              rA :rB ← M1[PC + <span class="number">1</span>]</span><br><span class="line">                              valP ← PC + <span class="number">2</span></span><br><span class="line">Decode                        valA ← R[rA]</span><br><span class="line">Execute                       valE ← <span class="number">0</span> + valA</span><br><span class="line">                              flag = test(CC,ifunc)</span><br><span class="line">Memory</span><br><span class="line">Write back</span><br><span class="line">                              <span class="keyword">if</span>(flag) R[rB] = valE</span><br><span class="line">PC update                     PC ← valP</span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="procedure-call-and-ret"><a href="#procedure-call-and-ret" class="headerlink" title="procedure call and ret"></a>procedure call and ret</h5><p><em>Instructions call and ret bear some similarity to instructions <code>pushq</code> and <code>popq</code>, except that we push and pop program counter values.</em></p>
+<ul>
+<li>With instruction call, we push valP, the address of the instruction that follows the call instruction. During the PC update stage, we set the PC to valC, the call destination</li>
+<li>With instruction ret, we assign valM, the value popped from the stack, to the PC in the PC update stage.</li>
+</ul>
+<hr>
+<p>We have created a uniform framework that handles all of the different types of Y86-64 instructions.</p>
+<p>Our task now is to <strong>create a hardware design that implements the stages and connects them together.</strong></p>
+<h3 id="4-3-2-SEQ-Hardware-Structure"><a href="#4-3-2-SEQ-Hardware-Structure" class="headerlink" title="4.3.2 SEQ Hardware Structure"></a>4.3.2 SEQ Hardware Structure</h3><p><img src="/2021/08/20/CSAPP/Ch4/hardware.png" alt="hardware"></p>
+<ul>
+<li>In SEQ, all of the processing by the hardware units occurs within a single clock cycle</li>
+<li>This diagram omits some small blocks of combinational logic as well as all of the control logic needed to operate the different hardware units and to route the appropriate values to the units. We will add this detail later. </li>
+<li>Our method of drawing processors with the flow going from bottom to top is unconventional. We will explain the reason for this convention when we start designing pipelined processors.</li>
+</ul>
+<ol>
+<li>Fetch</li>
+</ol>
+<ul>
+<li>Using the program counter register as an address, the instruction memory reads the bytes of an instruction. </li>
+<li>The PC incrementer computes valP, the incremented program counter.</li>
+</ul>
+<ol start="2">
+<li>Decode</li>
+</ol>
+<p>The register file has two read ports, A and B, via which register values valA and valB are read simultaneously.</p>
+<ol start="3">
+<li>Execute</li>
+</ol>
+<ul>
+<li><p>The execute stage uses the arithmetic/logic (ALU) unit for different purposes according to the instruction type</p>
+</li>
+<li><p>New values for the condition codes are computed by the ALU</p>
+</li>
+</ul>
+<ol start="4">
+<li>Memory</li>
+</ol>
+<p>The data memory reads or writes a word of memory when executing a memory instruction. <strong>The instruction and data memories access the same memory locations, but for different purposes</strong>.</p>
+<ol start="5">
+<li>Write back</li>
+</ol>
+<p>The register file has two write ports. Port E is used to write values computed by the ALU, while port M is used to write values read from the data memory.</p>
+<ol start="6">
+<li>PC update</li>
+</ol>
+<p>The new value of the program counter is selected to be either valP, the address of the next instruction, valC, the destination address specified by a call or jump instruction, or valM, the return address read from memory.</p>
+<p><img src="/2021/08/20/CSAPP/Ch4/detailedhw.png" alt="detailed hardware"></p>
+<ul>
+<li><p>Clocked registers are shown as white rectangles.</p>
+<p>The program counter PC is the only clocked register in SEQ.</p>
+</li>
+<li><p>Hardware units are shown as light blue boxes</p>
+<p>We will treat these units as “black boxes” and not go into their detailed designs.</p>
+</li>
+<li><p>Control logic blocks are drawn as gray rounded rectangles.</p>
+<p>These blocks serve to <strong>select from among a set of signal sources or to compute some Boolean function</strong>. We will examine these blocks in complete detail, including developing HCL descriptions.</p>
+</li>
+<li><p>Wire names are indicated in <strong>white circles</strong>.</p>
+<p>These are simply <strong>labels on the wires, not any kind of hardware element</strong>.</p>
+</li>
+<li><p><strong>Word-wide data</strong> connections are shown as <strong>medium lines</strong>.</p>
+<p>Each of these lines actually represents a bundle of 64 wires, connected in parallel, for transferring a word from one part of the hardware to another.</p>
+</li>
+<li><p><strong>Byte and narrower data</strong> connections are shown as <strong>thin lines</strong>.</p>
+<p>Each of these lines actually represents a bundle of four or eight wires, depending on what type of values must be carried on the wires.</p>
+</li>
+<li><p><strong>Single-bit</strong> connections are shown as <strong>dotted lines</strong></p>
+<p>These represent control values passed between the units and blocks on the chip.</p>
+</li>
+</ul>
+<h3 id="4-3-3-SEQ-Timing"><a href="#4-3-3-SEQ-Timing" class="headerlink" title="4.3.3 SEQ Timing"></a>4.3.3 SEQ Timing</h3><p><em>the hardware structure of Figure 4.23 operates in a fundamentally different way, with <strong>a single clock transition triggering a flow through combinational logic to execute an entire instruction</strong>.</em></p>
+<p>Our hardware achieves the same effect as would a sequential execution of the assignments shown in the tables of Figures 4.18 through 4.21, even though all of the state updates actually occur simultaneously and only as the clock rises to start the next cycle.</p>
+<p>Because our design follow the principle : <strong>No reading back</strong></p>
+<p>The processor never needs to read back the state updated by an instruction in order to complete the processing of this instruction.</p>
+<h5 id="Execution-example"><a href="#Execution-example" class="headerlink" title="Execution example"></a>Execution example</h5><p><img src="/2021/08/20/CSAPP/Ch4/2cycle.png" alt="trace of two cycle"></p>
+<ul>
+<li> Read operations propagate through these units as if they were combinational logic, while the write operations are controlled by the clock.</li>
+<li>Every time the clock transitions from low to high, the processor begins executing a new instruction</li>
+</ul>
+<h3 id="4-3-4-SEQ-Stage-Implementations"><a href="#4-3-4-SEQ-Stage-Implementations" class="headerlink" title="4.3.4 SEQ Stage Implementations"></a>4.3.4 SEQ Stage Implementations</h3><p><em>A complete HCL description for SEQ is given in Web Aside arch:hcl on page 508.</em></p>
+<p><img src="/2021/08/20/CSAPP/Ch4/constants.png" alt="constants"></p>
+<h4 id="Fetch-Stage"><a href="#Fetch-Stage" class="headerlink" title="Fetch Stage"></a>Fetch Stage</h4><p><img src="/2021/08/20/CSAPP/Ch4/fetch.png" alt="SEQ fetch stage"></p>
+<ul>
+<li>This unit reads 10 bytes from memory at a time, using the PC as the address of the first byte (byte 0). </li>
+<li>First byte is interpreted as the instruction byte and is split (by the unit labeled “Split”) into two 4-bit quantities</li>
+<li>If the address in PC is invalid, the reading operation will fail(<code>imem_error</code>) and <code>icode</code> will be filled with 10, the icode of <code>nop</code>.</li>
+<li>Based on the value of icode, we can compute three 1-bit signals<ul>
+<li><code>instr_valid</code>. Does this byte correspond to a legal Y86-64 instruction? This signal is used to detect an illegal instruction.</li>
+<li><code>need_regids</code>. Does this instruction include a register specifier byte?</li>
+<li><code>need_valC</code>. Does this instruction include a constant word?</li>
+</ul>
+</li>
+</ul>
+<p>As an example, the HCL description for <code>need_regids</code> simply determines whether the value of icode is one of the instructions that has a register specifier byte:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bool</span> need_regids = icode <span class="keyword">in</span> &#123; IRRMOVQ, IOPQ, IPUSHQ, IPOPQ,</span><br><span class="line">IIRMOVQ, IRMMOVQ, IMRMOVQ &#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-4-19"><a href="#Practice-Problem-4-19" class="headerlink" title="Practice Problem 4.19"></a>Practice Problem 4.19</h4><blockquote>
+<p>Write HCL code for the signal <code>need_valC</code> in the SEQ implementation.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-8"><a href="#My-solution-white-check-mark-8" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bool</span> need_valC = icode <span class="keyword">in</span> &#123;IIRMOVQ, IRMMOVQ , IMRMOVQ,  IJXX , ICALL&#125;;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>Bytes remaining are processed by the hardware unit labeled “Align” into the register fields and the constant word.</p>
+<ul>
+<li>Byte 1 is split into register specifiers rA and rB when the computed signal need_regids is 1</li>
+<li>If need_regids is 0, both register specifiers are set to 0xF (RNONE), indicating there are no registers specified by this instruction.</li>
+</ul>
+<p>The PC incrementer hardware unit generates the signal valP, based on the current value of the PC, and the two signals need_regids and need_valC.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">newPC = oldPC + <span class="number">1</span> + need_regids + need_valC*<span class="number">8</span></span><br></pre></td></tr></table></figure>
+<h4 id="Decode-and-Write-Back-Stages"><a href="#Decode-and-Write-Back-Stages" class="headerlink" title="Decode and Write-Back Stages"></a>Decode and Write-Back Stages</h4><p><em>These two stages are combined because they both access the register file.</em></p>
+<p><img src="/2021/08/20/CSAPP/Ch4/decodestage.png" alt="decode stage"></p>
+<ul>
+<li><p>The two read ports have address inputs srcA and srcB, while the two write ports have address inputs dstE and dstM.</p>
+</li>
+<li><p>The special identifier 0xF (RNONE) on an address port indicates that no register should be accessed.</p>
+</li>
+<li><p>The address can be computated as follow:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">word srcA = [</span><br><span class="line">icode <span class="keyword">in</span> &#123; IRRMOVQ, IRMMOVQ, IOPQ, IPUSHQ &#125; : rA;</span><br><span class="line">icode <span class="keyword">in</span> &#123; IPOPQ, IRET &#125; : RRSP;</span><br><span class="line"><span class="number">1</span> : RNONE; <span class="comment"># Don’t need register</span></span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-4-20"><a href="#Practice-Problem-4-20" class="headerlink" title="Practice Problem 4.20"></a>Practice Problem 4.20</h4></li>
+</ul>
+<blockquote>
+<p>The register signal srcB indicates which register should be read to generate the signal valB. The desired value is shown as the second step in the decode stage in Figures 4.18 to 4.21. Write HCL code for srcB.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-9"><a href="#My-solution-white-check-mark-9" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">word srcA = [</span><br><span class="line">    icode <span class="keyword">in</span> &#123;IRRMOVQ, IMRMOVQ, IOPQ&#125; :rB;</span><br><span class="line">    icode <span class="keyword">in</span> &#123; IPUSHQ, IPOPQ, ICALL, IRET &#125; : RRSP;</span><br><span class="line">    <span class="number">1</span> : RNONE;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<hr>
+<p>Address computation of <code>detE</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">word dstE = [</span><br><span class="line">icode <span class="keyword">in</span> &#123; IRRMOVQ &#125; : rB;</span><br><span class="line">icode <span class="keyword">in</span> &#123; IIRMOVQ, IOPQ&#125; : rB;</span><br><span class="line">icode <span class="keyword">in</span> &#123; IPUSHQ, IPOPQ, ICALL, IRET &#125; : RRSP;</span><br><span class="line"><span class="number">1</span> : RNONE; <span class="comment"># Don’t write any register</span></span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<p>(We will revisit this signal and how to implement conditional moves when we examine the execute stage)</p>
+<h4 id="Execute-Stage"><a href="#Execute-Stage" class="headerlink" title="Execute Stage"></a>Execute Stage</h4><p><img src="/2021/08/20/CSAPP/Ch4/aludesign.png" alt="alu design"></p>
+<p>HCL for ALUA</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">word aluA = [</span><br><span class="line">icode <span class="keyword">in</span> &#123; IRRMOVQ, IOPQ &#125; : valA;</span><br><span class="line">icode <span class="keyword">in</span> &#123; IIRMOVQ, IRMMOVQ, IMRMOVQ &#125; : valC;</span><br><span class="line">icode <span class="keyword">in</span> &#123; ICALL, IPUSHQ &#125; : -<span class="number">8</span>;</span><br><span class="line">icode <span class="keyword">in</span> &#123; IRET, IPOPQ &#125; : <span class="number">8</span>;</span><br><span class="line"><span class="comment"># Other instructions don’t need ALU</span></span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<p>HCL for ALUfun</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">word alufun = [</span><br><span class="line">icode == IOPQ : ifun;</span><br><span class="line"><span class="number">1</span> : ALUADD;</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<p>we only want to set the condition codes when an OPq instruction is executed.We therefore generate a signal <code>set_cc</code> that controls whether or not the condition code register should be updated:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bool</span> set_cc = icode <span class="keyword">in</span> &#123; IOPQ &#125;;</span><br></pre></td></tr></table></figure>
+<p>The hardware unit labeled “cond” uses a combination of the condition codes and the function code to determine whether a conditional branch or data transfer should take place. We omit the detailed design of this unit.</p>
+<h4 id="Memory-Stage"><a href="#Memory-Stage" class="headerlink" title="Memory Stage"></a>Memory Stage</h4><p><em>The memory stage has the task of either reading or writing program data</em></p>
+<p><img src="/2021/08/20/CSAPP/Ch4/memhd.png" alt="memory hardware design"></p>
+<ul>
+<li>two control blocks generate the values for the memory address and the memory input data</li>
+<li>Two other blocks generate the control signals indicating whether to perform a read or a write operation. </li>
+</ul>
+<p>Observe that the address for memory reads and writes is always valE or valA. We can describe this block in HCL as follows:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">word mem_addr = [</span><br><span class="line">icode <span class="keyword">in</span> &#123; IRMMOVQ, IPUSHQ, ICALL, IMRMOVQ &#125; : valE;</span><br><span class="line">icode <span class="keyword">in</span> &#123; IPOPQ, IRET &#125; : valA;</span><br><span class="line"><span class="comment"># Other instructions don’t need address</span></span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<p>We want to set the control signal mem_read only for instructions that read data from memory, as expressed by the following HCL code:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bool</span> mem_read = icode <span class="keyword">in</span> &#123; IMRMOVQ, IPOPQ, IRET &#125;;</span><br></pre></td></tr></table></figure>
+<p><em>A final function for the memory stage is to compute the status code Stat resulting from the instruction execution according to the values of icode, imem_ error, and instr_valid generated in the fetch stage and the signal dmem_error generated by the data memory</em></p>
+<h4 id="PC-Update-Stage"><a href="#PC-Update-Stage" class="headerlink" title="PC Update Stage"></a>PC Update Stage</h4><p>The final stage in SEQ generates the new value of the program counter</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">word new_pc = [</span><br><span class="line"><span class="comment"># Call. Use instruction constant</span></span><br><span class="line">icode == ICALL : valC;</span><br><span class="line"><span class="comment"># Taken branch. Use instruction constant</span></span><br><span class="line">icode == IJXX &amp;&amp; Cnd : valC;</span><br><span class="line"><span class="comment"># Completion of RET instruction. Use value from stack</span></span><br><span class="line">icode == IRET : valM;</span><br><span class="line"><span class="comment"># Default: Use incremented PC</span></span><br><span class="line"><span class="number">1</span> : valP;</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<h4 id="Surveying-SEQ"><a href="#Surveying-SEQ" class="headerlink" title="Surveying SEQ"></a>Surveying SEQ</h4><ul>
+<li>we can implement the entire processor with a small number of different hardware units and with a single clock to control the sequencing of computations. </li>
+<li>The only problem with SEQ is that it is too slow. The clock must run slowly enough so that signals can propagate through all of the stages within a single cycle. </li>
+<li>This style of implementation does not make very good use of our hardware units, since each unit is only active for a fraction of the total clock cycle. We will see that we can achieve much better performance by introducing pipelining.</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/08/20/CSAPP/Ch4/" data-id="ckszqm9sj0000mryqgryvbr3h" data-title="Ch4" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/08/28/CSAPP/Ch4PartII/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Ch4PartII
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/08/17/CSAPP/bomblab/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">bomblab</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/08/28/CSAPP/Ch4PartII/">Ch4PartII</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/20/CSAPP/Ch4/">Ch4</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/17/CSAPP/bomblab/">bomblab</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/09/CSAPP/Ch3PartIV/">Ch3PartIV</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/05/CSAPP/Ch3PartIII/">Ch3PartIII</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

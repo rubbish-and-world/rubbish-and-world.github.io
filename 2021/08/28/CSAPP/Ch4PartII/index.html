@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Ch4PartII | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  4.4 General Principles of PipeliningSuch systems are familiar to anyone who has been through the serving line at a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ch4PartII">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  4.4 General Principles of PipeliningSuch systems are familiar to anyone who has been through the serving line at a">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/unpip.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/pip.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/detailed.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/nonuniform.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/split.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/regdelay.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/dependency.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/ctrldepend.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/PCadaptation.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/seq+.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/pipline-.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/pipexample.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/prog1.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/prog2.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/prog3.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/prog4.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/bubble.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/fw1.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/fw2.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/fw3.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/loaduse.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/interlock.png">
+<meta property="article:published_time" content="2021-08-28T04:51:33.000Z">
+<meta property="article:modified_time" content="2021-08-31T07:16:35.807Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/unpip.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSAPP/Ch4PartII" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/08/28/CSAPP/Ch4PartII/" class="article-date">
+  <time class="dt-published" datetime="2021-08-28T04:51:33.000Z" itemprop="datePublished">2021-08-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/csapp/">csapp</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Ch4PartII
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+<h2 id="4-4-General-Principles-of-Pipelining"><a href="#4-4-General-Principles-of-Pipelining" class="headerlink" title="4.4 General Principles of Pipelining"></a>4.4 General Principles of Pipelining</h2><p><em>Such systems are familiar to anyone who has been through the serving line at a cafeteria or run a car through an automated car wash.</em></p>
+<a id="more"></a>
+
+<ul>
+<li> the task to be performed is <strong>divided into a series of discrete stages</strong></li>
+<li> Rather than having one customer run through the entire sequence from beginning to end before the next can begin, we allow <strong>multiple customers to proceed through the system at once</strong></li>
+<li>A key feature of pipelining is that it <strong>increases the throughput</strong> of the system(i.e., the number of customers served per unit time)</li>
+<li>It may also slightly <strong>increase the latency</strong> (i.e., the time required to service an individual customer)</li>
+</ul>
+<h3 id="4-4-1-Computational-Pipelines"><a href="#4-4-1-Computational-Pipelines" class="headerlink" title="4.4.1 Computational Pipelines"></a>4.4.1 Computational Pipelines</h3><h5 id="Some-system-evaluation-property"><a href="#Some-system-evaluation-property" class="headerlink" title="Some system evaluation property"></a>Some system evaluation property</h5><p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=3HIV4MnLGCw">video</a></p>
+<ul>
+<li><p>In contemporary logic design, we measure <strong>circuit delays</strong> in units of <strong>picoseconds</strong> (abbreviated “ps”), or $10^{−12}$ seconds</p>
+</li>
+<li><p>We express <strong>throughput</strong> in units of <strong>giga-instructions per second</strong> (abbreviated GIPS), or billions of instructions per second<br>$$<br>throughtput = \text{number of output item per second}<br>$$</p>
+</li>
+<li><p>The total time required to perform a single instruction from beginning to end is known as the <strong>latency</strong></p>
+</li>
+</ul>
+<h5 id="Unpiplined-system"><a href="#Unpiplined-system" class="headerlink" title="Unpiplined system"></a>Unpiplined system</h5><p><img src="/2021/08/28/CSAPP/Ch4PartII/unpip.png" alt="unpiplined"></p>
+<ul>
+<li><p>we assume the combinational logic requires 300 ps, while the loading of the register requires 20 ps</p>
+</li>
+<li><p>In pipline digram:</p>
+<ul>
+<li>A series of instructions (here named I1, I2, and I3) are written from top to bottom.</li>
+<li>time flows from left to right</li>
+<li> The solid rectangles indicate the times during which these instructions are executed</li>
+</ul>
+</li>
+<li><p>In this implementation, we must complete one instruction before beginning the next. Hence, the boxes do not overlap one another vertically</p>
+</li>
+</ul>
+<h5 id="Piplined-system"><a href="#Piplined-system" class="headerlink" title="Piplined system"></a>Piplined system</h5><p><img src="/2021/08/28/CSAPP/Ch4PartII/pip.png" alt="pipline"></p>
+<ul>
+<li>Suppose we could divide the computation performed by our system into three stages, A, B, and C, where each requires 100 ps</li>
+<li>we could cycle the clocks every 100 + 20 = 120 picoseconds, giving a throughput of around 8.33 GIPS.</li>
+<li>Since processing a single instruction requires 3 clock cycles, the latency of this pipeline is 3 × 120 = 360 ps.</li>
+<li> The increased latency is due to the time overhead of the added pipeline registers.</li>
+</ul>
+<h3 id="4-4-2-A-Detailed-Look-at-Pipeline-Operation"><a href="#4-4-2-A-Detailed-Look-at-Pipeline-Operation" class="headerlink" title="4.4.2 A Detailed Look at Pipeline Operation"></a>4.4.2 A Detailed Look at Pipeline Operation</h3><p><img src="/2021/08/28/CSAPP/Ch4PartII/detailed.png" alt="detailed pipline"></p>
+<ul>
+<li><p>We can see from this detailed view of pipeline operation that slowing down the clock would not change the pipeline behavior. </p>
+</li>
+<li><p>On the other hand, we could have disastrous effects if the clock were run too fast. </p>
+</li>
+<li><p>we see that the simple mechanism of having clocked registers between blocks of combinational logic suffices to control the flow of instructions in the pipeline</p>
+</li>
+</ul>
+<h3 id="4-4-3-Limitations-of-Pipelining"><a href="#4-4-3-Limitations-of-Pipelining" class="headerlink" title="4.4.3 Limitations of Pipelining"></a>4.4.3 Limitations of Pipelining</h3><h5 id="Nonuniform-Partitioning"><a href="#Nonuniform-Partitioning" class="headerlink" title="Nonuniform Partitioning"></a>Nonuniform Partitioning</h5><p><em>the rate at which we can operate the clock is limited by the delay of the slowest stage</em></p>
+<ul>
+<li>Devising a partitioning of the system computation into a series of stages having uniform delays can be a major challenge for hardware designers.</li>
+<li>some of the hardware units in a processor, such as the <strong>ALU</strong> and the memories, cannot be subdivided into multiple units with shorter delay.</li>
+</ul>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/nonuniform.png" alt="nonuniform delay"></p>
+<h4 id="Practice-Problem-4-28"><a href="#Practice-Problem-4-28" class="headerlink" title="Practice Problem 4.28"></a>Practice Problem 4.28</h4><blockquote>
+<p>Suppose we analyze the combinational logic of Figure 4.32 and determine that it can be separated into a sequence of six blocks, named A to F, having delays of 80, 30, 60, 50, 70, and 10 ps, respectively, illustrated as follows:</p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/split.png" alt="split"></p>
+<p>We can create pipelined versions of this design by inserting pipeline registers between pairs of these blocks. Different combinations of pipeline depth (how many stages) and maximum throughput arise, depending on where we insert the pipeline registers. Assume that a pipeline register has a delay of 20 ps.</p>
+<p>A. Inserting a single register gives a two-stage pipeline. Where should the register be inserted to maximize throughput? What would be the throughput and latency?</p>
+<p>B. Where should two registers be inserted to maximize the throughput of a three-stage pipeline? What would be the throughput and latency?</p>
+<p>C. Where should three registers be inserted to maximize the throughput of a 4-stage pipeline? What would be the throughput and latency?</p>
+<p>D. What is the minimum number of stages that would yield a design with the maximum achievable throughput? Describe this design, its throughput, and its latency.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark"><a href="#My-solution-white-check-mark" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pipline</span>(<span class="params">maxdelay , stagenum</span>):</span></span><br><span class="line">    throughput =  ((<span class="number">1</span>/maxdelay) * <span class="number">10</span> ** <span class="number">12</span> ) / (<span class="number">1000</span>**<span class="number">3</span>)</span><br><span class="line">    latehcy =  maxdelay * stagenum</span><br><span class="line">    print(<span class="string">&quot;The throughput is &#123;&#125; GIPS&quot;</span>.<span class="built_in">format</span>(<span class="built_in">round</span>(throughput,<span class="number">2</span>)))</span><br><span class="line">    print(<span class="string">&quot;latehcy is &#123;&#125; ps&quot;</span>.<span class="built_in">format</span>(latehcy))</span><br></pre></td></tr></table></figure>
+<p>A:</p>
+<p>We try to split evenly, so insert between C and D. Then we have :</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pipline(<span class="number">190</span>,<span class="number">2</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">The throughput is 5.26 GIPS</span></span><br><span class="line"><span class="string">latehcy is 380 ps</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>B:</p>
+<p>Still try to split evenly in order to reduce the maxdelay, so we insert between B,C and D,E</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>pipline(<span class="number">130</span>,<span class="number">3</span>)</span><br><span class="line">The throughput <span class="keyword">is</span> <span class="number">7.69</span> GIPS</span><br><span class="line">latehcy <span class="keyword">is</span> <span class="number">390</span> ps</span><br></pre></td></tr></table></figure>
+<p>C:</p>
+<p>insert the first one between A and B</p>
+<p>insert the second one between C and D</p>
+<p>insert the last one between D and E</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>pipline(<span class="number">110</span> , <span class="number">4</span>)</span><br><span class="line">The throughput <span class="keyword">is</span> <span class="number">9.09</span> GIPS</span><br><span class="line">latehcy <span class="keyword">is</span> <span class="number">440</span> ps</span><br></pre></td></tr></table></figure>
+<p>D:</p>
+<p>the maximun throughput is given by split every stage except E and F</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>pipline(<span class="number">100</span> , <span class="number">5</span>)</span><br><span class="line">The throughput <span class="keyword">is</span> <span class="number">10.0</span> GIPS</span><br><span class="line">latehcy <span class="keyword">is</span> <span class="number">500</span> ps</span><br></pre></td></tr></table></figure>
+<hr>
+<h5 id="Diminishing-Returns-of-Deep-Pipelining"><a href="#Diminishing-Returns-of-Deep-Pipelining" class="headerlink" title="Diminishing Returns of Deep Pipelining"></a>Diminishing Returns of Deep Pipelining</h5><p><em>Modern processors employ very deep pipelines (15 or more stages) in an attempt to maximize the processor clock rate.</em></p>
+<ul>
+<li>The processor architects <strong>divide the instruction execution into a large number of very simple steps</strong> so that each stage can have a very small delay.</li>
+<li>The circuit designers carefully <strong>design the pipeline registers to minimize their delay</strong></li>
+<li>The chip designers must also carefully design the <strong>clock distribution network</strong> to ensure that the clock changes at the exact same time across the entire chip. </li>
+</ul>
+<h4 id="Practice-Problem-4-29"><a href="#Practice-Problem-4-29" class="headerlink" title="Practice Problem 4.29"></a>Practice Problem 4.29</h4><blockquote>
+<p>Suppose we could take the system of Figure 4.32 and divide it into an arbitrary number of pipeline stages k, each having a delay of 300/k, and with each pipeline register having a delay of 20 ps.</p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/regdelay.png" alt="register load delay"></p>
+<p>A. What would be the latency and the throughput of the system, as functions of k?</p>
+<p>B. What would be the ultimate limit on the throughput?</p>
+</blockquote>
+<h4 id="My-solution"><a href="#My-solution" class="headerlink" title="My solution :"></a>My solution :</h4><p>A:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pipline(<span class="number">300</span>/k+<span class="number">20</span> , k)</span><br></pre></td></tr></table></figure>
+<p>B:</p>
+<p>the delay of register</p>
+<h4 id="Solution-on-the-book"><a href="#Solution-on-the-book" class="headerlink" title="Solution on the book:"></a>Solution on the book:</h4><p>B:As we let k go to infinity, the throughput becomes 1,000/20 = 50 GIPS. Of course, the latency would approach infinity as well.</p>
+<p>As we try to subdivide the logic into many stages, the latency of the pipeline registers becomes a limiting factor.</p>
+<h3 id="4-4-4-Pipelining-a-System-with-Feedback"><a href="#4-4-4-Pipelining-a-System-with-Feedback" class="headerlink" title="4.4.4 Pipelining a System with Feedback"></a>4.4.4 Pipelining a System with Feedback</h3><p><em>For a system that executes machine programs such as x86-64 or Y86-64, there are potential dependencies between successive instructions.</em></p>
+<h5 id="data-dependency"><a href="#data-dependency" class="headerlink" title="data dependency"></a>data dependency</h5><p><img src="/2021/08/28/CSAPP/Ch4PartII/dependency.png" alt="dependency"></p>
+<h5 id="control-dependency"><a href="#control-dependency" class="headerlink" title="control dependency"></a>control dependency</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">loop:</span><br><span class="line"> subq %rdx,%rbx</span><br><span class="line"> jne targ</span><br><span class="line"> irmovq $10,%rdx</span><br><span class="line"> jmp loop</span><br><span class="line">targ:</span><br><span class="line"> halt</span><br></pre></td></tr></table></figure>
+<p>the outcome of the conditional test determines whether the next instruction to execute will be the irmovq instruction (line 4) or the halt instruction (line 7)</p>
+<p>In our design for SEQ, these dependencies were handled by the feedback paths shown on the right-hand side of Figure 4.22.</p>
+<p>However, if we attempt to convert this to a three-stage pipeline in the most straightforward manner (Figure 4.38(c)), we change the behavior of the system.(the result of I1 becomes an input to I4)</p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/ctrldepend.png" alt="control dependency"></p>
+<hr>
+<p> Somehow we must deal with the data and control dependencies between instructions so that the resulting behavior matches the model defined by the ISA.</p>
+<hr>
+<h2 id="4-5-Pipelined-Y86-64-Implementations"><a href="#4-5-Pipelined-Y86-64-Implementations" class="headerlink" title="4.5 Pipelined Y86-64 Implementations"></a>4.5 Pipelined Y86-64 Implementations</h2><p><em>We are finally ready for the major task of this chapter—designing a pipelined Y86- 64 processor</em></p>
+<h3 id="4-5-1-SEQ-Rearranging-the-Computation-Stages"><a href="#4-5-1-SEQ-Rearranging-the-Computation-Stages" class="headerlink" title="4.5.1 SEQ+: Rearranging the Computation Stages"></a>4.5.1 SEQ+: Rearranging the Computation Stages</h3><p><em>As a transitional step toward a pipelined design, we must slightly rearrange the order of the five stages in SEQ so that the <strong>PC update stage comes at the beginning of the clock cycle, rather than at the end</strong>.</em>(We refer to this modified design as SEQ+.)</p>
+<p>We can move the PC update stage so that its logic is active at the beginning of the clock cycle by making it compute the PC value for the <strong>current</strong> instruction</p>
+<p>With SEQ+ (Figure 4.39(b)), we create state registers to hold the signals computed during an instruction(previous instruction)</p>
+<p>Then, as a new clock cycle begins, the values propagate through the exact same logic to compute the PC for the now-current instruction.</p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/PCadaptation.png" alt="new PC computation scheme"></p>
+<blockquote>
+<p>One curious feature of SEQ+ is that there is no hardware register storing the program counter. Instead, the PC is computed dynamically based on some state information stored from the previous instruction.</p>
+<p>This is a small illustration of the fact that we can implement a processor in a way that differs from the conceptual model implied by the ISA, as long as the processor correctly executes arbitrary machinelanguage programs. </p>
+</blockquote>
+<p>The shift of state elements from SEQ to SEQ+ is an example of a general transformation known as <strong>circuit retiming</strong></p>
+<p>Retiming changes the state representation for a system without changing its logical behavior. It is often used to balance the delays between the different stages of a pipelined system.</p>
+<h3 id="4-5-2-Inserting-Pipeline-Registers"><a href="#4-5-2-Inserting-Pipeline-Registers" class="headerlink" title="4.5.2 Inserting Pipeline Registers"></a>4.5.2 Inserting Pipeline Registers</h3><p>The pipeline registers are shown in this figure as <strong>blue boxes</strong>, each containing different fields that are shown as white boxes. As indicated by the multiple fields, each pipeline register holds multiple bytes and words. </p>
+<p>white boxes represent actual hardware components rather than labels</p>
+<ul>
+<li><code>F</code> holds a predicted value of the program counter</li>
+<li><code>D</code> sits between the fetch and decode stages. It holds information about the most recently fetched instruction for processing by the decode stage</li>
+<li><code>E</code> sits between the decode and execute stages. It holds information about the most recently decoded instruction and the values read from the register file for processing by the execute stage.</li>
+<li><code>M</code> sits between the execute and memory stages. It holds the results of the most recently executed instruction for processing by the memory stage. It also holds information about branch conditions and branch targets for processing conditional jumps.</li>
+<li><code>W</code> sits between the memory stage and the feedback paths that supply the computed results to the register file for writing and the return address to the PC selection logic when completing a ret instruction.</li>
+</ul>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/seq+.png" alt="seq plus"></p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/pipline-.png" alt="pipline minus"></p>
+<p>Then our code execution will be like</p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/pipexample.png" alt="pipline execution example"></p>
+<p>Since normal <strong>program flow goes from top to bottom</strong> of a listing, we preserve this ordering by having the <strong>pipeline flow go from bottom to top</strong>. </p>
+<h3 id="4-5-3-Rearranging-and-Relabeling-Signals"><a href="#4-5-3-Rearranging-and-Relabeling-Signals" class="headerlink" title="4.5.3 Rearranging and Relabeling Signals"></a>4.5.3 Rearranging and Relabeling Signals</h3><blockquote>
+<p>Aside </p>
+<p>What is the difference between signals M_stat and m_stat? </p>
+<p>With our naming system, the uppercase prefixes ‘D’, ‘E’, ‘M’, and ‘W’ refer to pipeline registers, and so M_stat refers to the status code field of pipeline register M. </p>
+<p>The lowercase prefixes ‘f’, ‘d’, ‘e’, ‘m’, and ‘w’ refer to the pipeline stages, and so m_stat refers to the status signal generated in the memory stage by a control logic block. </p>
+<p>Understanding this naming convention is critical to understanding the operation of our pipelined processors.</p>
+</blockquote>
+<h3 id="4-5-4-Next-PC-Prediction"><a href="#4-5-4-Next-PC-Prediction" class="headerlink" title="4.5.4 Next PC Prediction"></a>4.5.4 Next PC Prediction</h3><p>In pipline, we must determine the location of the next instruction right after fetching the current instruction.</p>
+<p>Unfortunately, if the instruction is <code>ret</code> or conditional branch, we cannot determine the address of next instruction until execution stage or memory stage</p>
+<p>Except these two instructions, the address of the next instruction can be predicated based on information computed during the fetch stage.</p>
+<p>We can therefore achieve our goal of issuing a new instruction every clock cycle in most cases by predicting the next value of the PC.</p>
+<p>Extensive experiments have been conducted on effective strategies for predicting whether or not branches will be taken(and large amount of hardware to implement them)</p>
+<p>In our design, we simply assume all condition is taken for branches.</p>
+<p>For <code>ret</code> instruction, we just stop fetch new instruction until the <code>ret</code> is finished.</p>
+<h3 id="4-5-5-Pipeline-Hazards"><a href="#4-5-5-Pipeline-Hazards" class="headerlink" title="4.5.5 Pipeline Hazards"></a>4.5.5 Pipeline Hazards</h3><p>Resulted from dependencies, hazards can be classified as either data hazards or control hazards</p>
+<h4 id="Data-hazard"><a href="#Data-hazard" class="headerlink" title="Data hazard"></a>Data hazard</h4><p><img src="/2021/08/28/CSAPP/Ch4PartII/prog1.png" alt="prog1"></p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/prog2.png" alt="prog2"></p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/prog3.png" alt="prog3"></p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/prog4.png" alt="prog4"></p>
+<p><em>These examples illustrate that a data hazard can arise for an instruction when one of its operands is updated by any of the three preceding instructions. These hazards occur because our pipelined processor reads the operands for an instruction from the register file in the decode stage but does not write the results for the instruction to the register file until three cycles later, after the instruction passes through the write-back stage.</em></p>
+<h4 id="Avoiding-Data-Hazards-by-Stalling"><a href="#Avoiding-Data-Hazards-by-Stalling" class="headerlink" title="Avoiding Data Hazards by Stalling"></a>Avoiding Data Hazards by Stalling</h4><p><em>One very general technique for avoiding hazards involves stalling, where the <strong>processor holds back one or more instructions in the pipeline</strong> until the hazard condition no longer holds</em></p>
+<ul>
+<li>It involves simple enhancements to the pipeline control logic</li>
+<li>it has the same effect like adding <code>nop</code> instruction, which has shown above</li>
+</ul>
+<p>For example</p>
+<p>When the addq instruction is in the decode stage, the pipeline control logic detects that at least one of the instructions in the execute, memory, or write-back stage will update either register %rdx or register %rax. Rather than letting the addq instruction pass through the stage with the incorrect results, it stalls the instruction, holding it back in the decode stage for either one (for prog2) or three (for prog4) extra cycles.</p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/bubble.png" alt="insert bubble"></p>
+<p>(We also need to keep PC a fixed value when stalling)</p>
+<p><strong>This mechanism can be implemented fairly easily, but the resulting performance is not very good</strong></p>
+<p>There are numerous cases in which one instruction updates a register and a closely following instruction uses the same register. This will cause the pipeline to stall for up to three cycles, reducing the overall throughput significantly</p>
+<h4 id="Avoiding-Data-Hazards-by-Forwarding"><a href="#Avoiding-Data-Hazards-by-Forwarding" class="headerlink" title="Avoiding Data Hazards by Forwarding"></a>Avoiding Data Hazards by Forwarding</h4><p><em>If there are register to be updated, <strong>forwarding the pended value in previous stages to register access result</strong></em></p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/fw1.png" alt="forwarding example"></p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/fw2.png" alt="forwarding example"></p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/fw3.png" alt="forwarding example"></p>
+<p>This gives a total of five different forwarding sources (e_valE, m_valM, M_valE, W_valM, and W_valE) and two different forwarding destinations (valA and valB).</p>
+<ul>
+<li>This technique of passing a result value directly from one pipeline stage to an earlier one is commonly known as data forwarding</li>
+<li>Data forwarding requires <strong>adding additional data connections and control logic to the basic hardware structure</strong>.</li>
+</ul>
+<h4 id="Load-Use-Data-Hazards"><a href="#Load-Use-Data-Hazards" class="headerlink" title="Load/Use Data Hazards"></a>Load/Use Data Hazards</h4><p>Forwarding cannot handle the situation that the value used to update the register is read from memory, since it must wait for the value to be read.</p>
+<p>we can avoid a load/use data hazard with <strong>a combination of stalling and forwarding</strong></p>
+<p>This requires <strong>modifications of the control logic</strong>, but it can use existing bypass paths</p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/loaduse.png" alt="load/use hazard"></p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/interlock.png" alt="interlock"></p>
+<p><em>This use of a stall to handle a load/use hazard is called a load <strong>interlock</strong>.</em></p>
+<p>Load interlocks combined with forwarding suffice to handle all possible forms of data hazards. Since only load interlocks reduce the pipeline throughput, we can nearly achieve our throughput goal of issuing one new instruction on every clock cycle.</p>
+<h4 id="Avoiding-Control-Hazards"><a href="#Avoiding-Control-Hazards" class="headerlink" title="Avoiding Control Hazards"></a>Avoiding Control Hazards</h4>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/" data-id="ckszqm9sn0001mryq66tg4hwa" data-title="Ch4PartII" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/08/20/CSAPP/Ch4/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Ch4</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/08/28/CSAPP/Ch4PartII/">Ch4PartII</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/20/CSAPP/Ch4/">Ch4</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/17/CSAPP/bomblab/">bomblab</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/09/CSAPP/Ch3PartIV/">Ch3PartIV</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/05/CSAPP/Ch3PartIII/">Ch3PartIII</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
