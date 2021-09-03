@@ -35,8 +35,20 @@
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/fw3.png">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/loaduse.png">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/interlock.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/retbubble.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/misbreach.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/pcselection.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/decodeandwriteback.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/priorityexample.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/execstage.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/Mstage.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/detection.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/extensions.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/conditions.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/simultaneously.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/piplinecontrol.png">
 <meta property="article:published_time" content="2021-08-28T04:51:33.000Z">
-<meta property="article:modified_time" content="2021-08-31T07:16:35.807Z">
+<meta property="article:modified_time" content="2021-09-03T07:35:07.254Z">
 <meta property="article:author" content="rubbish">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/unpip.png">
@@ -84,12 +96,12 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Rechercher"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
       </div>
     </div>
   </div>
@@ -306,11 +318,134 @@
 <p><img src="/2021/08/28/CSAPP/Ch4PartII/interlock.png" alt="interlock"></p>
 <p><em>This use of a stall to handle a load/use hazard is called a load <strong>interlock</strong>.</em></p>
 <p>Load interlocks combined with forwarding suffice to handle all possible forms of data hazards. Since only load interlocks reduce the pipeline throughput, we can nearly achieve our throughput goal of issuing one new instruction on every clock cycle.</p>
-<h4 id="Avoiding-Control-Hazards"><a href="#Avoiding-Control-Hazards" class="headerlink" title="Avoiding Control Hazards"></a>Avoiding Control Hazards</h4>
+<h4 id="Avoiding-Control-Hazards"><a href="#Avoiding-Control-Hazards" class="headerlink" title="Avoiding Control Hazards"></a>Avoiding Control Hazards</h4><p><em>Control hazards arise <strong>when the processor cannot reliably determine the address of the next instruction based on the current instruction</strong> in the fetch stage.</em></p>
+<h4 id="ret-hazard"><a href="#ret-hazard" class="headerlink" title="ret hazard"></a><code>ret</code> hazard</h4><p>For example when executing the following codes</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">0x000: irmovq stack,%rsp # Initialize stack pointer</span><br><span class="line">0x00a: call proc # Procedure call</span><br><span class="line">0x013: irmovq $10,%rdx # Return point</span><br><span class="line">0x01d: halt</span><br><span class="line">0x020: .pos 0x20</span><br><span class="line">0x020: proc: # proc:</span><br><span class="line">0x020: ret # Return immediately</span><br><span class="line">0x021: rrmovq %rdx,%rbx # Not executed</span><br><span class="line">0x030: .pos 0x30</span><br><span class="line">0x030: stack: # stack: Stack pointer</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/retbubble.png" alt="ret instruction stall"></p>
+<p>Once the ret instruction reaches the write-back stage, the PC selection logic will set the program counter to the return address, and therefore the fetch stage will fetch the irmovq instruction at the return point</p>
+<h4 id="Mispredicate-hazard"><a href="#Mispredicate-hazard" class="headerlink" title="Mispredicate hazard"></a>Mispredicate hazard</h4><p>For example</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">0x000: xorq %rax,%rax</span><br><span class="line">0x002: jne target # Not taken</span><br><span class="line">0x00b: irmovq $1, %rax # Fall through</span><br><span class="line">0x015: halt</span><br><span class="line">0x016: target:</span><br><span class="line">0x016: irmovq $2, %rdx # Target</span><br><span class="line">0x020: irmovq $3, %rbx # Target+1</span><br><span class="line">0x02a: halt</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/misbreach.png" alt="misbreach"></p>
+<ul>
+<li>Since the jump instruction is predicted as being taken, the instruction at the jump target will be fetched in cycle 3</li>
+<li> By the time the branch logic detects that the jump should not be taken during cycle 4, two instructions have been fetched that should not continue being executed</li>
+<li>Fortunately, neither of these instructions has caused a change in the programmer-visible state(Not reach the execution stage)</li>
+<li>the pipeline can simply cancel the two misfetched instructions by <strong>injecting bubbles into the decode and execute stages on the following cycle</strong> while also fetching the instruction following the jump instruction.</li>
+<li>The two misfetched instructions will then simply disappear from the pipeline and therefore not have any effect on the programmer-visible state. </li>
+</ul>
+<p><strong><em>a simple extension to the basic clocked register design will enable us to stall stages and to inject bubbles into pipeline registers as part of the pipeline control logic.</em></strong></p>
+<h3 id="4-5-6-Exception-Handling"><a href="#4-5-6-Exception-Handling" class="headerlink" title="4.5.6 Exception Handling"></a>4.5.6 Exception Handling</h3><p><em>a variety of activities in a processor can lead to exceptional control flow, where the <strong>normal chain of program execution gets broken</strong>.</em></p>
+<ul>
+<li><p>Exceptions can be generated either internally, by the executing program, or externally, by some outside signal.</p>
+</li>
+<li><p>A more complete processor design would also handle external exceptions, such as when the processor receives a signal that the network interface has received a new packet or the user has clicked a mouse button</p>
+<p>(Handling exceptions correctly is a challenging aspect of any microprocessor design. They can occur at unpredictable times, and they require creating a clean break in the flow of instructions through the processor pipeline)</p>
+</li>
+<li><p>It should appear that all instructions up to the excepting instruction have completed, but none of the following instructions should have any effect on the <em>programmer-visible state</em>.</p>
+</li>
+<li><p>In a more complete design, the processor would continue by invoking an exception handler, a procedure that is part of the operating system</p>
+</li>
+</ul>
+<p>In a pipelined system, exception handling involves several subtleties.</p>
+<ul>
+<li><p>It is possible to have exceptions triggered by multiple instructions simultaneously</p>
+<p>For example, in one clock cycle, fetch stage fetchs a <code>halt</code> and memory stage has a <code>invalid memory address</code></p>
+<p>So which exception should we report?</p>
+<p>The basic rule is to put priority on the exception triggered by the instruction that is furthest along the pipeline</p>
+<p>(In terms of the machine-language program, the instruction in the memory stage should appear to execute before one in the fetch stage, and therefore only this exception should be reported to the operating system.)</p>
+</li>
+<li><p>When an instruction first fetched and begins execution, causes an exception, and later is canceled due to a mispredicted branch.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">0x000: 6300 | xorq %rax,%rax</span><br><span class="line">0x002: 741600000000000000 | jne target # Not taken</span><br><span class="line">0x00b: 30f00100000000000000 | irmovq $1, %rax # Fall through</span><br><span class="line">0x015: 00 | halt</span><br><span class="line">0x016: | target:</span><br><span class="line">0x016: ff | .byte 0xFF # Invalid instruction code</span><br></pre></td></tr></table></figure>
+<p>​    The pipeline control logic will cancel the invalid instruction, but we want to avoid raising an exception.</p>
+</li>
+<li><p>It is possible for an instruction following one causing an exception to alter some part of the state before the excepting was detected</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">irmovq $1,%rax</span><br><span class="line"> xorq %rsp,%rsp # Set stack pointer to 0 and CC to 100</span><br><span class="line"> pushq %rax # Attempt to write to 0xfffffffffffffff8, detected in memory stage</span><br><span class="line"> addq %rax,%rax # (Should not be executed) Would set CC to 000</span><br></pre></td></tr></table></figure>
+<p>we can both correctly choose among the different exceptions and avoid raising exceptions for instructions that are fetched due to mispredicted branches by <strong>merging the exception-handling logic into the pipeline structure</strong>. That is the <strong>motivation for us to include a status code statin each of our pipeline registers</strong></p>
+</li>
+</ul>
+<p>If an instruction generates an exception at some stage in its processing, the status field is set to indicate the nature of the exception. The exception status propagates through the pipeline with the rest of the information for that instruction, <strong>until it reaches the write-back stage</strong>. <strong>At this point, the pipeline control logic detects the occurrence of the exception and stops execution</strong>.</p>
+<p>The simple rule of <strong>carrying the exception status together with all other information about an instruction through the pipeline</strong> provides a simple and reliable mechanism for handling exceptions.</p>
+<ul>
+<li><p>The pipline like a queue, FIFO, so it follows the order indicated by assembly language</p>
+</li>
+<li><p>When reach write back stage and an exception was detected, the processor will disable any updating of the programmer-visible state (the condition code register and the memory) by later instructions in the pipeline(make those devices unwritable)</p>
+</li>
+<li><p>If some instruction is fetched but later canceled, any exception status information about the instruction gets canceled as well.</p>
+</li>
+</ul>
+<h3 id="4-5-7-PIPE-Stage-Implementations"><a href="#4-5-7-PIPE-Stage-Implementations" class="headerlink" title="4.5.7 PIPE Stage Implementations"></a>4.5.7 PIPE Stage Implementations</h3><p><em>Many of the logic blocks are identical to their counterparts in SEQ and SEQ+, except that we must <strong>choose proper versions of the different signals</strong> from the pipeline registers (written with the pipeline register name, written in uppercase, as a prefix) or from the stage computations (written with the first character of the stage name, written in lowercase, as a prefix).</em></p>
+<p>the complete HCL code for PIPE is given in Web Aside arch:hcl on page 508.</p>
+<h4 id="PC-Selection-and-Fetch-Stage"><a href="#PC-Selection-and-Fetch-Stage" class="headerlink" title="PC Selection and Fetch Stage"></a>PC Selection and Fetch Stage</h4><p><em>The PC selection logic <strong>chooses between three program counter sources</strong></em></p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/pcselection.png" alt="PC select"></p>
+<h4 id="Decode-and-Write-Back-Stages"><a href="#Decode-and-Write-Back-Stages" class="headerlink" title="Decode and Write-Back Stages"></a>Decode and Write-Back Stages</h4><p><em>we want the writes to occur to the destination registers specified by the instruction in the write-back stage</em></p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/decodeandwriteback.png" alt="pic"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">word d_valA = [</span><br><span class="line">D_icode <span class="keyword">in</span> &#123; ICALL, IJXX &#125; : D_valP; <span class="comment"># Use incremented PC</span></span><br><span class="line">d_srcA == e_dstE : e_valE; <span class="comment"># Forward valE from execute</span></span><br><span class="line">d_srcA == M_dstM : m_valM; <span class="comment"># Forward valM from memory</span></span><br><span class="line">d_srcA == M_dstE : M_valE; <span class="comment"># Forward valE from memory</span></span><br><span class="line">d_srcA == W_dstM : W_valM; <span class="comment"># Forward valM from write back</span></span><br><span class="line">d_srcA == W_dstE : W_valE; <span class="comment"># Forward valE from write back</span></span><br><span class="line"><span class="number">1</span> : d_rvalA; <span class="comment"># Use value read from register file</span></span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<p>The priority given to the five forwarding sources in the above HCL code is very important.</p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/priorityexample.png" alt="priority"></p>
+<h4 id="Execute-Stage"><a href="#Execute-Stage" class="headerlink" title="Execute Stage"></a>Execute Stage</h4><p><em>The hardware units and the logic blocks are identical to those in SEQ, with an appropriate renaming of signals.</em></p>
+<p>One difference is that the logic labeled “Set CC,” which determines whether or not to update the condition codes, has signals m_stat and W_stat as inputs.</p>
+<p>These signals are used to detect cases where an instruction causing an exception is passing through later pipeline stages, and therefore any updating of the condition codes should be suppressed</p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/execstage.png" alt="execute stage"></p>
+<h4 id="Memory-Stage"><a href="#Memory-Stage" class="headerlink" title="Memory Stage"></a>Memory Stage</h4><p><img src="/2021/08/28/CSAPP/Ch4PartII/Mstage.png" alt="Mstage"></p>
+<h3 id="4-5-8-Pipeline-Control-Logic"><a href="#4-5-8-Pipeline-Control-Logic" class="headerlink" title="4.5.8 Pipeline Control Logic"></a>4.5.8 Pipeline Control Logic</h3><p><em>We are now ready to complete our design for PIPE by creating the pipeline control logic.</em></p>
+<p>Only 4 problems left:</p>
+<ul>
+<li>Load/use hazards.</li>
+<li>Processing ret.</li>
+<li>Mispredicted branches.</li>
+<li>Exceptions</li>
+</ul>
+<h4 id="Desired-Handling-of-Special-Control-Cases"><a href="#Desired-Handling-of-Special-Control-Cases" class="headerlink" title="Desired Handling of Special Control Cases"></a>Desired Handling of Special Control Cases</h4><p><em>In summary, implementing this pipeline flow requires detecting the hazard condition, keeping pipeline registers F and D fixed, and injecting a bubble into the execute stage.</em></p>
+<h4 id="Detecting-Special-Control-Conditions"><a href="#Detecting-Special-Control-Conditions" class="headerlink" title="Detecting Special Control Conditions"></a>Detecting Special Control Conditions</h4><p><img src="/2021/08/28/CSAPP/Ch4PartII/detection.png" alt="detection"></p>
+<h4 id="Pipeline-Control-Mechanisms"><a href="#Pipeline-Control-Mechanisms" class="headerlink" title="Pipeline Control Mechanisms"></a>Pipeline Control Mechanisms</h4><p><em>These mechanisms involve small extensions to the basic clocked register described</em></p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/extensions.png" alt="extensions"></p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/conditions.png" alt="different conditions"></p>
+<h4 id="Combinations-of-Control-Conditions"><a href="#Combinations-of-Control-Conditions" class="headerlink" title="Combinations of Control Conditions"></a>Combinations of Control Conditions</h4><p><em>A common bug in designing a system is to fail to handle instances where multiple special conditions arise <strong>simultaneously</strong></em></p>
+<p><img src="/2021/08/28/CSAPP/Ch4PartII/simultaneously.png" alt="simltaneously"></p>
+<p>We can see by these diagrams that most of the control conditions are mutually exclusive.Only the two combinations indicated by arrows can arise simultaneously.</p>
+<p>The pipeline control logic should detect that the branch was mispredicted and therefore cancel the ret instruction</p>
+<h4 id="Control-Logic-Implementation"><a href="#Control-Logic-Implementation" class="headerlink" title="Control Logic Implementation"></a>Control Logic Implementation</h4><p><img src="/2021/08/28/CSAPP/Ch4PartII/piplinecontrol.png" alt="pipline control logic"></p>
+<h3 id="4-5-9-Performance-Analysis"><a href="#4-5-9-Performance-Analysis" class="headerlink" title="4.5.9 Performance Analysis"></a>4.5.9 Performance Analysis</h3><p><em>We can measure the inefficiency by determining <strong>how often a bubble gets injected into the pipeline</strong>, since these cause unused pipeline cycles.</em></p>
+<p>We can quantify the effect these penalties have on the overall performance by computing an estimate of the average number of clock cycles PIPE would require per instruction it executes, a measure known as the <strong>CPI</strong> </p>
+<blockquote>
+<p>How do we know our implementation of ISA is correct? We cannot test all combinations of instructions since they are nearly infinite.</p>
+<p>Newer methods of <strong>formal verification</strong>, however, hold the promise that we can have tools that rigorously consider all possible behaviors of a system and determine whether or not there are any design errors</p>
+</blockquote>
+<h3 id="4-5-10-Unfinished-Business"><a href="#4-5-10-Unfinished-Business" class="headerlink" title="4.5.10 Unfinished Business"></a>4.5.10 Unfinished Business</h3><p><em>Still, PIPE lacks several key features that would be required in an actual microprocessor design.</em></p>
+<h4 id="Multicycle-Instructions"><a href="#Multicycle-Instructions" class="headerlink" title="Multicycle Instructions"></a>Multicycle Instructions</h4><p><em>In a more complete instruction set, we would also need to implement instructions requiring more complex operations such as integer multiplication and division and floating-point operations</em></p>
+<h4 id="Interfacing-with-the-Memory-System"><a href="#Interfacing-with-the-Memory-System" class="headerlink" title="Interfacing with the Memory System"></a>Interfacing with the Memory System</h4><ul>
+<li>We  ignored the possible hazards caused by self-modifying code where one instruction writes to the region of memory from which later instructions are fetched. </li>
+<li>we reference memory locations according to their virtual addresses, and these require a translation into physical addresses before the actual read or write operation can be performed.(So more than one clock cycle was needed)</li>
+</ul>
+<p>However, using a <strong>combination of TLBs and caches</strong>, it is indeed <strong>possible to read instructions and read or write data in a single clock cycle</strong> most of the time.</p>
+<p>But still there will be two type of memory reference delay</p>
+<ol>
+<li><p>cache miss</p>
+<p>The value to be refered is not in cache, but can be retrieved from a higher-level cache or from the main memory of the processor, requiring 3 to 20 clock cycles.</p>
+<p><strong>the pipeline simply stalls</strong>, holding the instruction in the fetch or memory stage until the cache can perform the read or write operation</p>
+</li>
+<li><p>page fault</p>
+<p>In some cases, the memory location being referenced is actually stored in the disk or nonvolatile memory</p>
+<p>this will cause the processor to invoke the <strong>operating system’s exception handler code</strong>.</p>
+<p> This code will then set up a transfer from the disk to the main memory. Once this completes, the operating system will return to the original program, where the instruction causing the page fault will be re-executed.</p>
+<p>Since accessing a disk can require millions of clock cycles, the several thousand cycles of processing performed by the OS page fault handler has little impact on performance.</p>
+</li>
+</ol>
+<h2 id="4-6-Summary"><a href="#4-6-Summary" class="headerlink" title="4.6 Summary"></a>4.6 Summary</h2><p><em>In this chapter, we have learned several important lessons about processor design:</em></p>
+<ul>
+<li><p><strong>Managing complexity is a top priority</strong>. We want to make optimum use of the hardware resources to get maximum performance at minimum cost.</p>
+</li>
+<li><p><strong>We do not need to implement the ISA directly</strong>. A direct implementation of the ISA would imply a very sequential design, We can indirectly implement it by using pipline.</p>
+<p>By careful design and analysis, we can handle the various pipeline hazards, so that the overall effect of running a program exactly matches what would be obtained with the ISA model.</p>
+</li>
+<li><p><strong>Hardware designers must be meticulous</strong>. Once a chip has been fabricated, it is nearly impossible to correct any errors</p>
+</li>
+</ul>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/" data-id="ckszqyvpp0034qmyqc6d9drvz" data-title="Ch4PartII" class="article-share-link">Teilen</a>
+      <a data-url="http://rubbish-and-world.github.io/2021/08/28/CSAPP/Ch4PartII/" data-id="ckszqyvpp0034qmyqc6d9drvz" data-title="Ch4PartII" class="article-share-link">Partager</a>
       
       
       
@@ -320,9 +455,18 @@
     
 <nav id="article-nav">
   
+    <a href="/2021/09/03/CSAPP/architecturelab/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Récent</strong>
+      <div class="article-nav-title">
+        
+          architecturelab
+        
+      </div>
+    </a>
+  
   
     <a href="/2021/08/20/CSAPP/Ch4/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
+      <strong class="article-nav-caption">Ancien</strong>
       <div class="article-nav-title">Ch4</div>
     </a>
   
@@ -338,7 +482,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Kategorien</h3>
+    <h3 class="widget-title">Catégories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
     </div>
@@ -348,7 +492,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
+    <h3 class="widget-title">Mot-clés</h3>
     <div class="widget">
       <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
     </div>
@@ -358,7 +502,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
+    <h3 class="widget-title">Nuage de mot-clés</h3>
     <div class="widget tagcloud">
       <a href="/tags/game/" style="font-size: 10px;">game</a>
     </div>
@@ -367,9 +511,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
     </div>
   </div>
 
@@ -377,9 +521,13 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
+    <h3 class="widget-title">Articles récents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2021/09/03/CSAPP/architecturelab/">architecturelab</a>
+          </li>
         
           <li>
             <a href="/2021/08/28/CSAPP/Ch4PartII/">Ch4PartII</a>
@@ -397,10 +545,6 @@
             <a href="/2021/08/09/CSAPP/Ch3PartIV/">Ch3PartIV</a>
           </li>
         
-          <li>
-            <a href="/2021/08/05/CSAPP/Ch3PartIII/">Ch3PartIII</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -415,7 +559,7 @@
     <div id="footer-info" class="inner">
       
       &copy; 2021 rubbish<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+      Propulsé par <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>

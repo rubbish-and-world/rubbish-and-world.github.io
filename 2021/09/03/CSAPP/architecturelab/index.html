@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>architecturelab | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Architecture lab">
+<meta property="og:type" content="article">
+<meta property="og:title" content="architecturelab">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/09/03/CSAPP/architecturelab/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Architecture lab">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-09-03T07:36:00.000Z">
+<meta property="article:modified_time" content="2021-09-03T13:32:38.962Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Rechercher"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSAPP/architecturelab" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/03/CSAPP/architecturelab/" class="article-date">
+  <time class="dt-published" datetime="2021-09-03T07:36:00.000Z" itemprop="datePublished">2021-09-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/csapp/">csapp</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      architecturelab
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Architecture-lab"><a href="#Architecture-lab" class="headerlink" title="Architecture lab"></a>Architecture lab</h1><a id="more"></a>
+
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>The lab is organized into three parts, each with its own handin</p>
+<ul>
+<li>In Part A you will write some simple Y86-64 programs and become familiar with the Y86-64 tools.</li>
+<li>In Part B, you will extend the SEQ simulator with a new instruction. </li>
+<li>These two parts will prepare you for Part C, the heart of the lab, where you will optimize the Y86-64 benchmark program and the processor design.</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ tar xvf archlab-handout.tar</span><br><span class="line">$ cat README</span><br><span class="line">This directory contains the files that you need <span class="keyword">for</span> the CS:APP</span><br><span class="line">architecture lab.</span><br><span class="line"></span><br><span class="line">******</span><br><span class="line">Files:</span><br><span class="line">******</span><br><span class="line"></span><br><span class="line">Makefile		Use this to handin your solutions</span><br><span class="line">README			This file</span><br><span class="line">archlab.&#123;ps,pdf&#125;	Lab writeup</span><br><span class="line">sim.tar			Archive of the Y86-64 tools <span class="keyword">in</span> tar format</span><br><span class="line">simguide.&#123;ps,pdf&#125;	CS:APP Guide to Simulators document</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ tar xvf sim.tar</span><br><span class="line">$ <span class="built_in">cd</span> sim</span><br><span class="line">$ make clean; make <span class="comment"># for GUI version</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ vim Makefile</span><br><span class="line"><span class="comment"># comment out TKLIBS and TKINC for non-GUI version</span></span><br><span class="line">$ make clean; make</span><br></pre></td></tr></table></figure>
+<h2 id="PartA"><a href="#PartA" class="headerlink" title="PartA"></a>PartA</h2><p><em>You will be working in directory <code>sim/misc</code> in this part.</em></p>
+<p>Your task is to write and simulate the following three Y86-64 programs.</p>
+<ul>
+<li>put your name and ID in a comment at the beginning of each program</li>
+<li>You can test your programs by first assemblying them with the program <code>YAS</code> and then running them with the instruction set simulator <code>YIS</code>.</li>
+<li>you should follow the x86-64 conventions for passing function arguments, using registers, and using the stack. This includes saving and restoring any callee-save registers that you use.</li>
+<li>The C code of the program is in <code>sim/misc/example.c</code></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment"> * Architecture Lab: Part A </span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * High level specs for the functions that the students will rewrite</span></span><br><span class="line"><span class="comment"> * in Y86-64 assembly language</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* $begin examples */</span></span><br><span class="line"><span class="comment">/* linked list element */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">ELE</span> &#123;</span></span><br><span class="line">    <span class="keyword">long</span> val;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ELE</span> *<span class="title">next</span>;</span></span><br><span class="line">&#125; *list_ptr;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* sum_list - Sum the elements of a linked list */</span></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">sum_list</span><span class="params">(list_ptr ls)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> val = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (ls) &#123;</span><br><span class="line">	val += ls-&gt;val;</span><br><span class="line">	ls = ls-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> val;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* rsum_list - Recursive version of sum_list */</span></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">rsum_list</span><span class="params">(list_ptr ls)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!ls)</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="keyword">long</span> val = ls-&gt;val;</span><br><span class="line">	<span class="keyword">long</span> rest = rsum_list(ls-&gt;next);</span><br><span class="line">	<span class="keyword">return</span> val + rest;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* copy_block - Copy src to dest and return xor checksum of src */</span></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">copy_block</span><span class="params">(<span class="keyword">long</span> *src, <span class="keyword">long</span> *dest, <span class="keyword">long</span> len)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> result = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (len &gt; <span class="number">0</span>) &#123;</span><br><span class="line">	<span class="keyword">long</span> val = *src++;</span><br><span class="line">	*dest++ = val;</span><br><span class="line">	result ^= val;</span><br><span class="line">	len--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* $end examples */</span></span><br></pre></td></tr></table></figure>
+<h5 id="Program-1"><a href="#Program-1" class="headerlink" title="Program 1"></a>Program 1</h5><p><code>sum.ys</code>: Iteratively sum linked list elements</p>
+<p>Your program should consist of some code that <strong>sets up the stack structure, invokes a function, and then halts</strong></p>
+<p>Test your program using the following three-element list:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># Sample linked list </span><br><span class="line">.align 8</span><br><span class="line">ele1:</span><br><span class="line">	.quad 0x00a </span><br><span class="line">	.quad ele2</span><br><span class="line">ele2:</span><br><span class="line">	.quad 0x0b0 </span><br><span class="line">	.quad ele3</span><br><span class="line">ele3:</span><br><span class="line">	.quad 0xc00 </span><br><span class="line">	.quad 0</span><br></pre></td></tr></table></figure>
+<h4 id="My-solution"><a href="#My-solution" class="headerlink" title="My solution :"></a>My solution :</h4><ol>
+<li><p>use <code>.pos 0xvalue</code> to specify the address in code section</p>
+</li>
+<li><p>I know we can use <code>gcc</code> to first assemble <code>example.c</code> into <code>x86_64</code> assembly code and then modify it to y86 code, but just not recommended.</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"># code section start at address 0x0</span><br><span class="line">    .pos 0</span><br><span class="line">code:</span><br><span class="line"># stack set up</span><br><span class="line">irmovq stack, %rsp</span><br><span class="line"></span><br><span class="line"># entry of the program</span><br><span class="line">main:</span><br><span class="line">    irmovq data,%rdi</span><br><span class="line">    call sum_list</span><br><span class="line">    halt</span><br><span class="line"></span><br><span class="line"># sum_list(Node * ls)</span><br><span class="line">sum_list:</span><br><span class="line">    # initialize return value to 0</span><br><span class="line">    irmovq $0 , %rax</span><br><span class="line">    # test if ls is NULL</span><br><span class="line">    irmovq $0 , %rbx</span><br><span class="line">    subq %rbx, %rdi</span><br><span class="line">    je return</span><br><span class="line">    # guarded do strategy</span><br><span class="line">loop:</span><br><span class="line">    mrmovq (%rdi),%rsi</span><br><span class="line">    addq %rsi,%rax</span><br><span class="line">    mrmovq 8(%rdi),%rdi</span><br><span class="line">    subq %rbx , %rdi</span><br><span class="line">    jne loop</span><br><span class="line">return:</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line"># Sample linked list </span><br><span class="line"># data section start at address 0x300</span><br><span class="line">.pos 0x300</span><br><span class="line">.align 8</span><br><span class="line">data:</span><br><span class="line">ele1:</span><br><span class="line">	.quad 0x00a </span><br><span class="line">	.quad ele2</span><br><span class="line">ele2:</span><br><span class="line">	.quad 0x0b0 </span><br><span class="line">	.quad ele3</span><br><span class="line">ele3:</span><br><span class="line">	.quad 0xc00 </span><br><span class="line">	.quad 0</span><br><span class="line"></span><br><span class="line"># stack grows from address 0x500 to 0x0 (should be limited at 0x300)</span><br><span class="line">    .pos 0x500</span><br><span class="line">stack:</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Stopped in 24 steps at PC &#x3D; 0x1d.  Status &#39;HLT&#39;, CC Z&#x3D;1 S&#x3D;0 O&#x3D;0</span><br><span class="line">Changes to registers:</span><br><span class="line">%rax:	0x0000000000000000	0x0000000000000cba</span><br><span class="line">%rsp:	0x0000000000000000	0x0000000000000500</span><br><span class="line">%rsi:	0x0000000000000000	0x0000000000000c00</span><br><span class="line"></span><br><span class="line">Changes to memory:</span><br><span class="line">0x04f8:	0x0000000000000000	0x000000000000001d</span><br></pre></td></tr></table></figure>
+<h4 id="Program-2"><a href="#Program-2" class="headerlink" title="Program 2"></a>Program 2</h4><p><code>rsum.ys</code>: Recursively sum linked list elements</p>
+<p>This code should be similar to the code in <code>sum.ys</code>, except that it should use a function <code>rsum_list</code> that recursively sums a list of numbers, as shown with the C function <code>rsum_list</code></p>
+<h4 id="My-solution-1"><a href="#My-solution-1" class="headerlink" title="My solution:"></a>My solution:</h4><p>when using callee saved register in recursive function:</p>
+<ol>
+<li><code>push</code> it before use it</li>
+<li><code>pop</code> it after use it</li>
+<li>if not used in some branch, not <code>push</code> and <code>pop</code> are needed at all.</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"># code section start at address 0x0</span><br><span class="line">    .pos 0</span><br><span class="line">code:</span><br><span class="line"></span><br><span class="line"># stack set up</span><br><span class="line">irmovq stack, %rsp</span><br><span class="line"></span><br><span class="line"># entry of the program</span><br><span class="line">main:</span><br><span class="line">    irmovq data,%rdi</span><br><span class="line">    call rsum_list</span><br><span class="line">    halt</span><br><span class="line"></span><br><span class="line"># rsum_list(Node * ls)</span><br><span class="line">rsum_list:</span><br><span class="line">    irmovq $0 , %rax # initialize return value to 0</span><br><span class="line">    irmovq $0 , %rcx # get a 0 constant</span><br><span class="line">    subq %rcx , %rdi</span><br><span class="line">    je return</span><br><span class="line"># else:</span><br><span class="line">    pushq %rbp</span><br><span class="line">    mrmovq (%rdi),%rsi</span><br><span class="line">    addq %rsi, %rax</span><br><span class="line">    rrmovq %rax, %rbp</span><br><span class="line">    mrmovq 8(%rdi),%rdi</span><br><span class="line">    call rsum_list</span><br><span class="line">    addq %rbp ,%rax </span><br><span class="line">    popq %rbp</span><br><span class="line">return:</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line"># Sample linked list </span><br><span class="line"># data section start at address 0x300</span><br><span class="line">.pos 0x300</span><br><span class="line">.align 8</span><br><span class="line">data:</span><br><span class="line">ele1:</span><br><span class="line">	.quad 0x00a </span><br><span class="line">	.quad ele2</span><br><span class="line">ele2:</span><br><span class="line">	.quad 0x0b0 </span><br><span class="line">	.quad ele3</span><br><span class="line">ele3:</span><br><span class="line">	.quad 0xc00 </span><br><span class="line">	.quad 0</span><br><span class="line"># stack grows from address 0x500 to 0x0 (should be limited at 0x300)</span><br><span class="line">    .pos 0x500</span><br><span class="line">stack:</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Stopped in 48 steps at PC &#x3D; 0x1d.  Status &#39;HLT&#39;, CC Z&#x3D;0 S&#x3D;0 O&#x3D;0</span><br><span class="line">Changes to registers:</span><br><span class="line">%rax:	0x0000000000000000	0x0000000000000cba</span><br><span class="line">%rsp:	0x0000000000000000	0x0000000000000500</span><br><span class="line">%rsi:	0x0000000000000000	0x0000000000000c00</span><br><span class="line"></span><br><span class="line">Changes to memory:</span><br><span class="line">0x04c8:	0x0000000000000000	0x0000000000000060</span><br><span class="line">0x04d0:	0x0000000000000000	0x00000000000000b0</span><br><span class="line">0x04d8:	0x0000000000000000	0x0000000000000060</span><br><span class="line">0x04e0:	0x0000000000000000	0x000000000000000a</span><br><span class="line">0x04e8:	0x0000000000000000	0x0000000000000060</span><br><span class="line">0x04f8:	0x0000000000000000	0x000000000000001d</span><br></pre></td></tr></table></figure>
+<h4 id="Program-3"><a href="#Program-3" class="headerlink" title="Program 3"></a>Program 3</h4><p><code>copy.ys</code>: Copy a source block to a destination block</p>
+<p>Write a program (copy.ys) that copies a block of words from one part of memory to another (non-overlapping area) area of memory, computing the checksum (Xor) of all the words copied.</p>
+<p>Test your program using the following three-element source and destination blocks:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">.align 8</span><br><span class="line"># Source block src:</span><br><span class="line">.quad 0x00a .quad 0x0b0 .quad 0xc00</span><br><span class="line"># Destination block</span><br><span class="line">dest:</span><br><span class="line">.quad 0x111 .quad 0x222 .quad 0x333</span><br></pre></td></tr></table></figure>
+<h4 id="My-solution-2"><a href="#My-solution-2" class="headerlink" title="My solution :"></a>My solution :</h4><p>Note that in y86 address is assigned by lines</p>
+<p>So <code>quad 0x00a .quad 0x0b0 .quad 0xc00</code> and</p>
+<p><code>.quad 0x00a  .quad 0x0b0  .quad 0xc00</code></p>
+<p>are different.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"># code section start at address 0x0</span><br><span class="line">    .pos 0</span><br><span class="line">code:</span><br><span class="line"></span><br><span class="line"># stack set up</span><br><span class="line">irmovq stack, %rsp</span><br><span class="line"></span><br><span class="line"># entry of the program</span><br><span class="line">main:</span><br><span class="line">    irmovq src,%rdi</span><br><span class="line">    irmovq dest,%rsi</span><br><span class="line">    irmovq $3, %rcx</span><br><span class="line">    call copy_block</span><br><span class="line">    halt</span><br><span class="line"></span><br><span class="line">copy_block:</span><br><span class="line">    # initialize return value to 0</span><br><span class="line">    irmovq $0 , %rax</span><br><span class="line">    # set constants</span><br><span class="line">    irmovq $0, %rbp</span><br><span class="line">    irmovq $8, %rbx</span><br><span class="line">    # jump to middle strategy</span><br><span class="line">    jmp test</span><br><span class="line">loop:</span><br><span class="line">    mrmovq (%rdi),%rdx </span><br><span class="line">    addq %rbx,%rdi</span><br><span class="line">    rmmovq %rdx,(%rsi)</span><br><span class="line">    addq %rbx , %rsi</span><br><span class="line">    xorq %rdx,%rax</span><br><span class="line">    irmovq $1,%rdx</span><br><span class="line">    subq %rdx,%rcx</span><br><span class="line">test:</span><br><span class="line">    subq %rbp , %rcx</span><br><span class="line">    jg loop</span><br><span class="line">    ret</span><br><span class="line"></span><br><span class="line"># data section start at address 0x300</span><br><span class="line">.pos 0x300</span><br><span class="line">.align 8</span><br><span class="line"># Source block </span><br><span class="line">src:</span><br><span class="line">.quad 0x00a </span><br><span class="line">.quad 0x0b0 </span><br><span class="line">.quad 0xc00</span><br><span class="line"># Destination block</span><br><span class="line">dest:</span><br><span class="line">.quad 0x111 </span><br><span class="line">.quad 0x222 </span><br><span class="line">.quad 0x333</span><br><span class="line"></span><br><span class="line"># stack grows from address 0x500 to 0x0 (should be limited at 0x300)</span><br><span class="line">    .pos 0x500</span><br><span class="line">stack:</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Stopped in 40 steps at PC &#x3D; 0x31.  Status &#39;HLT&#39;, CC Z&#x3D;1 S&#x3D;0 O&#x3D;0</span><br><span class="line">Changes to registers:</span><br><span class="line">%rax:	0x0000000000000000	0x0000000000000cba</span><br><span class="line">%rdx:	0x0000000000000000	0x0000000000000001</span><br><span class="line">%rbx:	0x0000000000000000	0x0000000000000008</span><br><span class="line">%rsp:	0x0000000000000000	0x0000000000000500</span><br><span class="line">%rsi:	0x0000000000000000	0x0000000000000330</span><br><span class="line">%rdi:	0x0000000000000000	0x0000000000000318</span><br><span class="line"></span><br><span class="line">Changes to memory:</span><br><span class="line">0x0318:	0x0000000000000111	0x000000000000000a</span><br><span class="line">0x0320:	0x0000000000000222	0x00000000000000b0</span><br><span class="line">0x0328:	0x0000000000000333	0x0000000000000c00</span><br><span class="line">0x04f8:	0x0000000000000000	0x0000000000000031</span><br></pre></td></tr></table></figure>
+<h2 id="Part-B"><a href="#Part-B" class="headerlink" title="Part B"></a>Part B</h2><p>You will be working in directory <code>sim/seq</code> in this part.</p>
+<p>Your task in Part B is to extend the SEQ processor to support the <code>iaddq</code></p>
+<p>To add this instructions, you will modify the file <code>seq-full.hcl</code>, which implements the version of SEQ described in the CS:APP3e textbook. In addition, it contains declarations of some constants that you will need for your solution.</p>
+<p>Your HCL file must begin with a header comment containing the following information:</p>
+<ul>
+<li>Your name and ID.</li>
+<li>A description of the computations required for the <code>iaddq</code> instruction. Use the descriptions of <code>irmovq</code> and <code>OPq</code> in Figure 4.18 in the CS:APP3e text as a guide.</li>
+</ul>
+<h3 id="Building-and-Testing-Your-Solution"><a href="#Building-and-Testing-Your-Solution" class="headerlink" title="Building and Testing Your Solution"></a>Building and Testing Your Solution</h3><p>you will need to build a new instance of the SEQ simulator (<code>ssim</code>) based on this HCL file, and then test it</p>
+<h4 id="Build"><a href="#Build" class="headerlink" title="Build"></a>Build</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ make VERSION=full</span><br></pre></td></tr></table></figure>
+<p>(This builds a version of <code>ssim</code> that uses the control logic you specified in <code>seq-full.hcl</code>. To save typing, you can assign <code>VERSION=full</code> in the Makefile.)</p>
+<h4 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h4><h5 id="Testing-your-solution-on-a-simple-Y86-64-program"><a href="#Testing-your-solution-on-a-simple-Y86-64-program" class="headerlink" title="Testing your solution on a simple Y86-64 program."></a>Testing your solution on a simple Y86-64 program.</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./ssim -t ../y86-code/asumi.yo</span><br></pre></td></tr></table></figure>
+<h5 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./ssim -g ../y86-code/asumi.yo</span><br></pre></td></tr></table></figure>
+<h5 id="Retesting-your-solution-using-the-benchmark-programs"><a href="#Retesting-your-solution-using-the-benchmark-programs" class="headerlink" title="Retesting your solution using the benchmark programs"></a>Retesting your solution using the benchmark programs</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ (<span class="built_in">cd</span> ../y86-code; make testssim)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Note that none of these programs test the added instructions.</p>
+<p> You are simply making sure that your solution did not inject errors for the original instructions. See  <code>../y86-code/README</code> file for more details.</p>
+</blockquote>
+<h5 id="Performing-regression-tests"><a href="#Performing-regression-tests" class="headerlink" title="Performing regression tests."></a>Performing regression tests.</h5><p><em>test everything except <code>iaddq</code> and <code>leave</code></em> </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ (<span class="built_in">cd</span> ../ptest; make SIM=../seq/ssim)</span><br></pre></td></tr></table></figure>
+<p><em>test <code>iaddq</code></em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ (<span class="built_in">cd</span> ../ptest; make SIM=../seq/ssim TFLAGS=-i)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>For more information on the SEQ simulator refer to the handout <em>CS:APP3e Guide to Y86-64 Processor Simulators</em> (<code>simguide.pdf</code>).</p>
+</blockquote>
+<h4 id="My-solution-3"><a href="#My-solution-3" class="headerlink" title="My solution :"></a>My solution :</h4><p>The problem could have been much harder. Due to the bloody clear comments and concise codes given by the file itself, adding the <code>iaddq</code> instruction becomes a piece of cake. Just adding <code>IIADDQ</code> at serveral different places will get the job done.</p>
+<p>The teachers at CMU really did a splendid job, I really appreciate their efforts and passion.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Stage               iaddq V,rB</span><br><span class="line"></span><br><span class="line">Fetch               icode:ifunc ← M1[PC]</span><br><span class="line">                    rA:rB ← M1[PC+1]</span><br><span class="line">                    valC ← M8[PC + 2]</span><br><span class="line">                    valP &#x3D; PC + 10</span><br><span class="line">                    </span><br><span class="line">Decode              valB ← R[rB]</span><br><span class="line"></span><br><span class="line">Execute             valE ← valB + valC</span><br><span class="line"></span><br><span class="line">Memory</span><br><span class="line"></span><br><span class="line">Write back          R[rB] ← valE</span><br><span class="line"></span><br><span class="line">PC update           PC ← valP</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">####################################################################</span></span><br><span class="line"><span class="comment">#    Control Signal Definitions.                                   #</span></span><br><span class="line"><span class="comment">####################################################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment">################ Fetch Stage     ###################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Determine instruction code</span></span><br><span class="line">word icode = [</span><br><span class="line">	imem_error: INOP;</span><br><span class="line">	<span class="number">1</span>: imem_icode;		<span class="comment"># Default: get from instruction memory</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment"># Determine instruction function</span></span><br><span class="line">word ifun = [</span><br><span class="line">	imem_error: FNONE;</span><br><span class="line">	<span class="number">1</span>: imem_ifun;		<span class="comment"># Default: get from instruction memory</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="built_in">bool</span> instr_valid = icode <span class="keyword">in</span> </span><br><span class="line">	&#123; INOP, IHALT, IRRMOVQ, IIRMOVQ, IRMMOVQ, IMRMOVQ,</span><br><span class="line">	       IOPQ, IJXX, ICALL, IRET, IPUSHQ, IPOPQ , IIADDQ &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment"># Does fetched instruction require a regid byte?</span></span><br><span class="line"><span class="built_in">bool</span> need_regids =</span><br><span class="line">	icode <span class="keyword">in</span> &#123; IRRMOVQ, IOPQ, IPUSHQ, IPOPQ, </span><br><span class="line">		     IIRMOVQ, IRMMOVQ, IMRMOVQ , IIADDQ &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment"># Does fetched instruction require a constant word?</span></span><br><span class="line"><span class="built_in">bool</span> need_valC =</span><br><span class="line">	icode <span class="keyword">in</span> &#123; IIRMOVQ, IRMMOVQ, IMRMOVQ, IJXX, ICALL , IIADDQ &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">################ Decode Stage    ###################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## What register should be used as the A source?</span></span><br><span class="line">word srcA = [</span><br><span class="line">	icode <span class="keyword">in</span> &#123; IRRMOVQ, IRMMOVQ, IOPQ, IPUSHQ  &#125; : rA;</span><br><span class="line">	icode <span class="keyword">in</span> &#123; IPOPQ, IRET &#125; : RRSP;</span><br><span class="line">	<span class="number">1</span> : RNONE; <span class="comment"># Don&#x27;t need register</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">## What register should be used as the B source?</span></span><br><span class="line">word srcB = [</span><br><span class="line">	icode <span class="keyword">in</span> &#123; IOPQ, IRMMOVQ, IMRMOVQ   , IIADDQ &#125; : rB;</span><br><span class="line">	icode <span class="keyword">in</span> &#123; IPUSHQ, IPOPQ, ICALL, IRET &#125; : RRSP;</span><br><span class="line">	<span class="number">1</span> : RNONE;  <span class="comment"># Don&#x27;t need register</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">## What register should be used as the E destination?</span></span><br><span class="line">word dstE = [</span><br><span class="line">	icode <span class="keyword">in</span> &#123; IRRMOVQ &#125; &amp;&amp; Cnd : rB;</span><br><span class="line">	icode <span class="keyword">in</span> &#123; IIRMOVQ, IOPQ , IIADDQ &#125; : rB;</span><br><span class="line">	icode <span class="keyword">in</span> &#123; IPUSHQ, IPOPQ, ICALL, IRET &#125; : RRSP;</span><br><span class="line">	<span class="number">1</span> : RNONE;  <span class="comment"># Don&#x27;t write any register</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">## What register should be used as the M destination?</span></span><br><span class="line">word dstM = [</span><br><span class="line">	icode <span class="keyword">in</span> &#123; IMRMOVQ, IPOPQ &#125; : rA;</span><br><span class="line">	<span class="number">1</span> : RNONE;  <span class="comment"># Don&#x27;t write any register</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">################ Execute Stage   ###################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## Select input A to ALU</span></span><br><span class="line">word aluA = [</span><br><span class="line">	icode <span class="keyword">in</span> &#123; IRRMOVQ, IOPQ &#125; : valA;</span><br><span class="line">	icode <span class="keyword">in</span> &#123; IIRMOVQ, IRMMOVQ, IMRMOVQ  , IIADDQ &#125; : valC;</span><br><span class="line">	icode <span class="keyword">in</span> &#123; ICALL, IPUSHQ &#125; : -<span class="number">8</span>;</span><br><span class="line">	icode <span class="keyword">in</span> &#123; IRET, IPOPQ &#125; : <span class="number">8</span>;</span><br><span class="line">	<span class="comment"># Other instructions don&#x27;t need ALU</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">## Select input B to ALU</span></span><br><span class="line">word aluB = [</span><br><span class="line">	icode <span class="keyword">in</span> &#123; IRMMOVQ, IMRMOVQ, IOPQ, ICALL, </span><br><span class="line">		      IPUSHQ, IRET, IPOPQ  ,  IIADDQ &#125; : valB;</span><br><span class="line">	icode <span class="keyword">in</span> &#123; IRRMOVQ, IIRMOVQ &#125; : <span class="number">0</span>;</span><br><span class="line">	<span class="comment"># Other instructions don&#x27;t need ALU</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">## Set the ALU function</span></span><br><span class="line">word alufun = [</span><br><span class="line">	icode == IOPQ : ifun;</span><br><span class="line">	<span class="number">1</span> : ALUADD;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">## Should the condition codes be updated?</span></span><br><span class="line"><span class="built_in">bool</span> set_cc = icode <span class="keyword">in</span> &#123; IOPQ , IIADDQ  &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">################ Memory Stage    ###################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## Set read control signal</span></span><br><span class="line"><span class="built_in">bool</span> mem_read = icode <span class="keyword">in</span> &#123; IMRMOVQ, IPOPQ, IRET &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">## Set write control signal</span></span><br><span class="line"><span class="built_in">bool</span> mem_write = icode <span class="keyword">in</span> &#123; IRMMOVQ, IPUSHQ, ICALL &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">## Select memory address</span></span><br><span class="line">word mem_addr = [</span><br><span class="line">	icode <span class="keyword">in</span> &#123; IRMMOVQ, IPUSHQ, ICALL, IMRMOVQ &#125; : valE;</span><br><span class="line">	icode <span class="keyword">in</span> &#123; IPOPQ, IRET &#125; : valA;</span><br><span class="line">	<span class="comment"># Other instructions don&#x27;t need address</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">## Select memory input data</span></span><br><span class="line">word mem_data = [</span><br><span class="line">	<span class="comment"># Value from register</span></span><br><span class="line">	icode <span class="keyword">in</span> &#123; IRMMOVQ, IPUSHQ &#125; : valA;</span><br><span class="line">	<span class="comment"># Return PC</span></span><br><span class="line">	icode == ICALL : valP;</span><br><span class="line">	<span class="comment"># Default: Don&#x27;t write anything</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">## Determine instruction status</span></span><br><span class="line">word Stat = [</span><br><span class="line">	imem_error || dmem_error : SADR;</span><br><span class="line">	!instr_valid: SINS;</span><br><span class="line">	icode == IHALT : SHLT;</span><br><span class="line">	<span class="number">1</span> : SAOK;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">################ Program Counter Update ############################</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## What address should instruction be fetched at</span></span><br><span class="line"></span><br><span class="line">word new_pc = [</span><br><span class="line">	<span class="comment"># Call.  Use instruction constant</span></span><br><span class="line">	icode == ICALL : valC;</span><br><span class="line">	<span class="comment"># Taken branch.  Use instruction constant</span></span><br><span class="line">	icode == IJXX &amp;&amp; Cnd : valC;</span><br><span class="line">	<span class="comment"># Completion of RET instruction.  Use value from stack</span></span><br><span class="line">	icode == IRET : valM;</span><br><span class="line">	<span class="comment"># Default: Use incremented PC</span></span><br><span class="line">	<span class="number">1</span> : valP;</span><br><span class="line">];</span><br><span class="line"><span class="comment">#/* $end seq-all-hcl */</span></span><br></pre></td></tr></table></figure>
+<h5 id="Simple-y86-test"><a href="#Simple-y86-test" class="headerlink" title="Simple y86 test"></a>Simple y86 test</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ make VERSION=full</span><br><span class="line">34 instructions executed</span><br><span class="line">Status = HLT</span><br><span class="line">Condition Codes: Z=1 S=0 O=0</span><br><span class="line">Changed Register State:</span><br><span class="line">%rax:	0x0000000000000000	0x0000abcdabcdabcd</span><br><span class="line">%rsp:	0x0000000000000000	0x0000000000000200</span><br><span class="line">%rdi:	0x0000000000000000	0x0000000000000038</span><br><span class="line">%r8:	0x0000000000000000	0x0000000000000008</span><br><span class="line">%r9:	0x0000000000000000	0x0000000000000001</span><br><span class="line">%r10:	0x0000000000000000	0x0000a000a000a000</span><br><span class="line">Changed Memory State:</span><br><span class="line">0x01f0:	0x0000000000000000	0x0000000000000055</span><br><span class="line">0x01f8:	0x0000000000000000	0x0000000000000013</span><br><span class="line">ISA Check Succeeds</span><br></pre></td></tr></table></figure>
+<h5 id="Benchmark-test"><a href="#Benchmark-test" class="headerlink" title="Benchmark test"></a>Benchmark test</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ../y86_code ; make testssim</span><br><span class="line">grep <span class="string">&quot;ISA Check&quot;</span> *.seq</span><br><span class="line">asum.seq:ISA Check Succeeds</span><br><span class="line">asumr.seq:ISA Check Succeeds</span><br><span class="line">cjr.seq:ISA Check Succeeds</span><br><span class="line">j-cc.seq:ISA Check Succeeds</span><br><span class="line">poptest.seq:ISA Check Succeeds</span><br><span class="line">prog1.seq:ISA Check Succeeds</span><br><span class="line">prog2.seq:ISA Check Succeeds</span><br><span class="line">prog3.seq:ISA Check Succeeds</span><br><span class="line">prog4.seq:ISA Check Succeeds</span><br><span class="line">prog5.seq:ISA Check Succeeds</span><br><span class="line">prog6.seq:ISA Check Succeeds</span><br><span class="line">prog7.seq:ISA Check Succeeds</span><br><span class="line">prog8.seq:ISA Check Succeeds</span><br><span class="line">pushquestion.seq:ISA Check Succeeds</span><br><span class="line">pushtest.seq:ISA Check Succeeds</span><br><span class="line">ret-hazard.seq:ISA Check Succeeds</span><br></pre></td></tr></table></figure>
+<h5 id="Regression-test"><a href="#Regression-test" class="headerlink" title="Regression test"></a>Regression test</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ../ptest; make SIM=../seq/ssim</span><br><span class="line">./optest.pl -s ../seq/ssim </span><br><span class="line">Simulating with ../seq/ssim</span><br><span class="line">  All 49 ISA Checks Succeed</span><br><span class="line">./jtest.pl -s ../seq/ssim </span><br><span class="line">Simulating with ../seq/ssim</span><br><span class="line">  All 64 ISA Checks Succeed</span><br><span class="line">./ctest.pl -s ../seq/ssim </span><br><span class="line">Simulating with ../seq/ssim</span><br><span class="line">  All 22 ISA Checks Succeed</span><br><span class="line">./htest.pl -s ../seq/ssim </span><br><span class="line">Simulating with ../seq/ssim</span><br><span class="line">  All 600 ISA Checks Succeed</span><br></pre></td></tr></table></figure>
+<h5 id="Test-iaddq"><a href="#Test-iaddq" class="headerlink" title="Test iaddq"></a>Test <code>iaddq</code></h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> ../ptest; make SIM=../seq/ssim TFLAGS=-i</span><br><span class="line">./optest.pl -s ../seq/ssim -i</span><br><span class="line">Simulating with ../seq/ssim</span><br><span class="line">  All 58 ISA Checks Succeed</span><br><span class="line">./jtest.pl -s ../seq/ssim -i</span><br><span class="line">Simulating with ../seq/ssim</span><br><span class="line">  All 96 ISA Checks Succeed</span><br><span class="line">./ctest.pl -s ../seq/ssim -i</span><br><span class="line">Simulating with ../seq/ssim</span><br><span class="line">  All 22 ISA Checks Succeed</span><br><span class="line">./htest.pl -s ../seq/ssim -i</span><br><span class="line">Simulating with ../seq/ssim</span><br><span class="line">  All 756 ISA Checks Succeed</span><br></pre></td></tr></table></figure>
+<h2 id="Part-C"><a href="#Part-C" class="headerlink" title="Part C"></a>Part C</h2><p><em>You will be working in directory <code>sim/pipe</code> in this part.</em></p>
+<p>Your task in Part C is to modify <code>ncopy.ys</code> and <code>pipe-full.hcl</code> with the goal of making <code>ncopy.ys</code> <strong>run as fast as possible</strong>.</p>
+<h3 id="Coding-rules"><a href="#Coding-rules" class="headerlink" title="Coding rules"></a>Coding rules</h3><p>You are free to make any modifications you wish, with the following constraints:</p>
+<ul>
+<li><p>Your <code>ncopy.ys</code> function must work for arbitrary array sizes.</p>
+</li>
+<li><p>Your <code>ncopy.ys</code> function must run correctly with YIS</p>
+</li>
+<li><p>The assembled version of your ncopy file must not be more than 1000 bytes long</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># length check</span></span><br><span class="line">$ ./check-len.pl &lt; ncopy.yo</span><br></pre></td></tr></table></figure></li>
+<li><p>Your <code>pipe-full.hcl</code> implementation must pass the regression tests in <code>../y86-code</code>and <code>../ptest</code>(without the <code>-i</code> flag that tests <code>iaddq</code>)</p>
+</li>
+</ul>
+<p>Other than that, you are free to implement the <code>iaddq</code> instruction if you think that will help. </p>
+<p>You may make any semantics preserving transformations to the <code>ncopy.ys</code> function, such as <strong>reordering instructions, replacing groups of instructions with single instructions, deleting some instructions, and adding other instructions</strong></p>
+<p>(You may find it useful to read about loop unrolling in Section 5.8 )(Unfortunately, I haven’t progressed to Chapter 5)</p>
+<h3 id="Building-and-Running-Your-Solution"><a href="#Building-and-Running-Your-Solution" class="headerlink" title="Building and Running Your Solution"></a>Building and Running Your Solution</h3><p>Each time you modify your ncopy.ys program, you can rebuild the driver programs by typing</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ make drivers</span><br></pre></td></tr></table></figure>
+<p>Each time you modify your pipe-full.hcl file, you can rebuild the simulator by typing</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ make psim VERSION=full</span><br></pre></td></tr></table></figure>
+<p>If you want to rebuild the simulator and the driver programs, type</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ make VERSION=full</span><br></pre></td></tr></table></figure>
+<hr>
+<p><em>Testing your driver files on the ISA simulator.</em> Make sure that your ncopy.ys function works prop- erly with YIS:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ make drivers</span><br><span class="line">$ ../misc/yis sdriver.yo</span><br></pre></td></tr></table></figure>
+<p><em>Testing your code on a range of block lengths with the ISA simulator</em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./correctness.pl</span><br></pre></td></tr></table></figure>
+<p>The program will end with register <code>%rax</code> having the following value:</p>
+<p><strong>0xaaaa</strong> : All tests pass.</p>
+<p><strong>0xbbbb</strong> : Incorrect count</p>
+<p><strong>0xcccc</strong> : Function ncopy is more than 1000 bytes long.</p>
+<p><strong>0xdddd</strong> : Some of the source data was not copied to its destination.</p>
+<p><strong>0xeeee</strong> : Some word just before or just after the destination region was corrupted.</p>
+<p><em>Testing your pipeline simulator on the benchmark programs.</em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ (<span class="built_in">cd</span> ../y86-code; make testpsim)</span><br></pre></td></tr></table></figure>
+<p><em>Testing your pipeline simulator with extensive regression tests</em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ (<span class="built_in">cd</span> ../ptest; make SIM=../pipe/psim TFLAGS=-i)</span><br></pre></td></tr></table></figure>
+<p><em>Testing your code on a range of block lengths with the pipeline simulator.</em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./correctness.pl -p</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/09/03/CSAPP/architecturelab/" data-id="ckt4edelj00003uyq62348f0g" data-title="architecturelab" class="article-share-link">Partager</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/08/28/CSAPP/Ch4PartII/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Ancien</strong>
+      <div class="article-nav-title">Ch4PartII</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Catégories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Mot-clés</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Articles récents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/09/03/CSAPP/architecturelab/">architecturelab</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/28/CSAPP/Ch4PartII/">Ch4PartII</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/20/CSAPP/Ch4/">Ch4</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/17/CSAPP/bomblab/">bomblab</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/09/CSAPP/Ch3PartIV/">Ch3PartIV</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Propulsé par <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
