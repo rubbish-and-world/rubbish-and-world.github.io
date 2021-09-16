@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Introduction | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Introduction to Computer Networking">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Introduction">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/09/06/Network/Introduction/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Introduction to Computer Networking">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/06/Network/Introduction/readwrite.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/06/Network/Introduction/http.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/06/Network/Introduction/4layermodel.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/06/Network/Introduction/waist.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/06/Network/Introduction/7layers.png">
+<meta property="article:published_time" content="2021-09-06T11:20:20.000Z">
+<meta property="article:modified_time" content="2021-09-09T09:41:05.319Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/09/06/Network/Introduction/readwrite.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Buscar"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Network/Introduction" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/06/Network/Introduction/" class="article-date">
+  <time class="dt-published" datetime="2021-09-06T11:20:20.000Z" itemprop="datePublished">2021-09-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Networking/">Networking</a>►<a class="article-category-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Introduction
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Introduction-to-Computer-Networking"><a href="#Introduction-to-Computer-Networking" class="headerlink" title="Introduction to Computer Networking"></a>Introduction to Computer Networking</h1><a id="more"></a>
+
+<h2 id="Network-Applications"><a href="#Network-Applications" class="headerlink" title="Network Applications"></a>Network Applications</h2><p><em>Read and write data over network</em></p>
+<p><img src="/2021/09/06/Network/Introduction/readwrite.png" alt="read write byte stream"></p>
+<p>Dominant model now is : <strong>Bidirectional reliable byte stream connection</strong></p>
+<ul>
+<li>One side read what the other writes</li>
+<li>Operate in both direction</li>
+<li>Reliable(Work on a connection)</li>
+</ul>
+<p>For example the HTTP protocol works like this</p>
+<p><img src="/2021/09/06/Network/Introduction/http.png" alt="http example"></p>
+<ul>
+<li>Client open a connection to the server, the server accept the connection</li>
+<li>The client write the request to connection, the server read it from the connection</li>
+<li>The server write back the response to the connection, the client then read from the connection</li>
+</ul>
+<h2 id="The-4-layer-Internet-Model"><a href="#The-4-layer-Internet-Model" class="headerlink" title="The 4 layer Internet Model"></a>The 4 layer Internet Model</h2><p><em>Applications want to “use” the internet, they just care about read and write data, they don’t care how the data is transmitted. So they use layers as build blocks to reuse other people’s work rather than do all the thing from scratch</em></p>
+<p>The model describe Internet operations in hierarchy</p>
+<p><img src="/2021/09/06/Network/Introduction/4layermodel.png" alt="4 layer model"></p>
+<h3 id="The-link-layer"><a href="#The-link-layer" class="headerlink" title="The link layer"></a>The link layer</h3><p><em>The link layer is responsible for transmit the package</em></p>
+<blockquote>
+<p>What is a package(aka datagram)?</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">*----------------------------------------*</span><br><span class="line">|    Data              |  from   |   to  |</span><br><span class="line">*----------------------------------------*</span><br></pre></td></tr></table></figure>
+</blockquote>
+<ul>
+<li><p>Link layer accept the package from network layer</p>
+</li>
+<li><p>Transmit one step forward, and then hand the package up to network layer</p>
+</li>
+<li><p>Network layer check whether itself is the destination of the package</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (to_address == my_address)&#123;</span><br><span class="line">    accept();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span>&#123;</span><br><span class="line">    give_back_to_link_layer_and_transmit_to_next();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="The-Network-layer"><a href="#The-Network-layer" class="headerlink" title="The Network layer"></a>The Network layer</h3></li>
+</ul>
+<p><em>The network layer is “special”, <strong>If you want to use the Internet, you must use IP(Internet Protocal)</strong></em></p>
+<p><img src="/2021/09/06/Network/Introduction/waist.png" alt="the thin waist"></p>
+<ul>
+<li>IP makes a best-effort attempt to deliver the package to its destination, but NO guarantee.</li>
+<li>IP datagrams CAN be lost, CAN be delivered out-of-order and CAN be corrupted</li>
+</ul>
+<p>If you want your data to transmit in a more controlled way, you should use another protocal running on top of IP —- TCP</p>
+<h3 id="The-Transport-layer"><a href="#The-Transport-layer" class="headerlink" title="The Transport layer"></a>The Transport layer</h3><p><em>“Control” how the datagrams are transmitted</em></p>
+<p>TCP(Transmit Control Protocol) do the “missing job” for IP</p>
+<ul>
+<li>If the datagrams are out-of-order, TCP will reorder them into the original way</li>
+<li>If there are missing and corrupted packages, TCP will ask the sender to resend they</li>
+</ul>
+<p>However, not every application want a reliable transmit, they can use other protocals, for example UDP(User Datagram Protocol)</p>
+<h3 id="The-Application-layer"><a href="#The-Application-layer" class="headerlink" title="The Application layer"></a>The Application layer</h3><p><em>bidirectional byte stream</em></p>
+<p>They can define their own protocols about how to interpret these bytes</p>
+<h3 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h3><ul>
+<li><p>4 layer model follows a <strong>horizontal</strong> way</p>
+<p>Each layer pretend to talk “directly” to its peer layer, not knowing about what happens in the lower layers</p>
+</li>
+<li><p>4 layer model is an implementation of the OSI 7 layer model</p>
+<p><img src="/2021/09/06/Network/Introduction/7layers.png" alt="7 layers"></p>
+<p>The only legacy to know about OSI model is the numbering system</p>
+<p>Sometimes Application layer is refered as “layer 7”, link layer is refered as “layer 2” etc.</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/09/06/Network/Introduction/" data-id="cktmyu04p0006qpyqewq0chpd" data-title="Introduction" class="article-share-link">Compartir</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/09/09/Network/network-layer/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Nuevo</strong>
+      <div class="article-nav-title">
+        
+          network layer
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/09/04/CSAPP/Ch5/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Viejo</strong>
+      <div class="article-nav-title">Ch5</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categorías</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nube de Tags</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archivos</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Posts recientes</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/09/13/CSAPP/attacklab/">attacklab</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/10/Network/principles/">principles</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/10/CSAPP/Ch6/">Ch6</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/09/Network/network-layer/">network layer</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/06/Network/Introduction/">Introduction</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Construido por <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

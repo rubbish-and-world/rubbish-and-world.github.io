@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Ch6 | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });   The Memory Hierarchy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ch6">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });   The Memory Hierarchy">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/sramvsdram.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/highviewdram.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/accessdram.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/memmodule.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/busstruct.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/readexp.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/writeexp.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/disk.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/zone.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/diskoperations.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/iobus.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/readingdisk.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/ssd.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/ssdcharacteristic.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/programdatacache.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/practice.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/hierarchy.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/cacheidea.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/cacheeverywhere.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/cachelocation.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/organizationofcache.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/cacheparameters.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/directmappedcache.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/setselection.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/linematching.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/enumerate.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/addrmap.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/whymiddle.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/2waycache.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/setselectionassociative.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/linematchingassociative.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/fullassociative.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/i7cache.png">
+<meta property="article:published_time" content="2021-09-09T23:58:07.000Z">
+<meta property="article:modified_time" content="2021-09-15T13:14:51.368Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/sramvsdram.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Buscar"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSAPP/Ch6" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/10/CSAPP/Ch6/" class="article-date">
+  <time class="dt-published" datetime="2021-09-09T23:58:07.000Z" itemprop="datePublished">2021-09-10</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/csapp/">csapp</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Ch6
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+
+<h1 id="The-Memory-Hierarchy"><a href="#The-Memory-Hierarchy" class="headerlink" title="The Memory Hierarchy"></a>The Memory Hierarchy</h1><a id="more"></a>
+
+<p><em>In our simple model, the memory system is a linear array of bytes, and the CPU can access each memory location in a constant amount of time.</em></p>
+<p>In practice, a memory system is <strong>a hierarchy of storage devices with different capacities, costs, and access times</strong></p>
+<p>Memory hierarchies work because <strong>well-written programs tend to access the storage at any particular level more frequently than they access the storage at the next lower level.</strong></p>
+<h2 id="6-1-Storage-Technologies"><a href="#6-1-Storage-Technologies" class="headerlink" title="6.1 Storage Technologies"></a>6.1 Storage Technologies</h2><p><em>Much of the success of computer technology stems from the tremendous progress in storage technology.</em></p>
+<h3 id="6-1-1-Random-Access-Memory-RAM"><a href="#6-1-1-Random-Access-Memory-RAM" class="headerlink" title="6.1.1 Random Access Memory(RAM)"></a>6.1.1 Random Access Memory(RAM)</h3><h4 id="Static-RAM"><a href="#Static-RAM" class="headerlink" title="Static RAM"></a>Static RAM</h4><p><em>SRAM stores each bit in a bistable memory cell. Each cell is implemented with a six-transistor circuit</em></p>
+<ul>
+<li>It can <strong>stay indefinitely in either of two different voltage configurations</strong>, or states</li>
+<li>Any other state will be unstable—starting from there, the circuit will <strong>quickly move toward one of the stable states</strong>. (Just like an inverted pendulum)</li>
+<li>Due to its bistable nature, an SRAM memory cell will <strong>retain its value indefinitely, as long as it is kept powered</strong></li>
+<li>Even when a disturbance, such as electrical noise, perturbs the voltages, the circuit will <strong>return to the stable value when the disturbance is removed</strong>.</li>
+</ul>
+<p><img src="/2021/09/10/CSAPP/Ch6/sramvsdram.png" alt="SRAM vs DRAM"></p>
+<h4 id="Dynamic-RAM"><a href="#Dynamic-RAM" class="headerlink" title="Dynamic RAM"></a>Dynamic RAM</h4><p><em>DRAM stores each bit as charge on a capacitor. This capacitor is very small</em></p>
+<ul>
+<li>Unlike SRAM, however, a DRAM memory cell is very <strong>sensitive to any disturbance</strong><ul>
+<li>When the capacitor voltage is disturbed, it will <strong>never recover</strong>.</li>
+<li><strong>Exposure to light rays</strong> will cause the capacitor voltages to change. </li>
+</ul>
+</li>
+<li>Various sources of leakage current cause a DRAM cell to lose its charge within a time period of around 10 to 100 milliseconds<ul>
+<li>The memory system must periodically refresh every bit of memory by reading it out and then rewriting it.</li>
+</ul>
+</li>
+</ul>
+<h4 id="Conventional-DRAMs"><a href="#Conventional-DRAMs" class="headerlink" title="Conventional DRAMs"></a>Conventional DRAMs</h4><p><em>The cells (bits) in a DRAM chip are partitioned into <code>d</code> <strong>supercells</strong>, each consisting of <code>w</code> DRAM cells</em></p>
+<ul>
+<li><p>A $d × w$ DRAM stores a total of $dw$ bits of information</p>
+</li>
+<li><p>The supercells are organized as a rectangular array with r rows and c columns, where $r \times c = d$</p>
+</li>
+<li><p>Each supercell has an address of the form $(i, j)$, where $i$ denotes the row and $j$ denotes the column</p>
+</li>
+<li><p>Information flows in and out of the chip via external connectors called <strong>pins</strong></p>
+<p>(Each pin carries a 1-bit signal.)</p>
+</li>
+</ul>
+<p><img src="/2021/09/10/CSAPP/Ch6/highviewdram.png" alt="high level view of DRAM"></p>
+<ul>
+<li>eight data pins that can transfer 1 byte in or out of the chip, and two addr pins that carry two-bit row and column supercell addresses. Other pins that carry control information are not shown</li>
+<li>Notice that the RAS(Row address Strob) and CAS(Column Address Strob) requests share the same DRAM address pins</li>
+</ul>
+<p><img src="/2021/09/10/CSAPP/Ch6/accessdram.png" alt="access DRAM"></p>
+<ol>
+<li> the memory controller sends row address 2</li>
+<li>The DRAM responds by copying the entire contents of row 2 into an internal row buffer</li>
+<li>the memory controller sends column address 1</li>
+<li>The DRAM responds by copying the 8 bits in supercell (2, 1) from the row buffer and sending them to the memory controller</li>
+</ol>
+<ul>
+<li>One reason circuit designers organize DRAMs as two-dimensional arrays instead of linear arrays is to <strong>reduce the number of address pins</strong> on the chip</li>
+<li> The disadvantage of the two-dimensional array organization is that addresses must be sent in two distinct steps, which <strong>increases the access time.</strong></li>
+</ul>
+<h4 id="Memory-Modules"><a href="#Memory-Modules" class="headerlink" title="Memory Modules"></a>Memory Modules</h4><p><em>DRAM chips are packaged in memory modules that plug into expansion slots on the main system board (motherboard).</em></p>
+<p><img src="/2021/09/10/CSAPP/Ch6/memmodule.png" alt="memory modules"></p>
+<ul>
+<li><p>each 64-bit word at byte address A in main memory is represented by the eight supercells whose corresponding supercell address is (i, j)</p>
+<p>(One bit in each 2-dimension array)</p>
+</li>
+<li><p>Main memory can be aggregated by connecting multiple memory modules to the memory controller</p>
+<ul>
+<li>In this case, when the controller receives an address A, the controller selects the module k that contains A, converts A to its (i, j) form, and sends (i, j) to module k.</li>
+</ul>
+</li>
+</ul>
+<h4 id="Practice-Problem-6-1"><a href="#Practice-Problem-6-1" class="headerlink" title="Practice Problem 6.1"></a>Practice Problem 6.1</h4><blockquote>
+<p>In the following, let $r$ be the number of rows in a DRAM array, $c$ the number of columns, $b_r$ the number of bits needed to address the rows, and $b_c$ the number of bits needed to address the columns. For each of the following DRAMs, determine the power-of-2 array dimensions that minimize $max(b_r, b_c)$, the maximum number of bits needed to address the rows or columns of the array</p>
+<table>
+<thead>
+<tr>
+<th>Organization</th>
+<th>r</th>
+<th>c</th>
+<th>$b_r$</th>
+<th>$b_c$</th>
+<th>$max(b_r, b_c)$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>16 × 1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>16 × 4</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>128 × 8</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>512 × 4</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>1,024 × 4</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-warning"><a href="#My-solution-warning" class="headerlink" title="My solution : :warning:"></a>My solution : :warning:</h4><table>
+<thead>
+<tr>
+<th>Organization</th>
+<th>r</th>
+<th>c</th>
+<th>$b_r$</th>
+<th>$b_c$</th>
+<th>$max(b_r, b_c)$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>16 × 1</td>
+<td>4</td>
+<td>4</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>16 × 4</td>
+<td>4</td>
+<td>4</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>128 × 8</td>
+<td>16</td>
+<td>16</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>512 × 4</td>
+<td>32</td>
+<td>32</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+</tr>
+<tr>
+<td>1,024 × 4</td>
+<td>32</td>
+<td>32</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+</tr>
+</tbody></table>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line">math.ceil(math.sqrt(<span class="number">128</span>))</span><br></pre></td></tr></table></figure>
+<p>We should organize cells as square matrix as possible</p>
+<h4 id="Solution-on-the-book"><a href="#Solution-on-the-book" class="headerlink" title="Solution on the book :"></a>Solution on the book :</h4><p>The idea here is to minimize the number of address bits by minimizing the aspect ratio $max(r, c)/ min(r, c)$. In other words, the squarer the array, the fewer the address bits.</p>
+<table>
+<thead>
+<tr>
+<th>Organization</th>
+<th>r</th>
+<th>c</th>
+<th>$b_r$</th>
+<th>$b_c$</th>
+<th>$max(b_r, b_c)$</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>16 × 1</td>
+<td>4</td>
+<td>4</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>16 × 4</td>
+<td>4</td>
+<td>4</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>128 × 8</td>
+<td>16</td>
+<td>8</td>
+<td>4</td>
+<td>3</td>
+<td>4</td>
+</tr>
+<tr>
+<td>512 × 4</td>
+<td>32</td>
+<td>16</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr>
+<td>1,024 × 4</td>
+<td>32</td>
+<td>32</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+</tr>
+</tbody></table>
+<hr>
+<h4 id="Enhanced-DRAMs"><a href="#Enhanced-DRAMs" class="headerlink" title="Enhanced DRAMs"></a>Enhanced DRAMs</h4><p><em>There are many kinds of DRAM memories, and new kinds appear on the market with regularity as manufacturers <strong>attempt to keep up with rapidly increasing processor speeds.</strong></em></p>
+<ul>
+<li>Fast page mode DRAM (FPM DRAM)</li>
+<li>Extended data out DRAM (EDO DRAM)</li>
+<li>Synchronous DRAM (SDRAM)</li>
+<li>Double Data-Rate Synchronous DRAM (DDR SDRAM).</li>
+<li>Video RAM (VRAM).</li>
+</ul>
+<h4 id="Nonvolatile-Memory"><a href="#Nonvolatile-Memory" class="headerlink" title="Nonvolatile Memory"></a>Nonvolatile Memory</h4><p><em>DRAMs and SRAMs are volatile in the sense that they lose their information if the supply voltage is turned off. Nonvolatile memories, on the other hand, retain their information even when they are powered off.</em></p>
+<p>For historical reasons, they are referred to collectively as <strong>read-only memories (ROMs)</strong>, even though some types of ROMs can be written to as well as read. </p>
+<ul>
+<li><p>PROM(Programmable ROM)</p>
+<p>A PROM can be programmed exactly once. PROMs include a sort of fuse with each memory cell that can be blown once by zapping it with a high current.</p>
+</li>
+<li><p>EPROM(Erasable PROM)</p>
+<p>An EPROM has a transparent quartz window that permits light to reach the storage cells. The EPROM cells are cleared to zeros by shining ultraviolet light through the window</p>
+</li>
+<li><p>EEPROM(Electronically EPROM)</p>
+<p>It does not require a physically separate programming device, and thus can be reprogrammed in-place on printed circuit cards.</p>
+</li>
+<li><p>Flash memory</p>
+<p>Flash memory is a type of nonvolatile memory, based on EEPROMs, that has become an important storage technology.</p>
+</li>
+</ul>
+<p>Programs stored in ROM devices are often referred to as <strong><em>firmware</em></strong>.</p>
+<h4 id="Accessing-Main-Memory"><a href="#Accessing-Main-Memory" class="headerlink" title="Accessing Main Memory"></a>Accessing Main Memory</h4><p><em>Data flows back and forth between the processor and the DRAM main memory over shared electrical conduits called buses. Each transfer of data between the CPU and memory is accomplished with a series of steps called a bus transaction</em></p>
+<ul>
+<li>A read transaction transfers data from the main memory to the CPU</li>
+<li> A write transaction transfers data from the CPU to the main memory.</li>
+</ul>
+<h5 id="Bus"><a href="#Bus" class="headerlink" title="Bus"></a>Bus</h5><ul>
+<li>A bus is a collection of parallel wires that carry address, data, and control signals</li>
+<li>Depending on the particular bus design, data and address signals can share the same set of wires or can use different sets</li>
+<li>More than two devices can share the same bus.</li>
+<li>The control wires carry signals that synchronize the transaction and identify what kind of transaction is currently being performed</li>
+</ul>
+<p><img src="/2021/09/10/CSAPP/Ch6/busstruct.png" alt="Example bus structure"></p>
+<ul>
+<li>The I/O bridge translates the electrical signals of the system bus into the electrical signals of the memory bus</li>
+<li>the I/O bridge also connects the system bus and memory bus to an I/O bus that is shared by I/O devices such as disks and graphics cards(Not shown in this graph)</li>
+</ul>
+<h5 id="Example-of-reading-and-writing-main-memory"><a href="#Example-of-reading-and-writing-main-memory" class="headerlink" title="Example of reading and writing main memory"></a>Example of reading and writing main memory</h5><h5 id="Read"><a href="#Read" class="headerlink" title="Read"></a>Read</h5><p><code>movq A,%rax</code></p>
+<p><img src="/2021/09/10/CSAPP/Ch6/readexp.png" alt="read example"></p>
+<ol>
+<li> Circuitry on the CPU chip called the bus interface initiates a read transaction on the bus.</li>
+<li> The CPU places the address A on the system bus. The I/O bridge passes the signal along to the memory bus</li>
+<li>The main memory senses the address signal on the memory bus, reads the address from the memory bus, fetches the data from the DRAM, and writes the data to the memory bus.The I/O bridge translates the memory bus signal into a system bus signal and passes it along to the system bus</li>
+<li>The CPU senses the data on the system bus, reads the data from the bus, and copies the data to register <code>%rax</code></li>
+</ol>
+<h5 id="Write"><a href="#Write" class="headerlink" title="Write"></a>Write</h5><p><code>movq %rax,A</code></p>
+<p><img src="/2021/09/10/CSAPP/Ch6/writeexp.png" alt="write example"></p>
+<ol>
+<li>The CPU initiates a write transaction. </li>
+<li>The CPU places the address on the system bus. The memory reads the address from the memory bus and waits for the data to arrive</li>
+<li>The CPU copies the data in <code>%rax</code> to the system bus</li>
+<li>The main memory reads the data from the memory bus and stores the bits in the DRAM</li>
+</ol>
+<h3 id="6-1-2-Disk-Storage"><a href="#6-1-2-Disk-Storage" class="headerlink" title="6.1.2 Disk Storage"></a>6.1.2 Disk Storage</h3><p><em>Disks are workhorse storage devices that hold enormous amounts of data, on the order of hundreds to thousands of gigabytes. However, it takes on the order of milliseconds to read information from a disk</em></p>
+<h4 id="Disk-Geometry"><a href="#Disk-Geometry" class="headerlink" title="Disk Geometry"></a>Disk Geometry</h4><p><img src="/2021/09/10/CSAPP/Ch6/disk.png" alt="disk"></p>
+<ul>
+<li>Disks are constructed from <strong>platters</strong></li>
+<li>Each platter consists of two sides, or <strong>surfaces</strong>, that are coated with magnetic recording material</li>
+<li>A rotating <strong>spindle</strong> in the center of the platter spins the platter at a fixed rotational rate, typically between 5,400 and 15,000 revolutions per minute (RPM)</li>
+<li>A disk will typically contain <strong>one or more of these platters</strong> encased in a sealed container</li>
+<li>Each surface consists of a collection of concentric rings called <strong>tracks</strong>. </li>
+<li>Each track is partitioned into a collection of <strong>sectors</strong>. </li>
+<li>Each <strong>sector</strong> contains an equal number of <strong>data bits</strong> (typically 512 bytes) encoded in the magnetic material on the sector. Sectors are separated by <strong>gaps</strong> where no data bits are stored. Gaps store <strong>formatting bits</strong> that identify sectors.</li>
+<li>Disk manufacturers describe the geometry of multiple-platter drives in terms of <strong>cylinders</strong>, where a cylinder is the <strong>collection of tracks</strong> on <strong>all the surfaces</strong> that are <strong>equidistant from the center of the spindle</strong></li>
+</ul>
+<h4 id="Disk-Capacity"><a href="#Disk-Capacity" class="headerlink" title="Disk Capacity"></a>Disk Capacity</h4><p><em>The <strong>maximum number of bits that can be recorded</strong> by a disk is known as its maximum capacity, or simply <strong>capacity</strong>.</em></p>
+<p>Disk capacity is determined by the following technology factors:</p>
+<ul>
+<li>Recording density (bits/in)<ul>
+<li>The number of bits that can be squeezed into a 1- inch segment of a track.</li>
+</ul>
+</li>
+<li>Track density (tracks/in)<ul>
+<li>The number of tracks that can be squeezed into a 1-inch segment of the radius extending from the center of the platter</li>
+</ul>
+</li>
+<li>Areal density (bits/in2)<ul>
+<li>The product of the recording density and the track density.</li>
+</ul>
+</li>
+</ul>
+<p>Old design of disk partitioned every track into the same number of sectors, which was determined by the number of sectors that could be recorded on the innermost track.(without zones)</p>
+<p><img src="/2021/09/10/CSAPP/Ch6/zone.png" alt="zones"></p>
+<p>modern high-capacity disks use a technique known as multiple zone recording.Each zone consists of a contiguous collection of cylinders. Each track in each cylinder in a zone has the same number of sectors, which is determined by the number of sectors that can be packed into the innermost track of the zone</p>
+<p>The capacity of a disk is given by the following formula:<br>$$<br>\text{Capacity} = \frac{bytes}{sector} \times \frac{average \ sectors}{track} \times \frac{tracks}{surface}\times\frac{surfaces}{platter} \times \frac{platters}{disk}<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">disk_capacity</span>(<span class="params">bytes_per_sector , average_sectors_per_track , tracks_per_surface , surfaces_per_platter , platters_per_disk</span>):</span></span><br><span class="line">    capa = bytes_per_sector * average_sectors_per_track * tracks_per_surface * surfaces_per_platter * platters_per_disk</span><br><span class="line">    print(<span class="string">&quot;The capacity of this disk is &#123;&#125; bytes, that is &#123;&#125; GB&quot;</span>.<span class="built_in">format</span>(capa , capa / (<span class="number">10</span> ** <span class="number">9</span>)))</span><br></pre></td></tr></table></figure>
+<p>Note that manufacturers express disk capacity in units of gigabytes where 1 GB = $10 ^ 9$ bytes rather than $1024^3$</p>
+<h4 id="Practice-Problem-6-2"><a href="#Practice-Problem-6-2" class="headerlink" title="Practice Problem 6.2"></a>Practice Problem 6.2</h4><blockquote>
+<p>What is the capacity of a disk with 3 platters, 15,000 cylinders, an average of 500 sectors per track, and 1,024 bytes per sector?</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark"><a href="#My-solution-white-check-mark" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">platters = <span class="number">3</span></span><br><span class="line">cylinders = <span class="number">15000</span></span><br><span class="line">sectors = <span class="number">500</span></span><br><span class="line">bytess = <span class="number">1024</span></span><br><span class="line">surfaces = <span class="number">2</span></span><br><span class="line">tracks = cylinders </span><br><span class="line">disk_capacity(bytess , sectors , tracks , surfaces , platters)</span><br><span class="line"><span class="comment"># The capacity of this disk is 46080000000 bytes, that is 46.08 GB</span></span><br></pre></td></tr></table></figure>
+<h4 id="Disk-Operation"><a href="#Disk-Operation" class="headerlink" title="Disk Operation"></a>Disk Operation</h4><p><img src="/2021/09/10/CSAPP/Ch6/diskoperations.png" alt="disk operations"></p>
+<ul>
+<li><p>Disks read and write bits stored on the magnetic surface using a <strong>read/write head</strong> connected to the end of an <strong>actuator arm</strong></p>
+</li>
+<li><p>Once the head is positioned over the desired track, then, as each bit on the track passes underneath, the head can either sense the value of the bit (read the bit) or alter the value of the bit (write the bit). </p>
+</li>
+<li><p>Disks with <strong>multiple platters</strong> have a <strong>separate read/write head for each surface</strong></p>
+<p>The heads are lined up vertically and move in unison. At any point in time, <strong>all heads are positioned on the same cylinder.</strong></p>
+</li>
+</ul>
+<p>The read/write head at the end of the arm flies (literally) on a thin cushion of air over the disk surface at a <strong>height of about 0.1 microns</strong> and a <strong>speed of about 80 km/h.</strong></p>
+<p>At these tolerances, even a tiny piece of dust on the surface will make the header cease flying and crush into the surface.</p>
+<p>For this reason, disks are always <strong>sealed in airtight packages</strong>.</p>
+<hr>
+<p>Disks read and write data in sector-size blocks. The access time for a sector has three main components:</p>
+<ul>
+<li><p>Seek time</p>
+<ul>
+<li>To read the contents of some target sector, the arm first <strong>positions the head over the track that contains the target sector</strong>.</li>
+<li>The seek time, $T_{seek}$, depends on the <strong>previous position of the head</strong> and the <strong>speed that the arm moves across the surface</strong>. </li>
+<li>The average seek time in modern drives, $T_{avg\ seek}$, measured by taking the mean of several thousand seeks to random sectors, is typically on the order of 3 to 9 ms.</li>
+</ul>
+</li>
+<li><p>Rotational latency</p>
+<ul>
+<li><p>Once the head is in position over the track, the drive waits for the first bit of the target sector to pass under the head</p>
+</li>
+<li><p> The performance of this step depends on both <strong>the position of the surface when the head arrives</strong> at the target track and the <strong>rotational speed of the disk.</strong> </p>
+</li>
+<li><p>In the worst case, the head just misses the target sector and waits for the disk to make a full rotation<br>$$<br>T_{max} = \frac{1}{RPM} \times \frac{60\ secs}{1 \ min}<br>$$<br><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Revolutions_per_minute">What is RPM</a>,(the number of turns in one minute)</p>
+</li>
+<li><p>The average rotational latency is simply half of max latency</p>
+</li>
+</ul>
+</li>
+<li><p>Transfer time</p>
+<ul>
+<li><p>The transfer time for one sector depends on the <strong>rotational speed</strong> and the <strong>number of sectors per track</strong>.</p>
+</li>
+<li><p>the average transfer time for one sector in seconds<br>$$<br>T_{avg\ trans} = \frac{1}{RPM} \times \frac{1}{avg\ sectors} \times \frac{60 \sec}{\min}<br>$$</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>We can estimate the average time to access the contents of a disk sector as the <strong>sum</strong> of the average seek time, the average rotational latency, and the average transfer time.</p>
+<h4 id="Practice-Problem-6-3"><a href="#Practice-Problem-6-3" class="headerlink" title="Practice Problem 6.3"></a>Practice Problem 6.3</h4><blockquote>
+<p>Estimate the average time (in ms) to access a sector on the following disk:</p>
+<table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Rotational Rate</td>
+<td>12000 RPM</td>
+</tr>
+<tr>
+<td>T avg seek</td>
+<td>5 ms</td>
+</tr>
+<tr>
+<td>Average number of sectors per track</td>
+<td>300</td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-1"><a href="#My-solution-white-check-mark-1" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><p>$$<br>T_{avg \ seek } = 5 ms<br>$$</p>
+<p>$$<br>T_{rotational\ latency} = \frac{1}{2} \times\frac{1}{12000} \times \frac{60\ secs}{1 \ min} =  0.0025 \sec = 2.5 ms<br>$$</p>
+<p>$$<br>T_{trans} = \frac{1}{300} \times \frac{60}{12000}=  0.0167 ms<br>$$</p>
+<p>$$<br>T = 0.0167 + 5 + 2.5 = 7.516 ms<br>$$</p>
+<hr>
+<h4 id="Logical-Disk-Blocks"><a href="#Logical-Disk-Blocks" class="headerlink" title="Logical Disk Blocks"></a>Logical Disk Blocks</h4><p><em>To hide the complex structure from the operating system, modern disks present a simpler view of their geometry as a sequence of B sector-size logical blocks, numbered 0, 1,…,B−1.</em></p>
+<p>A small hardware/firmware device in the disk package, called the <strong>disk controller</strong>, maintains the <strong>mapping between logical block numbers and actual (physical) disk sectors.</strong></p>
+<ol>
+<li>When the operating system wants to perform an I/O operation such as reading a disk sector into main memory, it <strong>sends a command to the disk controller</strong> asking it to read a particular logical block number</li>
+<li>Firmware on the controller performs a fast table lookup that <strong>translates the logical block number into a (surface, track, sector)triple</strong> that uniquely identifies the corresponding physical sector</li>
+<li>Hardware on the controller <strong>interprets this triple to move the heads to the appropriate cylinder</strong>, waits for the sector to pass under the head, <strong>gathers up the bits sensed by the head</strong> into a <strong>small memory buffer</strong> on the controller, and copies them into main memory.</li>
+</ol>
+<h4 id="Practice-Problem-6-4"><a href="#Practice-Problem-6-4" class="headerlink" title="Practice Problem 6.4"></a>Practice Problem 6.4</h4><blockquote>
+<p>Suppose that a 1 MB file consisting of 512-byte logical blocks is stored on a disk drive with the following characteristics:</p>
+<table>
+<thead>
+<tr>
+<th>Parameters</th>
+<th>Values</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Rotational Rate</td>
+<td>13000 RPM</td>
+</tr>
+<tr>
+<td>T avg seek</td>
+<td>6 ms</td>
+</tr>
+<tr>
+<td>Average number of sectors per track</td>
+<td>5000</td>
+</tr>
+<tr>
+<td>Surface</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Secotor Size</td>
+<td>512 bytes</td>
+</tr>
+</tbody></table>
+<p>For each case below, suppose that a program reads the logical blocks of the file sequentially, one after the other, and that the time to position the head over the first block is T avg seek + T avg rotation.</p>
+<p>A. Best case: Estimate the optimal time (in ms) required to read the file given the best possible mapping of logical blocks to disk sectors (i.e., sequential). </p>
+<p>B. Random case: Estimate the time (in ms) required to read the file if blocks are mapped randomly to disk sectors.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-2"><a href="#My-solution-white-check-mark-2" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><p>$$<br>T_{avg \ rotation} = \frac{1}{2} \times \frac{60}{13000}= \frac{3}{1300} \sec = 2.3 ms<br>$$</p>
+<p>$$<br>sectors(blocks) = \frac{1 \ MB}{512 \ bytes} = 2048<br>$$</p>
+<p>A:<br>$$<br>T_{first\ block} = 6 ms + \frac{30}{13} ms = 8.307 ms<br>$$</p>
+<p>$$<br>T_{trans\ one \ sector} = \frac{1}{5000} \times \frac{60}{13000} = 9.23\times 10^{-4} \sec<br>$$</p>
+<p>$$<br>T = T_{first\ block} + 2048 \times T_{trans\ one \ sector} = 1.89 ms<br>$$</p>
+<p>B:<br>$$<br>T = (T_{first\ block} + T_{trans\ one\ sector}) \times 2048 = 17014.626304ms\= 17.014 \sec<br>$$<br><strong><em>You can see now why it’s often a good idea to defragment your disk drive!</em></strong></p>
+<hr>
+<h4 id="Connecting-I-O-Devices"><a href="#Connecting-I-O-Devices" class="headerlink" title="Connecting I/O Devices"></a>Connecting I/O Devices</h4><p><em>Unlike the system bus and memory buses, which are CPU-specific, I/O buses are designed to be independent of the underlying CPU.</em></p>
+<p><img src="/2021/09/10/CSAPP/Ch6/iobus.png" alt="IO bus"></p>
+<ul>
+<li>Although the I/O bus is slower than the system and memory buses, it can <strong>accommodate a wide variety of third-party I/O devices</strong></li>
+<li>Additional devices such as network adapters can be attached to the I/O bus by <strong>plugging the adapter into empty expansion slots on the motherboard</strong> that provide a direct electrical connection to the bus.</li>
+</ul>
+<h4 id="Accessing-Disks"><a href="#Accessing-Disks" class="headerlink" title="Accessing Disks"></a>Accessing Disks</h4><p><img src="/2021/09/10/CSAPP/Ch6/readingdisk.png" alt="reading disk"></p>
+<p>The CPU issues commands to I/O devices using a technique called <strong>memory mapped I/O</strong></p>
+<ul>
+<li> In a system with memory-mapped I/O, a block of addresses in the address space is reserved for communicating with I/O devices.</li>
+<li>Each of these <strong>addresses</strong> is known as an <strong>I/O port</strong>.</li>
+<li>Each device is associated with (or mapped to) <strong>one or more ports</strong> when it is attached to the bus</li>
+</ul>
+<p>As a simple example, suppose that the disk controller is mapped to port <code>0xa0</code>.</p>
+<ol>
+<li>The CPU initiates a disk read by executing three store instructions to address <code>0xa0</code><ul>
+<li>The first of instruction sends a <strong>command word</strong> that tells the disk to initiate a read, along with other parameters such as <strong>whether to interrupt the CPU when the read is finished</strong></li>
+<li>The second instruction indicates the <strong>logical block number</strong> that should be read.</li>
+<li>The third instruction indicates the <strong>main memory address where the contents of the disk sector should be stored</strong></li>
+</ul>
+</li>
+<li>After it issues the request, the CPU will typically do other work while the disk is performing the read<ul>
+<li>CPU is much faster than disk, waiting is wasteful</li>
+<li>Disk can do its job without intervention of CPU<ul>
+<li>Disk controller transfer logical memory address to physical memory address</li>
+<li>Reads the contents of the sector, and transfers the contents <strong>directly</strong> to main memory</li>
+</ul>
+</li>
+<li> This process, whereby a device performs a read or write bus transaction on its own, without any involvement of the CPU, is known as <strong>direct memory access (DMA)</strong>. The transfer of data is known as a DMA transfer.</li>
+</ul>
+</li>
+<li>When the data transmission is completed, the disk controller notices the CPU with an interruption<ul>
+<li>The basic idea is that an interrupt <strong>signals an external pin</strong> on the CPU chip.</li>
+<li>This causes the CPU to <strong>stop what it is currently working on and jump to an operating system routine.</strong> </li>
+<li>The routine records the fact that the I/O has finished and then returns control to the point where the CPU was interrupted.</li>
+</ul>
+</li>
+</ol>
+<h4 id="6-1-3-Solid-State-Disks"><a href="#6-1-3-Solid-State-Disks" class="headerlink" title="6.1.3 Solid State Disks"></a>6.1.3 Solid State Disks</h4><p><img src="/2021/09/10/CSAPP/Ch6/ssd.png" alt="SSD"></p>
+<p><em>A solid state disk is a storage technology, based on <strong>flash memory</strong></em></p>
+<ul>
+<li>An SSD package consists of one or more <strong>flash memory chips</strong></li>
+<li> A <strong>flash translation layer</strong>, which is a <strong>hardware/firmware device</strong> that plays the <strong>same role as a disk controller</strong>, translating requests for logical blocks into accesses of the underlying physical device</li>
+</ul>
+<p><img src="/2021/09/10/CSAPP/Ch6/ssdcharacteristic.png" alt="ssd characteristics"></p>
+<ul>
+<li>Notice that reading from SSDs is faster than writing. The difference between random reading and writing performance is caused by a fundamental property of the underlying flash memory</li>
+<li>a flash memory consists of a sequence of B blocks, where each block consists of P pages. <strong>Data are read and written in units of pages</strong>.</li>
+<li>A page can be written only after the <strong>entire block to which it belongs has been erased.</strong></li>
+<li>However, once a block is erased, each page in the block can be written once with no further erasing. A block wears out after roughly 100,000 repeated writes. Once a block wears out, it can no longer be used.</li>
+<li> Manufacturers have developed sophisticated logic in the flash translation layer that attempts to amortize the high cost of erasing blocks and to minimize the number of internal copies on writes</li>
+</ul>
+<h5 id="Disadvantages-of-SSD"><a href="#Disadvantages-of-SSD" class="headerlink" title="Disadvantages of SSD"></a>Disadvantages of SSD</h5><p>First, because flash blocks wear out after repeated writes, <strong>SSDs have the potential to wear out</strong> as well</p>
+<p>(Wear-leveling logic in the flash translation layer attempts to maximize the lifetime of each block by spreading erasures evenly across all blocks. In practice, the wear-leveling logic is so good that it takes many years for SSDs to wear out )</p>
+<p><a target="_blank" rel="noopener" href="https://www.quora.com/How-many-times-can-one-re-write-over-data-on-an-external-hard-drive">HDD can be rewritten much more times</a></p>
+<h4 id="Practice-Problem-6-5"><a href="#Practice-Problem-6-5" class="headerlink" title="Practice Problem 6.5"></a>Practice Problem 6.5</h4><blockquote>
+<p>As we have seen, a potential drawback of SSDs is that the underlying flash memory can wear out. For example, for the SSD in Figure 6.14, Intel guarantees about 128 petabytes ($128 × 10^{15}$ bytes) of writes before the drive wears out. Given this assumption, estimate the lifetime (in years) of this SSD for the following workloads:</p>
+<p>A. Worst case for sequential writes: The SSD is written to continuously at a rate of 470 MB/s (the average sequential write throughput of the device). </p>
+<p>B. Worst case for random writes: The SSD is written to continuously at a rate of 303 MB/s (the average random write throughput of the device). </p>
+<p>C. Average case: The SSD is written to at a rate of 20 GB/day (the average daily write rate assumed by some computer manufacturers in their mobile computer workload simulations).</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-3"><a href="#My-solution-white-check-mark-3" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">wear_out_limit = <span class="number">128</span> * <span class="number">10</span> ** <span class="number">15</span></span><br><span class="line">A_years = <span class="built_in">round</span>( (wear_out_limit / (<span class="number">470</span> * <span class="number">10</span> ** <span class="number">6</span>)) / (<span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span> * <span class="number">365</span>) , <span class="number">4</span>)</span><br><span class="line">B_years = <span class="built_in">round</span>( (wear_out_limit / (<span class="number">303</span> * <span class="number">10</span> ** <span class="number">6</span>)) / (<span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span> * <span class="number">365</span>) , <span class="number">4</span>)</span><br><span class="line">C_years = <span class="built_in">round</span>( wear_out_limit / (<span class="number">20</span> * <span class="number">10</span> ** <span class="number">9</span>) / <span class="number">365</span>  , <span class="number">4</span> )</span><br><span class="line">print(A_years , B_years , C_years)</span><br><span class="line"><span class="comment"># 8.6359 13.3956 17534.2466</span></span><br></pre></td></tr></table></figure>
+<p>So even if the SSD operates continuously, it should last for at least 8 years, which is longer than the expected lifetime of most computers.</p>
+<hr>
+<h2 id="6-2-Locality"><a href="#6-2-Locality" class="headerlink" title="6.2 Locality"></a>6.2 Locality</h2><p><em>Well written programs tend to reference data items that are near other recently referenced data items or that were recently referenced themselves</em></p>
+<p>Locality is typically described as having two distinct forms: <strong>temporal locality</strong> and <strong>spatial locality</strong>.</p>
+<ul>
+<li> In a program with good temporal locality, a memory location that is referenced once is likely to be referenced again multiple times in the near future. </li>
+<li>In a program with good spatial locality, if a memory location is referenced once, then the program is likely to reference a nearby memory location in the near future.</li>
+</ul>
+<h3 id="6-2-1-Locality-of-References-to-Program-Data"><a href="#6-2-1-Locality-of-References-to-Program-Data" class="headerlink" title="6.2.1 Locality of References to Program Data"></a>6.2.1 Locality of References to Program Data</h3><p><img src="/2021/09/10/CSAPP/Ch6/programdatacache.png" alt="Program data cache"></p>
+<h3 id="6-2-2-Locality-of-Instruction-Fetches"><a href="#6-2-2-Locality-of-Instruction-Fetches" class="headerlink" title="6.2.2 Locality of Instruction Fetches"></a>6.2.2 Locality of Instruction Fetches</h3><p> For example, in Figure 6.18 the instructions in the body of the for loop are executed in sequential memory order, and thus the loop enjoys good spatial locality. Since the loop body is executed multiple times, it also enjoys good temporal locality.</p>
+<p>An important property of code that distinguishes it from program data is that it is rarely modified at run time. </p>
+<h3 id="6-2-3-Summary-of-Locality"><a href="#6-2-3-Summary-of-Locality" class="headerlink" title="6.2.3 Summary of Locality"></a>6.2.3 Summary of Locality</h3><ul>
+<li>Programs that repeatedly reference the same variables enjoy good temporal locality.</li>
+<li>. For programs with stride-k reference patterns, the smaller the stride, the better the spatial locality. Programs with stride-1 reference patterns have good spatial locality. Programs that hop around memory with large strides have poor spatial locality</li>
+<li>Loops have good temporal and spatial locality with respect to instruction fetches. <strong>The smaller the loop body and the greater the number of loop iterations, the better the locality</strong></li>
+</ul>
+<h4 id="Practice-Problem-6-7"><a href="#Practice-Problem-6-7" class="headerlink" title="Practice Problem 6.7"></a>Practice Problem 6.7</h4><blockquote>
+<p>Permute the loops in the following function so that it scans the three-dimensional array a with a stride-1 reference pattern.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">productarray3d</span><span class="params">(<span class="keyword">int</span> a[N][N][N])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i, j, k, product = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (i = N<span class="number">-1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">        <span class="keyword">for</span> (j = N<span class="number">-1</span>; j &gt;= <span class="number">0</span>; j--) &#123;</span><br><span class="line">            <span class="keyword">for</span> (k = N<span class="number">-1</span>; k &gt;= <span class="number">0</span>; k--) &#123;</span><br><span class="line">                product *= a[j][k][i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">     <span class="keyword">return</span> product;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark-4"><a href="#My-solution-white-check-mark-4" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">productarray3d</span><span class="params">(<span class="keyword">int</span> a[N][N][N])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i, j, k, product = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (j = N<span class="number">-1</span>; j &gt;= <span class="number">0</span>; j--) &#123;</span><br><span class="line">        <span class="keyword">for</span> (k = N<span class="number">-1</span>; k &gt;= <span class="number">0</span>; k--) &#123;</span><br><span class="line">            <span class="keyword">for</span> (i = N<span class="number">-1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">                product *= a[j][k][i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">     <span class="keyword">return</span> product;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-6-8"><a href="#Practice-Problem-6-8" class="headerlink" title="Practice Problem 6.8"></a>Practice Problem 6.8</h4><blockquote>
+<p>The three functions in Figure 6.20 perform the same operation with varying degrees of spatial locality. Rank-order the functions with respect to the spatial locality enjoyed by each. Explain how you arrived at your ranking.</p>
+<p><img src="/2021/09/10/CSAPP/Ch6/practice.png" alt="problem"></p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-5"><a href="#My-solution-white-check-mark-5" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clear1 &gt; clear2 &gt; clear3</span><br></pre></td></tr></table></figure>
+<h2 id="6-3-The-Memory-Hierarchy"><a href="#6-3-The-Memory-Hierarchy" class="headerlink" title="6.3 The Memory Hierarchy"></a>6.3 The Memory Hierarchy</h2><p><img src="/2021/09/10/CSAPP/Ch6/hierarchy.png" alt="Memory Hierarchy"></p>
+<h3 id="6-3-1-Caching-in-the-Memory-Hierarchy"><a href="#6-3-1-Caching-in-the-Memory-Hierarchy" class="headerlink" title="6.3.1 Caching in the Memory Hierarchy"></a>6.3.1 Caching in the Memory Hierarchy</h3><p><em>In general, a cache is a small, fast storage device that acts as a staging area for the data objects stored in a larger, slower device.</em></p>
+<p> Each level in the hierarchy caches data objects from the next lower level. </p>
+<p><img src="/2021/09/10/CSAPP/Ch6/cacheidea.png" alt="cache principle"></p>
+<p>Data exchange in unit of <strong>block</strong></p>
+<ul>
+<li>the size of a block can be both fixed and variable</li>
+<li>all data blocks in level k can be found in level k+1</li>
+<li>In general, devices lower in the hierarchy have longer access times, and thus tend to use larger block sizes in order to amortize these longer access times.</li>
+</ul>
+<h4 id="Cache-Hits"><a href="#Cache-Hits" class="headerlink" title="Cache Hits"></a>Cache Hits</h4><p>When a program needs a particular data object d from level k + 1, it first looks for d in one of the blocks currently stored at level k. </p>
+<p>If d happens to be cached at level k, then we have what is called a cache hit.</p>
+<h4 id="Cache-Misses"><a href="#Cache-Misses" class="headerlink" title="Cache Misses"></a>Cache Misses</h4><p><em>If, on the other hand, the data object d is not cached at level k, then we have what is called a cache miss.</em></p>
+<p>When there is a miss, the cache at level k fetches the <strong>block</strong> containing d from the cache at level k + 1, possibly overwriting an existing block if the level k cache is already full(known as replacing or evicting the block.The block that is evicted is sometimes referred to as a victim block).</p>
+<p>The decision about which block to replace is governed by the <strong>cache’s replacement policy</strong></p>
+<ul>
+<li>For example, a cache with a random replacement policy would choose a random victim block.</li>
+<li>A cache with a least recently used (LRU)replacement policy would choose the block that was last accessed the furthest in the past</li>
+</ul>
+<p><strong><em>Notice that the program/CPU will never access the k+1 level directly, it is the job of cache to fetch the missing data!</em></strong></p>
+<h4 id="Cache-Management"><a href="#Cache-Management" class="headerlink" title="Cache Management"></a>Cache Management</h4><p><em>Something has to partition the cache storage into blocks, transfer blocks between different levels, decide when there are hits and misses, and then deal with them.</em></p>
+<p>The logic that manages the cache can be hardware, software, or a combination of the two</p>
+<p>For example, the compiler manages the register file, the highest level of the cache hierarchy. It decides when to issue loads when there are misses, and determines which register to store the data in. The caches at levels L1, L2, and L3 are managed entirely by hardware logic built into the caches.</p>
+<p>In a system with virtual memory, the DRAM main memory serves as a cache for data blocks stored on disk, and is managed by a combination of operating system software and address translation hardware on the CPU</p>
+<h3 id="6-3-2-Summary-of-Memory-Hierarchy-Concepts"><a href="#6-3-2-Summary-of-Memory-Hierarchy-Concepts" class="headerlink" title="6.3.2 Summary of Memory Hierarchy Concepts"></a>6.3.2 Summary of Memory Hierarchy Concepts</h3><p><em>To summarize, memory hierarchies based on caching work because slower storage is cheaper than faster storage and because programs tend to exhibit locality</em></p>
+<p><img src="/2021/09/10/CSAPP/Ch6/cacheeverywhere.png" alt="cache is everywhere"></p>
+<h2 id="6-4-Cache-Memories"><a href="#6-4-Cache-Memories" class="headerlink" title="6.4 Cache Memories"></a>6.4 Cache Memories</h2><p><em>The memory hierarchies of early computer systems consisted of only three levels: CPU registers, main memory, and disk storage</em></p>
+<p>However, because the increasing gap between CPU and main memory, designers have to insert caches</p>
+<p><img src="/2021/09/10/CSAPP/Ch6/cachelocation.png" alt="cache location"></p>
+<ul>
+<li>L1 cache, just below register files, can be accessed nearly as fast as the registers</li>
+<li>L2 cache, below L1 cache</li>
+<li>L3 cache, below L2 cache</li>
+<li>….</li>
+</ul>
+<p>While there is considerable variety in the arrangements, the general principles are the same. </p>
+<p>For our discussion in the next section, we will assume a simple memory hierarchy with a single L1 cache between the CPU and main memory</p>
+<h3 id="6-4-1-Generic-Cache-Memory-Organization"><a href="#6-4-1-Generic-Cache-Memory-Organization" class="headerlink" title="6.4.1 Generic Cache Memory Organization"></a>6.4.1 Generic Cache Memory Organization</h3><p><img src="/2021/09/10/CSAPP/Ch6/organizationofcache.png" alt="cache organization"></p>
+<p>Consider a computer system where each memory address has $m$ bits</p>
+<ul>
+<li>a cache is organized as an array of $S = 2^s$ cache sets</li>
+<li>Each set consists of E cache lines.</li>
+<li>Each line consists of<ul>
+<li>a <strong>data block</strong> of $B = 2^b$ bytes</li>
+<li>a <strong>valid bit</strong> that indicates whether or not the line contains meaningful information</li>
+<li>$t = m − (b + s)$ tag bits (a subset of the bits from the current block’s memory address) that uniquely identify the block stored in the cache line.</li>
+</ul>
+</li>
+</ul>
+<p>In general, a cache’s organization can be characterized by the tuple $(S, E, B, m)$</p>
+<p>The size (or capacity) of a cache, C, is stated in terms of the aggregate size of all the blocks. The tag bits and valid bit are not included. Thus, $C = S × E × B$.</p>
+<h4 id="How-does-the-cache-know-whether-it-contains-a-copy-of-the-word-at-address-A"><a href="#How-does-the-cache-know-whether-it-contains-a-copy-of-the-word-at-address-A" class="headerlink" title="How does the cache know whether it contains a copy of the word at address A ?"></a>How does the cache know whether it contains a copy of the word at address A ?</h4><p><em>The cache is organized so that it can find the requested word by simply inspecting the bits of the address, similar to a hash table with an extremely simple hash function</em></p>
+<p><img src="/2021/09/10/CSAPP/Ch6/cacheparameters.png" alt="cache parameters"></p>
+<p>Given $s ,b$ and partition of memory address $m$ as $t$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cache_match</span>(<span class="params">s,b,t</span>):</span></span><br><span class="line">    target_set = sets[s]</span><br><span class="line">    target_line = target_set[t]</span><br><span class="line">    <span class="keyword">if</span>(target_line.valid_bit == <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">return</span> target_line.data[b]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        cache_miss()</span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-6-9"><a href="#Practice-Problem-6-9" class="headerlink" title="Practice Problem 6.9"></a>Practice Problem 6.9</h4><blockquote>
+<p>The following table gives the parameters for a number of different caches. For each cache, determine the number of cache sets (S), tag bits (t), set index bits (s), and block offset bits (b).</p>
+<table>
+<thead>
+<tr>
+<th>Cache</th>
+<th>m</th>
+<th>C</th>
+<th>B</th>
+<th>E</th>
+<th>S</th>
+<th>t</th>
+<th>s</th>
+<th>b</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>32</td>
+<td>1024</td>
+<td>4</td>
+<td>1</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>32</td>
+<td>1024</td>
+<td>8</td>
+<td>4</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>32</td>
+<td>1024</td>
+<td>32</td>
+<td>32</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-6"><a href="#My-solution-white-check-mark-6" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> log</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">calculate</span>(<span class="params">m,C,B,E</span>):</span></span><br><span class="line">    S = C / (B * E) </span><br><span class="line">    s = log(S,<span class="number">2</span>)</span><br><span class="line">    b = log(B,<span class="number">2</span>)</span><br><span class="line">    t = m - ( s + b )</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">int</span>(S) , <span class="built_in">int</span>(s) , <span class="built_in">int</span>(b) , <span class="built_in">int</span>(t)</span><br><span class="line">print(calculate(<span class="number">32</span> , <span class="number">1024</span> , <span class="number">4</span> , <span class="number">1</span>))</span><br><span class="line">print(calculate(<span class="number">32</span> , <span class="number">1024</span> , <span class="number">8</span> , <span class="number">4</span>))</span><br><span class="line">print(calculate(<span class="number">32</span> , <span class="number">1024</span> , <span class="number">32</span> , <span class="number">32</span>))</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">(256, 8, 2, 22)</span></span><br><span class="line"><span class="string">(32, 5, 3, 24)</span></span><br><span class="line"><span class="string">(1, 0, 5, 27)</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>Cache</th>
+<th>m</th>
+<th>C</th>
+<th>B</th>
+<th>E</th>
+<th>S</th>
+<th>t</th>
+<th>s</th>
+<th>b</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>32</td>
+<td>1024</td>
+<td>4</td>
+<td>1</td>
+<td>256</td>
+<td>22</td>
+<td>8</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>32</td>
+<td>1024</td>
+<td>8</td>
+<td>4</td>
+<td>32</td>
+<td>24</td>
+<td>5</td>
+<td>3</td>
+</tr>
+<tr>
+<td>3</td>
+<td>32</td>
+<td>1024</td>
+<td>32</td>
+<td>32</td>
+<td>1</td>
+<td>27</td>
+<td>0</td>
+<td>5</td>
+</tr>
+</tbody></table>
+<h3 id="6-4-2-Direct-Mapped-Caches"><a href="#6-4-2-Direct-Mapped-Caches" class="headerlink" title="6.4.2 Direct-Mapped Caches"></a>6.4.2 Direct-Mapped Caches</h3><p><em>A cache with <strong>exactly one line per set</strong> (E = 1) is known as a direct-mapped cache</em></p>
+<p><img src="/2021/09/10/CSAPP/Ch6/directmappedcache.png" alt="direct mapped cache"></p>
+<p>The process that a cache goes through of determining whether a request is a hit or a miss and then extracting the requested word consists of three steps: <strong>(1) set selection, (2) line matching, and (3) word extraction.</strong></p>
+<h4 id="Set-Selection-in-Direct-Mapped-Caches"><a href="#Set-Selection-in-Direct-Mapped-Caches" class="headerlink" title="Set Selection in Direct-Mapped Caches"></a>Set Selection in Direct-Mapped Caches</h4><p><em>In this step, the cache extracts the s set index bits from the middle of the address for w. These bits are interpreted as an unsigned integer that corresponds to a set number</em></p>
+<p><img src="/2021/09/10/CSAPP/Ch6/setselection.png" alt="set selection"></p>
+<h4 id="Line-Matching-in-Direct-Mapped-Caches"><a href="#Line-Matching-in-Direct-Mapped-Caches" class="headerlink" title="Line Matching in Direct-Mapped Caches"></a>Line Matching in Direct-Mapped Caches</h4><p><em>The next step is to determine if a copy of the word w is stored in one of the cache lines contained in set i.</em></p>
+<p>In a direct-mapped cache, this is easy and fast because there is exactly one line per set.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cache_hit</span>(<span class="params">selected_set , t</span>):</span></span><br><span class="line">    <span class="keyword">if</span> (selected_set.Tag == t &amp;&amp; selected_set.valid == <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2021/09/10/CSAPP/Ch6/linematching.png" alt="line matching"></p>
+<h4 id="Word-Selection-in-Direct-Mapped-Caches"><a href="#Word-Selection-in-Direct-Mapped-Caches" class="headerlink" title="Word Selection in Direct-Mapped Caches"></a>Word Selection in Direct-Mapped Caches</h4><p><em>Once we have a hit, we know that w is somewhere in the block.</em></p>
+<p>As shown in Figure 6.29, the block offset bits provide us with the offset of the first byte in the desired word</p>
+<h4 id="Line-Replacement-on-Misses-in-Direct-Mapped-Caches"><a href="#Line-Replacement-on-Misses-in-Direct-Mapped-Caches" class="headerlink" title="Line Replacement on Misses in Direct-Mapped Caches"></a>Line Replacement on Misses in Direct-Mapped Caches</h4><p><em>If the cache misses, then it needs to retrieve the requested block from the next level in the memory hierarchy and store the new block <strong>in one of the cache lines of the set indicated by the set index bits</strong></em></p>
+<p>In general, if the set is full of valid cache lines, then one of the existing lines must be evicted.</p>
+<p>For a direct-mapped cache, the current line is replaced by the newly fetched line.</p>
+<h4 id="Putting-It-Together-A-Direct-Mapped-Cache-in-Action"><a href="#Putting-It-Together-A-Direct-Mapped-Cache-in-Action" class="headerlink" title="Putting It Together: A Direct-Mapped Cache in Action"></a>Putting It Together: A Direct-Mapped Cache in Action</h4><p><em>it can be very instructive to enumerate the entire address space and partition the bits</em></p>
+<p><img src="/2021/09/10/CSAPP/Ch6/enumerate.png" alt="enumerate"></p>
+<ul>
+<li><p>Notice that the concatenation of the <strong>tag and index</strong> bits uniquely identifies each <strong>block</strong> in memory. </p>
+<p>Also <code>bin(address) == str(t)+str(s)+str(b)</code></p>
+</li>
+</ul>
+<h4 id="Conflict-Misses-in-Direct-Mapped-Caches"><a href="#Conflict-Misses-in-Direct-Mapped-Caches" class="headerlink" title="Conflict Misses in Direct-Mapped Caches"></a>Conflict Misses in Direct-Mapped Caches</h4><p><em>Conflict misses are common in real programs and can cause baffling performance problems</em></p>
+<p><em>Conflict miss is where we have plenty of room in the cache but keep alternating references to blocks that map to the same cache set</em></p>
+<p>For example, if we only have a 2 set direct mapped cache and <code>x</code> is contiguous with <code>y</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">dotprod</span><span class="params">(<span class="keyword">float</span> x[<span class="number">8</span>], <span class="keyword">float</span> y[<span class="number">8</span>])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">float</span> sum = <span class="number">0.0</span>;</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">8</span>; i++)</span><br><span class="line">sum += x[i] * y[i];</span><br><span class="line"><span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>We will have the following memory address map (suppose <code>x</code> begins at address <code>0</code>)</p>
+<p><img src="/2021/09/10/CSAPP/Ch6/addrmap.png" alt="memory address map"></p>
+<p>We first refers <code>x[0]</code>, load it into cache, and then refers to <code>y[0]</code>, throw <code>x[0]</code> out</p>
+<blockquote>
+<p>You may be wondering why caches use the middle bits for the set index instead of the high-order bits. There is a good reason why the middle bits are better. Figure 6.31 shows why. If the high-order bits are used as an index, then some contiguous memory blocks will map to the same cache set</p>
+<p><img src="/2021/09/10/CSAPP/Ch6/whymiddle.png" alt="why cache with middle bits"></p>
+</blockquote>
+<h3 id="6-4-3-Set-Associative-Caches"><a href="#6-4-3-Set-Associative-Caches" class="headerlink" title="6.4.3 Set Associative Caches"></a>6.4.3 Set Associative Caches</h3><p><em>The problem with conflict misses in direct-mapped caches stems from the constraint that each set has exactly one line</em></p>
+<p>A set associative cache relaxes this constraint so that each set holds more than one cache line. A cache with $1 &lt; E &lt; C/B$ is often called an E-way set associative cache.</p>
+<p><img src="/2021/09/10/CSAPP/Ch6/2waycache.png" alt="two way cache"></p>
+<h4 id="Set-Selection-in-Set-Associative-Caches"><a href="#Set-Selection-in-Set-Associative-Caches" class="headerlink" title="Set Selection in Set Associative Caches"></a>Set Selection in Set Associative Caches</h4><p><em>Set selection is identical to a direct-mapped cache</em></p>
+<p><img src="/2021/09/10/CSAPP/Ch6/setselectionassociative.png" alt="set selection in associative cache"></p>
+<h4 id="Line-Matching-and-Word-Selection-in-Set-Associative-Caches"><a href="#Line-Matching-and-Word-Selection-in-Set-Associative-Caches" class="headerlink" title="Line Matching and Word Selection in Set Associative Caches"></a>Line Matching and Word Selection in Set Associative Caches</h4><p><img src="/2021/09/10/CSAPP/Ch6/linematchingassociative.png" alt="line matching in associative cache"></p>
+<ul>
+<li>It must check the tags and valid bits of multiple lines in order to determine if the requested word is in the set</li>
+<li>It uses a technique called associative memory which functions like a Python dictionary(It can compare all lines in the set at the same time rather than ask them one by one!)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># assume all valid bits are 1</span></span><br><span class="line">selected_set = &#123;</span><br><span class="line">    t1 : line1,</span><br><span class="line">    t2 : line2,</span><br><span class="line">    ...</span><br><span class="line">    tn : linen</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">line_match</span>(<span class="params">t</span>):</span></span><br><span class="line">    <span class="keyword">if</span> t <span class="keyword">in</span> selected_set.keys():</span><br><span class="line">        <span class="keyword">return</span> selected_set[t]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        cache_miss()</span><br><span class="line">	<span class="comment"># If t does not match, it will not add t to the dict directly</span></span><br></pre></td></tr></table></figure>
+<h4 id="Line-Replacement-on-Misses-in-Set-Associative-Caches"><a href="#Line-Replacement-on-Misses-in-Set-Associative-Caches" class="headerlink" title="Line Replacement on Misses in Set Associative Caches"></a>Line Replacement on Misses in Set Associative Caches</h4><p>When there is a cache miss which line should it replace ?</p>
+<p><strong><em>It is very difficult for programmers to exploit knowledge of the cache replacement policy in their codes, so we will not go into much detail about it here</em></strong></p>
+<ul>
+<li>The simplest replacement policy is to choose the line to replace at random</li>
+<li>Other more sophisticated policies can be applied are least frequently used (LFU), least recently used (LRU) and so on</li>
+</ul>
+<h3 id="6-4-4-Fully-Associative-Caches"><a href="#6-4-4-Fully-Associative-Caches" class="headerlink" title="6.4.4 Fully Associative Caches"></a>6.4.4 Fully Associative Caches</h3><p><em>A fully associative cache consists of a single set (i.e., $E = C/B$) that contains all of the cache lines</em></p>
+<p><img src="/2021/09/10/CSAPP/Ch6/fullassociative.png" alt="full associative"></p>
+<h4 id="Set-Selection-in-Fully-Associative-Caches"><a href="#Set-Selection-in-Fully-Associative-Caches" class="headerlink" title="Set Selection in Fully Associative Caches"></a>Set Selection in Fully Associative Caches</h4><p><em>Set selection in a fully associative cache is trivial because there is only one set, no need to select</em></p>
+<h4 id="Line-Matching-and-Word-Selection-in-Fully-Associative-Caches"><a href="#Line-Matching-and-Word-Selection-in-Fully-Associative-Caches" class="headerlink" title="Line Matching and Word Selection in Fully Associative Caches"></a>Line Matching and Word Selection in Fully Associative Caches</h4><p><em>Line matching and word selection in a fully associative cache work the same as with a set associative cache</em></p>
+<p><strong><em>Because the cache circuitry must search for many matching tags in parallel, it is difficult and expensive to build an associative cache that is both large and fast</em></strong></p>
+<p>As a result, fully associative caches are only appropriate for small caches, such as the translation lookaside buffers (TLBs) in virtual memory systems that cache page table entries </p>
+<h3 id="6-4-5-Issues-with-Writes"><a href="#6-4-5-Issues-with-Writes" class="headerlink" title="6.4.5 Issues with Writes"></a>6.4.5 Issues with Writes</h3><p><em>After the cache updates its copy of w, what does it do about updating the copy of w in the next lower level of the hierarchy?</em></p>
+<ul>
+<li>Write-through<ul>
+<li>immediately write w’s cache block to the next lower level.</li>
+<li> has the disadvantage of causing bus traffic with every write</li>
+</ul>
+</li>
+<li>Write-back<ul>
+<li> only when it is evicted from the cache by the replacement algorithm does it write back to memory</li>
+<li>Because of locality, write-back can significantly reduce the amount of bus traffic</li>
+<li> The cache must maintain an additional dirty bit for each cache line that indicates whether or not the cache block has been modified.</li>
+</ul>
+</li>
+</ul>
+<p>Another issue is how to deal with write misses</p>
+<ul>
+<li>Write-allocate<ul>
+<li>loads the corresponding block from the next lower level into the cache and then updates the cache block</li>
+<li>has the disadvantage that every miss results in a block transfer from the next lower level to the cache</li>
+</ul>
+</li>
+<li>No-write-allocate<ul>
+<li>bypasses the cache and writes the word directly to the next lower level. </li>
+</ul>
+</li>
+</ul>
+<p>Write-through caches are typically no-write-allocate. Write-back caches are typically write-allocate</p>
+<p>To the programmer trying to write reasonably cache-friendly programs, we suggest adopting a mental model that assumes <strong>write-back, write-allocate caches</strong></p>
+<ul>
+<li>As a rule, caches at lower levels of the memory hierarchy are more likely to use writeback instead of write-through because of the larger transfer times</li>
+<li>It is symmetric to the way reads are handled, in that write-back write-allocate tries to exploit locality</li>
+</ul>
+<h3 id="6-4-6-Anatomy-of-a-Real-Cache-Hierarchy"><a href="#6-4-6-Anatomy-of-a-Real-Cache-Hierarchy" class="headerlink" title="6.4.6 Anatomy of a Real Cache Hierarchy"></a>6.4.6 Anatomy of a Real Cache Hierarchy</h3><p> A cache that holds instructions only is called an i-cache.</p>
+<p> A cache that holds program data only is called a d-cache.</p>
+<p> A cache that holds both instructions and data is known as a unified cache.</p>
+<p>Modern processors include separate i-caches and d-caches.</p>
+<p><img src="/2021/09/10/CSAPP/Ch6/i7cache.png" alt="intel i7 cache"></p>
+<h3 id="6-4-7-Performance-Impact-of-Cache-Parameters"><a href="#6-4-7-Performance-Impact-of-Cache-Parameters" class="headerlink" title="6.4.7 Performance Impact of Cache Parameters"></a>6.4.7 Performance Impact of Cache Parameters</h3><p>Cache performance is evaluated with a number of metrics:</p>
+<ul>
+<li><p>Miss rate</p>
+<p>The fraction of memory references during the execution of a program, or a part of a program, that miss<br>$$<br>miss\ rate = \frac{miss \ times}{total \ times}<br>$$</p>
+</li>
+<li><p>Hit rate</p>
+<p>The fraction of memory references that hit.<br>$$<br>hit \ rate = 1 - miss \ rate<br>$$</p>
+</li>
+<li><p>Hit time. </p>
+<p>The time to deliver a word in the cache to the CPU, including the time for set selection, line identification, and word selection.</p>
+</li>
+<li><p>Miss penalty. </p>
+<p>Any additional time required because of a miss. The penalty for L1 misses served from L2 is on the order of 10 cycles; from L3, 50 cycles; and from main memory, 200 cycles.</p>
+</li>
+</ul>
+<h2 id="6-5-Writing-Cache-Friendly-Code"><a href="#6-5-Writing-Cache-Friendly-Code" class="headerlink" title="6.5 Writing Cache-Friendly Code"></a>6.5 Writing Cache-Friendly Code</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/" data-id="cktmyu04m0001qpyq1vlp58kc" data-title="Ch6" class="article-share-link">Compartir</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/09/10/Network/principles/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Nuevo</strong>
+      <div class="article-nav-title">
+        
+          principles
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/09/09/Network/network-layer/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Viejo</strong>
+      <div class="article-nav-title">network layer</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categorías</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nube de Tags</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archivos</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Posts recientes</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/09/13/CSAPP/attacklab/">attacklab</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/10/Network/principles/">principles</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/10/CSAPP/Ch6/">Ch6</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/09/Network/network-layer/">network layer</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/06/Network/Introduction/">Introduction</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Construido por <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

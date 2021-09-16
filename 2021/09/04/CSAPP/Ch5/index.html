@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Ch5 | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });   Optimizing Program Performance">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ch5">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });   Optimizing Program Performance">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/performance.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/3f.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/zoomin.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/dots.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/combine1.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/combine2.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/lower.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/noimprove.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/memopt.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/question.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/modernpro.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/hardlimit.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/graph.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/abstrctgraph.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/crpath.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/combine5perf.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/combine5graph.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/combine5dataflow.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/combine6.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/combine6dataflow.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/halfcriticalpath.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/achievethroughput.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/combine7perf.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/combine7graph.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/combine7dataflow.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/combine7cpe.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/Solution.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/loadstore.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/writereadgraph.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/writereaddataflow.png">
+<meta property="article:published_time" content="2021-09-04T10:22:47.000Z">
+<meta property="article:modified_time" content="2021-09-09T07:48:34.658Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/performance.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Buscar"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSAPP/Ch5" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/04/CSAPP/Ch5/" class="article-date">
+  <time class="dt-published" datetime="2021-09-04T10:22:47.000Z" itemprop="datePublished">2021-09-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/csapp/">csapp</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Ch5
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+
+<h1 id="Optimizing-Program-Performance"><a href="#Optimizing-Program-Performance" class="headerlink" title="Optimizing Program Performance"></a>Optimizing Program Performance</h1><a id="more"></a>
+
+<p><em>Writing an efficient program requires several types of activities</em></p>
+<ul>
+<li><p>select an appropriate set of algorithms and data structures</p>
+</li>
+<li><p> write source code that the compiler can effectively optimize to turn into efficient executable code</p>
+</li>
+<li><p>divide a task into portions that can be computed in parallel, on some combination of multiple cores and multiple processors</p>
+<p>( Even when exploiting parallelism, it is important that each parallel thread execute with maximum performance)</p>
+</li>
+</ul>
+<p><em>In general, programmers must make a <strong>trade-off between how easy a program is to implement and maintain, and how fast it runs</strong></em></p>
+<p>(For example simple bubble sort vs quick sort)</p>
+<p>(For example optimizations will reduce readability)</p>
+<p>When optimizing the program, the programmer work together with the compiler</p>
+<ul>
+<li><p>Programmers should eliminate unnecessary work, making the code perform its intended task as efficiently as possible.(Reduce function call, memory reference ….)</p>
+</li>
+<li><p>To maximize the performance, a model of the target machine is very important.</p>
+<p>How instructions are executed on the target machine is vital</p>
+<p>(For example, the compiler need these information to decide it should choose to generate a mulitplication instruction or a combination of addition and shifting)</p>
+<p>(On some machines, we can even perform an instruction-level parallelism, executing multiple instructions simultaneously)</p>
+</li>
+</ul>
+<h5 id="Optimization-can-be-a-difficult-job"><a href="#Optimization-can-be-a-difficult-job" class="headerlink" title="Optimization can be a difficult job"></a>Optimization can be a difficult job</h5><ul>
+<li> Performance can <strong>depend on many detailed features of the processor design</strong> for which we have relatively little documentation or understanding</li>
+<li>It can be <strong>difficult to explain</strong> exactly why a particular code sequence has a particular execution time.</li>
+<li>So optimization is not a linear job of transfering code by applying several rules (as we will do), but it is a lot of trial-and-error experimentation is required.</li>
+</ul>
+<p><strong><em>It might seem strange to keep modifying the source code in an attempt to coax the compiler into generating efficient code, but this is indeed how many high-performance programs are written.</em></strong></p>
+<h2 id="5-1-Capabilities-and-Limitations-of-Optimizing-Compilers"><a href="#5-1-Capabilities-and-Limitations-of-Optimizing-Compilers" class="headerlink" title="5.1 Capabilities and Limitations of Optimizing Compilers"></a>5.1 Capabilities and Limitations of Optimizing Compilers</h2><h5 id="Compilers-must-be-careful-to-apply-only-safe-optimizations-to-a-program"><a href="#Compilers-must-be-careful-to-apply-only-safe-optimizations-to-a-program" class="headerlink" title="Compilers must be careful to apply only safe optimizations to a program"></a>Compilers must be careful to apply only safe optimizations to a program</h5><p>For example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">twiddle1</span><span class="params">(<span class="keyword">long</span> *xp, <span class="keyword">long</span> *yp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> *xp += *yp;</span><br><span class="line"> *xp += *yp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">twiddle2</span><span class="params">(<span class="keyword">long</span> *xp, <span class="keyword">long</span> *yp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> *xp += <span class="number">2</span>* *yp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>These two functions are seemingly same</li>
+<li><code>twiddle2</code> will be more efficient than <code>twiddle1</code> since it only refers the memory for 3 times rather than 4 times</li>
+<li>However, if <code>xp == yp</code>, <code>twiddle1</code> will gives <code>4 * (*xp)</code> while <code>twiddle2</code> gives <code>3 * *(*xp)</code></li>
+<li>So the complier don’t know how the function will be called, so it cannot generate optimized code based on <code>twiddle2</code> for <code>twiddle1</code></li>
+</ul>
+<p>The case where two pointers may designate the same memory location is known as ==<strong>memory aliasing</strong>==, which is a major <strong>optimization blockers</strong>, preventing compiler from applying some optimization</p>
+<p>Another example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="number">1000</span>; y = <span class="number">3000</span>;</span><br><span class="line">*q = y; <span class="comment">/* 3000 */</span></span><br><span class="line">*p = x; <span class="comment">/* 1000 */</span></span><br><span class="line">t1 = *q; <span class="comment">/* 1000 or 3000 */</span></span><br><span class="line"><span class="comment">//if p != q , t1 == 3000</span></span><br><span class="line"><span class="comment">//if p == q, t1 == 1000</span></span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-5-1"><a href="#Practice-Problem-5-1" class="headerlink" title="Practice Problem 5.1"></a>Practice Problem 5.1</h4><blockquote>
+<p>The following problem illustrates the way memory aliasing can cause unexpected program behavior. Consider the following procedure to swap two values:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">long</span> *xp, <span class="keyword">long</span> *yp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">*xp = *xp + *yp; <span class="comment">/* x+y */</span></span><br><span class="line">*yp = *xp - *yp; <span class="comment">/* x+y-y = x */</span></span><br><span class="line">*xp = *xp - *yp; <span class="comment">/* x+y-x = y */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>If this procedure is called with xp equal to yp, what effect will it have?</p>
+</blockquote>
+<h4 id="My-solution"><a href="#My-solution" class="headerlink" title="My solution:"></a>My solution:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">long</span> *xp, <span class="keyword">long</span> *yp)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sp</span><span class="params">(<span class="keyword">long</span> * xp , <span class="keyword">long</span> * yp)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> a = <span class="number">123</span>;</span><br><span class="line">    <span class="keyword">long</span> b = <span class="number">456</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%ld %ld\n&quot;</span> , a , b);</span><br><span class="line">    swap(&amp;a, &amp;b);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%ld %ld\n&quot;</span> , a , b);</span><br><span class="line">    sp(&amp;a, &amp;b);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%ld %ld\n&quot;</span> , a , b);</span><br><span class="line">    swap(&amp;a, &amp;a);</span><br><span class="line">    sp(&amp;b, &amp;b);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%ld %ld\n&quot;</span> , a , b); </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* Swap value x at xp with value y at yp */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">long</span> *xp, <span class="keyword">long</span> *yp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">*xp = *xp + *yp; <span class="comment">/* x+y */</span></span><br><span class="line">*yp = *xp - *yp; <span class="comment">/* x+y-y = x */</span></span><br><span class="line">*xp = *xp - *yp; <span class="comment">/* x+y-x = y */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sp</span><span class="params">(<span class="keyword">long</span> * xp , <span class="keyword">long</span> * yp)</span></span>&#123;</span><br><span class="line">    *xp = *xp ^ *yp;</span><br><span class="line">    *yp = *xp ^ *yp; <span class="comment">// x ^ y ^ y = x </span></span><br><span class="line">    *xp = *xp ^ *yp; <span class="comment">// x ^ y ^ x = y</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>A second optimization blocker is due to ==<strong>function calls</strong>==.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">f</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">func1</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> f() + f() + f() + f();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">func2</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> <span class="number">4</span>*f();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>func1</code> call <code>f</code> 4 times while <code>func2</code> call <code>f</code> only once</p>
+</li>
+<li><p>Again the compiler cannot optimize <code>func1</code> into <code>func2</code></p>
+</li>
+<li><p>An hazard example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">long</span> globaldata = <span class="number">0</span>;</span><br><span class="line">f()&#123; <span class="keyword">return</span> globaldata++ ;&#125;</span><br><span class="line"><span class="comment">//func1()  = 0 + 1 + 2 + 3 == 6</span></span><br><span class="line"><span class="comment">//func2() = 0 * 4 == 0</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Code involving function calls can be optimized by a process known as <strong>inline substitution</strong>, where the function call is replaced by the code for the body of the function(some compiler will do this, but <code>gcc</code> won’t)</p>
+</li>
+</ul>
+<h3 id="5-2-Expressing-Program-Performance"><a href="#5-2-Expressing-Program-Performance" class="headerlink" title="5.2 Expressing Program Performance"></a>5.2 Expressing Program Performance</h3><p><em>We introduce the metric <strong>cycles per element, abbreviated CPE</strong>, to express program performance in a way that can guide us in improving the code</em></p>
+<p>For example, here are some codes for computation the prefix-sum of a <code>float</code> vector</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Compute prefix sum of vector a */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">psum1</span><span class="params">(<span class="keyword">float</span> a[], <span class="keyword">float</span> p[], <span class="keyword">long</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> i;</span><br><span class="line">    p[<span class="number">0</span>] = a[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; n; i++)</span><br><span class="line">    p[i] = p[i<span class="number">-1</span>] + a[i];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//using loop unrolling technique to reduce times of iteration</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">psum2</span><span class="params">(<span class="keyword">float</span> a[], <span class="keyword">float</span> p[], <span class="keyword">long</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> i;</span><br><span class="line">    p[<span class="number">0</span>] = a[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; n<span class="number">-1</span>; i+=<span class="number">2</span>) &#123;</span><br><span class="line">        <span class="keyword">float</span> mid_val = p[i<span class="number">-1</span>] + a[i];</span><br><span class="line">        p[i] = mid_val;</span><br><span class="line">        p[i+<span class="number">1</span>] = mid_val + a[i+<span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* For even n, finish remaining element */</span></span><br><span class="line"><span class="keyword">if</span> (i &lt; n) p[i] = p[i<span class="number">-1</span>] + a[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/09/04/CSAPP/Ch5/performance.png" alt="performance"></p>
+<p>The performance can be fit into a linear module of <code>y = kx + b</code></p>
+<ul>
+<li><code>b</code> is the time used to initialized the loop</li>
+<li><code>k</code> is what we called CPE(how many clocks are needed to operate on one element)</li>
+</ul>
+<h4 id="Practice-Problem-5-2"><a href="#Practice-Problem-5-2" class="headerlink" title="Practice Problem 5.2"></a>Practice Problem 5.2</h4><blockquote>
+<p>Later in this chapter we will start with a single function and generate many different variants that preserve the function’s behavior, but with different performance characteristics. For three of these variants, we found that the run times (in clock cycles) can be approximated by the following functions:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Version 1: 60 + 35n</span><br><span class="line">Version 2: 136 + 4n</span><br><span class="line">Version 3: 157 + 1.25n</span><br></pre></td></tr></table></figure>
+
+<p>For what values of n would each version be the fastest of the three? Remember that n will always be an integer</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark"><a href="#My-solution-white-check-mark" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><p>(Graph drawn by <a target="_blank" rel="noopener" href="https://www.geogebra.org/classic">geogebra</a>)</p>
+<p><img src="/2021/09/04/CSAPP/Ch5/3f.png" alt="graph"></p>
+<p>Let’s zoom in and do some math</p>
+<p><img src="/2021/09/04/CSAPP/Ch5/zoomin.png" alt="detailed"><br>$$<br>60 + 35x \le 136 + 4x<br>$$</p>
+<p>$$<br>x \le  \frac{76}{31}<br>$$</p>
+<p>$$<br>\because x \in Z^+<br>$$</p>
+<p>$$<br>\therefore x \le 2<br>$$</p>
+<p>when x less equals than 2, version 1 consume the leatest time</p>
+<p>The rest are the same</p>
+<p><img src="/2021/09/04/CSAPP/Ch5/dots.png" alt="intersect"><br>$$<br>\therefore \text{fastest version } = \begin{cases}<br>1 , &amp; 0 \le x \le 2\<br>2 , &amp; 3 \le x\le 7 \<br>3 , &amp; x \ge 8<br>\end{cases}<br>$$</p>
+<h2 id="5-3-Program-Example"><a href="#5-3-Program-Example" class="headerlink" title="5.3 Program Example"></a>5.3 Program Example</h2><p><em>To demonstrate how an abstract program can be systematically transformed into more efficient code, we will use a running example based on the vector data structure</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Create abstract data type for vector */</span></span><br><span class="line"> <span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line"> <span class="keyword">long</span> len;</span><br><span class="line"> <span class="keyword">data_t</span> *data;</span><br><span class="line"> &#125; vec_rec, *vec_ptr;</span><br></pre></td></tr></table></figure>
+<p>We want to test multiple date type and different operations in C</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="comment">/* int , float , double */</span> <span class="keyword">data_t</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> IDENT 0 <span class="comment">//1 //initial value for accumulation</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> OP + <span class="comment">//*</span></span></span><br></pre></td></tr></table></figure>
+<p>Example program code</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Create vector of specified length */</span></span><br><span class="line"><span class="function">vec_ptr <span class="title">new_vec</span><span class="params">(<span class="keyword">long</span> len)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">/* Allocate header structure */</span></span><br><span class="line">    vec_ptr result = (vec_ptr) <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(vec_rec));</span><br><span class="line">    <span class="keyword">data_t</span> *data = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">if</span> (!result)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;  <span class="comment">/* Couldn&#x27;t allocate storage */</span></span><br><span class="line">    result-&gt;len = len;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Allocate array */</span></span><br><span class="line">    <span class="keyword">if</span> (len &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        data = (<span class="keyword">data_t</span> *)<span class="built_in">calloc</span>(len, <span class="keyword">sizeof</span>(<span class="keyword">data_t</span>));</span><br><span class="line">	<span class="keyword">if</span> (!data) &#123;</span><br><span class="line">	    <span class="built_in">free</span>((<span class="keyword">void</span> *) result);</span><br><span class="line"> 	    <span class="keyword">return</span> <span class="literal">NULL</span>; <span class="comment">/* Couldn&#x27;t allocate storage */</span></span><br><span class="line">	&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/* data will either be NULL or allocated array */</span></span><br><span class="line">    result-&gt;data = data;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Free storage used by vector */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">free_vec</span><span class="params">(vec_ptr v)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (v-&gt;data)</span><br><span class="line">	<span class="built_in">free</span>(v-&gt;data);</span><br><span class="line">    <span class="built_in">free</span>(v);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Retrieve vector element and store at dest.</span></span><br><span class="line"><span class="comment"> * Return 0 (out of bounds) or 1 (successful)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">get_vec_element</span><span class="params">(vec_ptr v, <span class="keyword">long</span> index, <span class="keyword">data_t</span> *dest)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (index &lt; <span class="number">0</span> || index &gt;= v-&gt;len)</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    *dest = v-&gt;data[index];</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Return length of vector */</span></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">vec_length</span><span class="params">(vec_ptr v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> v-&gt;len;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* $end vec */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* $begin get_vec_start */</span></span><br><span class="line"><span class="function"><span class="keyword">data_t</span> *<span class="title">get_vec_start</span><span class="params">(vec_ptr v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> v-&gt;data;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* $end get_vec_start */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Set vector element.</span></span><br><span class="line"><span class="comment"> * Return 0 (out of bounds) or 1 (successful)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">set_vec_element</span><span class="params">(vec_ptr v, <span class="keyword">long</span> index, <span class="keyword">data_t</span> val)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (index &lt; <span class="number">0</span> || index &gt;= v-&gt;len)</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    v-&gt;data[index] = val;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Implementation with maximum use of data abstraction */</span></span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">combine1</span><span class="params">(vec_ptr v, <span class="keyword">data_t</span> *dest)</span></span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line"> <span class="keyword">long</span> i;</span><br><span class="line"> *dest = IDENT;</span><br><span class="line">     <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; vec_length(v); i++) &#123;</span><br><span class="line">         <span class="keyword">data_t</span> val;</span><br><span class="line">         get_vec_element(v, i, &amp;val);</span><br><span class="line">         *dest = *dest OP val;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>In our experience, the best approach involves a combination of experimentation and analysis: </p>
+<p><strong>repeatedly attempting different approaches, performing measurements, and examining the assembly-code representations to identify underlying performance bottlenecks.</strong></p>
+<p>Run time of <code>combine1</code></p>
+<p><img src="/2021/09/04/CSAPP/Ch5/combine1.png" alt="combine1"></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/9006596/is-the-unix-time-command-accurate-enough-for-benchmarks">use <code>chrt</code> to give your program high priority</a></li>
+<li><a target="_blank" rel="noopener" href="https://askubuntu.com/questions/50145/how-to-install-perf-monitoring-tool">install <code>perf</code></a></li>
+<li><a target="_blank" rel="noopener" href="https://www.researchgate.net/post/Why_doesnt_perf_report_cache-refernces_cache-misses">Why <code>perf</code> have some value unsupported in VM</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/23200704/install-perf-on-mac"><code>perf</code> depend on Linux specified code, so it isn’t available to MacOS</a></li>
+<li><a target="_blank" rel="noopener" href="https://ostechnix.com/how-to-disable-unattended-upgrades-on-ubuntu/">Linux <code>apt</code> report <code>Could not get lock /var/lib/dpkg/lock-frontend - open</code></a></li>
+</ul>
+<p>Finally I had to use <code>/usr/bin/time --verbose  /path/to/program</code> to measure the performance</p>
+<h2 id="5-4-Eliminating-Loop-Inefficiencies"><a href="#5-4-Eliminating-Loop-Inefficiencies" class="headerlink" title="5.4 Eliminating Loop Inefficiencies"></a>5.4 Eliminating Loop Inefficiencies</h2><p>Oberserve that the length of vector doesn’t change during the loop, we can eliminate the function call of <code>vec_length</code> to reduce some instructions.</p>
+<p>We modify <code>combine1</code> as what we described above to get <code>combine2</code></p>
+<p><img src="/2021/09/04/CSAPP/Ch5/combine2.png" alt="combine2"></p>
+<p>This optimization is an instance of a general class of optimizations known as <strong>code motion</strong></p>
+<ul>
+<li>They involve identifying a computation that is performed multiple times(within a loop) but the result don’t change</li>
+<li>We can therefore move the computation to an earlier section of the code that does not get evaluated as often.</li>
+</ul>
+<p>You think you won’t write codes like this ? Here is a very practical example.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Convert string to lowercase: slow */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">lower1</span><span class="params">(<span class="keyword">char</span> *s)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">long</span> i;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="built_in">strlen</span>(s); i++)</span><br><span class="line"><span class="keyword">if</span> (s[i] &gt;= <span class="string">&#x27;A&#x27;</span> &amp;&amp; s[i] &lt;= <span class="string">&#x27;Z&#x27;</span>)</span><br><span class="line">s[i] -= (<span class="string">&#x27;A&#x27;</span> - <span class="string">&#x27;a&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* Convert string to lowercase: faster */</span></span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">lower2</span><span class="params">(<span class="keyword">char</span> *s)</span></span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line"> <span class="keyword">long</span> i;</span><br><span class="line"> <span class="keyword">long</span> len = <span class="built_in">strlen</span>(s);</span><br><span class="line"></span><br><span class="line"> <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; len; i++)</span><br><span class="line"> <span class="keyword">if</span> (s[i] &gt;= <span class="string">&#x27;A&#x27;</span> &amp;&amp; s[i] &lt;= <span class="string">&#x27;Z&#x27;</span>)</span><br><span class="line"> s[i] -= (<span class="string">&#x27;A&#x27;</span> - <span class="string">&#x27;a&#x27;</span>);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* Sample implementation of library function strlen */</span></span><br><span class="line"> <span class="comment">/* Compute length of string */</span></span><br><span class="line"> <span class="function"><span class="keyword">size_t</span> <span class="title">strlen</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *s)</span></span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line"> <span class="keyword">long</span> length = <span class="number">0</span>;</span><br><span class="line"> <span class="keyword">while</span> (*s != <span class="string">&#x27;\0&#x27;</span>) &#123;</span><br><span class="line"> s++;</span><br><span class="line"> length++;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">return</span> length;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/09/04/CSAPP/Ch5/lower.png" alt="performance of lower"></p>
+<p>The compiler can’t do optimization for you in this case, since it need to know that even the content of string was changed the length of it will not. Even the most sophisticated compiler is unqualified.</p>
+<p>Part of the job of a competent programmer is to avoid ever introducing such asymptotic inefficiency</p>
+<h4 id="Practice-Problem-5-3"><a href="#Practice-Problem-5-3" class="headerlink" title="Practice Problem 5.3"></a>Practice Problem 5.3</h4><blockquote>
+<p>Consider the following functions:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">min</span><span class="params">(<span class="keyword">long</span> x, <span class="keyword">long</span> y)</span> </span>&#123; <span class="keyword">return</span> x &lt; y ? x : y; &#125;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">max</span><span class="params">(<span class="keyword">long</span> x, <span class="keyword">long</span> y)</span> </span>&#123; <span class="keyword">return</span> x &lt; y ? y : x; &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">incr</span><span class="params">(<span class="keyword">long</span> *xp, <span class="keyword">long</span> v)</span> </span>&#123; *xp += v; &#125;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">square</span><span class="params">(<span class="keyword">long</span> x)</span> </span>&#123; <span class="keyword">return</span> x*x; &#125;</span><br></pre></td></tr></table></figure>
+
+<p>The following three code fragments call these functions:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">A. <span class="keyword">for</span> (i = min(x, y); i &lt; max(x, y); incr(&amp;i, <span class="number">1</span>))</span><br><span class="line">t += square(i);</span><br><span class="line">B. <span class="keyword">for</span> (i = max(x, y) - <span class="number">1</span>; i &gt;= min(x, y); incr(&amp;i, <span class="number">-1</span>))</span><br><span class="line">t += square(i);</span><br><span class="line">C. <span class="keyword">long</span> low = min(x, y);</span><br><span class="line"><span class="keyword">long</span> high = max(x, y);</span><br><span class="line"><span class="keyword">for</span> (i = low; i &lt; high; incr(&amp;i, <span class="number">1</span>))</span><br><span class="line">t += square(i);</span><br></pre></td></tr></table></figure>
+
+<p>Assume x equals 10 and y equals 100. </p>
+<p>Fill in the following table indicating the number of times each of the four functions is called in code fragments A–C:</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>min</th>
+<th>max</th>
+<th>incr</th>
+<th>square</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>B</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>C</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-1"><a href="#My-solution-white-check-mark-1" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><p>Beware that the function used as condition will be call one more time when quiting the loop</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>min</th>
+<th>max</th>
+<th>incr</th>
+<th>square</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td>1</td>
+<td>91</td>
+<td>90</td>
+<td>90</td>
+</tr>
+<tr>
+<td>B</td>
+<td>91</td>
+<td>1</td>
+<td>90</td>
+<td>90</td>
+</tr>
+<tr>
+<td>C</td>
+<td>1</td>
+<td>1</td>
+<td>90</td>
+<td>90</td>
+</tr>
+</tbody></table>
+<p>The subtle difference is critical to performance</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">min</span><span class="params">(<span class="keyword">long</span> x, <span class="keyword">long</span> y)</span> </span>&#123; <span class="keyword">return</span> x &lt; y ? x : y; &#125;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">max</span><span class="params">(<span class="keyword">long</span> x, <span class="keyword">long</span> y)</span> </span>&#123; <span class="keyword">return</span> x &lt; y ? y : x; &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">incr</span><span class="params">(<span class="keyword">long</span> *xp, <span class="keyword">long</span> v)</span> </span>&#123; *xp += v; &#125;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">square</span><span class="params">(<span class="keyword">long</span> x)</span> </span>&#123; <span class="keyword">return</span> x*x; &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">clock_t</span> start , end;</span><br><span class="line">    <span class="keyword">long</span> i ;</span><br><span class="line">    <span class="keyword">long</span> x = <span class="number">1</span> , y = <span class="number">100000</span> ;</span><br><span class="line">    <span class="keyword">long</span> t = <span class="number">0</span>; </span><br><span class="line">    start = clock();</span><br><span class="line">    <span class="keyword">for</span> (i = min(x, y); i &lt; max(x, y); incr(&amp;i, <span class="number">1</span>))</span><br><span class="line">        t += square(i);</span><br><span class="line">    end = clock();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;time consumed by A : %lf\n&quot;</span> ,(<span class="keyword">double</span>)(end - start)/CLOCKS_PER_SEC );</span><br><span class="line">    t = <span class="number">0</span>;</span><br><span class="line">    start = clock();</span><br><span class="line">    <span class="keyword">for</span> (i = max(x, y) - <span class="number">1</span>; i &gt;= min(x, y); incr(&amp;i, <span class="number">-1</span>))</span><br><span class="line">        t += square(i);</span><br><span class="line">    end = clock();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;time consumed by B : %lf\n&quot;</span> ,(<span class="keyword">double</span>)(end - start)/CLOCKS_PER_SEC );</span><br><span class="line"></span><br><span class="line">    start = clock();</span><br><span class="line">    <span class="keyword">long</span> low = min(x, y);</span><br><span class="line">    <span class="keyword">long</span> high = max(x, y);</span><br><span class="line">    <span class="keyword">for</span> (i = low; i &lt; high; incr(&amp;i, <span class="number">1</span>))</span><br><span class="line">        t += square(i);</span><br><span class="line">    end = clock();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;time consumed by C : %lf\n&quot;</span> ,(<span class="keyword">double</span>)(end - start)/CLOCKS_PER_SEC );</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">time consumed by A : 0.000430</span></span><br><span class="line"><span class="comment">time consumed by B : 0.000418</span></span><br><span class="line"><span class="comment">time consumed by C : 0.000269</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h3 id="5-5-Reducing-Procedure-Calls"><a href="#5-5-Reducing-Procedure-Calls" class="headerlink" title="5.5 Reducing Procedure Calls"></a>5.5 Reducing Procedure Calls</h3><p>We can see in the code for <code>combine2</code> that <code>get_ vec_element</code> is called on every loop iteration to retrieve the next vector element.</p>
+<ul>
+<li>A simple analysis of the code for combine2 shows that all references will be valid, so we can remove bound check</li>
+<li>Rather than making a function call to retrieve each vector element, we can  accesses the array directly</li>
+</ul>
+<p><img src="/2021/09/04/CSAPP/Ch5/noimprove.png" alt="No improve"></p>
+<p>However, performance doesn’t improve at all!</p>
+<ul>
+<li>The modification we have made is not wise</li>
+<li>In principle, the user of the vector abstract data type should not even need to know that the vector contents are stored as an array, rather than as some other data structure such as a linked list. </li>
+<li>A purist might say that this transformation seriously impairs the program modularity</li>
+</ul>
+<p>So why would this happen? See 5.11.2</p>
+<h3 id="5-6-Eliminating-Unneeded-Memory-References"><a href="#5-6-Eliminating-Unneeded-Memory-References" class="headerlink" title="5.6 Eliminating Unneeded Memory References"></a>5.6 Eliminating Unneeded Memory References</h3><p>In <code>combine3</code> </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">combine3</span><span class="params">(vec_ptr v, <span class="keyword">data_t</span> *dest)</span></span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line"> <span class="keyword">long</span> i;</span><br><span class="line"> <span class="keyword">long</span> length = vec_length(v);</span><br><span class="line"> <span class="keyword">data_t</span> *data = get_vec_start(v);</span><br><span class="line"></span><br><span class="line"> *dest = IDENT;</span><br><span class="line"> <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; length; i++) &#123;</span><br><span class="line"> *dest = *dest OP data[i];</span><br><span class="line"> &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>We can see that memory pointed by <code>dest</code> are referred mulitple times</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#Inner loop of combine3. data_t &#x3D; double, OP &#x3D; *</span><br><span class="line">#dest in %rbx, data+i in %rdx, data+length in %rax</span><br><span class="line"> .L17: loop:</span><br><span class="line"> vmovsd (%rbx), %xmm0 #Read product from dest</span><br><span class="line"> vmulsd (%rdx), %xmm0, %xmm0 #Multiply product by data[i]</span><br><span class="line"> vmovsd %xmm0, (%rbx) #Store product at dest</span><br><span class="line"> addq $8, %rdx #Increment data+i</span><br><span class="line"> cmpq %rax, %rdx #Compare to data+length</span><br><span class="line"> jne .L17 #If !&#x3D;, goto loop</span><br></pre></td></tr></table></figure>
+<p>This reading and writing is wasteful, since the value read from dest at the beginning of each iteration should simply <strong>be the value written at the end of the previous iteration</strong></p>
+<p>We should use a temp variable(a register) to accumulate the value</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#Inner loop of combine4. data_t &#x3D; double, OP &#x3D; *</span><br><span class="line">#acc in %xmm0, data+i in %rdx, data+length in %rax</span><br><span class="line"> .L25: loop:</span><br><span class="line"> vmulsd (%rdx), %xmm0, %xmm0 #Multiply acc by data[i]</span><br><span class="line"> addq $8, %rdx #Increment data+i</span><br><span class="line"> cmpq %rax, %rdx #Compare to data+length</span><br><span class="line"> jne .L25 #If !&#x3D;, goto loop</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Accumulate result in local variable */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">combine4</span><span class="params">(vec_ptr v, <span class="keyword">data_t</span> *dest)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">long</span> i;</span><br><span class="line"><span class="keyword">long</span> length = vec_length(v);</span><br><span class="line"><span class="keyword">data_t</span> *data = get_vec_start(v);</span><br><span class="line"><span class="keyword">data_t</span> acc = IDENT;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; length; i++) &#123;</span><br><span class="line"> acc = acc OP data[i];</span><br><span class="line"> &#125;</span><br><span class="line"> *dest = acc;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/09/04/CSAPP/Ch5/memopt.png" alt="significant improvement"></p>
+<p>Again, the compiler cannot optimize the code automatically, since the hazard of  memory alias. For example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">v = [<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>];</span><br><span class="line">combine3(v, get_vec_start(v) + <span class="number">2</span>); <span class="comment">//v = [2,3,36]</span></span><br><span class="line">combine4(v, get_vec_start(v) + <span class="number">2</span>); <span class="comment">//v = [2,3,24]</span></span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-5-4"><a href="#Practice-Problem-5-4" class="headerlink" title="Practice Problem 5.4"></a>Practice Problem 5.4</h4><blockquote>
+<p>When we use gcc to compile combine3 with command-line option -O2, we get code with substantially better CPE performance than with -O1:</p>
+<p><img src="/2021/09/04/CSAPP/Ch5/question.png" alt="problem picture"></p>
+<p>We achieve performance comparable to that for combine4, except for the case of integer sum, but even it improves significantly. On examining the assembly code generated by the compiler, we find an interesting variant for the inner loop:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#Inner loop of combine3. data_t &#x3D; double, OP &#x3D; *. Compiled -O2</span><br><span class="line">#dest in %rbx, data+i in %rdx, data+length in %rax</span><br><span class="line">#Accumulated product in %xmm0</span><br><span class="line">.L22: loop:</span><br><span class="line">vmulsd (%rdx), %xmm0, %xmm0 #Multiply product by data[i]</span><br><span class="line">addq $8, %rdx #Increment data+i</span><br><span class="line">cmpq %rax, %rdx #Compare to data+length</span><br><span class="line">vmovsd %xmm0, (%rbx) #Store product at dest</span><br><span class="line">jne .L22 #If !&#x3D;, goto loop</span><br></pre></td></tr></table></figure>
+
+<p>We can compare this to the version created with optimization level 1:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#Inner loop of combine3. data_t &#x3D; double, OP &#x3D; *. Compiled -O1</span><br><span class="line">#dest in %rbx, data+i in %rdx, data+length in %rax</span><br><span class="line">.L17: loop:</span><br><span class="line">vmovsd (%rbx), %xmm0 #Read product from dest</span><br><span class="line">vmulsd (%rdx), %xmm0, %xmm0 #Multiply product by data[i]</span><br><span class="line">vmovsd %xmm0, (%rbx) #Store product at dest</span><br><span class="line">addq $8, %rdx #Increment data+i</span><br><span class="line">cmpq %rax, %rdx #Compare to data+length</span><br><span class="line">jne .L17 #If !&#x3D;, goto loop</span><br></pre></td></tr></table></figure>
+
+<p>We see that, besides some reordering of instructions, the only difference is that the more optimized version does not contain the <code>vmovsd</code> implementing the read from the location designated by <code>dest</code></p>
+<p>A. How does the role of register <code>%xmm0</code> differ in these two loops? </p>
+<p>B. Will the more optimized version faithfully implement the C code of <code>combine3</code>, including when there is memory aliasing between dest and the vector data? </p>
+<p>C. Either explain why this optimization preserves the desired behavior, or give an example where it would produce different results than the less optimized code.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-2"><a href="#My-solution-white-check-mark-2" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><p>A:</p>
+<p>In <code>combine3 -O2</code>, <code>%xmm0</code> serves as the result of each iteration</p>
+<p>In <code>combine3 -O1</code>, <code>%xmm0</code> serves as the read destination.</p>
+<p>B:</p>
+<p>Yes</p>
+<p>C:</p>
+<p>Because the optimized code actually do the write back, keeping the value at <code>dest</code> up-to-date</p>
+<h2 id="5-7-Understanding-Modern-Processors"><a href="#5-7-Understanding-Modern-Processors" class="headerlink" title="5.7 Understanding Modern Processors"></a>5.7 Understanding Modern Processors</h2><p><em>One of the remarkable feats of modern microprocessors is that  they employ complex and exotic microarchitectures, in which multiple instructions can be executed in parallel, while presenting an operational view of simple sequential instruction execution.</em>(Called <code>instruction-level-parallelism</code>)</p>
+<p> We will find that two different lower bounds characterize the maximum performance of a program</p>
+<ul>
+<li>Latency</li>
+<li>Throughput</li>
+</ul>
+<h3 id="5-7-1-Overall-Operation"><a href="#5-7-1-Overall-Operation" class="headerlink" title="5.7.1 Overall Operation"></a>5.7.1 Overall Operation</h3><p><img src="/2021/09/04/CSAPP/Ch5/modernpro.png" alt="layout of mordern processor"></p>
+<p>The overall design has two main parts:</p>
+<ul>
+<li><p>The <strong>instruction control unit (ICU)</strong>, which is responsible for reading a sequence of instructions from memory and generating from these a set of <strong>primitive operations</strong>(sometimes referred to as micro-operations) to perform on program data</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># For complex instruction machine</span><br><span class="line">addq %rax,%rdx  -&gt; a simple add operation</span><br><span class="line"></span><br><span class="line">addq %rax,8(%rdx) -&gt; three micro-operations</span><br><span class="line">                  -&gt; read from memory M[8+%rdx]</span><br><span class="line">                  -&gt; addition</span><br><span class="line">                  -&gt; store the result to memory</span><br></pre></td></tr></table></figure></li>
+<li><p>The <strong>execution unit (EU)</strong>, which then executes these operations. </p>
+<p>Compared to the simple in-order pipeline we studied in Chapter 4, out-of-order processors require far greater and more complex hardware, but they are better at achieving higher degrees of instruction-level parallelism.</p>
+</li>
+</ul>
+<p>Within the ICU, the <strong>retirement unit</strong> keeps track of the ongoing processing and makes sure that it obeys the sequential semantics of the machine-level program.</p>
+<ul>
+<li> Once the operations for the instruction have completed and any branch points leading to this instruction are confirmed as having been correctly predicted, the instruction can be <strong>retired</strong>, with any updates to the program registers being made. </li>
+<li>If some branch point leading to this instruction was mispredicted, on the other hand, the instruction will be <strong>flushed</strong>, discarding any results that may have been computed. By this means, mispredictions will not alter the program state.</li>
+</ul>
+<p>Also, a technique call <code>register renaming</code> is used to implement function like <code>data-forwarding</code></p>
+<h3 id="5-7-2-Functional-Unit-Performance"><a href="#5-7-2-Functional-Unit-Performance" class="headerlink" title="5.7.2 Functional Unit Performance"></a>5.7.2 Functional Unit Performance</h3><p>Hardware limit the ultimate performance of programs</p>
+<p><img src="/2021/09/04/CSAPP/Ch5/hardlimit.png" alt="hardware bound"></p>
+<h3 id="5-7-3-An-Abstract-Model-of-Processor-Operation"><a href="#5-7-3-An-Abstract-Model-of-Processor-Operation" class="headerlink" title="5.7.3 An Abstract Model of Processor Operation"></a>5.7.3 An Abstract Model of Processor Operation</h3><p><em>we will use a <strong>data-flow representation of programs</strong>, a graphical notation showing how the <strong>data dependencies between the different operations constrain the order in which they are executed</strong></em></p>
+<p>These constraints then lead to critical paths in the graph, putting a lower bound on the number of clock cycles required to execute a set of machine instructions.</p>
+<h4 id="From-Machine-Level-Code-to-Data-Flow-Graphs"><a href="#From-Machine-Level-Code-to-Data-Flow-Graphs" class="headerlink" title="From Machine-Level Code to Data-Flow Graphs"></a>From Machine-Level Code to Data-Flow Graphs</h4><p><img src="/2021/09/04/CSAPP/Ch5/graph.png" alt="data flow"></p>
+<p>The registers at top store values before execution, those at the bottom store values after execution</p>
+<p><img src="/2021/09/04/CSAPP/Ch5/abstrctgraph.png" alt="abstract graph"></p>
+<p><img src="/2021/09/04/CSAPP/Ch5/crpath.png" alt="critical path"></p>
+<p>The left chain needs 5n clocks while the right chain needs only n clocks</p>
+<p>So when executing the function, the floating-point multiplier becomes the limiting resource.</p>
+<p>The other operations required during the loop—manipulating and testing pointer value data+i and reading data from memory—proceed in parallel with the multiplication. As each successive value of acc is computed, it is fed back around to compute the next value, but this will not occur until 5 cycles later</p>
+<h4 id="Other-Performance-Factors"><a href="#Other-Performance-Factors" class="headerlink" title="Other Performance Factors"></a>Other Performance Factors</h4><p>Other factors can also limit performance, including the total number of functional units available and the number of data values that can be passed among the functional units on any given step.</p>
+<p> Our next task will be to <strong>restructure the operations to enhance instruction-level parallelism.</strong> We want to transform the program in such a way that our only limitation becomes the throughput bound, yielding CPEs below or close to 1.00.</p>
+<h4 id="Practice-Problem-5-5"><a href="#Practice-Problem-5-5" class="headerlink" title="Practice Problem 5.5"></a>Practice Problem 5.5</h4><blockquote>
+<p>Suppose we wish to write a function to evaluate a polynomial, where a polynomial of degree n is defined to have a set of coefficients $a_0, a_1, a_2,…,a_n$. For a value x, we evaluate the polynomial by computing<br>$$<br>a_0 + a_1x + a_2x_2 + … + a_nx_n<br>$$<br>This evaluation can be implemented by the following function, having as arguments an array of coefficients a, a value x, and the polynomial degree degree (the value n in Equation 5.2). In this function, we compute both the successive terms of the equation and the successive powers of x within a single loop:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">poly</span><span class="params">(<span class="keyword">double</span> a[], <span class="keyword">double</span> x, <span class="keyword">long</span> degree)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">long</span> i;</span><br><span class="line"><span class="keyword">double</span> result = a[<span class="number">0</span>];</span><br><span class="line"><span class="keyword">double</span> xpwr = x; <span class="comment">/* Equals x^i at start of loop */</span></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">1</span>; i &lt;= degree; i++) &#123;</span><br><span class="line">result += a[i] * xpwr;</span><br><span class="line">xpwr = x * xpwr;</span><br><span class="line">&#125;</span><br><span class="line"> <span class="keyword">return</span> result;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>A. For degree n, how many additions and how many multiplications does this code perform? </p>
+<p>B. On our reference machine, with arithmetic operations having the latencies shown in Figure 5.12, we measure the CPE for this function to be 5.00. Explain how this CPE arises based on the data dependencies formed between iterations due to the operations implementing lines 7–8 of the function.</p>
+</blockquote>
+<h4 id="My-solution-1"><a href="#My-solution-1" class="headerlink" title="My solution :"></a>My solution :</h4><p>A : n addition and 2n multiplication</p>
+<p>B : the two multiplication can run in parallel</p>
+<h4 id="Solution-on-the-book"><a href="#Solution-on-the-book" class="headerlink" title="Solution on the book:"></a>Solution on the book:</h4><p>B. We can see that the performance-limiting computation here is the repeated computation of the expression <code>xpwr = x * xpwr</code>. This requires a floatingpoint multiplication (5 clock cycles), and the computation for one iteration cannot begin until the one for the previous iteration has completed. The updating of result only requires a floating-point addition (3 clock cycles) between successive iterations.</p>
+<h4 id="Practice-Problem-5-6"><a href="#Practice-Problem-5-6" class="headerlink" title="Practice Problem 5.6"></a>Practice Problem 5.6</h4><blockquote>
+<p>$$<br>a_0 + x(a_1 + x(a_2 + … + x(a_{n−1} + xa_n) …))<br>$$</p>
+<p>Using Horner’s method, we can implement polynomial evaluation using the following code:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Apply Horner’s method */</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">polyh</span><span class="params">(<span class="keyword">double</span> a[], <span class="keyword">double</span> x, <span class="keyword">long</span> degree)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> i;</span><br><span class="line">    <span class="keyword">double</span> result = a[degree];</span><br><span class="line">    <span class="keyword">for</span> (i = degree<span class="number">-1</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">    result = a[i] + x*result;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>A. For degree n, how many additions and how many multiplications does this code perform? </p>
+<p>B. On our reference machine, with the arithmetic operations having the latencies shown in Figure 5.12, we measure the CPE for this function to be 8.00. Explain how this CPE arises based on the data dependencies formed between iterations due to the operations implementing line 7 of the function. </p>
+<p>C. Explain how the function shown in Practice Problem 5.5 can run faster, even though it requires more operations.</p>
+</blockquote>
+<h4 id="My-solution-2"><a href="#My-solution-2" class="headerlink" title="My solution :"></a>My solution :</h4><p>A : n addition and n multiplication</p>
+<p>B : addition must wait for multiplication to complete</p>
+<p>C : in 5.5 the two multiplication can run in parallel</p>
+<h4 id="Solution-on-the-book-1"><a href="#Solution-on-the-book-1" class="headerlink" title="Solution on the book :"></a>Solution on the book :</h4><p>B. We can see that the performance-limiting computation here is the repeated computation of the expression <code>result = a[i] + x*result</code>. Starting from the value of result from the previous iteration, we must first multiply it by x (5 clock cycles) and then add it to <code>a[i]</code> (3 cycles) before we have the value for this iteration. Thus, each iteration imposes a minimum latency of 8 cycles, exactly our measured CPE. </p>
+<p>C. Although each iteration in function poly requires two multiplications rather than one, only a single multiplication occurs along the critical path per iteration.</p>
+<h4 id="Verification"><a href="#Verification" class="headerlink" title="Verification :"></a>Verification :</h4><p><span style="color:red">“Better algorithm” does not guarantee a better performance !!! </span></p>
+<p><strong><em>Reduce data dependency really matters !!!</em></strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 50000</span></span><br><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">data</span> &#123;</span></span><br><span class="line">    <span class="keyword">double</span> d;</span><br><span class="line">    <span class="keyword">int</span> i[<span class="number">2</span>];</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">union</span> <span class="title">data</span> <span class="title">Data</span>;</span></span><br><span class="line">Data <span class="built_in">array</span> [N];</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">poly</span><span class="params">(Data a[], <span class="keyword">double</span> x, <span class="keyword">long</span> degree)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">long</span> i;</span><br><span class="line"><span class="keyword">double</span> result = a[<span class="number">0</span>].d;</span><br><span class="line"></span><br><span class="line"><span class="keyword">double</span> xpwr = x; <span class="comment">/* Equals x^i at start of loop */</span></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">1</span>; i &lt;= degree; i++) &#123;</span><br><span class="line">result += a[i].d * xpwr;</span><br><span class="line">xpwr = x * xpwr;</span><br><span class="line">&#125;</span><br><span class="line"> <span class="keyword">return</span> result;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Apply Horner’s method */</span></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">polyh</span><span class="params">(Data a[], <span class="keyword">double</span> x, <span class="keyword">long</span> degree)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> i;</span><br><span class="line">    <span class="keyword">double</span> result = a[degree].d;</span><br><span class="line">    <span class="keyword">for</span> (i = degree<span class="number">-1</span>; i &gt;= <span class="number">0</span>; i--)</span><br><span class="line">    result = a[i].d + x*result;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">clock_t</span> start , end ;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span> ; x &lt; N ; x++)&#123;</span><br><span class="line">       <span class="built_in">array</span>[x].i[<span class="number">0</span>] = rand();</span><br><span class="line">       <span class="built_in">array</span>[x].i[<span class="number">1</span>] = rand();</span><br><span class="line">    &#125;</span><br><span class="line">    start = clock();</span><br><span class="line">    poly(<span class="built_in">array</span>, <span class="number">3.14</span>, N<span class="number">-1</span>);</span><br><span class="line">    end = clock();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Normal method cost : %f\n&quot;</span> , (<span class="keyword">double</span>)(end - start) / CLOCKS_PER_SEC );</span><br><span class="line"></span><br><span class="line">    start = clock();</span><br><span class="line">    polyh(<span class="built_in">array</span>, <span class="number">3.14</span>, N<span class="number">-1</span>);</span><br><span class="line">    end = clock();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Horner method cost : %f\n&quot;</span> , (<span class="keyword">double</span>)(end - start) / CLOCKS_PER_SEC );</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">for</span> ((i = 0 ; i &lt; 10 ; i++)) ./<span class="built_in">test</span></span><br><span class="line">Normal method cost : 0.000356</span><br><span class="line">Horner method cost : 0.000468</span><br><span class="line"></span><br><span class="line">Normal method cost : 0.000271</span><br><span class="line">Horner method cost : 0.000363</span><br><span class="line"></span><br><span class="line">Normal method cost : 0.000270</span><br><span class="line">Horner method cost : 0.000363</span><br><span class="line"></span><br><span class="line">Normal method cost : 0.000272</span><br><span class="line">Horner method cost : 0.000363</span><br><span class="line"></span><br><span class="line">Normal method cost : 0.000274</span><br><span class="line">Horner method cost : 0.000364</span><br><span class="line"></span><br><span class="line">Normal method cost : 0.000271</span><br><span class="line">Horner method cost : 0.000377</span><br><span class="line"></span><br><span class="line">Normal method cost : 0.000271</span><br><span class="line">Horner method cost : 0.000363</span><br><span class="line"></span><br><span class="line">Normal method cost : 0.000270</span><br><span class="line">Horner method cost : 0.000421</span><br><span class="line"></span><br><span class="line">Normal method cost : 0.000271</span><br><span class="line">Horner method cost : 0.000363</span><br><span class="line"></span><br><span class="line">Normal method cost : 0.000270</span><br><span class="line">Horner method cost : 0.000371</span><br></pre></td></tr></table></figure>
+<p>(I once thought that it is the data cache resulted in the improvement, but reverse the order of function call gives the same result)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">Horner method cost : 0.002377</span><br><span class="line">Normal method cost : 0.001744</span><br><span class="line"></span><br><span class="line">Horner method cost : 0.002086</span><br><span class="line">Normal method cost : 0.001518</span><br><span class="line"></span><br><span class="line">Horner method cost : 0.002103</span><br><span class="line">Normal method cost : 0.001516</span><br><span class="line"></span><br><span class="line">Horner method cost : 0.002077</span><br><span class="line">Normal method cost : 0.001515</span><br><span class="line"></span><br><span class="line">Horner method cost : 0.001997</span><br><span class="line">Normal method cost : 0.001588</span><br><span class="line"></span><br><span class="line">Horner method cost : 0.002050</span><br><span class="line">Normal method cost : 0.001586</span><br><span class="line"></span><br><span class="line">Horner method cost : 0.002063</span><br><span class="line">Normal method cost : 0.001590</span><br><span class="line"></span><br><span class="line">Horner method cost : 0.002004</span><br><span class="line">Normal method cost : 0.001546</span><br><span class="line"></span><br><span class="line">Horner method cost : 0.002153</span><br><span class="line">Normal method cost : 0.001608</span><br><span class="line"></span><br><span class="line">Horner method cost : 0.002253</span><br><span class="line">Normal method cost : 0.001552</span><br></pre></td></tr></table></figure>
+<h3 id="5-8-Loop-Unrolling"><a href="#5-8-Loop-Unrolling" class="headerlink" title="5.8 Loop Unrolling"></a>5.8 Loop Unrolling</h3><p><em>Loop unrolling is a program transformation that <strong>reduces the number of iterations for a loop by increasing the number of elements computed on each iteration</strong></em></p>
+<p> Loop unrolling can improve performance in two ways</p>
+<ul>
+<li>It <strong>reduces the number of operations that do not contribute directly to the program result</strong>, such as loop indexing and conditional branching.</li>
+<li>We can further transform the code to <strong>reduce the number of operations in the critical paths</strong> of the overall computation.</li>
+</ul>
+<h4 id="k-×-1-loop-unrolling-strategy"><a href="#k-×-1-loop-unrolling-strategy" class="headerlink" title="k × 1 loop unrolling strategy"></a>k × 1 loop unrolling strategy</h4><p><em>processing k elements in one loop</em></p>
+<ul>
+<li>upper limit to be <code>i &lt; n − k + 1</code> to prevent out-of-bound reference(from <code>i</code> to <code>i+k-1</code> in each iteration,<code>i+k-1 &lt; n </code>)</li>
+<li> Loop index <code>i</code> is incremented by <code>k</code> in each iteration</li>
+<li>We include the second loop to step through the final few elements of the vector one at a time. The body of this loop will be executed between <code>0</code> and <code>k − 1</code> times. </li>
+<li>For example when <code>k == 2</code></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 2 x 1 loop unrolling */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">combine5</span><span class="params">(vec_ptr v, <span class="keyword">data_t</span> *dest)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">long</span> i;</span><br><span class="line"><span class="keyword">long</span> length = vec_length(v);</span><br><span class="line"><span class="keyword">long</span> limit = length<span class="number">-1</span>;</span><br><span class="line"><span class="keyword">data_t</span> *data = get_vec_start(v);</span><br><span class="line"><span class="keyword">data_t</span> acc = IDENT;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* Combine 2 elements at a time */</span></span><br><span class="line"> <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; limit; i+=<span class="number">2</span>) &#123;</span><br><span class="line"> acc = (acc OP data[i]) OP data[i+<span class="number">1</span>];</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* Finish any remaining elements */</span></span><br><span class="line"> <span class="keyword">for</span> (; i &lt; length; i++) &#123;</span><br><span class="line"> acc = acc OP data[i];</span><br><span class="line"> &#125;</span><br><span class="line"> *dest = acc;</span><br><span class="line"> &#125;</span><br><span class="line"><span class="comment">//Applying 2 × 1 loop unrolling. This transformation can reduce the effect of loop overhead.</span></span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-5-7-white-check-mark"><a href="#Practice-Problem-5-7-white-check-mark" class="headerlink" title="Practice Problem 5.7 :white_check_mark:"></a>Practice Problem 5.7 :white_check_mark:</h4><blockquote>
+<p>Modify the code for combine5 to unroll the loop by a factor k = 5.</p>
+</blockquote>
+<h4 id="My-solution-3"><a href="#My-solution-3" class="headerlink" title="My solution :"></a>My solution :</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 5 x 1 loop unrolling */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mycombine5</span><span class="params">(vec_ptr v, <span class="keyword">data_t</span> *dest)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">long</span> i;</span><br><span class="line"><span class="keyword">long</span> length = vec_length(v);</span><br><span class="line"><span class="keyword">long</span> limit = length<span class="number">-4</span>;  <span class="comment">// i + 5 - 1 &lt; len</span></span><br><span class="line"><span class="keyword">data_t</span> *data = get_vec_start(v);</span><br><span class="line"><span class="keyword">data_t</span> acc = IDENT;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* Combine 2 elements at a time */</span></span><br><span class="line"> <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; limit; i+=<span class="number">5</span>) &#123;</span><br><span class="line"> acc = ((((acc OP data[i]) OP data[i+<span class="number">1</span>]) OP data[i+<span class="number">2</span>]) OP data[i+<span class="number">3</span>]) OP data[i+<span class="number">4</span>];</span><br><span class="line"> <span class="comment">//data dependency here, but in case of OP be float point number operation, we can not compute (data[i+2] OP data[i+3]) first. Beware of the rounding, float point is not associative !!!</span></span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* Finish any remaining elements */</span></span><br><span class="line"> <span class="keyword">for</span> (; i &lt; length; i++) &#123;</span><br><span class="line"> acc = acc OP data[i];</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> *dest = acc;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Verification-1"><a href="#Verification-1" class="headerlink" title="Verification:"></a>Verification:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">time consumed by combine5 : 0.000861</span><br><span class="line">time consumed by mycombine5: 0.000692</span><br><span class="line"></span><br><span class="line">time consumed by combine5 : 0.000839</span><br><span class="line">time consumed by mycombine5: 0.000688</span><br><span class="line"></span><br><span class="line">time consumed by combine5 : 0.000894</span><br><span class="line">time consumed by mycombine5: 0.000754</span><br><span class="line"></span><br><span class="line">time consumed by combine5 : 0.000899</span><br><span class="line">time consumed by mycombine5: 0.000760</span><br><span class="line"></span><br><span class="line">time consumed by combine5 : 0.000942</span><br><span class="line">time consumed by mycombine5: 0.000828</span><br><span class="line"></span><br><span class="line">time consumed by combine5 : 0.000903</span><br><span class="line">time consumed by mycombine5: 0.000796</span><br><span class="line"></span><br><span class="line">time consumed by combine5 : 0.000911</span><br><span class="line">time consumed by mycombine5: 0.000768</span><br><span class="line"></span><br><span class="line">time consumed by combine5 : 0.000959</span><br><span class="line">time consumed by mycombine5: 0.000701</span><br><span class="line"></span><br><span class="line">time consumed by combine5 : 0.000837</span><br><span class="line">time consumed by mycombine5: 0.000695</span><br><span class="line"></span><br><span class="line">time consumed by combine5 : 0.000860</span><br><span class="line">time consumed by mycombine5: 0.000705</span><br></pre></td></tr></table></figure>
+<p>(reverse function call order is done to ensure the improvement is not caused by cache)</p>
+<p>Solution on the book does not solve data dependency either.</p>
+<blockquote>
+<p>==<strong>Loop unrolling can easily be performed by a compiler</strong>==. Many compilers do this as part of their collection of optimizations. gcc will perform some forms of loop unrolling when invoked with optimization level 3 or higher</p>
+</blockquote>
+<hr>
+<p>We see that the CPE for integer addition improves, achieving the latency bound of 1.00</p>
+<p><img src="/2021/09/04/CSAPP/Ch5/combine5perf.png" alt="combine5 performance"></p>
+<p>By reducing the number of overhead operations relative to the number of additions required to compute the vector sum, we can reach the point where the 1-cycle latency of integer addition becomes the performancelimiting factor. </p>
+<p>On the other hand, none of the other cases improve—they are already at their latency bounds</p>
+<p>By examining the machine-level code, we can see that there is <strong>still a critical path of <code>n</code> multiplication operations</strong> —there are half as many iterations, but each iteration has two multiplication operations in sequence</p>
+<p><img src="/2021/09/04/CSAPP/Ch5/combine5graph.png" alt="combine5 data dependancy graph"></p>
+<p><img src="/2021/09/04/CSAPP/Ch5/combine5dataflow.png" alt="data flow of combine 5"></p>
+<h3 id="5-9-Enhancing-Parallelism"><a href="#5-9-Enhancing-Parallelism" class="headerlink" title="5.9 Enhancing Parallelism"></a>5.9 Enhancing Parallelism</h3><p><em>The <strong>functional units</strong> performing addition and multiplication are all fully <strong>pipelined</strong>, meaning that they can start new operations every clock cycle, and some of the operations can be performed by multiple functional units.</em></p>
+<p><em>We will now investigate ways to <strong>break sequential dependency</strong> and get performance better than the latency bound.</em></p>
+<h4 id="5-9-1-Multiple-Accumulators"><a href="#5-9-1-Multiple-Accumulators" class="headerlink" title="5.9.1 Multiple Accumulators"></a>5.9.1 Multiple Accumulators</h4><p><em>For a combining operation that is ==<strong>associative and commutative</strong>==, such as integer addition or multiplication, we can improve performance by <strong>splitting the set of combining operations into two or more parts</strong> and combining the results at the end.</em></p>
+<p>For example for <code>n</code> elements:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">result = n1 * n2 * n3 ... * n;</span><br><span class="line"></span><br><span class="line">result = n_even * n_odd;</span><br><span class="line">n_even = n2 * n4 * n6 ...;</span><br><span class="line">n_odd = n1 * n3 * n5 ...;</span><br></pre></td></tr></table></figure>
+<p>We call this $2 \times 2 $ loop unrolling, 2 elements per iteration and 2 elements operate parallelly.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 2 x 2 loop unrolling */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">combine6</span><span class="params">(vec_ptr v, <span class="keyword">data_t</span> *dest)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">long</span> i;</span><br><span class="line"><span class="keyword">long</span> length = vec_length(v);</span><br><span class="line"><span class="keyword">long</span> limit = length<span class="number">-1</span>;</span><br><span class="line"><span class="keyword">data_t</span> *data = get_vec_start(v);</span><br><span class="line"><span class="keyword">data_t</span> acc0 = IDENT;</span><br><span class="line"><span class="keyword">data_t</span> acc1 = IDENT;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* Combine 2 elements at a time */</span></span><br><span class="line"> <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; limit; i+=<span class="number">2</span>) &#123;</span><br><span class="line"> acc0 = acc0 OP data[i];</span><br><span class="line"> acc1 = acc1 OP data[i+<span class="number">1</span>];</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* Finish any remaining elements */</span></span><br><span class="line"> <span class="keyword">for</span> (; i &lt; length; i++) &#123;</span><br><span class="line"> acc0 = acc0 OP data[i];</span><br><span class="line"> &#125;</span><br><span class="line"> *dest = acc0 OP acc1;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/09/04/CSAPP/Ch5/combine6.png" alt="combine6 performance"></p>
+<p>(I suppose the arithmetic result of floating point is not correct here)</p>
+<p>The processor no longer needs to delay the start of one sum or product operation until the previous one has completed.</p>
+<p><img src="/2021/09/04/CSAPP/Ch5/combine6dataflow.png" alt="data flow of combine6"></p>
+<p><img src="/2021/09/04/CSAPP/Ch5/halfcriticalpath.png" alt="critical path length reduced by factor of 2"></p>
+<p>We see that we now have <strong>two critical paths run in parallel</strong>, so data dependency is reduced.</p>
+<p>We can generalize the multiple accumulator transformation to unroll the loop by a factor of k and accumulate k values in parallel, yielding k × k loop unrolling.</p>
+<p> We can see that, for sufficiently large values of k, the program can <strong>achieve nearly the throughput bounds for all cases</strong>.</p>
+<p><img src="/2021/09/04/CSAPP/Ch5/achievethroughput.png" alt="achieve throughput"></p>
+<hr>
+<p>In performing the k × k unrolling transformation, we must consider whether it preserves the functionality of the original function</p>
+<ul>
+<li><p>We have seen in Chapter 2 that two’s-complement arithmetic is commutative and associative, even when overflow occurs.</p>
+<p>Hence the compiler may apply this optimization strategy to the code</p>
+</li>
+<li><p>On the other hand, floating-point multiplication and addition are not associative. Thus, combine5 and combine6 could produce different results due to rounding or overflow.</p>
+<p>So compilers won’t do this kind of transformation.</p>
+<p>(In most real-life applications, however, such patterns are unlikely. Since most physical phenomena are <strong>continuous</strong>, numerical data tend to be reasonably smooth and well behaved)</p>
+<p>( It is unlikely that multiplying the elements in strict order gives fundamentally better accuracy than does multiplying two groups independently and then multiplying those products together)</p>
+<p>The programmer should decide whether they should make the trade-off or not.</p>
+</li>
+</ul>
+<h3 id="5-9-2-Reassociation-Transformation"><a href="#5-9-2-Reassociation-Transformation" class="headerlink" title="5.9.2 Reassociation Transformation"></a>5.9.2 Reassociation Transformation</h3><p><em>We now explore another way to break the sequential dependencies and thereby improve performance beyond the latency bound</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">acc = (acc OP data[i]) OP data[i+<span class="number">1</span>];</span><br><span class="line">↓</span><br><span class="line">acc = acc OP (data[i] OP data[i+<span class="number">1</span>]);</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/09/04/CSAPP/Ch5/combine7perf.png" alt="combine7 performance"></p>
+<p>You may wondering how such a subtle change can make performance improvement since it still need 2 arithmetic which cannot be run in parallel.</p>
+<p>The data flow graph give a clear view</p>
+<p><img src="/2021/09/04/CSAPP/Ch5/combine7graph.png" alt="combine 7 graph"></p>
+<p><img src="/2021/09/04/CSAPP/Ch5/combine7dataflow.png" alt="combine7 data flow"></p>
+<ul>
+<li>the operation <code>data[i] OP data[i+1]</code> do not need to wait for the previous iteration result, it can be done independently</li>
+<li>As with the templates for combine5 and combine7, we have two load and two mul operations, but <strong>only one of the mul operations forms a data-dependency chain</strong> between loop registers</li>
+<li> we only have <code>n/2</code> operations along the critical path. </li>
+</ul>
+<p><img src="/2021/09/04/CSAPP/Ch5/combine7cpe.png" alt="combine7 CPE"></p>
+<p>We can see that this transformation yields performance results similar to what is achieved by maintaining k separate accumulators with k × k unrolling</p>
+<p>In performing the reassociation transformation, we once again change the order in which the vector elements will be combined together.</p>
+<p>The assessment is just like the one in k × k unrolling.</p>
+<h4 id="Practice-Problem-5-8"><a href="#Practice-Problem-5-8" class="headerlink" title="Practice Problem 5.8"></a>Practice Problem 5.8</h4><blockquote>
+<p>Consider the following function for computing the product of an array of n double precision numbers. We have unrolled the loop by a factor of 3.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">aprod</span><span class="params">(<span class="keyword">double</span> a[], <span class="keyword">long</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">long</span> i;</span><br><span class="line"><span class="keyword">double</span> x, y, z;</span><br><span class="line"><span class="keyword">double</span> r = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n<span class="number">-2</span>; i+= <span class="number">3</span>) &#123;</span><br><span class="line">x = a[i]; </span><br><span class="line">y = a[i+<span class="number">1</span>];</span><br><span class="line">z = a[i+<span class="number">2</span>];</span><br><span class="line">r = r * x * y * z; <span class="comment">/* Product computation */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (; i &lt; n; i++)</span><br><span class="line">r *= a[i];</span><br><span class="line"><span class="keyword">return</span> r;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>For the line labeled “Product computation,” we can use parentheses to create five different associations of the computation, as follows:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">r = ((r * x) * y) * z; <span class="comment">/* A1 */</span></span><br><span class="line">r = (r * (x * y)) * z; <span class="comment">/* A2 */</span></span><br><span class="line">r = r * ((x * y) * z); <span class="comment">/* A3 */</span></span><br><span class="line">r = r * (x * (y * z)); <span class="comment">/* A4 */</span></span><br><span class="line">r = (r * x) * (y * z); <span class="comment">/* A5 */</span></span><br></pre></td></tr></table></figure>
+
+<p>Assume we run these functions on a machine where floating-point multiplication has a latency of 5 clock cycles. Determine the lower bound on the CPE set by the data dependencies of the multiplication. (Hint: It helps to draw a data-flow representation of how r is computed on every iteration.)</p>
+</blockquote>
+<h4 id="My-solution-x-for-A3-and-A4"><a href="#My-solution-x-for-A3-and-A4" class="headerlink" title="My solution : (:x: for A3 and A4)"></a>My solution : (:x: for A3 and A4)</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* A1 */</span></span><br><span class="line">r*x;</span><br><span class="line">(r*x)*y;</span><br><span class="line">((r*x)*y)*z;</span><br><span class="line"><span class="comment">//5 + 5 + 5 = 15</span></span><br><span class="line"><span class="comment">/* A2 */</span></span><br><span class="line">x0*y0       x1*y1     x2*y2       ...</span><br><span class="line">(r*(x0*y0))</span><br><span class="line">(r*(x0*y0))*z</span><br><span class="line">           previous0*(x1*y1)</span><br><span class="line">           previous0*(x1*y1)*z1</span><br><span class="line">                        .....</span><br><span class="line"><span class="comment">//5 + 5 = 10</span></span><br><span class="line"><span class="comment">/* A3 and A4 */</span></span><br><span class="line">x0*y0             x1*y1               x2*y2</span><br><span class="line">(x0*y0)*z0        (x1*y1)*z1          (x2*y2)*z2</span><br><span class="line">r*((x0*y0)*z0)</span><br><span class="line">              previous0*(x1*y1)*z1</span><br><span class="line">                               previous1*(x2*y2)*z2</span><br><span class="line">                                                 .....</span><br><span class="line"><span class="comment">//critical path become the right side</span></span><br><span class="line"><span class="comment">//5 + 5 = 10</span></span><br><span class="line"><span class="comment">/* A5 */</span></span><br><span class="line">r0*x0 y0*z0            y1*z1      y2*z2</span><br><span class="line">    (r0*x0)*(y0*z0)</span><br><span class="line">                 previous0*(x1)</span><br><span class="line">                 previous0*x1*(y1*z1)</span><br><span class="line">                               previous1*(x2)</span><br><span class="line">                               previous1*(x2)*(y2*z2)</span><br><span class="line"><span class="comment">//5+5=10</span></span><br></pre></td></tr></table></figure>
+<h4 id="Solution-on-the-book-2"><a href="#Solution-on-the-book-2" class="headerlink" title="Solution on the book :"></a>Solution on the book :</h4><p><img src="/2021/09/04/CSAPP/Ch5/Solution.png" alt="Solution"></p>
+<p>Note that <strong>only operation with a data dependency can form a critical path !!!</strong></p>
+<p>Hence the critical path of A3 and A4  is still the left side.</p>
+<hr>
+<blockquote>
+<p>Intel introduced the SSE instructions in 1999, where SSE is the acronym for “streaming SIMD extensions”</p>
+<p> The SSE capability has gone through multiple generations, with more recent versions being named advanced vector extensions, or AVX.</p>
+<p>AVX instructions can perform vector operations on registers(<code>%ymm0 ~ %ymm15</code>), such as <strong>adding or multiplying eight or four sets of values in parallel</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmulps (%rcs), %ymm0, %ymm1</span><br></pre></td></tr></table></figure>
+
+<p>gcc supports extensions to the C language that let programmers express a program in terms of vector operations that can be compiled into the vector instructions of AVX</p>
+<p>This coding style is preferable to <strong>writing code directly in assembly language</strong>.</p>
+<p>This will also faciliate improve our performance.</p>
+<p>Using a combination of gcc instructions, loop unrolling, and multiple accumulators, we are able to achieve the following performance for our combining functions</p>
+</blockquote>
+<hr>
+<h2 id="5-10-Summary-of-Results-for-Optimizing-Combining-Code"><a href="#5-10-Summary-of-Results-for-Optimizing-Combining-Code" class="headerlink" title="5.10 Summary of Results for Optimizing Combining Code"></a>5.10 Summary of Results for Optimizing Combining Code</h2><p>Our example demonstrates that modern processors have considerable amounts of computing power, but we may need to coax this power out of them by writing our programs in very stylized ways.</p>
+<h2 id="5-11-Some-Limiting-Factors"><a href="#5-11-Some-Limiting-Factors" class="headerlink" title="5.11 Some Limiting Factors"></a>5.11 Some Limiting Factors</h2><p><em>In this section, we will consider some other factors that limit the performance of programs on actual machines.</em></p>
+<h3 id="5-11-1-Register-Spilling"><a href="#5-11-1-Register-Spilling" class="headerlink" title="5.11.1 Register Spilling"></a>5.11.1 Register Spilling</h3><p><em>If a program has a degree of parallelism P that <strong>exceeds the number of available registers</strong>, then the compiler will resort to spilling, <strong>storing some of the temporary values in memory</strong>, typically by allocating space on the run-time stack.</em></p>
+<p>For example</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#acc0 *&#x3D; data[i]</span><br><span class="line"></span><br><span class="line">#Updating of accumulator acc0 in 10 x 10 urolling</span><br><span class="line">vmulsd (%rdx), %xmm0, %xmm0 </span><br><span class="line"></span><br><span class="line">#Updating of accumulator acc0 in 20 x 20 unrolling</span><br><span class="line">vmovsd 40(%rsp), %xmm0</span><br><span class="line">vmulsd (%rdx), %xmm0, %xmm0</span><br><span class="line">vmovsd %xmm0, 40(%rsp)</span><br></pre></td></tr></table></figure>
+<p>When register spilling happens the performance of our program may get worse rather than better.</p>
+<h3 id="5-11-2-Branch-Prediction-and-Misprediction-Penalties"><a href="#5-11-2-Branch-Prediction-and-Misprediction-Penalties" class="headerlink" title="5.11.2 Branch Prediction and Misprediction Penalties"></a>5.11.2 Branch Prediction and Misprediction Penalties</h3><p><em>A conditional branch can incur a significant misprediction penalty when the branch prediction logic does not correctly anticipate whether or not a branch will be taken</em></p>
+<p>In a processor that employs <strong>speculative execution</strong>, the processor begins executing the instructions at the predicted branch target. </p>
+<p>It does this in a way that <strong>avoids modifying any actual register or memory locations until the actual outcome has been determined</strong>.</p>
+<ul>
+<li>If the predication is correct, the results will be “committed”</li>
+<li>If the predication is wrong, the results will be discard</li>
+</ul>
+<p>The misprediction penalty is incurred in doing this, because the instruction pipeline must be refilled before useful results are generated.</p>
+<h4 id="So-how-can-we-avoid-this"><a href="#So-how-can-we-avoid-this" class="headerlink" title="So how can we avoid this ?"></a>So how can we avoid this ?</h4><p><em>There is no simple answer to this question, but the following general principles apply.</em></p>
+<ul>
+<li><p>Do Not Be Overly Concerned about Predictable Branches</p>
+<ul>
+<li>the branch prediction logic found in modern processors is very good at discerning regular patterns and long-term trends for the different branch instructions(with almost 90% accuracy)</li>
+</ul>
+</li>
+<li><p>Write Code Suitable for Implementation with Conditional Moves</p>
+<ul>
+<li><p>This cannot be controlled directly by the C programmer, but some ways of expressing conditional behavior can be more directly translated into conditional moves than others.</p>
+</li>
+<li><p>We have found that gcc is able to generate conditional moves for code written in a more <strong>“functional” style</strong>, where we use conditional operations to compute values and then update the program state with these values(use <code>? : </code> !!!), as opposed to a more “imperative” style, where we use conditionals to selectively update program state.</p>
+</li>
+<li><p>For example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Rearrange two vectors so that for each i, b[i] &gt;= a[i] */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">minmax1</span><span class="params">(<span class="keyword">long</span> a[], <span class="keyword">long</span> b[], <span class="keyword">long</span> n)</span> </span>&#123;</span><br><span class="line"><span class="keyword">long</span> i;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line"><span class="keyword">if</span> (a[i] &gt; b[i]) &#123;</span><br><span class="line"><span class="keyword">long</span> t = a[i];</span><br><span class="line">a[i] = b[i];</span><br><span class="line">b[i] = t;</span><br><span class="line">&#125;</span><br><span class="line"> &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Rearrange two vectors so that for each i, b[i] &gt;= a[i] */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">minmax2</span><span class="params">(<span class="keyword">long</span> a[], <span class="keyword">long</span> b[], <span class="keyword">long</span> n)</span> </span>&#123;</span><br><span class="line"><span class="keyword">long</span> i;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line"><span class="keyword">long</span> min = a[i] &lt; b[i] ? a[i] : b[i];</span><br><span class="line"><span class="keyword">long</span> max = a[i] &lt; b[i] ? b[i] : a[i];</span><br><span class="line">a[i] = min;</span><br><span class="line">b[i] = max;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Examing the assembly code or even embed assembly code directly is always the most realiable way.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-12-Understanding-Memory-Performance"><a href="#5-12-Understanding-Memory-Performance" class="headerlink" title="5.12 Understanding Memory Performance"></a>5.12 Understanding Memory Performance</h3><p><em>All modern processors contain one or more <strong>cache memories</strong> to provide <strong>fast access to small amounts of memory</strong></em></p>
+<h4 id="5-12-1-Load-Performance"><a href="#5-12-1-Load-Performance" class="headerlink" title="5.12.1 Load Performance"></a>5.12.1 Load Performance</h4><p>In most of the cases, memory won’t be a bottleneck, whereas sometimes data dependency happens in loading will be a optimization blocker.</p>
+<p>For example count the length of a linked list</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">node</span> &#123;</span></span><br><span class="line">    <span class="keyword">data_t</span> data;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> * <span class="title">next</span>;</span></span><br><span class="line">&#125;Node;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">list_len</span><span class="params">(Node * ls)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> cot = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(ls)&#123;</span><br><span class="line">        cot++;</span><br><span class="line">        ls = ls-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> cot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.L3</span><br><span class="line">	addl $1,%rax;</span><br><span class="line">	movq (%rdi),%rdi;  # the next pointer is depend on the previous one loaded from memory</span><br><span class="line">	testq %rdi,%rdi;</span><br><span class="line">	jne .L3</span><br></pre></td></tr></table></figure>
+<h4 id="5-12-2-Store-Performance"><a href="#5-12-2-Store-Performance" class="headerlink" title="5.12.2 Store Performance"></a>5.12.2 Store Performance</h4><p> A series of <strong>store operations</strong> <strong>cannot create a data dependency</strong> since they don’t change register value in their very nature</p>
+<p>Only a load operation is affected by the result of a store operation, since only a load can read back the memory value that has been written by the store.</p>
+<p>For example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Set elements of array to 0 */</span></span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">clear_array</span><span class="params">(<span class="keyword">long</span> *dest, <span class="keyword">long</span> n)</span> </span>&#123;</span><br><span class="line"> <span class="keyword">long</span> i;</span><br><span class="line"> <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line"> dest[i] = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//achieve best performance since not store operation need to wait</span></span><br></pre></td></tr></table></figure>
+<p>However combine load and store together we can have complex dependency</p>
+<p><img src="/2021/09/04/CSAPP/Ch5/loadstore.png" alt="load and store"></p>
+<ul>
+<li>Measuring example  A over a larger number of iterations gives a CPE of 1.3 since the read operation is not affected by write operation</li>
+<li> Example B has a CPE of 7.3, the write/read dependency causes a slowdown in the processing of around 6 clock cycles.(it must wait for data to be written into the memory and then read it out)</li>
+</ul>
+<p><img src="/2021/09/04/CSAPP/Ch5/writereadgraph.png" alt="write and read graph"></p>
+<p><img src="/2021/09/04/CSAPP/Ch5/writereaddataflow.png" alt="data flow"></p>
+<h4 id="Practice-Problem-5-10"><a href="#Practice-Problem-5-10" class="headerlink" title="Practice Problem 5.10"></a>Practice Problem 5.10</h4><blockquote>
+<p>As another example of code with potential load-store interactions, consider the following function to copy the contents of one array to another:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">copy_array</span><span class="params">(<span class="keyword">long</span> *src, <span class="keyword">long</span> *dest, <span class="keyword">long</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="keyword">long</span> i;</span><br><span class="line"> <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line"> dest[i] = src[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Suppose <code>a</code> is an array of length 1,000 initialized so that each element <code>a[i]</code> equals <code>i</code>.</p>
+<p>A. What would be the effect of the call <code>copy_array(a+1,a,999)</code>?</p>
+<p>B. What would be the effect of the call <code>copy_array(a,a+1,999)</code>?</p>
+<p>C. Our performance measurements indicate that the call of part A has a CPE of 1.2 (which drops to 1.0 when the loop is unrolled by a factor of 4), while the call of part B has a CPE of 5.0. To what factor do you attribute this performance difference?</p>
+<p>D. What performance would you expect for the call <code>copy_array(a,a,999)</code>?</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-3"><a href="#My-solution-white-check-mark-3" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><p>A: move <code>a[1~999]</code> to <code>a[0~998]</code></p>
+<p>B: move <code>a[0~998]</code> to <code>a[1~999]</code></p>
+<p>C: because A doesn’t form data dependency, the value to be read is not connected with the previous operation while B is exactly the opposite</p>
+<p>D: same performance with A</p>
+<h2 id="5-13-Life-in-the-Real-World-Performance-Improvement-Techniques"><a href="#5-13-Life-in-the-Real-World-Performance-Improvement-Techniques" class="headerlink" title="5.13 Life in the Real World: Performance Improvement Techniques"></a>5.13 Life in the Real World: Performance Improvement Techniques</h2><p><em>We have described a number of basic strategies for optimizing program performance</em></p>
+<ul>
+<li>High-level design<ul>
+<li>Choose appropriate algorithms and data structures for the problem at hand</li>
+</ul>
+</li>
+<li>Basic coding principles(use local variables)<ul>
+<li>Eliminate excessive function calls</li>
+<li>Eliminate unnecessary memory references</li>
+</ul>
+</li>
+<li>Low-level optimizations<ul>
+<li>Unroll loops to reduce overhead and to enable further optimizations.</li>
+<li>Find ways to increase instruction-level parallelism by techniques such as multiple accumulators and reassociation</li>
+<li>Rewrite conditional operations in a functional style to enable compilation via conditional data transfers.(use <code>cmov</code>)</li>
+</ul>
+</li>
+</ul>
+<p><em>It is very easy to make mistakes when introducing new variables, changing loop bounds, and making the code more complex overall, please test them extensively!</em></p>
+<h2 id="5-14-Identifying-and-Eliminating-Performance-Bottlenecks"><a href="#5-14-Identifying-and-Eliminating-Performance-Bottlenecks" class="headerlink" title="5.14 Identifying and Eliminating Performance Bottlenecks"></a>5.14 Identifying and Eliminating Performance Bottlenecks</h2><p><em>When working with large programs, even knowing where to focus our optimization efforts can be difficult.</em></p>
+<h3 id="5-14-1-Program-Profiling"><a href="#5-14-1-Program-Profiling" class="headerlink" title="5.14.1 Program Profiling"></a>5.14.1 Program Profiling</h3><p><em>Program profiling involves running a version of a program in which instrumentation code has been incorporated to <strong>determine how much time the different parts of the program require</strong></em></p>
+<p>Unix systems provide the profiling program <code>gprof</code></p>
+<ul>
+<li>It determines how much CPU time was spent for each of the functions in the program</li>
+<li> It computes a count of how many times each function gets called, categorized by which function performs the call. </li>
+</ul>
+<h5 id="Steps-to-use-gprof"><a href="#Steps-to-use-gprof" class="headerlink" title="Steps to use gprof"></a>Steps to use <code>gprof</code></h5><ol>
+<li>The program must be compiled and linked for profiling. </li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -Og -pg prog.c -o prog</span><br><span class="line"><span class="comment"># -Og here to ensure gcc doesn&#x27;t optimize function call into inline code</span></span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>Run the program as usual</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./prog</span><br></pre></td></tr></table></figure>
+<p>It will generate a <code>gmon.out</code> file</p>
+<ol start="3">
+<li><code>gprof</code> is invoked to analyze the data</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gprof prog</span><br></pre></td></tr></table></figure>
+<h5 id="Some-properties-of-gprof-are-worth-noting"><a href="#Some-properties-of-gprof-are-worth-noting" class="headerlink" title="Some properties of gprof are worth noting"></a>Some properties of gprof are worth noting</h5><ul>
+<li>The timing is not very precise due to OS interruption mechanism</li>
+<li>. The calling information is quite reliable, assuming no inline substitutions have been performed.</li>
+<li>By default, the timings for library functions are not shown</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/09/04/CSAPP/Ch5/" data-id="cktmyu04f0000qpyqg08v6s7f" data-title="Ch5" class="article-share-link">Compartir</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/09/06/Network/Introduction/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Nuevo</strong>
+      <div class="article-nav-title">
+        
+          Introduction
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/09/03/CSAPP/architecturelab/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Viejo</strong>
+      <div class="article-nav-title">architecturelab</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categorías</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nube de Tags</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archivos</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Posts recientes</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/09/13/CSAPP/attacklab/">attacklab</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/10/Network/principles/">principles</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/10/CSAPP/Ch6/">Ch6</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/09/Network/network-layer/">network layer</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/06/Network/Introduction/">Introduction</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Construido por <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

