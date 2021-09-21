@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>perflab | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Performance lab how towarm up for cache lab">
+<meta property="og:type" content="article">
+<meta property="og:title" content="perflab">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/09/20/CSAPP/perflab/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Performance lab how towarm up for cache lab">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/20/CSAPP/perflab/rotate90.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/20/CSAPP/perflab/smooth.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/20/CSAPP/perflab/score.png">
+<meta property="article:published_time" content="2021-09-20T06:58:39.000Z">
+<meta property="article:modified_time" content="2021-09-21T13:01:57.149Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/09/20/CSAPP/perflab/rotate90.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSAPP/perflab" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/20/CSAPP/perflab/" class="article-date">
+  <time class="dt-published" datetime="2021-09-20T06:58:39.000Z" itemprop="datePublished">2021-09-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/csapp/">csapp</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      perflab
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Performance-lab-how-to"><a href="#Performance-lab-how-to" class="headerlink" title="Performance lab how to"></a>Performance lab how to</h1><p><em>warm up for cache lab</em></p>
+<a id="more"></a>
+
+<h2 id="Read-the-writeup"><a href="#Read-the-writeup" class="headerlink" title="Read the writeup"></a>Read the writeup</h2><p><em>This assignment deals with optimizing memory intensive code.</em></p>
+<p>In this lab, we will consider two image processing operations: <code>rotate</code>, which rotates an image counter-clockwise by 90◦ , and <code>smooth</code>, which “smooths” or “blurs” an image.</p>
+<p><img src="/2021/09/20/CSAPP/perflab/rotate90.png" alt="rotate 90"></p>
+<p><img src="/2021/09/20/CSAPP/perflab/smooth.png" alt="smooth picture"></p>
+<p> The only file you will be modifying and handing in is<code> kernels.c</code>.</p>
+<p> The <code>driver.c</code> program is a driver program that allows you to evaluate the performance of your solutions. </p>
+<p>Use the command <code>make driver</code> to generate the driver code and run it with the command <code>./driver</code>.</p>
+<h3 id="Performance-measures"><a href="#Performance-measures" class="headerlink" title="Performance measures"></a>Performance measures</h3><p>You will need to remake driver each time you change the code in <code>kernels.c</code>. </p>
+<p><img src="/2021/09/20/CSAPP/perflab/score.png" alt="performance"></p>
+<p>Overall performance is calculated by<br>$$<br>R = \sqrt[5]{R_{64} \times R_{128} \times R_{256} \times R_{512} \times R_{1024}  }<br>$$</p>
+<h3 id="Versioning"><a href="#Versioning" class="headerlink" title="Versioning"></a>Versioning</h3><p>You will be writing many versions of the rotate and smooth routines. </p>
+<p>To help you compare the performance of all the different versions you’ve written, we provide a way of “registering” functions. </p>
+<p>For example, the file <code>kernels.c</code> that we have provided you contains the following functions</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">register_rotate_functions</span><span class="params">()</span> </span>&#123;</span><br><span class="line">add_rotate_function(&amp;rotate, rotate_descr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>This function contains one or more calls to add rotate function.</p>
+<p>When adding new version:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">new_version</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;...&#125;</span><br><span class="line"><span class="keyword">char</span> new_descr [] = <span class="string">&quot;new version&quot;</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">register_rotate_functions</span><span class="params">()</span> </span>&#123;</span><br><span class="line">add_rotate_function(&amp;rotate, rotate_descr);</span><br><span class="line">add_rotate_function(&amp;new_version , new_descr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Coding-Rules"><a href="#Coding-Rules" class="headerlink" title="Coding Rules"></a>Coding Rules</h3><ul>
+<li>You may not use any embedded assembly language statements.</li>
+<li>You are allowed to define macros, additional global variables, and other procedures in these files.</li>
+<li>You can make the assumption of <code>N</code> that <code>N = k * 32</code></li>
+</ul>
+<hr>
+<h2 id="Getting-start"><a href="#Getting-start" class="headerlink" title="Getting start"></a>Getting start</h2><p>This lab is a legacy lab, so we need to compile it as 32-bit program</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt install gcc-multilib</span><br><span class="line"><span class="comment"># in order to support gcc -m32 option</span></span><br></pre></td></tr></table></figure>
+<p>The naive version’s performance:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">$ make driver</span><br><span class="line">$ ./driver</span><br><span class="line">Teamname: rubbishbin</span><br><span class="line">Member 1: rubbish</span><br><span class="line">Email 1: xxxxxx@xxx.xxx</span><br><span class="line"></span><br><span class="line">Rotate: Version = naive_rotate: Naive baseline implementation:</span><br><span class="line">Dim		64	128	256	512	1024	Mean</span><br><span class="line">Your CPEs	0.7	0.8	1.9	3.0	3.8</span><br><span class="line">Baseline CPEs	14.7	40.1	46.4	65.9	94.5</span><br><span class="line">Speedup		21.7	52.3	24.0	21.9	25.0	27.2</span><br><span class="line"></span><br><span class="line">Rotate: Version = rotate: Current working version:</span><br><span class="line">Dim		64	128	256	512	1024	Mean</span><br><span class="line">Your CPEs	0.7	0.8	1.9	3.3	3.9</span><br><span class="line">Baseline CPEs	14.7	40.1	46.4	65.9	94.5</span><br><span class="line">Speedup		20.8	48.6	24.1	20.0	24.5	26.0</span><br><span class="line"></span><br><span class="line">Smooth: Version = smooth: Current working version:</span><br><span class="line">Dim		32	64	128	256	512	Mean</span><br><span class="line">Your CPEs	14.5	15.0	15.4	15.4	15.1</span><br><span class="line">Baseline CPEs	695.0	698.0	702.0	717.0	722.0</span><br><span class="line">Speedup		47.9	46.6	45.5	46.5	47.8	46.8</span><br><span class="line"></span><br><span class="line">Smooth: Version = naive_smooth: Naive baseline implementation:</span><br><span class="line">Dim		32	64	128	256	512	Mean</span><br><span class="line">Your CPEs	14.5	15.0	14.9	14.4	14.9</span><br><span class="line">Baseline CPEs	695.0	698.0	702.0	717.0	722.0</span><br><span class="line">Speedup		47.8	46.6	47.1	49.8	48.3	47.9</span><br><span class="line"></span><br><span class="line">Summary of Your Best Scores:</span><br><span class="line">  Rotate: 27.2 (naive_rotate: Naive baseline implementation)</span><br><span class="line">  Smooth: 47.9 (naive_smooth: Naive baseline implementation)</span><br></pre></td></tr></table></figure>
+<p>Baseline is configed in <code>config.h</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*********************************************************</span></span><br><span class="line"><span class="comment"> * config.h - Configuration data for the driver.c program.</span></span><br><span class="line"><span class="comment"> *********************************************************/</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _CONFIG_H_</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _CONFIG_H_</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment"> * CPEs for the baseline (naive) version of the rotate function that</span></span><br><span class="line"><span class="comment"> * was handed out to the students. Rd is the measured CPE for a dxd</span></span><br><span class="line"><span class="comment"> * image. Run the driver.c program on your system to get these</span></span><br><span class="line"><span class="comment"> * numbers.  </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> R64    14.7</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> R128   40.1</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> R256   46.4</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> R512   65.9</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> R1024  94.5</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment"> * CPEs for the baseline (naive) version of the smooth function that</span></span><br><span class="line"><span class="comment"> * was handed out to the students. Sd is the measure CPE for a dxd</span></span><br><span class="line"><span class="comment"> * image. Run the driver.c program on your system to get these</span></span><br><span class="line"><span class="comment"> * numbers.  </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> S32   695</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> S64   698</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> S128  702</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> S256  717</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> S512  722</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">/* _CONFIG_H_ */</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="My-solution"><a href="#My-solution" class="headerlink" title="My solution :"></a>My solution :</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/***************</span></span><br><span class="line"><span class="comment"> * ROTATE KERNEL</span></span><br><span class="line"><span class="comment"> ***************/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/******************************************************</span></span><br><span class="line"><span class="comment"> * Your different versions of the rotate kernel go here</span></span><br><span class="line"><span class="comment"> ******************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment"> * naive_rotate - The naive baseline version of rotate </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">char</span> naive_rotate_descr[] = <span class="string">&quot;naive_rotate: Naive baseline implementation&quot;</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">naive_rotate</span><span class="params">(<span class="keyword">int</span> dim, pixel *src, pixel *dst)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i, j;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; dim; i++)</span><br><span class="line">	<span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; dim; j++)&#123;</span><br><span class="line">	    dst[RIDX(dim<span class="number">-1</span>-j, i, dim)] = src[RIDX(i, j, dim)];</span><br><span class="line">        &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment"> * rotate - Your current working version of rotate</span></span><br><span class="line"><span class="comment"> * IMPORTANT: This is the version you will be graded on</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">char</span> rotate_descr[] = <span class="string">&quot;rotate: My implementation, Optimized&quot;</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rotate</span><span class="params">(<span class="keyword">int</span> dim, pixel *src, pixel *dst)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i  ; </span><br><span class="line">    <span class="keyword">int</span> j  ;</span><br><span class="line">    <span class="keyword">int</span> bound = dim - <span class="number">7</span>; <span class="comment">//unrolling by 8, since we can assume the dim is k*32 and make use of cache</span></span><br><span class="line">                         <span class="comment">//notice that unroll bound is N-step+1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> src_head ; </span><br><span class="line">    <span class="keyword">int</span> dst_head ;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> ( i = <span class="number">0</span>  ; i &lt; dim ; i++)&#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//compute start address for src and dst</span></span><br><span class="line">            src_head = RIDX(i, <span class="number">0</span>, dim);</span><br><span class="line">            dst_head = RIDX(dim - <span class="number">1</span> , i, dim);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (j = <span class="number">0</span> ; j &lt; bound ; j+=<span class="number">8</span>)&#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">int</span> decreasement = j * dim;</span><br><span class="line">            <span class="keyword">int</span> decreased_dst = dst_head - decreasement ;</span><br><span class="line">            <span class="keyword">int</span> increased_src = src_head + j;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//all 8 statements can be executed independently(simultaneously) since there is no data dependency between them</span></span><br><span class="line">            dst[decreased_dst ] = src[increased_src];</span><br><span class="line">            dst[decreased_dst - dim] = src[increased_src + <span class="number">1</span>];</span><br><span class="line">            dst[decreased_dst  - (dim &lt;&lt; <span class="number">1</span>)] = src[increased_src + <span class="number">2</span>];</span><br><span class="line">            dst[decreased_dst  - (dim &lt;&lt; <span class="number">1</span>) - dim] = src[increased_src + <span class="number">3</span>];</span><br><span class="line">            dst[decreased_dst - (dim &lt;&lt; <span class="number">2</span>)] = src[increased_src + <span class="number">4</span>];</span><br><span class="line">            dst[decreased_dst - (dim &lt;&lt; <span class="number">2</span>) - dim] = src[increased_src + <span class="number">5</span>];</span><br><span class="line">            dst[decreased_dst - (dim &lt;&lt; <span class="number">2</span>) - (dim &lt;&lt; <span class="number">1</span>)] = src[increased_src + <span class="number">6</span>];</span><br><span class="line">            dst[decreased_dst - (dim &lt;&lt; <span class="number">3</span>) + dim ] = src[increased_src + <span class="number">7</span>];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">char</span> copy_descr [] = <span class="string">&quot;copyed from https://github.com/Exely/CSAPP-Labs/blob/master/notes/perflab.md&quot;</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">copyrotate</span><span class="params">(<span class="keyword">int</span> dim, pixel *src, pixel *dst)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i, j, a, b;</span><br><span class="line">    <span class="keyword">int</span> sdim = dim - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; dim; i += <span class="number">8</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; dim; j += <span class="number">8</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span> (a = i; a &lt; i + <span class="number">8</span>; a++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">for</span> (b = j; b &lt; j + <span class="number">8</span>; b++)</span><br><span class="line">                &#123;</span><br><span class="line">                    dst[RIDX(sdim - b, a, dim)] = src[RIDX(a, b, dim)];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*********************************************************************</span></span><br><span class="line"><span class="comment"> * register_rotate_functions - Register all of your different versions</span></span><br><span class="line"><span class="comment"> *     of the rotate kernel with the driver by calling the</span></span><br><span class="line"><span class="comment"> *     add_rotate_function() for each test function. When you run the</span></span><br><span class="line"><span class="comment"> *     driver program, it will test and report the performance of each</span></span><br><span class="line"><span class="comment"> *     registered test function.  </span></span><br><span class="line"><span class="comment"> *********************************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">register_rotate_functions</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    add_rotate_function(&amp;naive_rotate, naive_rotate_descr);   </span><br><span class="line">    add_rotate_function(&amp;rotate, rotate_descr);   </span><br><span class="line">    add_rotate_function(&amp;copyrotate, copy_descr);   </span><br><span class="line">    <span class="comment">/* ... Register additional test functions here */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ ./driver</span><br><span class="line">Rotate: Version = naive_rotate: Naive baseline implementation:</span><br><span class="line">Dim		64	128	256	512	1024	Mean</span><br><span class="line">Your CPEs	0.7	0.8	2.0	3.2	4.2</span><br><span class="line">Baseline CPEs	0.6	0.8	1.9	3.0	4.3</span><br><span class="line">Speedup		0.9	1.0	0.9	0.9	1.0	0.9</span><br><span class="line"></span><br><span class="line">Rotate: Version = rotate: My implementation, Optimized:</span><br><span class="line">Dim		64	128	256	512	1024	Mean</span><br><span class="line">Your CPEs	0.8	1.0	2.2	3.3	4.4</span><br><span class="line">Baseline CPEs	0.6	0.8	1.9	3.0	4.3</span><br><span class="line">Speedup		0.8	0.8	0.9	0.9	1.0	0.9</span><br><span class="line"></span><br><span class="line">Rotate: Version = copyed:</span><br><span class="line">Dim		64	128	256	512	1024	Mean</span><br><span class="line">Your CPEs	0.8	0.8	0.9	1.0	1.3</span><br><span class="line">Baseline CPEs	0.6	0.8	1.9	3.0	4.3</span><br><span class="line">Speedup		0.8	1.0	2.1	2.9	3.4	1.7</span><br></pre></td></tr></table></figure>
+<p>I just can’t understand why blocking improve the performance, my work seems to be a joke.</p>
+<p>When I try to read a data from the array does the cache load a square-shaped block from memory instead of a line-shaped one? That’s insanity.</p>
+<blockquote>
+<p>quote from Exely(author of the blocking code):</p>
+<p>优化第一个函数用了循环分块的方法，这我不是很懂，书上好像也没找到相关内容，还是要多学习！</p>
+</blockquote>
+<p>:crying_cat_face:</p>
+<hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/09/20/CSAPP/perflab/" data-id="cktu38tyn000137yqe4hv6z7j" data-title="perflab" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/09/19/CSAPP/Ch7/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Ch7</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/09/20/CSAPP/perflab/">perflab</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/19/CSAPP/Ch7/">Ch7</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/13/CSAPP/attacklab/">attacklab</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/10/Network/principles/">principles</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/10/CSAPP/Ch6/">Ch6</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -46,8 +46,14 @@
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/linematchingassociative.png">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/fullassociative.png">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/i7cache.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/rowmajor.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/columnmajor.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/solution.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/memorymountain.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/accesspattern.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/blockingexample.png">
 <meta property="article:published_time" content="2021-09-09T23:58:07.000Z">
-<meta property="article:modified_time" content="2021-09-15T13:14:51.368Z">
+<meta property="article:modified_time" content="2021-09-17T08:01:54.116Z">
 <meta property="article:author" content="rubbish">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/sramvsdram.png">
@@ -95,12 +101,12 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Buscar"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
       </div>
     </div>
   </div>
@@ -932,11 +938,64 @@
 <p>Any additional time required because of a miss. The penalty for L1 misses served from L2 is on the order of 10 cycles; from L3, 50 cycles; and from main memory, 200 cycles.</p>
 </li>
 </ul>
-<h2 id="6-5-Writing-Cache-Friendly-Code"><a href="#6-5-Writing-Cache-Friendly-Code" class="headerlink" title="6.5 Writing Cache-Friendly Code"></a>6.5 Writing Cache-Friendly Code</h2>
+<h2 id="6-5-Writing-Cache-Friendly-Code"><a href="#6-5-Writing-Cache-Friendly-Code" class="headerlink" title="6.5 Writing Cache-Friendly Code"></a>6.5 Writing Cache-Friendly Code</h2><p><em>Programs with better locality will tend to have lower miss rates, and programs with lower miss rates will tend to run faster than programs with higher miss rates.</em></p>
+<ul>
+<li>Repeated references to local variables are good because the compiler can cache them in the register file (temporal locality).</li>
+<li>Stride-1 reference patterns are good because caches at all levels of the memory hierarchy store data as contiguous blocks (spatial locality).</li>
+</ul>
+<p>The famous example illustrate this :</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sumarrayrows</span><span class="params">(<span class="keyword">int</span> a[M][N])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i, j, sum = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; M; i++)</span><br><span class="line"><span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; N; j++)</span><br><span class="line">sum += a[i][j];</span><br><span class="line"><span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sumarraycols</span><span class="params">(<span class="keyword">int</span> a[M][N])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i, j, sum = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; N; j++)</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; M; i++)</span><br><span class="line">sum += a[i][j];</span><br><span class="line"><span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> (C stores arrays in row-major order)</p>
+<h5 id="Row-major-miss-rate"><a href="#Row-major-miss-rate" class="headerlink" title="Row major miss rate"></a>Row major miss rate</h5><p><img src="/2021/09/10/CSAPP/Ch6/rowmajor.png" alt="row major"></p>
+<h5 id="Column-major-miss-rate"><a href="#Column-major-miss-rate" class="headerlink" title="Column major  miss rate"></a>Column major  miss rate</h5><p><img src="/2021/09/10/CSAPP/Ch6/columnmajor.png" alt="column major"></p>
+<h4 id="Practice-Problem-6-17"><a href="#Practice-Problem-6-17" class="headerlink" title="Practice Problem 6.17"></a>Practice Problem 6.17</h4><blockquote>
+<p>Transposing the rows and columns of a matrix is an important problem in signal processing and scientific computing applications. It is also interesting from a locality point of view because its reference pattern is both row-wise and column-wise. For example, consider the following transpose routine:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> <span class="built_in">array</span>[<span class="number">2</span>][<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">transpose1</span><span class="params">(<span class="built_in">array</span> dst, <span class="built_in">array</span> src)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i, j;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">2</span>; i++) &#123;</span><br><span class="line"><span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; <span class="number">2</span>; j++) &#123;</span><br><span class="line">dst[j][i] = src[i][j];</span><br><span class="line"> &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>Assume this code runs on a machine with the following properties:</p>
+<ul>
+<li><code>sizeof(int) == 4</code></li>
+<li>The src array starts at address 0 and the dst array starts at address 16 (decimal).</li>
+<li>There is a single L1 data cache that is direct-mapped, write-through, and write-allocate, with a block size of 8 bytes.</li>
+<li>The cache has a total size of 16 data bytes and the cache is initially empty.</li>
+<li> Accesses to the src and dst arrays are the only sources of read and write misses, respectively.</li>
+</ul>
+<p>A. For each <code>row</code> and <code>col</code>, indicate whether the access to <code>src[row][col]</code> and <code>dst[row][col]</code> is a hit (h) or a miss (m). For example, reading <code>src[0][0]</code> is a miss and writing <code>dst[0][0]</code> is also a miss.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+-----------------------+-----------------------+</span><br><span class="line">|           src         |          dest         |</span><br><span class="line">+----+-------+----------+----+----------+-------+</span><br><span class="line">|    |col0   |   col1   |    |   col0   | col1  |</span><br><span class="line">+----+-------+----------+----+----------+-------+</span><br><span class="line">|row0|  m    |          |row0|          |       |</span><br><span class="line">+----+-------+----------+----+----------+-------+</span><br><span class="line">|row1|       |          |row1|          |       |</span><br><span class="line">+----+-------+----------+----+----------+-------+</span><br></pre></td></tr></table></figure>
+
+<p>B. Repeat the problem for a cache with 32 data bytes.</p>
+</blockquote>
+<h4 id="My-solution-x"><a href="#My-solution-x" class="headerlink" title="My solution : :x:"></a>My solution : :x:</h4><p>A</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+-----------------------+-----------------------+</span><br><span class="line">|           src         |          dest         |</span><br><span class="line">+----+-------+----------+----+----------+-------+</span><br><span class="line">|    |col0   |   col1   |    |   col0   | col1  |</span><br><span class="line">+----+-------+----------+----+----------+-------+</span><br><span class="line">|row0|  m    |    h     |row0|    m     |   m   |</span><br><span class="line">+----+-------+----------+----+----------+-------+</span><br><span class="line">|row1|  m    |    h     |row1|    m     |   m   |</span><br><span class="line">+----+-------+----------+----+----------+-------+</span><br></pre></td></tr></table></figure>
+<p>B</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+-----------------------+-----------------------+</span><br><span class="line">|           src         |          dest         |</span><br><span class="line">+----+-------+----------+----+----------+-------+</span><br><span class="line">|    |col0   |   col1   |    |   col0   | col1  |</span><br><span class="line">+----+-------+----------+----+----------+-------+</span><br><span class="line">|row0|  m    |    h     |row0|    m     |   h   |</span><br><span class="line">+----+-------+----------+----+----------+-------+</span><br><span class="line">|row1|  h    |    h     |row1|    h     |   h   |</span><br><span class="line">+----+-------+----------+----+----------+-------+</span><br></pre></td></tr></table></figure>
+<h4 id="Solution-on-the-book-1"><a href="#Solution-on-the-book-1" class="headerlink" title="Solution on the book:"></a>Solution on the book:</h4><p><img src="/2021/09/10/CSAPP/Ch6/solution.png" alt="solution"></p>
+<h2 id="6-6-Putting-It-Together-The-Impact-of-Caches-on-Program-Performance"><a href="#6-6-Putting-It-Together-The-Impact-of-Caches-on-Program-Performance" class="headerlink" title="6.6 Putting It Together: The Impact of Caches on Program Performance"></a>6.6 Putting It Together: The Impact of Caches on Program Performance</h2><p><em>This section wraps up our discussion of the memory hierarchy by studying the impact that caches have on the performance of programs running on real machines.</em></p>
+<h3 id="6-6-1-The-Memory-Mountain"><a href="#6-6-1-The-Memory-Mountain" class="headerlink" title="6.6.1 The Memory Mountain"></a>6.6.1 The Memory Mountain</h3><p><img src="/2021/09/10/CSAPP/Ch6/memorymountain.png" alt="memory mountain"></p>
+<h3 id="6-6-2-Rearranging-Loops-to-Increase-Spatial-Locality"><a href="#6-6-2-Rearranging-Loops-to-Increase-Spatial-Locality" class="headerlink" title="6.6.2 Rearranging Loops to Increase Spatial Locality"></a>6.6.2 Rearranging Loops to Increase Spatial Locality</h3><h3 id="6-6-3-Exploiting-Locality-in-Your-Programs"><a href="#6-6-3-Exploiting-Locality-in-Your-Programs" class="headerlink" title="6.6.3 Exploiting Locality in Your Programs"></a>6.6.3 Exploiting Locality in Your Programs</h3><ul>
+<li>. Focus your attention on the inner loops, where the bulk of the computations and memory accesses occur.</li>
+<li>Try to maximize the spatial locality in your programs by reading data objects sequentially, with <strong>stride 1</strong>, in the order they are stored in memory</li>
+<li>Try to maximize the temporal locality in your programs by using a data object as often as possible once it has been read from memory.</li>
+</ul>
+<h2 id="6-7-Summary"><a href="#6-7-Summary" class="headerlink" title="6.7 Summary"></a>6.7 Summary</h2><p><em>Being able to look at code and get a qualitative sense of its locality is a key skill for a professional programmer</em></p>
+<ul>
+<li><p>cache memory is completely managed by hardware</p>
+</li>
+<li><p>When working with arrays it is helpful to draw an access graph</p>
+<p><img src="/2021/09/10/CSAPP/Ch6/accesspattern.png" alt="access graph"></p>
+</li>
+<li><p>Using blocking to increase temporal locality</p>
+</li>
+</ul>
+<blockquote>
+<p>There is an interesting technique called blocking that can improve the temporal locality of inner loops. The general idea of blocking is to organize the data structures in a program into large chunks called blocks. (In this context, “block” refers to an application-level chunk of data, not to a cache block.) The program is structured so that it loads a chunk into the L1 cache, does all the reads and writes that it needs to on that chunk, then discards the chunk, loads in the next chunk, and so on. Unlike the simple loop transformations for improving spatial locality, blocking makes the code harder to read and understand. For this reason, it is best suited for optimizing compilers or frequently executed library routines. Blocking does not improve the performance of matrix multiply on the Core i7, because of its sophisticated prefetching hardware. Still, the technique is interesting to study and understand because it is a general concept that can produce big performance gains on systems that don’t prefetch.</p>
+<p><img src="/2021/09/10/CSAPP/Ch6/blockingexample.png" alt="blocking example"></p>
+</blockquote>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/" data-id="cktmyu04m0001qpyq1vlp58kc" data-title="Ch6" class="article-share-link">Compartir</a>
+      <a data-url="http://rubbish-and-world.github.io/2021/09/10/CSAPP/Ch6/" data-id="cktmyu04m0001qpyq1vlp58kc" data-title="Ch6" class="article-share-link">Share</a>
       
       
       
@@ -947,7 +1006,7 @@
 <nav id="article-nav">
   
     <a href="/2021/09/10/Network/principles/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Nuevo</strong>
+      <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
           principles
@@ -957,7 +1016,7 @@
   
   
     <a href="/2021/09/09/Network/network-layer/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Viejo</strong>
+      <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">network layer</div>
     </a>
   
@@ -973,7 +1032,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Categorías</h3>
+    <h3 class="widget-title">Categories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
     </div>
@@ -993,7 +1052,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Nube de Tags</h3>
+    <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
       <a href="/tags/game/" style="font-size: 10px;">game</a>
     </div>
@@ -1002,7 +1061,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archivos</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
     </div>
@@ -1012,9 +1071,17 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Posts recientes</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2021/09/20/CSAPP/perflab/">perflab</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/19/CSAPP/Ch7/">Ch7</a>
+          </li>
         
           <li>
             <a href="/2021/09/13/CSAPP/attacklab/">attacklab</a>
@@ -1026,14 +1093,6 @@
         
           <li>
             <a href="/2021/09/10/CSAPP/Ch6/">Ch6</a>
-          </li>
-        
-          <li>
-            <a href="/2021/09/09/Network/network-layer/">network layer</a>
-          </li>
-        
-          <li>
-            <a href="/2021/09/06/Network/Introduction/">Introduction</a>
           </li>
         
       </ul>
@@ -1050,7 +1109,7 @@
     <div id="footer-info" class="inner">
       
       &copy; 2021 rubbish<br>
-      Construido por <a href="https://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
