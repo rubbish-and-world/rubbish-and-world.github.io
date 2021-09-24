@@ -16,8 +16,14 @@
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/19/CSAPP/Ch7/slink.png">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/19/CSAPP/Ch7/elfformat.png">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/19/CSAPP/Ch7/linkstaticlib.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/19/CSAPP/Ch7/elfstruct.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/19/CSAPP/Ch7/pht.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/19/CSAPP/Ch7/runtimeimg.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/19/CSAPP/Ch7/dlink.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/19/CSAPP/Ch7/got.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/19/CSAPP/Ch7/gotandplt.png">
 <meta property="article:published_time" content="2021-09-19T09:24:12.000Z">
-<meta property="article:modified_time" content="2021-09-20T06:57:57.954Z">
+<meta property="article:modified_time" content="2021-09-24T08:36:35.780Z">
 <meta property="article:author" content="rubbish">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/09/19/CSAPP/Ch7/slink.png">
@@ -65,12 +71,12 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Rechercher"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
       </div>
     </div>
   </div>
@@ -244,7 +250,7 @@
 </blockquote>
 <hr>
 <p>An ELF symbol table is contained in the <code>.symtab</code> section. It contains an array of entries</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line"><span class="keyword">int</span> name; <span class="comment">/* String table offset */</span></span><br><span class="line"><span class="keyword">char</span> type:<span class="number">4</span>, <span class="comment">/* Function or data (4 bits) */</span></span><br><span class="line">binding:<span class="number">4</span>; <span class="comment">/* Local or global (4 bits) */</span></span><br><span class="line"><span class="keyword">char</span> reserved; <span class="comment">/* Unused */</span></span><br><span class="line"><span class="keyword">short</span> section; <span class="comment">/* Section header index */</span></span><br><span class="line"><span class="keyword">long</span> value; <span class="comment">/* Section offset or absolute address */</span></span><br><span class="line"><span class="keyword">long</span> size; <span class="comment">/* Object size in bytes */</span></span><br><span class="line">&#125; Elf64_Symbol;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line"><span class="keyword">int</span> name; <span class="comment">/* String table offset */</span></span><br><span class="line"><span class="keyword">char</span> type:<span class="number">4</span>, <span class="comment">/* Function or data (4 bits) */</span></span><br><span class="line">binding:<span class="number">4</span>; <span class="comment">/* Local or global (4 bits) */</span></span><br><span class="line"><span class="keyword">char</span> reserved; <span class="comment">/* Unused */</span></span><br><span class="line"><span class="keyword">short</span> section; <span class="comment">/* Section header index */</span></span><br><span class="line"><span class="keyword">long</span> value; <span class="comment">/* Section offset or absolute address, the run-time address for every reference */</span></span><br><span class="line"><span class="keyword">long</span> size; <span class="comment">/* Object size in bytes */</span></span><br><span class="line">&#125; Elf64_Symbol;</span><br></pre></td></tr></table></figure>
 <ul>
 <li><p>The <code>name</code> is a <strong>byte offset into the string table</strong> that points to the null-terminated string name of the symbol. </p>
 <p>(For relocatable modules, the value is an <strong>offset</strong> from the beginning of the section where the object is defined. )</p>
@@ -504,11 +510,239 @@
 </ul>
 </li>
 </ul>
-<h3 id="7-7-2-Relocating-Symbol-References"><a href="#7-7-2-Relocating-Symbol-References" class="headerlink" title="7.7.2 Relocating Symbol References"></a>7.7.2 Relocating Symbol References</h3>
+<h3 id="7-7-2-Relocating-Symbol-References"><a href="#7-7-2-Relocating-Symbol-References" class="headerlink" title="7.7.2 Relocating Symbol References"></a>7.7.2 Relocating Symbol References</h3><p>Relocation algorithm</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">foreach section s &#123;</span><br><span class="line">    foreach relocation entry r &#123;</span><br><span class="line">    refptr= s+ r.offset; <span class="comment">/* ptr to reference to be relocated */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Relocate a PC-relative reference */</span></span><br><span class="line">    <span class="comment">/* ADDR(s) means run-time address for section s */</span></span><br><span class="line">    <span class="comment">/* ADDR(r.symbol) means run-time address for r&#x27;s symbol(when it is referred, where acutally it is, the &#x27;real address&#x27;) */</span></span><br><span class="line">    <span class="keyword">if</span> (r.type == R_X86_64_PC32) &#123;</span><br><span class="line">        refaddr = ADDR(s) + r.offset; <span class="comment">/* ref’s run-time address */</span></span><br><span class="line">        *refptr = (<span class="keyword">unsigned</span>) (ADDR(r.symbol) + r.addend - refaddr);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">     <span class="comment">/* Relocate an absolute reference */</span></span><br><span class="line">     <span class="keyword">if</span> (r.type == R_X86_64_32)</span><br><span class="line">     *refptr = (<span class="keyword">unsigned</span>) (ADDR(r.symbol) + r.addend);</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="Relocating-PC-Relative-References"><a href="#Relocating-PC-Relative-References" class="headerlink" title="Relocating PC-Relative References"></a>Relocating PC-Relative References</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># sum here is a reference</span><br><span class="line">e: e8 00 00 00 00 		callq 13 &lt;main+0x13&gt; sum()</span><br><span class="line">		f: R_X86_64_PC32 sum-0x4 Relocation entry	</span><br></pre></td></tr></table></figure>
+<p>The assembler will generate a relocate entry for <code>sum</code> in <code>.rela.text</code> section</p>
+<p>Later the when the linker executing the relocation algorithm:</p>
+<ol>
+<li>Calculate the address of <code>sum</code> in symbol table</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">refptr = s + r.offset;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>Modify it using PC relative principle</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">*refptr = (<span class="keyword">unsigned</span>) (ADDR(r.symbol) + r.addend - refaddr);</span><br><span class="line"><span class="comment">//PC_rela_address = target address + bias - run_time_refer_addr</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>The symbol’s address is determined and stored in <code>Elf64_Symbol.value</code> </li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Symbol table <span class="string">&#x27;.symtab&#x27;</span> contains 12 entries:</span><br><span class="line">   Num:    Value          Size Type    Bind   Vis      Ndx Name</span><br><span class="line">11: 0000000000000000     0 NOTYPE  GLOBAL DEFAULT  UND sum</span><br><span class="line"><span class="comment"># value change from 0x0 to PC_rela_address</span></span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>After that, every call to <code>sum</code> will use the address find in <code>.symtab</code></li>
+</ol>
+<h4 id="Relocating-Absolute-References"><a href="#Relocating-Absolute-References" class="headerlink" title="Relocating Absolute References"></a>Relocating Absolute References</h4><p>Almost the same with PC relative method, just put the <code>ADDR(s.symbol)</code> directly into the <code>Elf64_Symbol.value</code>  field</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> *refptr = (<span class="keyword">unsigned</span>) (ADDR(r.symbol) + r.addend);</span><br><span class="line"><span class="comment">//actual address + bias</span></span><br></pre></td></tr></table></figure>
+<h2 id="7-8-Executable-Object-Files"><a href="#7-8-Executable-Object-Files" class="headerlink" title="7.8 Executable Object Files"></a>7.8 Executable Object Files</h2><p><em>Our example C program, which began life as a collection of ASCII text files, has been transformed into a single binary file that contains all of the information needed to load the program into memory and run it.</em></p>
+<p><img src="/2021/09/19/CSAPP/Ch7/elfstruct.png" alt="elf structure"></p>
+<ul>
+<li>The format of an executable object file is similar to that of a relocatable object file.(But NOT identical !)</li>
+<li> It includes the program’s <strong>entry point</strong>, which is the address of the first instruction to execute when the program runs</li>
+<li>The <code>.init</code> section defines a small function, called <code>_init</code>, that will be called by the program’s initialization code</li>
+<li>Since the executable is fully linked (relocated), it needs no <code>.rel</code> sections.</li>
+</ul>
+<p>ELF executables are designed to be easy to load into memory, with contiguous chunks of the executable file mapped to contiguous memory segments.</p>
+<p><img src="/2021/09/19/CSAPP/Ch7/pht.png" alt="program header table"></p>
+<ul>
+<li><p>This mapping is described by the <code>program header table</code>. </p>
+</li>
+<li><p>For any segment <code>s</code> in objective file, the linker must choose a starting address, <code>vaddr</code>, such that </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vaddr % align == off % align</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>off</code> is the offset of the segment’s first section in the object file</li>
+<li><code>align</code> is the alignment specified in the program header $(2^{21} = (200000)_{16})$</li>
+</ul>
+</li>
+<li><p>This alignment requirement is an <strong>optimization</strong> that enables segments in the object file to be transferred efficiently to memory when the program executes</p>
+</li>
+</ul>
+<p>Both <code>readelf</code> and <code>objdump</code> is useful</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -l stand for --program-headers</span></span><br><span class="line">$ readelf -l program </span><br><span class="line">$ objdump -x program</span><br></pre></td></tr></table></figure>
+<h2 id="7-9-Loading-Executable-Object-Files"><a href="#7-9-Loading-Executable-Object-Files" class="headerlink" title="7.9 Loading Executable Object Files"></a>7.9 Loading Executable Object Files</h2><p>If you want to run a non-built-in program, you type <code>/path/program</code> to run it</p>
+<p><em>The <code>shell</code> runs for us by invoking some memory-resident operating system code known as the <code>loader</code></em></p>
+<ul>
+<li>Any Linux program can invoke the <code>loader</code> by calling the <code>execve</code> function</li>
+<li>The <code>loader</code> copies the <strong>code and data</strong> in the executable object file from disk into memory and then runs the program by jumping to its first instruction, or <code>entry point</code>. </li>
+</ul>
+<p><img src="/2021/09/19/CSAPP/Ch7/runtimeimg.png" alt="run time image"></p>
+<ul>
+<li>When the <code>loader</code> runs, it creates a memory image</li>
+<li>Guided by the <code>program header table</code>, it copies chunks of the executable object file into the code and data segments.</li>
+<li>Next, the <code>loader</code> jumps to the program’s <code>entry point</code>, which is always the address of the <code>_start</code> function<ul>
+<li>This function is defined in the system object file <code>crt1.o</code> and is the same for all C programs. </li>
+<li>The <code>_start</code> function calls the <code>system startup function</code>, <code>__libc_start_ main</code>, which is defined in <code>libc.so</code>.</li>
+<li>It initializes the execution environment, calls the user-level <code>main</code> function, handles its return value, and if necessary returns control to the kernel.</li>
+</ul>
+</li>
+</ul>
+<h2 id="7-10-Dynamic-Linking-with-Shared-Libraries"><a href="#7-10-Dynamic-Linking-with-Shared-Libraries" class="headerlink" title="7.10 Dynamic Linking with Shared Libraries"></a>7.10 Dynamic Linking with Shared Libraries</h2><p><em>Static libraries still have some significant disadvantages</em></p>
+<ul>
+<li>Static libraries, like all software, need to be maintained and updated periodically(relinking required in every update)</li>
+<li> Almost every C program uses standard I/O functions. At run time, the code for these functions is duplicated in the text segment of each running process</li>
+</ul>
+<p><em>Shared libraries are modern innovations that address the disadvantages of static libraries.</em></p>
+<p><em>A shared library is <strong>an object module that, at either run time or load time, can be loaded at an arbitrary memory address and linked with a program in memory.</strong></em></p>
+<ul>
+<li>This process is known as <code>dynamic linking</code> and is performed by a program called a <code>dynamic linker</code></li>
+<li> Shared libraries are also referred to as shared objects, and on Linux systems they are indicated by the <code>.so</code> suffix</li>
+</ul>
+<p>Shared libraries are “shared” in two different ways. </p>
+<ul>
+<li>In any given file system, there is exactly one <code>.so</code> file for a particular library.<ul>
+<li>The code and data in this <code>.so</code> file are shared by all of the executable object files that reference the library</li>
+<li>opposed to the contents of static libraries, which are <strong>copied and embedded</strong> in the executables that reference them</li>
+</ul>
+</li>
+<li>A single copy of the <code>.text</code> section of a shared library in memory can be shared by different running processes</li>
+</ul>
+<p>A concrete example:</p>
+<p><img src="/2021/09/19/CSAPP/Ch7/dlink.png" alt="shared library dynamic link"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -shared -fpic -o libvector.so addvec.c mulvec.c</span><br></pre></td></tr></table></figure>
+<ul>
+<li>The <code>-fpic</code> flag directs the compiler to generate <strong>position-independent code</strong></li>
+<li>The <code>-shared</code> flag directs the linker to create a shared object file</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -o prog2l main2.c ./libvector.so</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><em>The basic idea is to <strong>do some of the linking statically when the executable file is created, and then complete the linking process dynamically when the program is loaded</strong>.</em></p>
+</li>
+<li><p>The linker ONLY copies some <strong>relocation and symbol table information</strong> that will allow references to code and data in libvector.so to be resolved at load time</p>
+</li>
+</ul>
+<h5 id="Execution"><a href="#Execution" class="headerlink" title="Execution"></a>Execution</h5><ul>
+<li>When the loader loads and runs the executable <code>prog2l</code>, it loads the partially linked executable </li>
+<li>Next, it notices that <code>prog2l</code> contains a <code>.interp</code> section, which contains the path name of the dynamic linker (e.g., <code>ld-linux.so</code> on Linux systems)</li>
+<li>the loader loads and runs the dynamic linker</li>
+<li>The dynamic linker then finishes the linking task by performing the following relocations:<ul>
+<li>Relocating the <code>text</code> and <code>data</code> of <code>libc.so</code> into some memory segment</li>
+<li>Relocating the <code>text</code> and <code>data</code> of <code>libvector.so</code> into another memory segment</li>
+<li>Relocating any references in <code>prog2l</code> to symbols defined by <code>libc.so</code> and <code>libvector.so</code></li>
+</ul>
+</li>
+<li>Finally, the dynamic linker passes control to the application</li>
+</ul>
+<h2 id="7-11-Loading-and-Linking-Shared-Libraries-from-Applications"><a href="#7-11-Loading-and-Linking-Shared-Libraries-from-Applications" class="headerlink" title="7.11 Loading and Linking Shared Libraries from Applications"></a>7.11 Loading and Linking Shared Libraries from Applications</h2><p><em>It is also possible for an application to request the dynamic linker to load and link arbitrary shared libraries while the application is running.</em></p>
+<p>Linux systems provide a <strong>simple interface to the dynamic linker</strong> that allows application programs to load and link shared libraries at run time.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;dlfcn.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">dlopen</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *filename, <span class="keyword">int</span> flag)</span></span>;</span><br><span class="line"><span class="comment">//Returns: pointer to handle if OK. NULL on error.</span></span><br><span class="line"><span class="comment">// A handle is something like a `FILE*`</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>The <code>dlopen</code> function loads and links the shared library filename.</p>
+</li>
+<li><p>The external symbols in filename are resolved using libraries previously opened with the <code>RTLD_ GLOBAL</code> flag.</p>
+<p> If the current executable was compiled with the <code>-rdynamic</code> flag, then its global symbols are also available for symbol resolution.</p>
+</li>
+<li><p>The flag argument must include either <code>RTLD_NOW</code>, which tells the linker to resolve references to external symbols immediately, or the <code>RTLD_LAZY</code> flag, which instructs the linker to defer symbol resolution until code from the library is executed. </p>
+<p>Either of these values can be <code>|</code> with the <code>RTLD_GLOBAL</code> flag.</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;dlfcn.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">dlsym</span><span class="params">(<span class="keyword">void</span> *handle, <span class="keyword">char</span> *symbol)</span></span>;</span><br><span class="line"><span class="comment">//Returns: pointer to symbol if OK. NULL on error</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>The <code>dlsym</code> function takes a handle to a previously opened shared library and a symbol name and returns the address of the symbol, if it exists, or <code>NULL</code> otherwise.</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;dlfcn.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dlclose</span> <span class="params">(<span class="keyword">void</span> *handle)</span></span>;</span><br><span class="line"><span class="comment">//Returns: 0 if OK, −1 on error</span></span><br></pre></td></tr></table></figure>
+<p>The <code>dlclose</code> function unloads the shared library if no other shared libraries are still using it.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;dlfcn.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">const</span> <span class="keyword">char</span> *<span class="title">dlerror</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="comment">//Returns: error message if previous call to dlopen, dlsym, or dlclose failed;</span></span><br><span class="line"><span class="comment">//NULL if previous call was OK</span></span><br></pre></td></tr></table></figure>
+<p>An example of using this interface to dynamically link  <code>libvector.so</code> shared library at run time and then invoke its <code>addvec</code> routine</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;dlfcn.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> x[<span class="number">2</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> y[<span class="number">2</span>] = &#123;<span class="number">3</span>, <span class="number">4</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> z[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line"> <span class="keyword">void</span> * handle;</span><br><span class="line"> <span class="keyword">void</span> (*addvec)(<span class="keyword">int</span> *, <span class="keyword">int</span> *, <span class="keyword">int</span> *, <span class="keyword">int</span>); <span class="comment">// a function pointer to the function we want</span></span><br><span class="line"> <span class="keyword">char</span> *error;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* Dynamically load the shared library containing addvec() */</span></span><br><span class="line"> handle = dlopen(<span class="string">&quot;./libvector.so&quot;</span>, RTLD_LAZY);</span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> (!handle) &#123;</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;%s\n&quot;</span>, dlerror());</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* Get a pointer to the addvec() function we just loaded */</span></span><br><span class="line"> addvec = dlsym(handle, <span class="string">&quot;addvec&quot;</span>);</span><br><span class="line"> <span class="keyword">if</span> ((error = dlerror()) != <span class="literal">NULL</span>) &#123;</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;%s\n&quot;</span>, error);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* Now we can call addvec() just like any other function */</span></span><br><span class="line"> addvec(x, y, z, <span class="number">2</span>);</span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;z = [%d %d]\n&quot;</span>, z[<span class="number">0</span>], z[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* Unload the shared library */</span></span><br><span class="line"> <span class="keyword">if</span> (dlclose(handle) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;%s\n&quot;</span>, dlerror());</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line"> &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -rdynamic -o prog2r dll.c -ldl</span><br><span class="line"><span class="comment"># -ldl stand for libdl.a</span></span><br><span class="line"><span class="comment"># If we want to use &lt;dlfnc.h&gt;</span></span><br><span class="line">$ locate libdl.a</span><br><span class="line">/usr/lib/x86_64-linux-gnu/libdl.a</span><br></pre></td></tr></table></figure>
+<h2 id="7-12-Position-Independent-Code-PIC"><a href="#7-12-Position-Independent-Code-PIC" class="headerlink" title="7.12 Position-Independent Code (PIC)"></a>7.12 Position-Independent Code (PIC)</h2><p><em>A key purpose of shared libraries is to allow <strong>multiple running processes to share the same library code in memory</strong> and thus save precious memory resources</em></p>
+<ul>
+<li><p>Modern systems compile the <strong>code segments of shared modules</strong> so that they can be loaded anywhere in memory without having to be modified by the linker.</p>
+</li>
+<li><p>Users direct GNU compilation systems to generate PIC code with the <code>-fpic </code>option to gcc. Shared libraries must always be compiled with this option.</p>
+</li>
+</ul>
+<h3 id="PIC-Data-References"><a href="#PIC-Data-References" class="headerlink" title="PIC Data References"></a>PIC Data References</h3><p><em>Important fact : no matter where we load an object module (including shared object modules) in memory, the data segment is always the same distance from the code segment.</em></p>
+<ul>
+<li>Compilers that want to generate PIC references to global variables exploit this fact by creating a table called the <code>global offset table (GOT)</code> at the <strong>beginning of the data segment</strong>.</li>
+<li>The GOT contains an 8-byte entry for each global data object (procedure or global variable) that is <strong>referenced by the object module.</strong></li>
+<li>The compiler also generates a relocation record for each entry in the GOT.</li>
+<li>At <strong>load time</strong>, the dynamic linker relocates each GOT entry so that it contains the absolute address of the object</li>
+</ul>
+<p><img src="/2021/09/19/CSAPP/Ch7/got.png" alt="got"></p>
+<h3 id="PIC-Function-Calls"><a href="#PIC-Function-Calls" class="headerlink" title="PIC Function Calls"></a>PIC Function Calls</h3><p><em>The compiler has no way of predicting the run-time address of the function, since the shared module could be loaded anywhere at run time.</em></p>
+<p><em>GNU compilation systems solve this problem using an interesting technique, called <code>lazy binding</code>, that defers the binding of each procedure address until <strong>the first time the procedure is called</strong>.</em></p>
+<p>Lazy binding is implemented with a compact yet somewhat complex interaction between two data structures: the <code>GOT</code> and the <code>procedure linkage table (PLT)</code>.</p>
+<ul>
+<li>The GOT is part of the data segment. The PLT is part of the code segment.</li>
+<li>The <code>PLT</code> is an array of 16-byte code entries. <ul>
+<li><code>PLT[0]</code> is a special entry that jumps into the <strong>dynamic linker</strong></li>
+<li><code>PLT[1]</code> invokes the system startup function (<code>__libc_start_main</code>), which initializes the execution environment, calls the <code>main</code> function, and handles its return value.</li>
+<li>Entries starting at <code>PLT[2]</code> invoke functions called by the user code. </li>
+</ul>
+</li>
+<li>When used in conjunction with the <code>PLT</code>, <code>GOT[0]</code> and <code>GOT[1]</code> contain information that the dynamic linker uses when it resolves function addresses<ul>
+<li><code>GOT[2]</code> is the entry point for the dynamic linker in the <code>ld-linux.so</code> module</li>
+<li>Each of the remaining entries corresponds to a called function whose address needs to be resolved at run time. Each has a matching PLT entry.</li>
+<li>Initially, each GOT entry points to the second instruction in the corresponding PLT entry.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2021/09/19/CSAPP/Ch7/gotandplt.png" alt="got and plt"></p>
+<ol>
+<li>Instead of directly calling <code>addvec</code>, the program calls into <code>PLT[2]</code>, which is the <code>PLT</code> entry for <code>addvec</code>.</li>
+<li>The first <code>PLT</code> instruction does an indirect jump through <code>GOT[4]</code>. Since each <code>GOT</code> entry initially points to the second instruction in its corresponding <code>PLT</code> entry, the indirect jump simply transfers control back to the next instruction in <code>PLT[2]</code>.</li>
+<li>After pushing an <strong>ID</strong> for <code>addvec,(0x1) </code>onto the stack, <code>PLT[2]</code> jumps to <code>PLT[0]</code></li>
+<li><code>PLT[0]</code> pushes <strong>an argument for the dynamic linker</strong> indirectly through <code>GOT[1]</code> and then jumps into the dynamic linker indirectly through <code>GOT[2]</code>.</li>
+<li>The <strong>dynamic linker uses the two stack entries to determine the runtime location of <code>addvec</code></strong>, overwrites <code>GOT[4]</code> with this address, and passes control to <code>addvec</code>.</li>
+</ol>
+<hr>
+<p><strong><em>Most of the job are done by the dynamic linker during run time, including fill in the GOT</em></strong></p>
+<hr>
+<h2 id="7-13-Library-Interpositioning"><a href="#7-13-Library-Interpositioning" class="headerlink" title="7.13 Library Interpositioning"></a>7.13 Library Interpositioning</h2><p><em>Linux linkers support a powerful technique, called <strong>library interpositioning</strong>, that <strong>allows you to intercept calls to shared library functions and execute your own code instead</strong>.</em></p>
+<ul>
+<li><p>Using interpositioning, you could trace the number of times a particular library function is called, validate and trace its input and output values, or even replace it with a completely different implementation.</p>
+</li>
+<li><p><strong>Basic idea</strong>: Given some target function to be interposed on, you create a <strong>wrapper function</strong> whose prototype is identical to the target function.</p>
+<p>Using some particular interpositioning mechanism, you then trick the system into calling the wrapper function instead of the target function. The wrapper function typically executes its own logic, then calls the target function and passes its return value back to the caller.</p>
+</li>
+<li><p>Interpositioning can occur at compile time, link time, or run time as the program is being loaded and executed.</p>
+</li>
+</ul>
+<p>Example program</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//int.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;malloc.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> *p = <span class="built_in">malloc</span>(<span class="number">32</span>);</span><br><span class="line"><span class="built_in">free</span>(p);</span><br><span class="line"><span class="keyword">return</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//malloc.h</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> malloc(size) mymalloc(size)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> free(ptr) myfree(ptr)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mymalloc</span><span class="params">(<span class="keyword">size_t</span> size)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">myfree</span><span class="params">(<span class="keyword">void</span> *ptr)</span></span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//malloc.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> COMPILETIME</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;malloc.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* malloc wrapper function */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mymalloc</span><span class="params">(<span class="keyword">size_t</span> size)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">void</span> *ptr = <span class="built_in">malloc</span>(size);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;malloc(%d)=%p\n&quot;</span>,</span><br><span class="line"> (<span class="keyword">int</span>)size, ptr);</span><br><span class="line"> <span class="keyword">return</span> ptr;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* free wrapper function */</span></span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">myfree</span><span class="params">(<span class="keyword">void</span> *ptr)</span></span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line"> <span class="built_in">free</span>(ptr);</span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;free(%p)\n&quot;</span>, ptr);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> LINKTIME</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> *__real_malloc(<span class="keyword">size_t</span> size);</span><br><span class="line"><span class="keyword">void</span> __real_free(<span class="keyword">void</span> *ptr);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* malloc wrapper function */</span></span><br><span class="line"><span class="keyword">void</span> *__wrap_malloc(<span class="keyword">size_t</span> size)</span><br><span class="line">&#123;</span><br><span class="line"> <span class="keyword">void</span> *ptr = __real_malloc(size); <span class="comment">/* Call libc malloc */</span></span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;malloc(%d) = %p\n&quot;</span>, (<span class="keyword">int</span>)size, ptr);</span><br><span class="line"> <span class="keyword">return</span> ptr;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* free wrapper function */</span></span><br><span class="line"> <span class="keyword">void</span> __wrap_free(<span class="keyword">void</span> *ptr)</span><br><span class="line"> &#123;</span><br><span class="line"> __real_free(ptr); <span class="comment">/* Call libc free */</span></span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;free(%p)\n&quot;</span>, ptr);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="7-13-1-Compile-Time-Interpositioning"><a href="#7-13-1-Compile-Time-Interpositioning" class="headerlink" title="7.13.1 Compile-Time Interpositioning"></a>7.13.1 Compile-Time Interpositioning</h3><p><em>use the C preprocessor to interpose at compile time.</em></p>
+<p>The local <code>malloc.h</code> header file instructs the preprocessor to replace each call to a target function with a call to its wrapper.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -DCOMPILETIME -c mymalloc.c</span><br><span class="line"><span class="comment"># -D name means predefine name as a macro</span></span><br><span class="line">$ gcc -I. -o intc int.c mymalloc.o</span><br><span class="line"><span class="comment"># -I tells the C preprocessor to look for malloc.h in the current directory before looking in the usual system directories</span></span><br><span class="line">$ ./intc</span><br><span class="line">malloc(32)=0x55999c4fb260</span><br><span class="line">free(0x55999c4fb260)</span><br></pre></td></tr></table></figure>
+<p>Notice that the wrappers in <code>mymalloc.c</code> are compiled with the standard <code>malloc.h</code> header file(No <code>-I</code> option specified)</p>
+<h3 id="7-13-2-Link-Time-Interpositioning"><a href="#7-13-2-Link-Time-Interpositioning" class="headerlink" title="7.13.2 Link-Time Interpositioning"></a>7.13.2 Link-Time Interpositioning</h3><p><em>The Linux static linker supports link-time interpositioning with the <code>--wrap f</code> flag</em></p>
+<ul>
+<li>This flag tells the linker to resolve references to symbol <code>f</code> as<code> __wrap_f</code></li>
+<li>and to resolve references to symbol<code> __real_f</code>  as <code>f</code>.</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -D LINKTIME -c mymalloc.c</span><br><span class="line">$ gcc -c int.c</span><br><span class="line">$ gcc -Wl,--wrap,malloc -Wl,--wrap,free -o intl int.o mymalloc.o</span><br></pre></td></tr></table></figure>
+<ul>
+<li>The <code>-Wl,option</code> flag passes option to the linker.</li>
+<li>Each comma in option will be replaced with a space. </li>
+<li>So <code>-Wl,--wrap,malloc</code> passes <code>--wrap malloc</code> to the linker</li>
+</ul>
+<h3 id="7-13-3-Run-Time-Interpositioning"><a href="#7-13-3-Run-Time-Interpositioning" class="headerlink" title="7.13.3 Run-Time Interpositioning"></a>7.13.3 Run-Time Interpositioning</h3><p><em>Compile-time interpositioning requires access to a program’s source files. Linktime interpositioning requires access to its relocatable object files</em></p>
+<p><strong><em>However, there is a mechanism for interpositioning at run time that requires access only to the executable object file</em></strong></p>
+<p>This fascinating mechanism is based on the dynamic linker’s <code>LD_PRELOAD </code>environment variable.</p>
+<p>If the <code>LD_PRELOAD</code> environment variable is set to a list of shared library pathnames (separated by spaces or colons), then when you load and execute a program, the dynamic linker <code>(ld-linux.so)</code> will search the <code>LD_PRELOAD </code>libraries first, before any other shared libraries, when it resolves undefined references.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//mymalloc.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> RUNTIME</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _GNU_SOURCE</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;dlfcn.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* malloc wrapper function */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">malloc</span><span class="params">(<span class="keyword">size_t</span> size)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> <span class="keyword">void</span> *(*mallocp)(<span class="keyword">size_t</span> size);</span><br><span class="line"> <span class="keyword">char</span> *error;</span><br><span class="line"></span><br><span class="line"> mallocp = dlsym(RTLD_NEXT, <span class="string">&quot;malloc&quot;</span>); </span><br><span class="line">    <span class="comment">/* RTLD_NEXT tells dlsym to use the second found malloc(libc version) rather than the first one(our own version)*/</span></span><br><span class="line">    <span class="comment">/* Get address of libc malloc */</span></span><br><span class="line"> <span class="keyword">if</span> ((error = dlerror()) != <span class="literal">NULL</span>) &#123;</span><br><span class="line"> <span class="built_in">fputs</span>(error, <span class="built_in">stderr</span>);</span><br><span class="line"> <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">char</span> *ptr = mallocp(size); <span class="comment">/* Call libc malloc */</span></span><br><span class="line"> <span class="comment">//printf(&quot;malloc(%d) = %p\n&quot;, (int)size, ptr);</span></span><br><span class="line"> <span class="built_in">fprintf</span>(<span class="built_in">stderr</span> , <span class="string">&quot;malloc(%d) = %p\n&quot;</span>, (<span class="keyword">int</span>)size, ptr);</span><br><span class="line"> <span class="keyword">return</span> ptr;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* free wrapper function */</span></span><br><span class="line"> <span class="function"><span class="keyword">void</span> <span class="title">free</span><span class="params">(<span class="keyword">void</span> *ptr)</span></span></span><br><span class="line"><span class="function"> </span>&#123;</span><br><span class="line"> <span class="keyword">void</span> (*freep)(<span class="keyword">void</span> *) = <span class="literal">NULL</span>;</span><br><span class="line"> <span class="keyword">char</span> *error;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> (!ptr)</span><br><span class="line"> <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line"> freep = dlsym(RTLD_NEXT, <span class="string">&quot;free&quot;</span>); <span class="comment">/* Get address of libc free */</span></span><br><span class="line"> <span class="keyword">if</span> ((error = dlerror()) != <span class="literal">NULL</span>) &#123;</span><br><span class="line"> <span class="built_in">fputs</span>(error, <span class="built_in">stderr</span>);</span><br><span class="line"> <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line"> &#125;</span><br><span class="line"> freep(ptr); <span class="comment">/* Call libc free */</span></span><br><span class="line"> <span class="comment">//printf(&quot;free(%p)\n&quot;, ptr);</span></span><br><span class="line"> <span class="built_in">fprintf</span>(<span class="built_in">stderr</span> , <span class="string">&quot;free(%p)\n&quot;</span>, ptr);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">The code on the book has some subtle errors, printf will use stdout, which result in conflict with other program&#x27;s code.</span></span><br><span class="line"><span class="comment">Switch to stderr will thwart the error</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -D RUNTIME -shared -fpic -o mymalloc.so mymalloc.c -ldl</span><br><span class="line">$ gcc -o intr int.c</span><br><span class="line">$ LD_PRELOAD=<span class="string">&quot;./mymalloc.so&quot;</span> ./intr</span><br></pre></td></tr></table></figure>
+<p><span style="color:red">Notice that you can use <code>LD_PRELOAD</code> to interpose on the library calls of any executable program!</span></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ LD_PRELOAD=<span class="string">&quot;./mymalloc.so&quot;</span> /usr/bin/uptime</span><br><span class="line">$ LD_PRELOAD=<span class="string">&quot;./mymalloc.so&quot;</span> ls</span><br></pre></td></tr></table></figure>
+<h2 id="7-14-Tools-for-Manipulating-Object-Files"><a href="#7-14-Tools-for-Manipulating-Object-Files" class="headerlink" title="7.14 Tools for Manipulating Object Files"></a>7.14 Tools for Manipulating Object Files</h2><ul>
+<li><code>ar</code> Creates static libraries, and inserts, deletes, lists, and extracts members.</li>
+<li><code>strings</code> Lists all of the printable strings contained in an object file</li>
+<li><code>strip</code> Deletes symbol table information from an object file</li>
+<li><code>nm</code> Lists the symbols defined in the symbol table of an object file</li>
+<li><code>size</code> Lists the names and sizes of the sections in an object file</li>
+<li><code>readelf</code> Displays the complete structure of an object file, including all of the information encoded in the ELF header. Subsumes the functionality of <code>size</code> and <code>nm</code></li>
+<li><code>objdump</code> The mother of all binary tools. Can display all of the information in an object file.</li>
+<li><code>ldd</code> Lists the shared libraries that an executable needs at run time.</li>
+</ul>
+<h2 id="7-15-Summary"><a href="#7-15-Summary" class="headerlink" title="7.15 Summary"></a>7.15 Summary</h2><p>Library interposition is very powerful</p>
+<p><a target="_blank" rel="noopener" href="https://axcheron.github.io/playing-with-ld_preload/">hook</a></p>
+<p><a target="_blank" rel="noopener" href="https://axcheron.github.io/exploit-101-format-strings/">GOT modification</a></p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/09/19/CSAPP/Ch7/" data-id="cktu38tym000037yq0nkz79xl" data-title="Ch7" class="article-share-link">Share</a>
+      <a data-url="http://rubbish-and-world.github.io/2021/09/19/CSAPP/Ch7/" data-id="cktu38tym000037yq0nkz79xl" data-title="Ch7" class="article-share-link">Partager</a>
       
       
       
@@ -519,7 +753,7 @@
 <nav id="article-nav">
   
     <a href="/2021/09/20/CSAPP/perflab/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
+      <strong class="article-nav-caption">Récent</strong>
       <div class="article-nav-title">
         
           perflab
@@ -529,7 +763,7 @@
   
   
     <a href="/2021/09/13/CSAPP/attacklab/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
+      <strong class="article-nav-caption">Ancien</strong>
       <div class="article-nav-title">attacklab</div>
     </a>
   
@@ -545,7 +779,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
+    <h3 class="widget-title">Catégories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
     </div>
@@ -555,7 +789,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
+    <h3 class="widget-title">Mot-clés</h3>
     <div class="widget">
       <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
     </div>
@@ -565,7 +799,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
+    <h3 class="widget-title">Nuage de mot-clés</h3>
     <div class="widget tagcloud">
       <a href="/tags/game/" style="font-size: 10px;">game</a>
     </div>
@@ -584,7 +818,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">Articles récents</h3>
     <div class="widget">
       <ul>
         
@@ -622,7 +856,7 @@
     <div id="footer-info" class="inner">
       
       &copy; 2021 rubbish<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+      Propulsé par <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
