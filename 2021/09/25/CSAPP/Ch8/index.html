@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Ch8 | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Exceptional Control Flow  MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ch8">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Exceptional Control Flow  MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/exceptions.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/exceptionaddressgen.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/kindsofexceptions.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/interrupthandler.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/traphandler.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/faulthandler.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/aborthandler.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/exceptionsexample.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/systemcalls.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/logicalcontrolflow.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/memspace.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/contextswitch.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/forkexample.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/argus2execev.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/newstackorg.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/signals.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/signalhandler.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/pgroups.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/multhandlers.png">
+<meta property="article:published_time" content="2021-09-25T04:34:39.000Z">
+<meta property="article:modified_time" content="2021-09-28T07:32:49.240Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/exceptions.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSAPP/Ch8" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/25/CSAPP/Ch8/" class="article-date">
+  <time class="dt-published" datetime="2021-09-25T04:34:39.000Z" itemprop="datePublished">2021-09-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/csapp/">csapp</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Ch8
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Exceptional-Control-Flow"><a href="#Exceptional-Control-Flow" class="headerlink" title="Exceptional Control Flow"></a>Exceptional Control Flow</h1><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+<a id="more"></a>
+
+<p><em>Systems must also be able to react to <strong>changes in system state</strong> that are not captured by internal program variables and are not necessarily related to the execution of the program.</em></p>
+<ul>
+<li>A hardware timer goes off at regular intervals and must be dealt with</li>
+<li>Packets arrive at the network adapter and must be stored in memory. </li>
+<li>Programs request data from a disk and then sleep until they are notified that the data are ready.</li>
+<li>Parent processes that create child processes must be notified when their children terminate</li>
+<li>….</li>
+</ul>
+<p><em>Modern systems react to these situations by <strong>making abrupt changes in the control flow.</strong> In general, we refer to these abrupt changes as <strong>exceptional control flow (ECF)</strong>.</em></p>
+<ul>
+<li><p>ECF occurs at all levels of a computer system.</p>
+<ul>
+<li>At the hardware level, events detected by the hardware trigger abrupt control transfers to exception handlers(press the power off button)</li>
+<li>At the operating systems level, the kernel transfers control from one user process to another via context switches.</li>
+<li>At the application level, a process can send a signal to another process that abruptly transfers control to a signal handler in the recipient</li>
+<li>…</li>
+</ul>
+</li>
+<li><p>Understanding ECF will help you understand important systems concepts.</p>
+<p>ECF is the basic mechanism that operating systems use to implement I/O, processes, and virtual memory</p>
+</li>
+<li><p>Understanding ECF will help you understand how applications interact with the operating system.</p>
+<p>Applications request services from the operating system by using a form of ECF known as a <code>trap</code> or <code>system call</code></p>
+</li>
+<li><p>Understanding ECF will help you write interesting new application programs.</p>
+<p>The operating system provides application programs with powerful ECF mechanisms for creating new processes, waiting for processes to terminate, notifying other processes of exceptional events in the system, and detecting and responding to these events. </p>
+<p>If you understand these ECF mechanisms, then you can use them to write interesting programs such as Unix shells and Web servers.</p>
+</li>
+<li><p>Understanding ECF will help you understand concurrency</p>
+</li>
+<li><p>Understanding ECF will help you understand how software exceptions work</p>
+<p>Software exceptions allow the program to make nonlocal jumps (i.e., jumps that violate the usual call/return stack discipline) in response to error conditions(C++ <code>try,catch,throw</code>)</p>
+<p>(Nonlocal jumps are a form of application-level ECF and are provided in C via the <code>setjmp</code> and <code>longjmp</code> functions.)</p>
+</li>
+</ul>
+<h2 id="8-1-Exceptions"><a href="#8-1-Exceptions" class="headerlink" title="8.1 Exceptions"></a>8.1 Exceptions</h2><p><em>Exceptions are a form of exceptional control flow that are implemented <strong>partly by the hardware and partly by the operating system</strong>.</em></p>
+<p><em>An exception is <strong>an abrupt change in the control flow in response to some change in the processor’s state</strong></em></p>
+<p><img src="/2021/09/25/CSAPP/Ch8/exceptions.png" alt="exceptions"></p>
+<ul>
+<li><p>The processor is executing some current instruction <code>Icurr</code> when a significant change in the processor’s state occurs. <strong>The state is encoded in various bits and signals inside the processor</strong></p>
+</li>
+<li><p>The event might be directly related to the execution of the current instruction</p>
+<ul>
+<li> a virtual memory page fault occurs</li>
+<li>an arithmetic overflow occurs</li>
+<li>an instruction attempts a divide by zero</li>
+<li>….</li>
+</ul>
+</li>
+<li><p>The event might be unrelated to the execution of the current instruction</p>
+<ul>
+<li>a system timer goes off</li>
+<li>an I/O request completes</li>
+<li>….</li>
+</ul>
+</li>
+<li><p>In any case, when the processor detects that the event has occurred, it makes <strong>an indirect procedure call</strong> (the exception), through a jump table called an <strong>exception table</strong>, to an operating system subroutine (<strong>the exception handler</strong>) that is <strong>specifically designed to process this particular kind of event.</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">IOhandler</span>:</span></span><br><span class="line">    ...</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">D0handler</span>:</span></span><br><span class="line">    ...</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">exception_table = &#123;</span><br><span class="line">    IO : IOhandler,</span><br><span class="line">    divide_zero : D0handler,</span><br><span class="line">    ....</span><br><span class="line">&#125;</span><br><span class="line">processor:</span><br><span class="line">    call(exception_table[event])</span><br></pre></td></tr></table></figure></li>
+<li><p>When the exception handler finishes processing, one of three things happens, depending on the type of event that caused the exception:</p>
+<ul>
+<li>The handler returns control to the current instruction <code>Icurr</code>, the instruction that was executing when the event occurred.</li>
+<li>The handler returns control to <code>Inext</code>, the instruction that would have executed next had the exception not occurred.</li>
+<li>The handler aborts the interrupted program.</li>
+</ul>
+</li>
+</ul>
+<h3 id="8-1-1-Exception-Handling"><a href="#8-1-1-Exception-Handling" class="headerlink" title="8.1.1 Exception Handling"></a>8.1.1 Exception Handling</h3><p>Since exceptions are implement by the cooperation of hardware and software(the OS), the key to understand it is understand <strong>which component performs which task.</strong></p>
+<p><em>Each type of possible exception in a system is assigned <strong>a unique nonnegative integer exception number.</strong></em></p>
+<p>(Some of these numbers are assigned by the designers of the processor and other are assigned by the designers of the operating system kernel)</p>
+<ul>
+<li><p>At <strong>system boot time</strong> (when the computer is reset or powered on), <strong>the operating system</strong> allocates and initializes a jump table called an exception table</p>
+</li>
+<li><p>At <strong>run time</strong> (when the system is executing some program), <strong>the processor</strong> detects that an event has occurred and determines the corresponding exception number <code>k</code>.</p>
+<p>The exception number is an index into the exception table, whose starting address is contained in a special CPU register called the <strong>exception table base register</strong>.</p>
+</li>
+</ul>
+<p><img src="/2021/09/25/CSAPP/Ch8/exceptionaddressgen.png" alt="exception handler address generating"></p>
+<p>An exception is akin to a procedure call, but with some important differences:</p>
+<ul>
+<li><p>As with a procedure call, the processor <strong>pushes a return address on the stack</strong> before branching to the handler. However, depending on the class of exception, the return address is <strong>either the current instruction or the next instruction</strong></p>
+</li>
+<li><p>The <strong>processor also pushes some additional processor state onto the stack</strong> that will be necessary to restart the interrupted program when the handler returns. </p>
+<p>For example, an x86-64 system pushes the <code>EFLAGS</code> register containing the current condition codes, among other things, onto the stack.</p>
+</li>
+<li><p>When control is being transferred from a user program to the kernel, all of these items are pushed onto the <strong>kernel’s stack rather than onto the user’s stack.</strong></p>
+</li>
+<li><p><strong>Exception handlers run in kernel mode</strong>, which means they have complete access to all system resources.</p>
+</li>
+</ul>
+<p>Once the hardware triggers the exception, the rest of the work is done in software by the exception handler.</p>
+<h3 id="8-1-2-Classes-of-Exceptions"><a href="#8-1-2-Classes-of-Exceptions" class="headerlink" title="8.1.2 Classes of Exceptions"></a>8.1.2 Classes of Exceptions</h3><p><em>Exceptions can be divided into four classes: <code>interrupts</code>, <code>traps</code>, <code>faults</code>, and <code>aborts</code>.</em></p>
+<p><img src="/2021/09/25/CSAPP/Ch8/kindsofexceptions.png" alt="exception classes"></p>
+<h4 id="Interrupts"><a href="#Interrupts" class="headerlink" title="Interrupts"></a>Interrupts</h4><p><em>Interrupts occur asynchronously as a result of <strong>signals from I/O devices</strong> that are external to the processor.</em></p>
+<p>Asynchronous means that these exceptions are not caused by execution any instructions, they are completely hardware stuff. Hence exception handlers for hardware interrupts are often called interrupt handlers</p>
+<h5 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h5><p><img src="/2021/09/25/CSAPP/Ch8/interrupthandler.png" alt="interrupt handling"></p>
+<ol>
+<li><p><strong>I/O devices</strong> such as network adapters, disk controllers, and timer chips trigger interrupts by <strong>signaling a pin on the processor chip</strong> and <strong>placing onto the system bus the exception number</strong> that identifies the device that caused the interrupt</p>
+</li>
+<li><p><strong>After the current instruction finishes executing</strong>, the processor notices that the interrupt pin has gone high, <strong>reads the exception number from the system bus</strong>, and then <strong>calls the appropriate interrupt handler</strong></p>
+</li>
+<li><p>When the handler returns, it returns control to the next instruction. The effect is that <strong>the program continues executing as though the interrupt had never happened.</strong></p>
+</li>
+</ol>
+<h4 id="Traps-and-System-Calls"><a href="#Traps-and-System-Calls" class="headerlink" title="Traps and System Calls"></a>Traps and System Calls</h4><p><em>Traps are intentional exceptions that <strong>occur as a result of executing an instruction</strong></em></p>
+<p>The most important use of traps is to <strong>provide a procedure-like interface between user programs and the kernel</strong>, known as a <code>system call</code>.</p>
+<ul>
+<li>To allow <strong>controlled access to such kernel services</strong>,(<code>read,fork,execve,exit,..</code>) processors provide a special syscall <code>n</code> instruction that user programs can execute when they want to request service <code>n</code>.</li>
+<li>Executing the syscall instruction <strong>causes a trap</strong> to an exception handler that decodes the argument and calls the appropriate kernel routine.</li>
+</ul>
+<p>From a programmer’s perspective, a system call is identical to a regular function call. However, their implementations are quite different, regular function call run in user mode while <code>system call</code> run in kernal mode</p>
+<p><img src="/2021/09/25/CSAPP/Ch8/traphandler.png" alt="trap handling"></p>
+<h4 id="Faults"><a href="#Faults" class="headerlink" title="Faults"></a>Faults</h4><p><em>Faults result from error conditions that a handler might be able to correct</em></p>
+<ol>
+<li>When a fault occurs, the processor transfers control to the fault handler. </li>
+<li> If the handler is able to correct the error condition, it returns control to the faulting instruction, thereby <strong>re-executing</strong> it</li>
+<li> Otherwise, the handler <strong>returns to an <code>abort</code></strong> routine in the kernel that terminates the application program that caused the fault</li>
+</ol>
+<p><img src="/2021/09/25/CSAPP/Ch8/faulthandler.png" alt="fault handling"></p>
+<h4 id="Abort"><a href="#Abort" class="headerlink" title="Abort"></a>Abort</h4><p><em>Aborts result from unrecoverable fatal errors</em> , typically hardware errors such as parity errors that occur when DRAM or SRAM bits are corrupted.</p>
+<p>the handler returns control to an abort routine that terminates the application program.</p>
+<p><img src="/2021/09/25/CSAPP/Ch8/aborthandler.png" alt="abort handling"></p>
+<h3 id="8-1-3-Exceptions-in-Linux-x86-64-Systems"><a href="#8-1-3-Exceptions-in-Linux-x86-64-Systems" class="headerlink" title="8.1.3 Exceptions in Linux/x86-64 Systems"></a>8.1.3 Exceptions in Linux/x86-64 Systems</h3><p>In x86-64, here are up to <strong>256 different exception types</strong> . Numbers in the range from 0 to 31 correspond to exceptions that are defined by the Intel architects and thus are identical for any x86-64 system. Numbers in the range from 32 to 255 correspond to interrupts and traps that are defined by the operating system. </p>
+<p><img src="/2021/09/25/CSAPP/Ch8/exceptionsexample.png" alt="examples"></p>
+<h4 id="Linux-x86-64-Faults-and-Aborts"><a href="#Linux-x86-64-Faults-and-Aborts" class="headerlink" title="Linux/x86-64 Faults and Aborts"></a>Linux/x86-64 Faults and Aborts</h4><ul>
+<li><p>Divide error</p>
+<p>A divide error (exception <code>0</code>) occurs when an application attempts to divide by zero or when the result of a divide instruction is too big for the destination operand</p>
+<p>Linux shells typically report divide errors as <code>Floating exceptions</code>.</p>
+</li>
+<li><p>General protection fault</p>
+<p>The infamous general protection fault (exception <code>13</code>) <strong>occurs for many reasons</strong>, usually because a program references an undefined area of virtual memory or because the program attempts to write to a read-only text segment</p>
+<p>Linux shells typically report general protection faults as <code>Segmentation faults</code>.</p>
+</li>
+<li><p>Machine check</p>
+<p>A machine check (exception <code>18</code>) occurs as a result of <strong>a fatal hardware error</strong> that is detected <strong>during the execution of the faulting instruction.</strong> </p>
+</li>
+</ul>
+<h4 id="Linux-x86-64-System-Calls"><a href="#Linux-x86-64-System-Calls" class="headerlink" title="Linux/x86-64 System Calls"></a>Linux/x86-64 System Calls</h4><p><em>Each system call has a unique integer number that corresponds to an offset in a jump table in the kernel. (Notice that <strong>this jump table is not the same as the exception table</strong>.)</em></p>
+<p><img src="/2021/09/25/CSAPP/Ch8/systemcalls.png" alt="system calls"></p>
+<ul>
+<li>C programs can invoke any system call directly by using the <code>syscall</code> function.</li>
+<li>The C standard library provides a set of convenient wrapper functions for most system calls. The wrapper functions package up the arguments, trap to the kernel with the appropriate system call instruction, and then pass the return status of the system call back to the calling program.</li>
+</ul>
+<p>Let’s do a <code>syscall</code> manually</p>
+<ul>
+<li>All <strong>arguments to Linux system calls</strong> are <strong>passed through general-purpose registers</strong> rather than the stack.</li>
+<li>By convention, register <code>%rax</code> contains the syscall number, with up to six arguments in <code>%rdi</code>, <code>%rsi</code>, <code>%rdx</code>, <code>%r10</code>,<code> %r8</code>, and <code>%r9</code>.</li>
+<li>On return from the system call, registers <code>%rcx</code> and <code>%r11</code> are destroyed, and <code>%rax</code> contains the return value. A negative return value between −4,095 and −1 indicates an error corresponding to negative <code>errno</code>.</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">write(<span class="number">1</span>, <span class="string">&quot;hello, world\n&quot;</span>, <span class="number">13</span>);</span><br><span class="line">_exit(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># hand crafted assembly code</span><br><span class="line">.section .data</span><br><span class="line">string:</span><br><span class="line">        .ascii &quot;hello, world\n&quot;</span><br><span class="line">string_end:</span><br><span class="line">        .equ len, string_end - string</span><br><span class="line">.section .text</span><br><span class="line">.globl main</span><br><span class="line">main:</span><br><span class="line">        # First, call write(1, &quot;hello, world\n&quot;, 13)</span><br><span class="line">        movq $1, %rax        # write is system call 1        </span><br><span class="line">        movq $1, %rdi       # Arg1:stdout has descriptor 1 </span><br><span class="line">        movq $string, %rsi   # Arg2: hello world string</span><br><span class="line">        movq $len, %rdx      # Arg3: string length           </span><br><span class="line">        syscall              # Make the system call         </span><br><span class="line"></span><br><span class="line">        # Next, call _exit(0)</span><br><span class="line">        movq $60, %rax       # _exit is system call 60     </span><br><span class="line">        movq $0, %rdi        # Arg1: exit status is 0      </span><br><span class="line">        syscall              # Make the system call        </span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$ as handhello.s -o handhello.o</span><br><span class="line">$ ld handhello.o -o handhello</span><br><span class="line">ld: warning: cannot find entry symbol _start; defaulting to 00000000004000b0</span><br><span class="line">$ ./handhello</span><br><span class="line">hello, world</span><br><span class="line">$ objdump -d handhello</span><br><span class="line"></span><br><span class="line">handhello:     file format elf64-x86-64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disassembly of section .text:</span><br><span class="line"></span><br><span class="line">00000000004000b0 &lt;main&gt;:</span><br><span class="line">  4000b0:	48 c7 c0 01 00 00 00 	mov    <span class="variable">$0x1</span>,%rax</span><br><span class="line">  4000b7:	48 c7 c7 01 00 00 00 	mov    <span class="variable">$0x1</span>,%rdi</span><br><span class="line">  4000be:	48 c7 c6 de 00 60 00 	mov    <span class="variable">$0x6000de</span>,%rsi</span><br><span class="line">  4000c5:	48 c7 c2 0d 00 00 00 	mov    <span class="variable">$0xd</span>,%rdx</span><br><span class="line">  4000cc:	0f 05                	syscall </span><br><span class="line">  4000ce:	48 c7 c0 3c 00 00 00 	mov    <span class="variable">$0x3c</span>,%rax</span><br><span class="line">  4000d5:	48 c7 c7 00 00 00 00 	mov    <span class="variable">$0x0</span>,%rdi</span><br><span class="line">  4000dc:	0f 05                	syscall </span><br></pre></td></tr></table></figure>
+<h2 id="8-2-Processes"><a href="#8-2-Processes" class="headerlink" title="8.2 Processes"></a>8.2 Processes</h2><p><em>Exceptions are the basic building blocks that allow the operating system kernel to provide the notion of a <strong>process</strong></em></p>
+<p>When we run a program on a modern system, we are presented with the <strong>illusion</strong> that</p>
+<ul>
+<li>our program is the only one currently running in the system</li>
+<li> Our program appears to have exclusive use of both the processor and the memory.</li>
+<li>The processor appears to execute the instructions in our program, one after the other, without interruption. </li>
+</ul>
+<p>Each program in the system runs in the <strong>context</strong> of some process.</p>
+<ul>
+<li>The context consists of the <strong>state</strong> that the program needs to run correctly</li>
+<li>This <strong>state</strong> includes the program’s code and data stored in memory, its stack, the contents of its generalpurpose registers, its program counter, environment variables, and the set of open file descriptors.</li>
+</ul>
+<h3 id="8-2-1-Logical-Control-Flow"><a href="#8-2-1-Logical-Control-Flow" class="headerlink" title="8.2.1 Logical Control Flow"></a>8.2.1 Logical Control Flow</h3><p><img src="/2021/09/25/CSAPP/Ch8/logicalcontrolflow.png" alt="logical control flow"></p>
+<ul>
+<li>The single physical control flow of the processor is partitioned into three logical flows</li>
+<li>Process A runs for a while, followed by B, which runs to completion. Process C then runs for a while, followed by A, which runs to completion. Finally, C is able to run to completion.</li>
+</ul>
+<p><strong><em>processes take turns using the processor</em></strong></p>
+<ul>
+<li>Each process executes a portion of its flow and then is <strong>preempted</strong> (temporarily suspended) while other processes take their turns</li>
+<li>Each time the processor stalls, it subsequently resumes execution of our program <strong>without any change to the contents</strong> of the program’s memory locations or registers.</li>
+</ul>
+<h3 id="8-2-2-Concurrent-Flows"><a href="#8-2-2-Concurrent-Flows" class="headerlink" title="8.2.2 Concurrent Flows"></a>8.2.2 Concurrent Flows</h3><p><em>A logical flow whose <strong>execution overlaps in time with another flow</strong> is called a <strong>concurrent flow</strong>, and the two flows are said to run <strong>concurrently</strong></em></p>
+<p><strong><em>More precisely, flows X and Y are concurrent with respect to each other if and only if X begins after Y begins and before Y finishes, or Y begins after X begins and before X finishes.</em></strong> </p>
+<p> For example, in Figure 8.12, processes A and B run concurrently, as do A and C. On the other hand, B and C do not run concurrently, because the last instruction of B executes before the first instruction of C</p>
+<p>The general phenomenon of <strong>multiple flows executing concurrently</strong> is known as <strong>concurrency</strong></p>
+<p>Notice that <strong>the idea of concurrent flows is independent of the number of processor cores or computers</strong> that the flows are running on. </p>
+<p>There is a proper <strong>subset</strong> of concurrent flows known as <strong>parallel</strong> flows</p>
+<p>If two flows are <strong>running <em>concurrently</em> on different processor cores or computers</strong>, then we say that they are parallel flows, that they are running in parallel, and have parallel execution.</p>
+<h4 id="Practice-Problem-8-1"><a href="#Practice-Problem-8-1" class="headerlink" title="Practice Problem 8.1"></a>Practice Problem 8.1</h4><blockquote>
+<p>Consider three processes with the following starting and ending times:</p>
+<table>
+<thead>
+<tr>
+<th>Process</th>
+<th>Start time</th>
+<th>End time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td>1</td>
+<td>3</td>
+</tr>
+<tr>
+<td>B</td>
+<td>2</td>
+<td>5</td>
+</tr>
+<tr>
+<td>C</td>
+<td>4</td>
+<td>6</td>
+</tr>
+</tbody></table>
+<p>For each pair of processes, indicate whether they run concurrently (Y) or not (N):</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark"><a href="#My-solution-white-check-mark" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">time 1 2 3 4 5 6</span><br><span class="line">A    r r r</span><br><span class="line">B      r r r r</span><br><span class="line">C          r r r</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>Process pair</th>
+<th>Concurrent ?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AB</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>AC</td>
+<td>N</td>
+</tr>
+<tr>
+<td>BC</td>
+<td>Y</td>
+</tr>
+</tbody></table>
+<h3 id="8-2-3-Private-Address-Space"><a href="#8-2-3-Private-Address-Space" class="headerlink" title="8.2.3 Private Address Space"></a>8.2.3 Private Address Space</h3><p><em>A process provides each program with its own private address space. This space is private in the sense that a byte of memory associated with a particular address in the space <strong>cannot in general be read or written by any other process</strong>.</em></p>
+<p><img src="/2021/09/25/CSAPP/Ch8/memspace.png" alt="illustion"></p>
+<ul>
+<li>The code segment <strong>always</strong> begins at address <code>0x400000</code></li>
+<li>The kernal part of the address space contains the code, data, and stack that the kernel uses when it executes instructions on behalf of the process (e.g. system call)</li>
+</ul>
+<h4 id="8-2-4-User-and-Kernel-Modes"><a href="#8-2-4-User-and-Kernel-Modes" class="headerlink" title="8.2.4 User and Kernel Modes"></a>8.2.4 User and Kernel Modes</h4><p><em>In order for the operating system kernel to provide an airtight process abstraction, the processor must provide a mechanism that restricts the instructions that an application can execute, as well as the portions of the address space that it can access</em></p>
+<ul>
+<li><p>Processors typically provide this capability with a <strong>mode bit</strong> in some control register that characterizes the privileges that the process currently enjoys</p>
+</li>
+<li><p> The only way for the process to change from user mode to kernel mode is via an exception such as an interrupt, a fault, or a trapping system call.</p>
+</li>
+<li><p>When the exception occurs, and control passes to the exception handler, the processor changes the mode from user mode to kernel mode</p>
+<p>The handler runs in kernel mode. When it returns to the application code, the processor changes the mode from kernel mode back to user mode</p>
+</li>
+</ul>
+<p>Linux provides a clever mechanism, called the <code>/proc</code> filesystem, that allows user mode processes to access the contents of kernel data structures(READ ONLY)</p>
+<ul>
+<li>The <code>/proc</code> filesystem exports the contents of many kernel data structures as a hierarchy of text files that can be read by user programs</li>
+<li>The 2.6 version of the Linux kernel introduced a <code>/sys</code> filesystem, which exports additional low-level information about system buses and devices.</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ll /proc/cpuinfo </span><br><span class="line">-r--r--r-- 1 root root 0 Sep 25 09:27 /proc/cpuinfo</span><br></pre></td></tr></table></figure>
+<h3 id="8-2-5-Context-Switches"><a href="#8-2-5-Context-Switches" class="headerlink" title="8.2.5 Context Switches"></a>8.2.5 Context Switches</h3><p><em>The operating system kernel implements multitasking using <strong>a higher-level form of exceptional control flow known as a context switch</strong>. The context switch mechanism is built on top of the lower-level exception mechanism</em></p>
+<p>The kernel maintains a context for each process. The <strong>context</strong> is <strong>the state that the kernel needs to restart a preempted process</strong>.</p>
+<p>It consists of </p>
+<ul>
+<li>the values of objects such as the general-purpose registers, the floating-point registers, the program counter, user’s stack, status registers, kernel’s stack</li>
+<li>various kernel data structures such as a <em>page table</em> that characterizes the address space, a <em>process table</em> that contains information about the current process, and a <em>file table</em> that contains information about the files that the process has opened.</li>
+<li>…</li>
+</ul>
+<p>After the kernel has scheduled(start) a new process to run, it preempts the current process and transfers control to the new process using a mechanism called a <strong>context switch</strong></p>
+<ol>
+<li>saves the context of the current process</li>
+<li>restores the saved context of some previously preempted process</li>
+<li>passes control to this newly restored process.</li>
+</ol>
+<p>There are many scenarios context switch can happen</p>
+<ul>
+<li><p>while the kernel is executing a system call</p>
+<p>If the system call blocks because it is waiting for some event to occur, then the kernel can put the current process to sleep and switch to another process.</p>
+<p>(e.g. Reading data from disk)</p>
+</li>
+<li><p>A context switch can also occur as a result of an interrupt.</p>
+</li>
+</ul>
+<p><img src="/2021/09/25/CSAPP/Ch8/contextswitch.png" alt="context switch example"></p>
+<ul>
+<li>Initially process A is running in user mode until it traps to the kernel by executing a <code>read</code> system call.</li>
+<li>The trap handler in the kernel requests a DMA transfer from the disk controller, the transition will cost huge amount of time</li>
+<li>Instead of waiting and doing nothing in the interim, the kernel performs a context switch from process A to B.</li>
+<li>Process B then runs for a while in user mode until the disk sends an interrupt to signal that data have been transferred from disk to memory.</li>
+<li>The processor return control in process A to the instruction immediately following the <code>read</code> system call.</li>
+</ul>
+<p>During the first part of the switch, the kernel is executing instructions in kernel mode on behalf of process A. Then at some point it begins executing instructions (still in kernel mode) on behalf of process B. And after the switch, the kernel is executing instructions in user mode on behalf of process B.</p>
+<p>Since context switch is a kernal job, it has nothing to do with the syscall of A</p>
+<h2 id="8-3-System-Call-Error-Handling"><a href="#8-3-System-Call-Error-Handling" class="headerlink" title="8.3 System Call Error Handling"></a>8.3 System Call Error Handling</h2><p><em>When Unix system-level functions encounter an error, <strong>they typically return −1 and set the global integer variable <code>errno</code></strong> to indicate what went wrong.</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt; //for exit</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt; //for fprintf</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;errno.h&gt; //for errno</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt; //for strerror</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt; //for fork</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> ((pid = fork()) &lt; <span class="number">0</span>) &#123;</span><br><span class="line"><span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;fork error: %s\n&quot;</span>, strerror(errno));</span><br><span class="line"><span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>The <code>strerror</code> function returns a text string that describes the error associated with a particular value of <code>errno</code></li>
+<li>We can create <strong>error-handing wrapper</strong> to make our code consice along with error checking</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">unix_error</span><span class="params">(<span class="keyword">char</span> *msg)</span> <span class="comment">/* Unix-style error */</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;%s: %s\n&quot;</span>, msg, strerror(errno));</span><br><span class="line"><span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> ((pid = fork()) &lt; <span class="number">0</span>) unix_error(<span class="string">&quot;fork error&quot;</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="8-4-Process-Control"><a href="#8-4-Process-Control" class="headerlink" title="8.4 Process Control"></a>8.4 Process Control</h2><p><em>Unix provides a number of system calls for manipulating processes from C programs.</em></p>
+<h3 id="8-4-1-Obtaining-Process-IDs"><a href="#8-4-1-Obtaining-Process-IDs" class="headerlink" title="8.4.1 Obtaining Process IDs"></a>8.4.1 Obtaining Process IDs</h3><ul>
+<li>Each process has a unique <strong>positive (nonzero)</strong> process ID (PID)</li>
+<li>The <code>getpid</code> function returns the PID of the calling process</li>
+<li>The <code>getppid</code> function returns the PID of its parent (i.e., the process that created the calling process)</li>
+<li>Return an integer value of type <code>pid_t</code>, which on Linux systems is defined in <code>types.h</code> as an <code>int</code>.</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">pid_t</span> current = getpid();</span><br><span class="line">    <span class="keyword">pid_t</span> parent = getppid();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d %d\n&quot;</span> , current , parent);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="8-4-2-Creating-and-Terminating-Processes"><a href="#8-4-2-Creating-and-Terminating-Processes" class="headerlink" title="8.4.2 Creating and Terminating Processes"></a>8.4.2 Creating and Terminating Processes</h3><p>From a programmer’s perspective, we can think of a process as being in one of three states: Running, Stopped and Terminated.</p>
+<h4 id="Terminal-a-process"><a href="#Terminal-a-process" class="headerlink" title="Terminal a process"></a>Terminal a process</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">exit</span><span class="params">(<span class="keyword">int</span> status)</span></span>;</span><br></pre></td></tr></table></figure>
+<h4 id="Create-a-child-process"><a href="#Create-a-child-process" class="headerlink" title="Create a child process"></a>Create a child process</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">pid_t</span> <span class="title">fork</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>A parent process creates a new <strong>running child process</strong> by calling the <code>fork</code> function.</li>
+<li>The newly created child process is <strong>almost, but not quite, identical to the parent.</strong><ul>
+<li>The child gets an <strong>identical</strong> (but <strong>separate</strong>) copy of the parent’s <strong>user-level virtual address space</strong>, including the code and data segments, heap, shared libraries, and user stack. </li>
+<li>The child also gets <strong>identical copies of any of the parent’s open file descriptors</strong>, which means the child can read and write any files that were open in the parent when it called fork</li>
+<li>The most significant difference between the parent and the newly created child is that they have <strong>different PIDs</strong>.</li>
+</ul>
+</li>
+<li>The fork function is interesting because it is called once but it <strong>returns twice</strong>:<ul>
+<li>In the parent, fork returns the PID of the child. In the child, fork returns a value of <code>0</code>. </li>
+<li>Since the PID of the child is always nonzero, the return value provides an unambiguous way to tell whether the program is executing in the parent or the child.</li>
+</ul>
+</li>
+</ul>
+<p>For example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">pid_t</span> pid;</span><br><span class="line"><span class="keyword">int</span> x = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">pid = fork();</span><br><span class="line"><span class="keyword">if</span> (pid == <span class="number">0</span>) &#123; <span class="comment">/* Child */</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;child : x=%d\n&quot;</span>, ++x);</span><br><span class="line"><span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="comment">/* Parent */</span></span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;parent: x=%d\n&quot;</span>, --x);</span><br><span class="line"> <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>Call once, return twice</strong>: programs with multiple instances of <code>fork</code> can be confusing and need to be reasoned about carefully.</p>
+</li>
+<li><p><strong>Concurrent execution</strong>: </p>
+<ul>
+<li><p>The parent and the child are separate processes that run concurrently</p>
+</li>
+<li><p>The instructions in their logical control flows can be <strong>interleaved</strong> by the kernel in an <strong>arbitrary</strong> way</p>
+<p>(The parent process completes its <code>printf</code> statement first, followed by the child, but the reverse can also be true)</p>
+</li>
+<li><p>As programmers we can never make assumptions about the interleaving of the instructions in different processes.</p>
+</li>
+</ul>
+</li>
+<li><p><strong>Duplicate but separate address spaces</strong></p>
+</li>
+<li><p><strong>Shared files</strong>: When we run the example program, we notice that both parent and child print their output on the screen. The reason is that the child inherits all of the parent’s open files(<code>stdout</code>)</p>
+<p>It is often helpful to sketch the <strong><em>process graph</em></strong>, which is a simple kind of precedence graph that captures the partial ordering of program statements</p>
+</li>
+</ul>
+<p><img src="/2021/09/25/CSAPP/Ch8/forkexample.png" alt="fork example"></p>
+<h4 id="Practice-Problem-8-2"><a href="#Practice-Problem-8-2" class="headerlink" title="Practice Problem 8.2"></a>Practice Problem 8.2</h4><blockquote>
+<p>Consider the following program:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> a = <span class="number">9</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (fork() == <span class="number">0</span>)</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;p1: a=%d\n&quot;</span>, a--);</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;p2: a=%d\n&quot;</span>, a++);</span><br><span class="line"><span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>A. What is the output of the child process? </p>
+<p>B. What is the output of the parent process?</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-1"><a href="#My-solution-white-check-mark-1" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">child output : p1: a&#x3D;9</span><br><span class="line">               p2: a&#x3D;8</span><br><span class="line">parent output : p2: a&#x3D;9</span><br></pre></td></tr></table></figure>
+<h4 id="Verification"><a href="#Verification" class="headerlink" title="Verification :"></a>Verification :</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ./fork &gt; out</span><br><span class="line">$ cat out</span><br><span class="line">p2: a=9</span><br><span class="line">p1: a=9</span><br><span class="line">p2: a=8</span><br></pre></td></tr></table></figure>
+<h3 id="8-4-3-Reaping-Child-Processes"><a href="#8-4-3-Reaping-Child-Processes" class="headerlink" title="8.4.3 Reaping Child Processes"></a>8.4.3 Reaping Child Processes</h3><p><em>When a process terminates for any reason, <strong>the kernel does not remove it from the system immediately</strong>.</em></p>
+<ul>
+<li> The process is kept around in a terminated state until it is <strong>reaped</strong> by its parent</li>
+<li>When the parent reaps the terminated child, the kernel passes the child’s exit status to the parent and then discards the terminated process, at which point it ceases to exist</li>
+<li>A terminated process that has not yet been reaped is called a <strong>zombie</strong>.</li>
+</ul>
+<p>When a parent process terminates, the kernel arranges for the <code>init</code> process to become the adopted parent of any orphaned children</p>
+<ul>
+<li> The <code>init</code> process, which has a PID of 1, is <strong>created by the kernel during system start-up</strong>, <strong>never terminates</strong>, and is the <strong>ancestor of every process</strong>.</li>
+<li>If a parent process terminates without reaping its zombie children, then the kernel arranges for the init process to reap them.</li>
+<li>However, long-running programs such as shells or servers should always reap their zombie children</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/wait.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">pid_t</span> <span class="title">waitpid</span><span class="params">(<span class="keyword">pid_t</span> pid, <span class="keyword">int</span> *statusp, <span class="keyword">int</span> options)</span></span>;</span><br><span class="line"><span class="comment">//Returns: PID of child if OK, 0 (if WNOHANG), or −1 on error</span></span><br><span class="line"><span class="comment">//if the first argument is −1, the call to waitpid blocks until an arbitrary child has terminated</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>By default (when <code>options = 0</code>), <code>waitpid</code> <strong>suspends execution of the calling process</strong> until a child process in its <em>wait set</em> terminates. </li>
+<li> If a process in the wait set has already terminated at the time of the call, then waitpid returns immediately.</li>
+<li> In either case, <code>waitpid</code> returns the PID of the terminated child that caused <code>waitpid</code> to return. At this point, the <strong>terminated child has been reaped</strong> and the kernel removes all traces of it from the system</li>
+</ul>
+<h4 id="Determining-the-Members-of-the-Wait-Set"><a href="#Determining-the-Members-of-the-Wait-Set" class="headerlink" title="Determining the Members of the Wait Set"></a>Determining the Members of the Wait Set</h4><p><em>The members of the wait set are determined by the pid argument:</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">number_of_wait_set</span>(<span class="params">pid</span>):</span></span><br><span class="line">    <span class="keyword">if</span> pid &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">elif</span> pid == -<span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(all_children_process)</span><br></pre></td></tr></table></figure>
+<h4 id="Modifying-the-Default-Behavior"><a href="#Modifying-the-Default-Behavior" class="headerlink" title="Modifying the Default Behavior"></a>Modifying the Default Behavior</h4><p><em>The default behavior can be modified by setting options to various combinations of the <code>WNOHANG</code>, <code>WUNTRACED</code>, and <code>WCONTINUED </code><strong>constants</strong></em></p>
+<ul>
+<li><code>WNOHANG</code><ul>
+<li><strong>Return immediately</strong> (with a return value of 0) if none of the child processes in the wait set has terminated yet</li>
+<li> This option is useful in those cases where you want to <strong>continue doing useful work while waiting for a child to terminate</strong>.</li>
+</ul>
+</li>
+<li><code>WUNTRACED</code><ul>
+<li>Suspend execution of the calling process until a process in the wait set becomes <strong>either terminated or stopped</strong>.</li>
+<li> This option is useful when you want to check for <strong>both terminated and stopped children.</strong></li>
+</ul>
+</li>
+<li><code>WCONTINUED</code><ul>
+<li>Suspend execution of the calling process <strong>until a running process in the wait set is terminated or until a stopped process in the wait set has been resumed</strong> by the receipt of a SIGCONT signal.</li>
+</ul>
+</li>
+</ul>
+<h4 id="Checking-the-Exit-Status-of-a-Reaped-Child"><a href="#Checking-the-Exit-Status-of-a-Reaped-Child" class="headerlink" title="Checking the Exit Status of a Reaped Child"></a>Checking the Exit Status of a Reaped Child</h4><p><em>If the <code>statusp</code> argument is non-NULL, then waitpid <strong>encodes status information about the child that caused the return</strong> in status, which is the value pointed to by statusp</em></p>
+<p>The <code>wait.h</code> include file defines several macros for interpreting the status argument</p>
+<ul>
+<li><code>WIFEXITED(status)</code>. Returns true if the child terminated normally, via a call to exit or a return.</li>
+<li><code>WEXITSTATUS(status)</code>. Returns the exit status of a normally terminated child. This status is only defined if <code>WIFEXITED()</code> returned true.</li>
+<li>……</li>
+</ul>
+<h4 id="Error-Conditions"><a href="#Error-Conditions" class="headerlink" title="Error Conditions"></a>Error Conditions</h4><p>If the calling process <strong>has no children</strong>, then <code>waitpid</code> returns −1 and sets <code>errno</code> to <code>ECHILD</code>. If the waitpid function was <strong>interrupted by a signal</strong>, then it returns −1 and sets <code>errno</code> to <code>EINTR</code></p>
+<hr>
+<h4 id="Practice-Problem-8-3"><a href="#Practice-Problem-8-3" class="headerlink" title="Practice Problem 8.3"></a>Practice Problem 8.3</h4><blockquote>
+<p>List all of the possible output sequences for the following program</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (fork() == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;9&quot;</span>); fflush(<span class="built_in">stdout</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;0&quot;</span>); fflush(<span class="built_in">stdout</span>);</span><br><span class="line">        waitpid(<span class="number">-1</span>, <span class="literal">NULL</span>, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;3&quot;</span>); fflush(<span class="built_in">stdout</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;6&quot;</span>); <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark-2"><a href="#My-solution-white-check-mark-2" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">main -&gt; fork -+-&gt; print(0) -&gt; waitpid -&gt; print(3) -&gt; print(6)</span><br><span class="line">              |</span><br><span class="line">              +-&gt; print(9) -&gt; print(3) -&gt; print(6)</span><br><span class="line">              </span><br><span class="line">093636</span><br><span class="line">903636</span><br><span class="line">930636</span><br><span class="line">936036</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="The-wait-Function"><a href="#The-wait-Function" class="headerlink" title="The wait Function"></a>The wait Function</h4><p><em>The wait function is a simpler version of <code>waitpid</code>.</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/wait.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">pid_t</span> <span class="title">wait</span><span class="params">(<span class="keyword">int</span> *statusp)</span></span>;</span><br><span class="line"><span class="comment">//Returns: PID of child if OK or −1 on error</span></span><br></pre></td></tr></table></figure>
+<p>Calling <code>wait(&amp;status)</code> is equivalent to calling <code>waitpid(-1, &amp;status, 0)</code>.</p>
+<h4 id="Examples-of-Using-waitpid"><a href="#Examples-of-Using-waitpid" class="headerlink" title="Examples of Using waitpid"></a>Examples of Using waitpid</h4><p>A program that uses waitpid to wait, in no particular order, for all of its N children to terminate:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;csapp.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 2</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> status, i;</span><br><span class="line">    <span class="keyword">pid_t</span> pid;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Parent creates N children */</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; N; i++)                       </span><br><span class="line">	<span class="keyword">if</span> ((pid = Fork()) == <span class="number">0</span>)  <span class="comment">/* child */</span>     </span><br><span class="line">	    <span class="built_in">exit</span>(<span class="number">100</span>+i);                          </span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Parent reaps N children in no particular order */</span></span><br><span class="line">    <span class="keyword">while</span> ((pid = waitpid(<span class="number">-1</span>, &amp;status, <span class="number">0</span>)) &gt; <span class="number">0</span>) &#123; </span><br><span class="line">	<span class="keyword">if</span> (WIFEXITED(status))                    </span><br><span class="line">	    <span class="built_in">printf</span>(<span class="string">&quot;child %d terminated normally with exit status=%d\n&quot;</span>,</span><br><span class="line">		   pid, WEXITSTATUS(status));     </span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	    <span class="built_in">printf</span>(<span class="string">&quot;child %d terminated abnormally\n&quot;</span>, pid);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* The only normal termination is if there are no more children */</span></span><br><span class="line">    <span class="keyword">if</span> (errno != ECHILD)                          </span><br><span class="line">	unix_error(<span class="string">&quot;waitpid error&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>The order that they were reaped is a property of this specific computer system. On another system, or even another execution on the same system, the two children might have been reaped in the opposite order.</p>
+<p>This is an example of the <strong>nondeterministic</strong> behavior that can make reasoning about <strong>concurrency</strong> so difficult</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Using waitpid to reap zombie children in the order they were created.</span></span><br><span class="line"><span class="comment">/* $begin waitpid2 */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;csapp.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 2</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> status, i;</span><br><span class="line">    <span class="keyword">pid_t</span> pid[N], retpid;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Parent creates N children */</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; N; i++) </span><br><span class="line">	<span class="keyword">if</span> ((pid[i] = Fork()) == <span class="number">0</span>)  <span class="comment">/* Child */</span>          </span><br><span class="line">	    <span class="built_in">exit</span>(<span class="number">100</span>+i);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Parent reaps N children in order */</span></span><br><span class="line">    i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> ((retpid = waitpid(pid[i++], &amp;status, <span class="number">0</span>)) &gt; <span class="number">0</span>) &#123; </span><br><span class="line">	<span class="keyword">if</span> (WIFEXITED(status))  </span><br><span class="line">	    <span class="built_in">printf</span>(<span class="string">&quot;child %d terminated normally with exit status=%d\n&quot;</span>,</span><br><span class="line">		   retpid, WEXITSTATUS(status));</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	    <span class="built_in">printf</span>(<span class="string">&quot;child %d terminated abnormally\n&quot;</span>, retpid);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/* The only normal termination is if there are no more children */</span></span><br><span class="line">    <span class="keyword">if</span> (errno != ECHILD) </span><br><span class="line">	unix_error(<span class="string">&quot;waitpid error&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* $end waitpid2 */</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="Practice-Problem-8-4"><a href="#Practice-Problem-8-4" class="headerlink" title="Practice Problem 8.4"></a>Practice Problem 8.4</h4><blockquote>
+<p>Consider the following program:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/wait.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> status;</span><br><span class="line">    <span class="keyword">pid_t</span> pid;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Start\n&quot;</span>);</span><br><span class="line">    pid = fork();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, !pid);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (pid == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Child\n&quot;</span>);</span><br><span class="line">     &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> ((waitpid(<span class="number">-1</span>, &amp;status, <span class="number">0</span>) &gt; <span class="number">0</span>) &amp;&amp; (WIFEXITED(status) != <span class="number">0</span>)) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, WEXITSTATUS(status));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Stop\n&quot;</span>);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>A. How many output lines does this program generate? </p>
+<p>B. What is one possible ordering of these output lines?</p>
+</blockquote>
+<h4 id="My-solution"><a href="#My-solution" class="headerlink" title="My solution:"></a>My solution:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">main -&gt; print(<span class="string">&quot;start&quot;</span>) -&gt; fork() +-&gt; print(pid)-&gt;print(WEXITSTATUS(status)) -&gt; print(<span class="string">&quot;Stop&quot;</span>)</span><br><span class="line">                                 |</span><br><span class="line">                                 +-&gt; print(pid)-&gt;print(<span class="string">&quot;Child&quot;</span>) -&gt; print(<span class="string">&quot;Stop&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>7 lines</p>
+<h4 id="Verification-1"><a href="#Verification-1" class="headerlink" title="Verification:"></a>Verification:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Start</span><br><span class="line">0</span><br><span class="line">1</span><br><span class="line">Child</span><br><span class="line">Stop</span><br><span class="line">2</span><br><span class="line">Stop</span><br></pre></td></tr></table></figure>
+<h3 id="8-4-4-Putting-Processes-to-Sleep"><a href="#8-4-4-Putting-Processes-to-Sleep" class="headerlink" title="8.4.4 Putting Processes to Sleep"></a>8.4.4 Putting Processes to Sleep</h3><p>The <code>sleep</code> function suspends a process for a specified period of time</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">sleep</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> secs)</span></span>;</span><br><span class="line"><span class="comment">//Returns: seconds left to sleep</span></span><br></pre></td></tr></table></figure>
+<p>Sleep returns zero if the requested amount of time has elapsed, and the number of seconds still left to sleep otherwise(This is possible when the process is interrupted by a SIGNAL).</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pause</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+<p><code>pause</code> function, which puts the calling function to sleep <strong>until a signal is received by the process.</strong></p>
+<h4 id="Practice-Problem-8-5"><a href="#Practice-Problem-8-5" class="headerlink" title="Practice Problem 8.5"></a>Practice Problem 8.5</h4><blockquote>
+<p>Write a wrapper function for <code>sleep</code>, called <code>wakeup</code>, with the following interface: <code>unsigned int wakeup(unsigned int secs);</code></p>
+<p> The <code>wakeup</code> function behaves exactly as the <code>sleep</code> function, except that it prints a message describing when the process actually woke up: Woke up at 4 secs.</p>
+</blockquote>
+<h4 id="My-solution-white-check-mark-3"><a href="#My-solution-white-check-mark-3" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">unixerror</span><span class="params">(<span class="keyword">char</span> * msg)</span></span>&#123;</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span> , <span class="string">&quot;%s :%s\n&quot;</span> , msg , strerror(errno));</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">wakeup</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> secs)</span></span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> elapsed = secs - sleep(secs);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Woke up at %u secs\n&quot;</span> , elapsed );    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">   wakeup(<span class="number">100</span>); </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="8-4-5-Loading-and-Running-Programs"><a href="#8-4-5-Loading-and-Running-Programs" class="headerlink" title="8.4.5 Loading and Running Programs"></a>8.4.5 Loading and Running Programs</h3><p><em>The <code>execve</code> function loads and runs a new program <strong>in the context of the current process.</strong></em>(<strong><em>Override code,data,stack,…., completely corrupt the current program! It is the same process, but running a different program!</em></strong>)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">execve</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *filename, <span class="keyword">const</span> <span class="keyword">char</span> *argv[],</span></span></span><br><span class="line"><span class="function"><span class="params"><span class="keyword">const</span> <span class="keyword">char</span> *envp[])</span></span>;</span><br><span class="line"><span class="comment">//Does not return if OK; returns −1 on error</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>argument list <code>argv</code> and the environment variable list <code>envp</code></li>
+<li><code>execve</code> returns to the calling program <strong>only if there is an error</strong>, such as not being able to find filename.</li>
+</ul>
+<p><img src="/2021/09/25/CSAPP/Ch8/argus2execev.png" alt="arguments to execve"></p>
+<p>(Must terminate with <code>NULL</code> in the array)</p>
+<p>After <code>execve</code> loads filename, it calls the start-up code. The start-up code sets up the stack and passes control to the main routine of the new program</p>
+<p><img src="/2021/09/25/CSAPP/Ch8/newstackorg.png" alt="new stack organization"></p>
+<hr>
+<p>Manipulate environment variables</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">getenv</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span></span>;</span><br><span class="line"><span class="comment">//Returns: pointer to name if it exists, NULL if no match</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">setenv</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">const</span> <span class="keyword">char</span> *newvalue, <span class="keyword">int</span> overwrite)</span></span>;</span><br><span class="line"><span class="comment">//Returns: 0 on success, −1 on error</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">unsetenv</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span></span>;</span><br><span class="line"><span class="comment">//Returns: nothing</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="Practice-Problem-8-6"><a href="#Practice-Problem-8-6" class="headerlink" title="Practice Problem 8.6"></a>Practice Problem 8.6</h4><blockquote>
+<p>Write a program called <code>myecho</code> that prints its command-line arguments and environment variables. For example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ ./myecho arg1 arg2</span><br><span class="line">Command-ine arguments:</span><br><span class="line">argv[ 0]: myecho</span><br><span class="line">argv[ 1]: arg1</span><br><span class="line">argv[ 2]: arg2</span><br><span class="line">Environment variables:</span><br><span class="line">envp[ 0]: PWD=/usr0/droh/ics/code/ecf</span><br><span class="line">envp[ 1]: TERM=emacs</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">envp[25]: USER=droh</span><br><span class="line">envp[26]: SHELL=/usr/<span class="built_in">local</span>/bin/tcsh</span><br><span class="line">envp[27]: HOME=/usr0/droh</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark-4"><a href="#My-solution-white-check-mark-4" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printarg</span><span class="params">(<span class="keyword">int</span> argc , <span class="keyword">char</span>* argv [] )</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; argc ; i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;argv [%2d]: %s\n&quot;</span> , i , argv[i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printenv</span><span class="params">(<span class="keyword">char</span> * envp [])</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span>** walk = envp;</span><br><span class="line">    <span class="keyword">int</span> cot = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span>(*walk != <span class="literal">NULL</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;envp [%2d]: %s\n&quot;</span> , cot , *walk);</span><br><span class="line">        cot++;</span><br><span class="line">        walk++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc , <span class="keyword">char</span>* argv [] , <span class="keyword">char</span>* envp [])</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Command-ine arguments:\n&quot;</span>);</span><br><span class="line">    printarg(argc , argv);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Environment variables:\n&quot;</span>);</span><br><span class="line">    printenv(envp);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="8-4-6-Using-fork-and-execve-to-Run-Programs"><a href="#8-4-6-Using-fork-and-execve-to-Run-Programs" class="headerlink" title="8.4.6 Using fork and execve to Run Programs"></a>8.4.6 Using fork and execve to Run Programs</h3><p><em>Programs such as <strong>Unix shells</strong> and <strong>Web servers</strong> make heavy use of the <code>fork</code> and <code>execve</code> functions</em></p>
+<ul>
+<li>A shell is an interactive <strong>application-level</strong> program that runs other programs on behalf of the user</li>
+<li>A shell performs a sequence of <code>read/evaluate</code> steps and then terminates. <ul>
+<li>The read step reads a command line from the user. </li>
+<li>The evaluate step parses the command line and runs programs on behalf of the user.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* function prototypes */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">eval</span><span class="params">(<span class="keyword">char</span> *cmdline)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">parseline</span><span class="params">(<span class="keyword">char</span> *buf, <span class="keyword">char</span> **argv)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">builtin_command</span><span class="params">(<span class="keyword">char</span> **argv)</span></span>; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> cmdline[MAXLINE]; <span class="comment">/* Command line */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">	<span class="comment">/* Read */</span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;&gt; &quot;</span>);                   </span><br><span class="line">	Fgets(cmdline, MAXLINE, <span class="built_in">stdin</span>); </span><br><span class="line">	<span class="keyword">if</span> (feof(<span class="built_in">stdin</span>))</span><br><span class="line">	    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Evaluate */</span></span><br><span class="line">	eval(cmdline);</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">eval</span><span class="params">(<span class="keyword">char</span> *cmdline)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *argv[MAXARGS]; <span class="comment">/* Argument list execve() */</span></span><br><span class="line">    <span class="keyword">char</span> buf[MAXLINE];   <span class="comment">/* Holds modified command line */</span></span><br><span class="line">    <span class="keyword">int</span> bg;              <span class="comment">/* Should the job run in bg or fg? */</span></span><br><span class="line">    <span class="keyword">pid_t</span> pid;           <span class="comment">/* Process id */</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">strcpy</span>(buf, cmdline);</span><br><span class="line">    bg = parseline(buf, argv); </span><br><span class="line">    <span class="keyword">if</span> (argv[<span class="number">0</span>] == <span class="literal">NULL</span>)  </span><br><span class="line">	<span class="keyword">return</span>;   <span class="comment">/* Ignore empty lines */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!builtin_command(argv)) &#123; </span><br><span class="line">	<span class="keyword">if</span> ((pid = Fork()) == <span class="number">0</span>) &#123;   <span class="comment">/* Child runs user job */</span></span><br><span class="line">	    <span class="keyword">if</span> (execve(argv[<span class="number">0</span>], argv, environ) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%s: Command not found.\n&quot;</span>, argv[<span class="number">0</span>]);</span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">	    &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Parent waits for foreground job to terminate */</span></span><br><span class="line">	<span class="keyword">if</span> (!bg) &#123;</span><br><span class="line">	    <span class="keyword">int</span> status;</span><br><span class="line">	    <span class="keyword">if</span> (waitpid(pid, &amp;status, <span class="number">0</span>) &lt; <span class="number">0</span>)</span><br><span class="line">		unix_error(<span class="string">&quot;waitfg: waitpid error&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	    <span class="built_in">printf</span>(<span class="string">&quot;%d %s&quot;</span>, pid, cmdline);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>If the last argument is an <code>‘&amp;’</code> character, then parseline returns 1, indicating that the program should be executed in the <strong>background</strong> (the shell does not wait for it to complete)( the shell returns to the top of the loop and waits for the next command line.).</li>
+<li>Otherwise, it returns 0, indicating that the program should be run in the <strong>foreground</strong>(the shell waits for it to complete)(uses the <code>waitpid</code> function to wait for the job to terminate. )</li>
+<li>After parsing the command line, the eval function calls the builtin_command function, which checks whether the first command-line argument is a built-in shell command. If so, it interprets the command immediately and returns 1. Otherwise, it returns 0</li>
+<li>If <code>builtin_command</code> returns 0, then the shell creates a <strong>child process</strong> and executes the requested program inside the child</li>
+<li>Notice that this simple shell is flawed because it <strong>does not reap any of its background children</strong>. Correcting this flaw requires the <strong>use of signals</strong>, which we describe in the next section.</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="http://csapp.cs.cmu.edu/2e/ics2/code/ecf/shellex.c">Complete source code</a></p>
+<h2 id="8-5-Signals"><a href="#8-5-Signals" class="headerlink" title="8.5 Signals"></a>8.5 Signals</h2><p><em>In this section, we will study <strong>a higher-level software form of exceptional control flow</strong>, known as a Linux signal, that <strong>allows processes and the kernel to interrupt other processes</strong>.</em></p>
+<p><img src="/2021/09/25/CSAPP/Ch8/signals.png" alt="Linux signals"></p>
+<p><strong><em>A signal is a small message that notifies a process that an event of some type has occurred in the system</em></strong></p>
+<ul>
+<li> Low-level hardware exceptions are processed by the kernel’s exception handlers and would not normally be visible to user processes</li>
+<li> Signals provide a mechanism for exposing the occurrence of such exceptions to user processes</li>
+<li>For example, if a process attempts to divide by zero, then the kernel sends it a SIGFPE signal (number 8)</li>
+</ul>
+<h3 id="8-5-1-Signal-Terminology"><a href="#8-5-1-Signal-Terminology" class="headerlink" title="8.5.1 Signal Terminology"></a>8.5.1 Signal Terminology</h3><p><em>The transfer of a signal to a destination process occurs in two distinct steps:</em></p>
+<ul>
+<li>Sending a signal<ul>
+<li>The kernelsends (delivers) a signal to a destination process by <strong>updating some state in the context of the destination process</strong></li>
+</ul>
+</li>
+<li>Receiving a signal<ul>
+<li>A destination process receives a signal when it is <strong>forced by the kernel to react in some way to the delivery of the signal.</strong></li>
+<li>The process can either ignore the signal, terminate, or catch the signal by executing a user-level function called a <strong>signal handler</strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="/2021/09/25/CSAPP/Ch8/signalhandler.png" alt="signal handler"></p>
+<hr>
+<p>A signal that <strong>has been sent but not yet received</strong> is called a <strong>pending signal</strong>.</p>
+<ul>
+<li>At any point in time, there can be at <strong>most one pending signal of a particular type.</strong><ul>
+<li>If a process has a pending signal of type <code>k</code>, then any subsequent signals of type<code> k</code> sent to that process are <strong>not queued; they are simply discarded</strong></li>
+</ul>
+</li>
+<li>A process can selectively <strong>block</strong> the receipt of certain signals. <ul>
+<li>When a signal is blocked, it can be delivered, but the resulting pending signal will not be received until the process unblocks the signal.</li>
+</ul>
+</li>
+</ul>
+<h3 id="8-5-2-Sending-Signals"><a href="#8-5-2-Sending-Signals" class="headerlink" title="8.5.2 Sending Signals"></a>8.5.2 Sending Signals</h3><p><em>Unix systems provide a number of mechanisms for sending signals to processes. All of the mechanisms rely on the notion of a <strong>process group.</strong></em></p>
+<h4 id="Process-Groups"><a href="#Process-Groups" class="headerlink" title="Process Groups"></a>Process Groups</h4><ul>
+<li>Every process belongs to <strong>exactly one process group</strong>, which is identified by <strong>a positive integer process group ID</strong></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">pid_t</span> <span class="title">getpgrp</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="comment">//Returns: process group ID of calling process</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>By default, a child process belongs to the same process group as its parent</li>
+<li>A process can change the process group of itself or another process by using the <code>setpgid</code> function:</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">setpgid</span><span class="params">(<span class="keyword">pid_t</span> pid, <span class="keyword">pid_t</span> pgid)</span></span>;</span><br><span class="line"><span class="comment">//Returns: 0 on success, −1 on error</span></span><br></pre></td></tr></table></figure>
+<h4 id="Sending-Signals-with-the-bin-kill-Program"><a href="#Sending-Signals-with-the-bin-kill-Program" class="headerlink" title="Sending Signals with the /bin/kill Program"></a>Sending Signals with the /bin/kill Program</h4><ul>
+<li>The <code>/bin/kill</code> program sends an arbitrary signal to another process. </li>
+<li> some Unix shells have their own built-in <code>kill</code> command</li>
+</ul>
+<h4 id="Sending-Signals-from-the-Keyboard"><a href="#Sending-Signals-from-the-Keyboard" class="headerlink" title="Sending Signals from the Keyboard"></a>Sending Signals from the Keyboard</h4><p><em>Unix shells use the abstraction of a <strong>job</strong> to represent the <strong>processes that are created as a result of evaluating a single command line</strong></em></p>
+<ul>
+<li>At any point in time, there is at most one foreground job and zero or more background jobs.</li>
+<li>For example, typing <code>linux&gt; ls | sort </code>creates a foreground job consisting of two processes connected by a Unix pipe: one running the <code>ls </code>program, the other running the <code>sort</code> program.</li>
+</ul>
+<p><img src="/2021/09/25/CSAPP/Ch8/pgroups.png" alt="process groups"></p>
+<p>Typing <code>Ctrl+C</code> at the keyboard causes the kernel to send a SIGINT signal to every process in the foreground process group</p>
+<h4 id="Sending-Signals-with-the-kill-Function"><a href="#Sending-Signals-with-the-kill-Function" class="headerlink" title="Sending Signals with the kill Function"></a>Sending Signals with the kill Function</h4><p><em>Processes send signals to other processes (including themselves) by calling the <code>kill</code> function</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">kill</span><span class="params">(<span class="keyword">pid_t</span> pid, <span class="keyword">int</span> sig)</span></span>;</span><br><span class="line"><span class="comment">//Returns: 0 if OK, −1 on error</span></span><br></pre></td></tr></table></figure>
+<h4 id="Sending-Signals-with-the-alarm-Function"><a href="#Sending-Signals-with-the-alarm-Function" class="headerlink" title="Sending Signals with the alarm Function"></a>Sending Signals with the alarm Function</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">alarm</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> secs)</span></span>;</span><br><span class="line"><span class="comment">//Returns: remaining seconds of previous alarm, or 0 if no previous alarm</span></span><br></pre></td></tr></table></figure>
+<h3 id="8-5-3-Receiving-Signals"><a href="#8-5-3-Receiving-Signals" class="headerlink" title="8.5.3 Receiving Signals"></a>8.5.3 Receiving Signals</h3><p>When the kernel switches a process <code>p</code> from kernel mode to user mode (e.g., returning from a system call or completing a context switch):</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">receive_signal</span>(<span class="params">signal</span>):</span></span><br><span class="line">    action()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">len</span>(p.unblocked_pending_signals) != <span class="number">0</span>:</span><br><span class="line">    p.receive_signal(p.unblocked_pending_signals[one_of_the_signals])</span><br><span class="line"></span><br><span class="line">p.<span class="keyword">continue</span>()</span><br></pre></td></tr></table></figure>
+<p>Each signal type has a predefined default action, which is one of the following:</p>
+<ul>
+<li>The process terminates. </li>
+<li>The process terminates and dumps core.</li>
+<li>The process stops (suspends) until restarted by a SIGCONT signal.</li>
+<li>The process ignores the signal.</li>
+</ul>
+<p>A process can modify the default action associated with a signal by using the <code>signal</code> function. The only exceptions are <code>SIGSTOP</code> and <code>SIGKILL</code>, whose default actions <strong>cannot be changed</strong>.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">typedef</span> <span class="title">void</span> <span class="params">(*<span class="keyword">sighandler_t</span>)</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">sighandler_t</span> <span class="title">signal</span><span class="params">(<span class="keyword">int</span> signum, <span class="keyword">sighandler_t</span> handler)</span></span>;</span><br><span class="line"><span class="comment">//Returns: pointer to previous handler if OK, SIG_ERR on error (does not set errno)</span></span><br></pre></td></tr></table></figure>
+<p>The signal function can change the action associated with a signal signum in one of three ways:</p>
+<ul>
+<li>If <code>handler</code> is <code>SIG_IGN</code>, then signals of type <code>signum</code> are ignored.</li>
+<li>If handler is <code>SIG_DFL</code>, then the action for signals of type <code>signum</code> reverts to the default action</li>
+<li>Otherwise, <code>handler</code> is the <strong>address of a user-defined function</strong>, called a signal handler, that will be called whenever the process receives a signal of type <code>signum</code>. <ul>
+<li>Changing the default action by passing the address of a handler to the signal function is known as <strong>installing the handler</strong></li>
+<li> The invocation of the handler is called <strong>catching the signal</strong>.</li>
+<li>The execution of the handler is referred to as <strong>handling the signal.</strong></li>
+</ul>
+</li>
+<li>When a process catches a signal of type k, the handler installed for signal k is invoked with a single integer argument set to k. This argument allows the same handler function to catch different types of signals.</li>
+<li>When the handler executes its return statement, control (usually) passes back to the instruction in the control flow where the process was interrupted by the receipt of the signal. </li>
+</ul>
+<p>For example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//catch ctrl-c signal</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">handler</span><span class="params">(<span class="keyword">int</span> signum)</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Ctrl-c detected!\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//install the handler</span></span><br><span class="line">    <span class="keyword">if</span> (signal(SIGINT, &amp;handler) == SIG_ERR)&#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;error\n&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">            ;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ./noctrl </span><br><span class="line">^CCtrl-c detected!</span><br><span class="line">^CCtrl-c detected!</span><br><span class="line">^CCtrl-c detected!</span><br><span class="line">^CCtrl-c detected!</span><br></pre></td></tr></table></figure>
+<hr>
+<p>Signal handlers can be interrupted by other handlers</p>
+<p><img src="/2021/09/25/CSAPP/Ch8/multhandlers.png" alt="multiple handlers"></p>
+<ul>
+<li> the main program catches signal s, which interrupts the main program and transfers control to handler S</li>
+<li> While S is running, the program catches signal t = s, which interrupts S and transfers control to handler T </li>
+<li>When T returns, S resumes where it was interrupted. Eventually, S returns, transferring control back to the main program, which resumes where it left off.</li>
+</ul>
+<h4 id="Practice-Problem-8-7"><a href="#Practice-Problem-8-7" class="headerlink" title="Practice Problem 8.7"></a>Practice Problem 8.7</h4><blockquote>
+<p>Write a program called <code>snooze</code> that takes a single command-line argument, calls the <code>snooze</code> function from Problem 8.5 with this argument, and then terminates. </p>
+<p>Write your program so that the user can interrupt the snooze function by typing Ctrl+C at the keyboard. For example:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ./snooze 5</span><br><span class="line">^C                   <span class="comment"># (User hits Crtl+C after 3 seconds)</span></span><br><span class="line">Slept <span class="keyword">for</span> 3 of 5 secs.</span><br><span class="line">$</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark-5"><a href="#My-solution-white-check-mark-5" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">handler</span><span class="params">(<span class="keyword">int</span> signum)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc , <span class="keyword">char</span>* argv [])</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//install handler</span></span><br><span class="line">    <span class="keyword">if</span> (signal(SIGINT, handler) == SIG_ERR)&#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;error\n&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> sec = atoi(argv[<span class="number">1</span>]);</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> elapsed = sec - sleep(sec);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Slept for %d of %d secs.\n&quot;</span> , elapsed , sec );    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Verification-2"><a href="#Verification-2" class="headerlink" title="Verification:"></a>Verification:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./snooze 10</span><br><span class="line">^CSlept <span class="keyword">for</span> 5 of 10 secs.</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/09/25/CSAPP/Ch8/" data-id="cku535c4j0005g6yqhe550385" data-title="Ch8" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/09/25/Network/IPv4address/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          IPv4address
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/09/20/CSAPP/perflab/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">perflab</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/09/28/CSAPP/Ch8PartII/">Ch8PartII</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/25/Network/IPv4address/">IPv4address</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/25/CSAPP/Ch8/">Ch8</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/20/CSAPP/perflab/">perflab</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/19/CSAPP/Ch7/">Ch7</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

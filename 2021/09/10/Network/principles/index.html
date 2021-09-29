@@ -15,8 +15,10 @@
 <meta property="og:locale">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/Network/principles/layeringdef.png">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/Network/principles/layerincs.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/Network/principles/packageencap.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/10/Network/principles/vpn.png">
 <meta property="article:published_time" content="2021-09-10T02:51:04.000Z">
-<meta property="article:modified_time" content="2021-09-14T02:57:32.640Z">
+<meta property="article:modified_time" content="2021-09-25T13:00:22.110Z">
 <meta property="article:author" content="rubbish">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/09/10/Network/principles/layeringdef.png">
@@ -64,12 +66,12 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Rechercher"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
       </div>
     </div>
   </div>
@@ -137,11 +139,40 @@
 </ul>
 <hr>
 <h2 id="Encapsulation"><a href="#Encapsulation" class="headerlink" title="Encapsulation"></a>Encapsulation</h2><p><em>Encapsulation is how you can pack data into packages but preserve their layering information</em></p>
+<p><img src="/2021/09/10/Network/principles/packageencap.png" alt="encapsulated package"></p>
+<ul>
+<li>Encapsulation is how layering manifest in data representation</li>
+<li>Layer N data is the payload to Layer N-1</li>
+<li>Example<ul>
+<li>HTTP data is payload for a TCP segment</li>
+<li>The TCP segment is payload for IP segment</li>
+<li>The IP segment is the payload for WIFI link frame</li>
+</ul>
+</li>
+</ul>
+<h3 id="Encapsulation-flexibility"><a href="#Encapsulation-flexibility" class="headerlink" title="Encapsulation flexibility"></a>Encapsulation flexibility</h3><p><em>Encapsulation allow you to layer <strong>recursively</strong></em></p>
+<p>For example, in a VPN</p>
+<p><img src="/2021/09/10/Network/principles/vpn.png" alt="vpn package"></p>
+<p>We have</p>
+<ul>
+<li>HTTP data inside a TCP segment</li>
+<li>inside an IP segment</li>
+<li>inside a TLS segment</li>
+<li>inside a TCP segment</li>
+<li>inside an IP segment</li>
+<li>inside the link frame</li>
+</ul>
+<h2 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h2><ul>
+<li>Network protocals are ALL <strong><em>BIG endian</em></strong></li>
+</ul>
+<p>Convert between little endian and big endian in C:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdint.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">uint16_t</span> http_port = <span class="number">80</span>; <span class="comment">//little endian, host endian</span></span><br><span class="line">    <span class="keyword">uint16_t</span> package_http_port  = htons(http_port);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;host:0x%04x , network:0x%04x\n&quot;</span> , http_port , package_http_port);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//host:0x0050 , network:0x5000</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">uint32_t</span> <span class="title">htonl</span><span class="params">(<span class="keyword">uint32_t</span> hostlong)</span></span>; <span class="comment">//host to network long</span></span><br><span class="line"><span class="function"><span class="keyword">uint16_t</span> <span class="title">htons</span><span class="params">(<span class="keyword">uint16_t</span> hostshort)</span></span>; <span class="comment">//host to network short</span></span><br><span class="line"><span class="function"><span class="keyword">uint32_t</span> <span class="title">ntohl</span><span class="params">(<span class="keyword">uint32_t</span> netlong)</span></span>; <span class="comment">//network to host long</span></span><br><span class="line"><span class="function"><span class="keyword">uint16_t</span> <span class="title">ntohs</span><span class="params">(<span class="keyword">uint16_t</span> netshort)</span></span>;<span class="comment">//network to host short</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/09/10/Network/principles/" data-id="cktmyu04q0007qpyq7la92g8h" data-title="principles" class="article-share-link">Partager</a>
+      <a data-url="http://rubbish-and-world.github.io/2021/09/10/Network/principles/" data-id="cktmyu04q0007qpyq7la92g8h" data-title="principles" class="article-share-link">Share</a>
       
       
       
@@ -152,7 +183,7 @@
 <nav id="article-nav">
   
     <a href="/2021/09/13/CSAPP/attacklab/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Récent</strong>
+      <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
           attacklab
@@ -162,7 +193,7 @@
   
   
     <a href="/2021/09/10/CSAPP/Ch6/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Ancien</strong>
+      <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">Ch6</div>
     </a>
   
@@ -178,7 +209,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Catégories</h3>
+    <h3 class="widget-title">Categories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
     </div>
@@ -188,7 +219,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Mot-clés</h3>
+    <h3 class="widget-title">Tags</h3>
     <div class="widget">
       <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
     </div>
@@ -198,7 +229,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Nuage de mot-clés</h3>
+    <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
       <a href="/tags/game/" style="font-size: 10px;">game</a>
     </div>
@@ -217,9 +248,21 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Articles récents</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2021/09/28/CSAPP/Ch8PartII/">Ch8PartII</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/25/Network/IPv4address/">IPv4address</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/25/CSAPP/Ch8/">Ch8</a>
+          </li>
         
           <li>
             <a href="/2021/09/20/CSAPP/perflab/">perflab</a>
@@ -227,18 +270,6 @@
         
           <li>
             <a href="/2021/09/19/CSAPP/Ch7/">Ch7</a>
-          </li>
-        
-          <li>
-            <a href="/2021/09/13/CSAPP/attacklab/">attacklab</a>
-          </li>
-        
-          <li>
-            <a href="/2021/09/10/Network/principles/">principles</a>
-          </li>
-        
-          <li>
-            <a href="/2021/09/10/CSAPP/Ch6/">Ch6</a>
           </li>
         
       </ul>
@@ -255,7 +286,7 @@
     <div id="footer-info" class="inner">
       
       &copy; 2021 rubbish<br>
-      Propulsé par <a href="https://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>

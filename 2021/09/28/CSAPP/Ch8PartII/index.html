@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Ch8PartII | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Signals and Nonlocal jump">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ch8PartII">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/09/28/CSAPP/Ch8PartII/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Signals and Nonlocal jump">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/28/CSAPP/Ch8PartII/safefuncs.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/28/CSAPP/Ch8PartII/prochierarchy.png">
+<meta property="article:published_time" content="2021-09-28T07:35:48.000Z">
+<meta property="article:modified_time" content="2021-09-29T05:10:08.936Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/09/28/CSAPP/Ch8PartII/safefuncs.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSAPP/Ch8PartII" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/28/CSAPP/Ch8PartII/" class="article-date">
+  <time class="dt-published" datetime="2021-09-28T07:35:48.000Z" itemprop="datePublished">2021-09-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/csapp/">csapp</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Ch8PartII
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+<h1 id="Signals-and-Nonlocal-jump"><a href="#Signals-and-Nonlocal-jump" class="headerlink" title="Signals and Nonlocal jump"></a>Signals and Nonlocal jump</h1><a id="more"></a>
+
+<h3 id="8-5-4-Blocking-and-Unblocking-Signals"><a href="#8-5-4-Blocking-and-Unblocking-Signals" class="headerlink" title="8.5.4 Blocking and Unblocking Signals"></a>8.5.4 Blocking and Unblocking Signals</h3><p><em>Linux provides implicit and explicit mechanisms for blocking signals:</em></p>
+<ul>
+<li>Implicit blocking mechanism<ul>
+<li>By default, the kernel blocks <strong>any pending signals of the type currently being processed by a handler</strong>. </li>
+<li>For example, in Figure 8.31, suppose the program has caught signal s and is currently running handler S. If another signals is sent to the process, then s will become pending but will not be received until after handler S returns.</li>
+</ul>
+</li>
+<li>Explicit blocking mechanism<ul>
+<li>Applications can explicitly block and unblock selected signals using the <code>sigprocmask</code> function and its helpers.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sigprocmask</span><span class="params">(<span class="keyword">int</span> how, <span class="keyword">const</span> <span class="keyword">sigset_t</span> *<span class="built_in">set</span>, <span class="keyword">sigset_t</span> *oldset)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sigemptyset</span><span class="params">(<span class="keyword">sigset_t</span> *<span class="built_in">set</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sigfillset</span><span class="params">(<span class="keyword">sigset_t</span> *<span class="built_in">set</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sigaddset</span><span class="params">(<span class="keyword">sigset_t</span> *<span class="built_in">set</span>, <span class="keyword">int</span> signum)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sigdelset</span><span class="params">(<span class="keyword">sigset_t</span> *<span class="built_in">set</span>, <span class="keyword">int</span> signum)</span></span>;</span><br><span class="line"><span class="comment">//Returns: 0 if OK, −1 on error</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sigismember</span><span class="params">(<span class="keyword">const</span> <span class="keyword">sigset_t</span> *<span class="built_in">set</span>, <span class="keyword">int</span> signum)</span></span>;</span><br><span class="line"><span class="comment">//Returns: 1 if member, 0 if not, −1 on error</span></span><br></pre></td></tr></table></figure>
+<p>The <code>sigprocmask</code> function changes <strong>the set of currently blocked signals (a bit vector )</strong></p>
+<p>The specific behavior depends on the value of <code>how</code>:</p>
+<ul>
+<li>SIG_BLOCK. Add the signals in set to blocked <code>(blocked = blocked | set)</code>.</li>
+<li>SIG_UNBLOCK. Remove the signals in set from blocked <code>(blocked = blocked &amp; ~set)</code></li>
+<li>SIG_SETMASK. <code>blocked = set</code>.</li>
+</ul>
+<p>If oldset is non-NULL, the previous value of the blocked bit vector is stored in oldset</p>
+<ul>
+<li>The <code>sigemptyset</code> initializes set to the empty set.</li>
+<li>The <code>sigfillset</code> function adds every signal to set. </li>
+<li>The <code>sigaddset</code> function adds signum to set, <code>sigdelset</code> deletes signum from set, and <code>sigismember</code> returns 1 if signum is a member of set, and 0 if not.</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">sigset_t</span> mask, prev_mask;</span><br><span class="line"></span><br><span class="line">Sigemptyset(&amp;mask);</span><br><span class="line">Sigaddset(&amp;mask, SIGINT);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Block SIGINT and save previous blocked set */</span></span><br><span class="line">Sigprocmask(SIG_BLOCK, &amp;mask, &amp;prev_mask);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// Code region that will not be interrupted by SIGINT</span></span><br><span class="line"><span class="comment">/* Restore previous blocked set, unblocking SIGINT */</span></span><br><span class="line"> Sigprocmask(SIG_SETMASK, &amp;prev_mask, <span class="literal">NULL</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="8-5-5-Writing-Signal-Handlers"><a href="#8-5-5-Writing-Signal-Handlers" class="headerlink" title="8.5.5 Writing Signal Handlers"></a>8.5.5 Writing Signal Handlers</h3><p><em>Handlers have several attributes that make them difficult to reason about</em></p>
+<ul>
+<li>Handlers <strong>run concurrently with the main program and share the same global variables</strong>, and thus can interfere with the main program and with other handlers</li>
+<li>The rules for how and when signals are received is often counterintuitive</li>
+<li>Different systems can have different signal-handling semantics</li>
+</ul>
+<p>In this section, we address these issues and give you some basic guidelines for writing safe, correct, and portable signal handlers.</p>
+<h4 id="Safe-Signal-Handling"><a href="#Safe-Signal-Handling" class="headerlink" title="Safe Signal Handling"></a>Safe Signal Handling</h4><ul>
+<li><p>Keep handlers as simple as possible.</p>
+<p>For example, the handler might simply set a global flag and return immediately, and then all processing associated with the receipt of the signal is performed by the main program, which periodically checks (and resets) the flag.</p>
+</li>
+<li><p>Call only <strong>async-signal-safe</strong> functions in your handlers.</p>
+<ul>
+<li><p>These functions can be safely called from a signal handler, either because it is <em>reentrant</em> (e.g., accesses only local variables), or because it <strong>cannot be interrupted</strong> by a signal handler.</p>
+</li>
+<li><p><strong>Notice that many popular functions, such as <code>printf, sprintf, malloc,</code>and <code>exit</code>, are not safe</strong></p>
+</li>
+<li><p>The only safe way to generate output from a signal handler is to use the <code>write</code> function</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2021/09/28/CSAPP/Ch8PartII/safefuncs.png" alt="safe functions"></p>
+<ul>
+<li><p>Save and restore <code>errno</code></p>
+<ul>
+<li>save <code>errno</code> to a local variable on entry to the handler and restore it before the handler returns to prevent other handler from interfering it.</li>
+<li>It is not necessary if the handler terminates the process by calling <code>_exit</code>.</li>
+</ul>
+</li>
+<li><p> Protect accesses to shared global data structures by blocking all signals.</p>
+</li>
+<li><p>Declare global variables with <code>volatile</code></p>
+<ul>
+<li><p>You can tell the compiler neither to cache a variable or put it in register by declaring it with the <code>volatile</code> type qualifier</p>
+</li>
+<li><p>The <code>volatile</code> qualifier forces the compiler to read the value from memory each time the value is referenced in the code</p>
+</li>
+</ul>
+</li>
+<li><p>Declare flags with <code>sig_atomic_t</code></p>
+<ul>
+<li>C provides an integer data type, <code>sig_atomic_t</code>, for which reads and writes are guaranteed to be atomic (uninterruptible) because they can be implemented with a single instruction</li>
+</ul>
+</li>
+</ul>
+<h4 id="Correct-Signal-Handling"><a href="#Correct-Signal-Handling" class="headerlink" title="Correct Signal Handling"></a>Correct Signal Handling</h4><p>Since pending signals are implemented with a bit vector,  it can only record 1 signal each type, so <strong><em>signals cannot be used to count the occurrence of events in other processes</em></strong></p>
+<h4 id="Practice-Problem-8-8"><a href="#Practice-Problem-8-8" class="headerlink" title="Practice Problem 8.8"></a>Practice Problem 8.8</h4><blockquote>
+<p>What is the output of the following program?</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">volatile</span> <span class="keyword">long</span> counter = <span class="number">2</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">handler1</span><span class="params">(<span class="keyword">int</span> sig)</span></span>&#123;</span><br><span class="line">    <span class="keyword">sigset_t</span> mask, prev_mask;</span><br><span class="line">    sigfillset(&amp;mask);</span><br><span class="line">    sigprocmask(SIG_BLOCK, &amp;mask, &amp;prev_mask); <span class="comment">/* Block sigs */</span></span><br><span class="line">    sio_putl(--counter);</span><br><span class="line">    sigprocmask(SIG_SETMASK, &amp;prev_mask, <span class="literal">NULL</span>); <span class="comment">/* Restore sigs */</span></span><br><span class="line">    _exit(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">pid_t</span> pid;</span><br><span class="line">    <span class="keyword">sigset_t</span> mask, prev_mask;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%ld&quot;</span>, counter);</span><br><span class="line">    fflush(<span class="built_in">stdout</span>);</span><br><span class="line">    signal(SIGUSR1, handler1);</span><br><span class="line">    <span class="keyword">if</span> ((pid = Fork()) == <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">while</span>(<span class="number">1</span>) &#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    kill(pid, SIGUSR1);</span><br><span class="line">    waitpid(<span class="number">-1</span>, <span class="literal">NULL</span>, <span class="number">0</span>);</span><br><span class="line">    sigfillset(&amp;mask);</span><br><span class="line">    sigprocmask(SIG_BLOCK, &amp;mask, &amp;prev_mask); <span class="comment">/* Block sigs */</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%ld&quot;</span>, ++counter);</span><br><span class="line">    sigprocmask(SIG_SETMASK, &amp;prev_mask, <span class="literal">NULL</span>); <span class="comment">/* Restore sigs */</span></span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark"><a href="#My-solution-white-check-mark" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">213</span><br></pre></td></tr></table></figure>
+<hr>
+<h4 id="Portable-Signal-Handling"><a href="#Portable-Signal-Handling" class="headerlink" title="Portable Signal Handling"></a>Portable Signal Handling</h4><p><em>Another ugly aspect of Unix signal handling is that different systems have different signal-handling semantics</em></p>
+<p>The Posix standard defines the sigaction function, which allows users to clearly specify the signal-handling semantics they want when they install a handler.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sigaction</span><span class="params">(<span class="keyword">int</span> signum, struct sigaction *act,</span></span></span><br><span class="line"><span class="function"><span class="params">struct sigaction *oldact)</span></span>;</span><br><span class="line"><span class="comment">//Returns: 0 if OK, −1 on error</span></span><br></pre></td></tr></table></figure>
+<h3 id="8-5-6-Synchronizing-Flows-to-Avoid-Nasty-Concurrency-Bugs"><a href="#8-5-6-Synchronizing-Flows-to-Avoid-Nasty-Concurrency-Bugs" class="headerlink" title="8.5.6 Synchronizing Flows to Avoid Nasty Concurrency Bugs"></a>8.5.6 Synchronizing Flows to Avoid Nasty Concurrency Bugs</h3><h3 id="8-5-7-Explicitly-Waiting-for-Signals"><a href="#8-5-7-Explicitly-Waiting-for-Signals" class="headerlink" title="8.5.7 Explicitly Waiting for Signals"></a>8.5.7 Explicitly Waiting for Signals</h3><p><em>Sometimes a main program needs to explicitly wait for a certain signal handler to run</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sigsuspend</span><span class="params">(<span class="keyword">const</span> <span class="keyword">sigset_t</span> *mask)</span></span>;</span><br><span class="line"><span class="comment">//Returns: −1</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>The <code>sigsuspend</code> function temporarily <strong>replaces the current blocked set with mask and then suspends the process</strong> until the receipt of a signal whose action is either to run a handler or to terminate the process.</p>
+</li>
+<li><p>If the action is to run a handler, then <code>sigsuspend</code> returns after the handler returns, <strong>restoring the blocked set to its state when sigsuspend was called.</strong></p>
+</li>
+<li><p>The sigsuspend function is equivalent to an atomic (uninterruptible) version of the following:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sigprocmask(SIG_BLOCK, &amp;mask, &amp;prev);</span><br><span class="line">pause();</span><br><span class="line">sigprocmask(SIG_SETMASK, &amp;prev, <span class="literal">NULL</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="8-6-Nonlocal-Jumps"><a href="#8-6-Nonlocal-Jumps" class="headerlink" title="8.6 Nonlocal Jumps"></a>8.6 Nonlocal Jumps</h2></li>
+</ul>
+<p><em>C provides a form of <strong>user-level exceptional control flow</strong>, called a nonlocal jump, that <strong>transfers control directly from one function to another</strong></em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;setjmp.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">setjmp</span><span class="params">(jmp_buf env)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sigsetjmp</span><span class="params">(sigjmp_buf env, <span class="keyword">int</span> savesigs)</span></span>;</span><br><span class="line"><span class="comment">//Returns: 0 from setjmp, nonzero from longjmps</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>The <code>setjmp</code> function saves the current calling environment in the <code>env</code> buffer, for later use by <code>longjmp</code>, and returns 0</li>
+<li> The calling environment includes the program counter, stack pointer, and general-purpose registers.</li>
+<li>For subtle reasons return value should not be assigned to a variable</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;setjmp.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">longjmp</span><span class="params">(jmp_buf env, <span class="keyword">int</span> retval)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">siglongjmp</span><span class="params">(sigjmp_buf env, <span class="keyword">int</span> retval)</span></span>;</span><br><span class="line"><span class="comment">//Never returns</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>The longjmp function <strong>restores the calling environment</strong> from the env buffer and then <strong>triggers a return from the most recent <code>setjmp</code> call</strong> that initialized env.</li>
+<li>The <code>setjmp</code> function is called once but returns multiple times</li>
+</ul>
+<p>An important application of nonlocal jumps is to permit an <strong>immediate return from a deeply nested function call</strong>, usually as a result of detecting some error condition.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;setjmp.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">jmp_buf buf;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> error1 = <span class="number">0</span>; </span><br><span class="line"><span class="keyword">int</span> error2 = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">void foo(void), bar(void);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">switch</span>(setjmp(buf)) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">0</span>: </span><br><span class="line">	foo();</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">1</span>: </span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Detected an error1 condition in foo\n&quot;</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">2</span>: </span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Detected an error2 condition in foo\n&quot;</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Unknown error condition in foo\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Deeply nested function foo */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(<span class="keyword">void</span>)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (error1)</span><br><span class="line">	longjmp(buf, <span class="number">1</span>); </span><br><span class="line">    bar();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">(<span class="keyword">void</span>)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (error2)</span><br><span class="line">	longjmp(buf, <span class="number">2</span>); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Another important application of nonlocal jumps is to <strong>branch out of a signal handler to a specific code location</strong>, rather than returning to the instruction that was interrupted by the arrival of the signal</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;setjmp.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sigjmp_buf buf;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">handler</span><span class="params">(<span class="keyword">int</span> sig)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    siglongjmp(buf, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!sigsetjmp(buf, <span class="number">1</span>)) &#123;</span><br><span class="line">        Signal(SIGINT, handler);</span><br><span class="line">	Sio_puts(<span class="string">&quot;starting\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">	Sio_puts(<span class="string">&quot;restarting\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">	Sleep(<span class="number">1</span>);</span><br><span class="line">	Sio_puts(<span class="string">&quot;processing...\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>); <span class="comment">/* Control never reaches here */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>The <code>sigsetjmp</code> and <code>siglongjmp</code> functions are versions of <code>setjmp</code> and <code>longjmp</code> that can be used by signal handlers.</li>
+<li>To avoid a race, we must install the handler <strong>after</strong> we call <code>sigsetjmp</code>.</li>
+</ul>
+<blockquote>
+<p>The exception mechanisms provided by C++ and Java are higher-level, more structured versions of the C setjmp and longjmp functions. You can think of a catch clause inside a try statement as being akin to a setjmp function. Similarly, a throw statement is similar to a longjmp function.</p>
+</blockquote>
+<h2 id="8-7-Tools-for-Manipulating-Processes"><a href="#8-7-Tools-for-Manipulating-Processes" class="headerlink" title="8.7 Tools for Manipulating Processes"></a>8.7 Tools for Manipulating Processes</h2><ul>
+<li><code>strace</code><ul>
+<li>Prints a trace of each system call invoked by a running program and its children.</li>
+<li>Compile your program with <code>-static </code>to get a cleaner trace without a lot of output related to shared libraries.</li>
+</ul>
+</li>
+<li><code>ps</code>: Lists processes (including zombies) currently in the system.</li>
+<li><code>top</code> Prints information about the resource usage of current processes.</li>
+<li><code>pmap</code> Displays the memory map of a process.</li>
+<li><code>/proc</code>. A virtual filesystem that exports the contents of numerous kernel data structures in an ASCII text form that can be read by user programs. For example, type cat <code>/proc/loadavg</code> to see the current load average on your Linux system.</li>
+</ul>
+<h2 id="8-8-Summary"><a href="#8-8-Summary" class="headerlink" title="8.8 Summary"></a>8.8 Summary</h2><p><img src="/2021/09/28/CSAPP/Ch8PartII/prochierarchy.png" alt="Linux processes hierarchy"></p>
+<h3 id="Signals"><a href="#Signals" class="headerlink" title="Signals"></a>Signals</h3><ul>
+<li>A <strong>signal</strong> only change some states in the context of the destination process.</li>
+<li>Signals are always sent by <strong>kernal</strong>, user program can only ask the kernal to send signals for them.</li>
+</ul>
+<h4 id="Why-printf-is-not-safe-for-signal"><a href="#Why-printf-is-not-safe-for-signal" class="headerlink" title="Why printf is not safe for signal?"></a>Why <code>printf</code> is not safe for signal?</h4><p>Potential dead-lock</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">handler</span><span class="params">(<span class="keyword">int</span> signum)</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;handling\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//install handler</span></span><br><span class="line">    signal(SIGINT , &amp;handler);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//main routine</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;running\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>When <code>printf</code> do the printing, <code>stdout</code> will be locked until <code>printf</code> is finished.</li>
+<li>However, it is possible that a signal recevied when executing the <code>printf</code> </li>
+<li>Then the <code>printf</code> in the <code>handler</code> want to use <code>stdout</code>, it wait for <code>stdout</code> to be unlocked</li>
+<li>The waiting will never end since the interrupted <code>printf</code> in main has no way to finish.</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/09/28/CSAPP/Ch8PartII/" data-id="cku535c4g0001g6yqga2lbcue" data-title="Ch8PartII" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/09/25/Network/IPv4address/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">IPv4address</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/09/28/CSAPP/Ch8PartII/">Ch8PartII</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/25/Network/IPv4address/">IPv4address</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/25/CSAPP/Ch8/">Ch8</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/20/CSAPP/perflab/">perflab</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/19/CSAPP/Ch7/">Ch7</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
