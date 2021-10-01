@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>cachelab | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Cache lab how to">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cachelab">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/09/29/CSAPP/cachelab/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Cache lab how to">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/29/CSAPP/cachelab/blocking.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/29/CSAPP/cachelab/multexample.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/29/CSAPP/cachelab/second.png">
+<meta property="article:published_time" content="2021-09-29T05:46:47.000Z">
+<meta property="article:modified_time" content="2021-10-01T03:04:39.381Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/09/29/CSAPP/cachelab/blocking.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSAPP/cachelab" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/09/29/CSAPP/cachelab/" class="article-date">
+  <time class="dt-published" datetime="2021-09-29T05:46:47.000Z" itemprop="datePublished">2021-09-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/csapp/">csapp</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      cachelab
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Cache-lab-how-to"><a href="#Cache-lab-how-to" class="headerlink" title="Cache lab how to"></a>Cache lab how to</h1><a id="more"></a>
+
+<h2 id="Part-A-Build-a-Cache-Simulator"><a href="#Part-A-Build-a-Cache-Simulator" class="headerlink" title="Part A Build a Cache Simulator"></a>Part A Build a Cache Simulator</h2><p><em>It is not an acutal cache, it doesn’t store any data, it only simulate the working flow of the real cache</em></p>
+<ul>
+<li>use <code>getopt()</code> in <code>unistd.h</code> to get parse arguments</li>
+<li> <code>fscanf</code> is also very useful in this part</li>
+<li>use <code>malloc</code> and <code>free</code> to manage memory</li>
+</ul>
+<h2 id="Part-B-Matrix-Transpose"><a href="#Part-B-Matrix-Transpose" class="headerlink" title="Part B Matrix Transpose"></a>Part B Matrix Transpose</h2><p><em>Use blocking techique, dividing matrix into submatrix</em></p>
+<p><em>blocking <strong>works or not</strong> has a lot to do with the <strong>cache size !!!</strong></em></p>
+<p>The cache block size will decide the block size</p>
+<h4 id="Transpose-example"><a href="#Transpose-example" class="headerlink" title="Transpose example"></a>Transpose example</h4><p><img src="/2021/09/29/CSAPP/cachelab/blocking.png" alt="blocking example"></p>
+<h4 id="Multiplication-example"><a href="#Multiplication-example" class="headerlink" title="Multiplication example"></a>Multiplication example</h4><p>Bad case(no blocking):</p>
+<p><img src="/2021/09/29/CSAPP/cachelab/multexample.png" alt="multiplication example"></p>
+<p><img src="/2021/09/29/CSAPP/cachelab/second.png" alt="secong iter"></p>
+<h2 id="Read-the-writeup"><a href="#Read-the-writeup" class="headerlink" title="Read the writeup"></a>Read the writeup</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tar xvf cachelab-handout.tar</span><br></pre></td></tr></table></figure>
+<p><em>You will be modifying two files: <code>csim.c</code> and <code>trans.c</code>.</em></p>
+<h3 id="Reference-Trace-Files"><a href="#Reference-Trace-Files" class="headerlink" title="Reference Trace Files"></a>Reference Trace Files</h3><p>The <code>traces</code> subdirectory of the handout directory contains a collection of <em>reference trace files</em> that we will use to evaluate the correctness of the cache simulator you write in Part A.</p>
+<p>The trace files are generated by a Linux program called <code>valgrind</code></p>
+<p>Output format : <code>[space]operation address,size</code></p>
+<p>The <code>operation</code> field denotes the type of memory access: <code>I</code> denotes an instruction load, <code>L</code> a data load, <code>S</code> a data store, and <code>M</code> a data modify (i.e., a data load followed by a data store). There is never a space before each <code>I</code>. There is always a space before each <code>M</code>, <code>L</code>, and <code>S</code></p>
+<h3 id="Part-A-Writing-a-Cache-Simulator"><a href="#Part-A-Writing-a-Cache-Simulator" class="headerlink" title="Part A: Writing a Cache Simulator"></a>Part A: Writing a Cache Simulator</h3><p><em>In Part A you will write a cache simulator in <code>csim.c</code> that takes a valgrind memory trace as input, simulates the hit/miss behavior of a cache memory on this trace, and outputs the total number of hits, misses, and evictions.</em></p>
+<ul>
+<li><p>Your job for Part A is to fill in the <code>csim.c</code> file so that it takes the same command line arguments and produces the <strong>identical output as the reference simulator</strong>. Notice that this file is almost completely empty. You’ll need to write it from scratch.</p>
+</li>
+<li><p>For this lab, we are interested only in data cache performance, so your simulator should <strong>ignore all instruction cache accesses</strong> (lines starting with “I”). Recall that valgrind always puts “I” in the first column (with no preceding space), and “M”, “L”, and “S” in the second column (with a preceding space). This may help you parse the trace.</p>
+</li>
+<li><p>To receive credit for Part A, you must call the function <code>printSummary</code>, with the total number of hits, misses, and evictions, at the end of your main function:</p>
+<p><code>printSummary(hit_count, miss_count, eviction_count);</code></p>
+</li>
+<li><p>Your csim.c file must compile without warnings in order to receive credit.</p>
+<p>Your simulator must work correctly for arbitrary s, E, and b. This means that you will need to allocate storage for your simulator’s data structures using the malloc function. Type “man malloc” for information about this function.</p>
+</li>
+<li><p>For this lab, we are interested only in data cache performance, so your simulator should ignore all instruction cache accesses (lines starting with “I”). Recall that valgrind always puts “I” in the first column (with no preceding space), and “M”, “L”, and “S” in the second column (with a preceding space). This may help you parse the trace.</p>
+</li>
+<li><p>To receive credit for Part A, you must call the function <code>printSummary</code> with the total number of hits, misses, and evictions, at the end of your main function:<code>printSummary(hit_count, miss_count, eviction_count);</code></p>
+</li>
+<li><p>For this this lab, you should assume that memory accesses are aligned properly, such that <strong>a single memory access never crosses block boundaries.</strong> By making this assumption, you can ignore the request sizes in the valgrind traces.</p>
+</li>
+</ul>
+<h3 id="Part-B-Optimizing-Matrix-Transpose"><a href="#Part-B-Optimizing-Matrix-Transpose" class="headerlink" title="Part B: Optimizing Matrix Transpose"></a>Part B: Optimizing Matrix Transpose</h3><p><em>In Part B you will write a transpose function in <code>trans.c</code> that causes <strong>as few cache misses as possible</strong>.</em></p>
+<ul>
+<li><p>You are allowed to define at most 12 local variables of type int per transpose function.</p>
+</li>
+<li><p>Your code <strong>only needs to be correct for these three cases</strong>(<code>32×32,64×64,61×67</code>) and you can optimize it specifically for these three cases. In particular, it is perfectly OK for your function to explicitly check for the input sizes and implement separate code optimized for each case.</p>
+</li>
+<li><p>The <code>test-trans</code> program saves the trace for function <code>i</code> in file <code>trace.fi</code>.They are invaluable debugging tools that can help you understand exactly where the hits and misses for each transpose function are coming from. To debug a particular function, simply run its trace through the reference simulator with the verbose option:</p>
+<p><code>./csim-ref -v -s 5 -E 1 -b 5 -t trace.f0</code></p>
+</li>
+<li><p>Since your transpose function is being evaluated on a <strong>direct-mapped cache</strong>, conflict misses are a potential problem</p>
+</li>
+</ul>
+<h3 id="Evaluation"><a href="#Evaluation" class="headerlink" title="Evaluation"></a>Evaluation</h3><h4 id="Part-A"><a href="#Part-A" class="headerlink" title="Part A"></a>Part A</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ ./csim -s 1 -E 1 -b 1 -t traces/yi2.trace</span><br><span class="line">$ ./csim -s 4 -E 2 -b 4 -t traces/yi.trace</span><br><span class="line">$ ./csim -s 2 -E 1 -b 4 -t traces/dave.trace</span><br><span class="line">$ ./csim -s 2 -E 1 -b 3 -t traces/trans.trace</span><br><span class="line">$ ./csim -s 2 -E 2 -b 3 -t traces/trans.trace</span><br><span class="line">$ ./csim -s 2 -E 4 -b 3 -t traces/trans.trace </span><br><span class="line">$ ./csim -s 5 -E 1 -b 5 -t traces/trans.trace</span><br><span class="line">$ ./csim -s 5 -E 1 -b 5 -t traces/long.trace</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ make</span><br><span class="line">$ ./test-csim</span><br></pre></td></tr></table></figure>
+<h4 id="Part-B"><a href="#Part-B" class="headerlink" title="Part B"></a>Part B</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Header comment */</span></span><br><span class="line"><span class="keyword">char</span> trans_simple_desc[] = <span class="string">&quot;A simple transpose&quot;</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">trans_simple</span><span class="params">(<span class="keyword">int</span> M, <span class="keyword">int</span> N, <span class="keyword">int</span> A[N][M], <span class="keyword">int</span> B[M][N])</span> </span>&#123;</span><br><span class="line"><span class="comment">/* your transpose code here */</span> &#125;</span><br><span class="line">registerTransFunction(trans_simple, trans_simple_desc);</span><br><span class="line">registerTransFunction(transpose_submit, transpose_submit_desc);</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ make</span><br><span class="line">$ ./test-trans -M 32 -N 32</span><br></pre></td></tr></table></figure>
+<h4 id="All-in-one"><a href="#All-in-one" class="headerlink" title="All in one"></a>All in one</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./driver.py</span><br></pre></td></tr></table></figure>
+<h3 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//headers for getopt</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;getopt.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt; </span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>Since your transpose function is being evaluated on a direct-mapped cache, conflict misses are a potential problem. Think about the potential for conflict misses in your code, especially along the diagonal. Try to think of access patterns that will decrease the number of these conflict misses.</p>
+<h2 id="My-solution"><a href="#My-solution" class="headerlink" title="My solution"></a>My solution</h2><h3 id="Part-A-1"><a href="#Part-A-1" class="headerlink" title="Part A"></a>Part A</h3><p><strong><em>When manipulating values in memory,one should Never create local variables !!! Create Pointers !!!</em></strong></p>
+<h4 id="Debug-python-script"><a href="#Debug-python-script" class="headerlink" title="Debug python script"></a>Debug python script</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> termcolor <span class="keyword">import</span> cprint</span><br><span class="line">s = <span class="number">2</span></span><br><span class="line">E = <span class="number">4</span></span><br><span class="line">b = <span class="number">3</span></span><br><span class="line"></span><br><span class="line">T = <span class="number">64</span>-S-B</span><br><span class="line"></span><br><span class="line">addresses = [<span class="number">0x00600aa0</span>,   <span class="number">0x7ff000398</span>,   <span class="number">0x7ff000390</span>,  <span class="number">0x7ff000378</span>,  <span class="number">0x7ff000370</span>,  <span class="number">0x7ff000384</span>,  <span class="number">0x7ff000384</span>,  <span class="number">0x7ff000388</span>,  <span class="number">0x7ff000388</span>,  <span class="number">0x7ff000384</span> ]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printf</span>(<span class="params">address</span>):</span></span><br><span class="line">    string = <span class="string">&#x27;&#123;:064b&#125;&#x27;</span>.<span class="built_in">format</span>(address)</span><br><span class="line">    cprint(string[:T] , <span class="string">&#x27;blue&#x27;</span> , end=<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">    cprint(string[T:<span class="number">64</span>-b] , <span class="string">&#x27;red&#x27;</span> , end=<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">    cprint(string[<span class="number">64</span>-b:], <span class="string">&#x27;green&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> addresses:</span><br><span class="line">    printf(a)</span><br></pre></td></tr></table></figure>
+<h4 id="Print-array-in-gdb"><a href="#Print-array-in-gdb" class="headerlink" title="Print array in gdb"></a>Print array in <code>gdb</code></h4><p><em>If source code is avaliable and you are debugging programing works, vanilla gdb is better than pwndbg</em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ p *arrayname@arraylen</span><br></pre></td></tr></table></figure>
+<h4 id="Source-code"><a href="#Source-code" class="headerlink" title="Source code"></a>Source code</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;cachelab.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;getopt.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdbool.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Line</span> &#123;</span></span><br><span class="line">    <span class="keyword">bool</span> HaveValue ; </span><br><span class="line">    <span class="keyword">long</span> Tbits ;</span><br><span class="line">    <span class="keyword">int</span> age ;</span><br><span class="line">&#125; line ;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">helpinfo</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(line* sets, <span class="keyword">int</span> num)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">evictReplace</span><span class="params">(line* <span class="built_in">set</span> , <span class="keyword">long</span> tbits, <span class="keyword">int</span> num)</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">bool</span> verbose = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc , <span class="keyword">char</span> * argv [])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> s = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">int</span> E = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">int</span> b = <span class="number">-1</span>;</span><br><span class="line">    FILE * t = <span class="literal">NULL</span> ;</span><br><span class="line">    <span class="keyword">int</span> opt ;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> hits = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> misses = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> evictions = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* parse command line */</span></span><br><span class="line">    <span class="keyword">while</span>( (opt = getopt(argc , argv, <span class="string">&quot;s:E:b:t:hv&quot;</span>)) != <span class="number">-1</span>)&#123;</span><br><span class="line">        <span class="keyword">switch</span>(opt)&#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;h&#x27;</span>: &#123;helpinfo();<span class="built_in">exit</span>(<span class="number">0</span>);&#125;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;v&#x27;</span>: &#123; verbose = <span class="literal">true</span> ; <span class="keyword">break</span>;&#125;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;s&#x27;</span>: &#123; <span class="keyword">int</span> res = atoi(optarg) ; <span class="keyword">if</span>(res) s = res ; <span class="keyword">break</span> ;&#125;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;E&#x27;</span>: &#123; <span class="keyword">int</span> res = atoi(optarg) ; <span class="keyword">if</span>(res) E = res ; <span class="keyword">break</span> ;&#125;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;b&#x27;</span>: &#123; <span class="keyword">int</span> res = atoi(optarg) ; <span class="keyword">if</span>(res) b = res ; <span class="keyword">break</span> ;&#125;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">&#x27;t&#x27;</span>: &#123; t = fopen(optarg, <span class="string">&quot;rt&quot;</span>); <span class="keyword">if</span>(t == <span class="literal">NULL</span>)&#123;<span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;Cannot open file.\n&quot;</span>);<span class="built_in">exit</span>(<span class="number">0</span>);&#125;&#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (s == <span class="number">-1</span> || E == <span class="number">-1</span> || b == <span class="number">-1</span> || t == <span class="literal">NULL</span>)&#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;%s: Missing required command line argument\n&quot;</span> , argv[<span class="number">0</span>]);</span><br><span class="line">        helpinfo();</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* malloc memory space */</span></span><br><span class="line">    <span class="keyword">int</span> linenumber = (<span class="number">1</span>&lt;&lt;s) * E ; </span><br><span class="line">    line * sets = (line*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(line) * linenumber);</span><br><span class="line">    init(sets , linenumber);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* process input */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> tbitsnum =  <span class="number">64</span> - s - b;</span><br><span class="line">    <span class="keyword">long</span> setmask = (<span class="keyword">long</span>)((<span class="keyword">unsigned</span> <span class="keyword">long</span>)((<span class="number">1l</span>&lt;&lt;<span class="number">63</span>)&gt;&gt; (s<span class="number">-1</span>)) &gt;&gt; tbitsnum);</span><br><span class="line">    <span class="keyword">long</span> tmask = (<span class="number">1l</span>&lt;&lt;<span class="number">63</span>) &gt;&gt; (tbitsnum - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> size = <span class="number">-1</span>; </span><br><span class="line">    <span class="keyword">char</span> op  = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">long</span> address = <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>( <span class="built_in">fscanf</span>(t, <span class="string">&quot; %c %lx,%d&quot;</span> , &amp;op , &amp;address , &amp;size) != EOF)&#123;</span><br><span class="line">        <span class="keyword">if</span>(op == <span class="string">&#x27;I&#x27;</span>) <span class="keyword">continue</span>; <span class="comment">//skip instructions</span></span><br><span class="line">    </span><br><span class="line">        <span class="comment">/* cache match */</span></span><br><span class="line">            <span class="keyword">long</span> offset = ( address &amp; setmask ) &gt;&gt; b ;</span><br><span class="line">            <span class="keyword">long</span> currentTbits = (address &amp; tmask) &gt;&gt; (b+s);</span><br><span class="line">            line* <span class="built_in">set</span> = sets + offset * E;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="comment">//age increase</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; E ; i++)&#123; <span class="keyword">if</span> (<span class="built_in">set</span>[i].HaveValue) <span class="built_in">set</span>[i].age++; &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// real cache do comparison simultaneously instead of looping</span></span><br><span class="line">            <span class="keyword">bool</span> flag = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; E ; i++)&#123;</span><br><span class="line">                line * target = <span class="built_in">set</span>+i;</span><br><span class="line">                <span class="keyword">if</span> (target-&gt;HaveValue == <span class="literal">true</span> &amp;&amp; target-&gt;Tbits == currentTbits)&#123;</span><br><span class="line">                    flag = <span class="literal">true</span>;</span><br><span class="line">                    target-&gt;age = <span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="keyword">if</span> (verbose) <span class="built_in">printf</span>(<span class="string">&quot;%c %lx,%d&quot;</span> , op , address , size);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* match result handling */</span></span><br><span class="line">            <span class="keyword">if</span>(flag)&#123;</span><br><span class="line">                <span class="keyword">switch</span>(op)&#123;</span><br><span class="line">                    <span class="keyword">case</span> <span class="string">&#x27;L&#x27;</span>:</span><br><span class="line">                    <span class="keyword">case</span> <span class="string">&#x27;S&#x27;</span>:&#123; hits++; <span class="keyword">if</span> (verbose)&#123; <span class="built_in">printf</span>(<span class="string">&quot; hit\n&quot;</span>);&#125;<span class="keyword">break</span>; &#125;</span><br><span class="line">                    <span class="keyword">case</span> <span class="string">&#x27;M&#x27;</span>:&#123; hits+=<span class="number">2</span> ; <span class="keyword">if</span> (verbose)&#123; <span class="built_in">printf</span>(<span class="string">&quot; hit hit\n&quot;</span>);&#125;&#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                misses++;</span><br><span class="line">                <span class="keyword">if</span> (verbose) <span class="built_in">printf</span>(<span class="string">&quot; miss&quot;</span>);</span><br><span class="line">                <span class="keyword">bool</span> evicted = evictReplace(<span class="built_in">set</span> , currentTbits , E);</span><br><span class="line">                <span class="keyword">if</span> (evicted)&#123; evictions++;&#125;</span><br><span class="line">                <span class="keyword">switch</span>(op)&#123;</span><br><span class="line">                    <span class="keyword">case</span> <span class="string">&#x27;L&#x27;</span>:</span><br><span class="line">                    <span class="keyword">case</span> <span class="string">&#x27;S&#x27;</span>:&#123;<span class="keyword">if</span> (verbose)&#123; <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);&#125;<span class="keyword">break</span>; &#125;</span><br><span class="line">                    <span class="keyword">case</span> <span class="string">&#x27;M&#x27;</span>:&#123;hits++; <span class="keyword">if</span> (verbose)&#123; <span class="built_in">printf</span>(<span class="string">&quot; hit\n&quot;</span>); &#125;&#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//end of loop</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* tidy up and print the result */</span></span><br><span class="line">    fclose(t);</span><br><span class="line">    <span class="built_in">free</span>(sets);</span><br><span class="line">    printSummary(hits, misses, evictions);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">helpinfo</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Usage: ./csim [-hv] -s &lt;num&gt; -E &lt;num&gt; -b &lt;num&gt; -t &lt;file&gt;\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Options:\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;  -h         Print this help message.\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;  -v         Optional verbose flag.\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;  -s &lt;num&gt;   Number of set index bits.\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;  -E &lt;num&gt;   Number of lines per set.\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;  -b &lt;num&gt;   Number of block offset bits.\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;  -t &lt;file&gt;  Trace file.\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Examples:\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;  linux&gt;  ./csim -s 4 -E 1 -b 4 -t traces/yi.trace\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;  linux&gt;  ./csim -v -s 8 -E 2 -b 4 -t traces/yi.trace\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">(line * sets , <span class="keyword">int</span> num)</span></span>&#123;</span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; num ; i++)&#123;</span><br><span class="line">        sets[i].HaveValue = <span class="literal">false</span> ;</span><br><span class="line">        sets[i].age = <span class="number">0</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">evictReplace</span><span class="params">(line * <span class="built_in">set</span> , <span class="keyword">long</span> tbits , <span class="keyword">int</span> num)</span></span>&#123;</span><br><span class="line">    <span class="keyword">bool</span> flag = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">int</span> oldestage = <span class="number">-1</span>;</span><br><span class="line">    line* LRUp  = <span class="literal">NULL</span> ;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; num ; i++)&#123;</span><br><span class="line">        line* <span class="keyword">this</span> = <span class="built_in">set</span>+i;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>-&gt;HaveValue == <span class="literal">false</span>)&#123;</span><br><span class="line">            <span class="keyword">this</span>-&gt;Tbits = tbits;</span><br><span class="line">            <span class="keyword">this</span>-&gt;HaveValue = <span class="literal">true</span>;</span><br><span class="line">            flag = <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (oldestage &lt; <span class="keyword">this</span>-&gt;age )&#123;</span><br><span class="line">            oldestage = <span class="keyword">this</span>-&gt;age;</span><br><span class="line">            LRUp = <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(flag)&#123;</span><br><span class="line">        LRUp-&gt;Tbits = tbits;</span><br><span class="line">        LRUp-&gt;age = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (verbose) <span class="built_in">printf</span>(<span class="string">&quot; eviction&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> flag;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Evaluation-1"><a href="#Evaluation-1" class="headerlink" title="Evaluation"></a>Evaluation</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ make clean ; make ;</span><br><span class="line">$ ./test-csim </span><br><span class="line">                        Your simulator     Reference simulator</span><br><span class="line">Points (s,E,b)    Hits  Misses  Evicts    Hits  Misses  Evicts</span><br><span class="line">     3 (1,1,1)       9       8       6       9       8       6  traces/yi2.trace</span><br><span class="line">     3 (4,2,4)       4       5       2       4       5       2  traces/yi.trace</span><br><span class="line">     3 (2,1,4)       2       3       1       2       3       1  traces/dave.trace</span><br><span class="line">     3 (2,1,3)     167      71      67     167      71      67  traces/trans.trace</span><br><span class="line">     3 (2,2,3)     201      37      29     201      37      29  traces/trans.trace</span><br><span class="line">     3 (2,4,3)     212      26      10     212      26      10  traces/trans.trace</span><br><span class="line">     3 (5,1,5)     231       7       0     231       7       0  traces/trans.trace</span><br><span class="line">     6 (5,1,5)  265189   21775   21743  265189   21775   21743  traces/long.trace</span><br><span class="line">    27</span><br><span class="line"></span><br><span class="line">TEST_CSIM_RESULTS=27</span><br></pre></td></tr></table></figure>
+<hr>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/09/29/CSAPP/cachelab/" data-id="cku7s9two0000voyq0fr0fbxe" data-title="cachelab" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/09/28/CSAPP/Ch8PartII/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">Ch8PartII</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/09/29/CSAPP/cachelab/">cachelab</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/28/CSAPP/Ch8PartII/">Ch8PartII</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/25/Network/IPv4address/">IPv4address</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/25/CSAPP/Ch8/">Ch8</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/20/CSAPP/perflab/">perflab</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
