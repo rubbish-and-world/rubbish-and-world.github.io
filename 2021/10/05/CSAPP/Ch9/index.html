@@ -38,8 +38,18 @@
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/05/CSAPP/Ch9/privateobj.png">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/05/CSAPP/Ch9/override.png">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/05/CSAPP/Ch9/mmp.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/05/CSAPP/Ch9/mallocexample.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/05/CSAPP/Ch9/heapblock.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/05/CSAPP/Ch9/simplelistorg.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/05/CSAPP/Ch9/boundarytag.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/05/CSAPP/Ch9/coalesce.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/05/CSAPP/Ch9/explicitexample.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/05/CSAPP/Ch9/segregatelist.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/05/CSAPP/Ch9/graph.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/05/CSAPP/Ch9/marksweep.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/05/CSAPP/Ch9/dealwithbugs.png">
 <meta property="article:published_time" content="2021-10-05T04:10:53.000Z">
-<meta property="article:modified_time" content="2021-10-06T12:32:55.185Z">
+<meta property="article:modified_time" content="2021-10-09T02:27:15.931Z">
 <meta property="article:author" content="rubbish">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/10/05/CSAPP/Ch9/PA.png">
@@ -528,7 +538,239 @@
 </blockquote>
 <h4 id="My-solution"><a href="#My-solution" class="headerlink" title="My solution :"></a>My solution :</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//No error checking below</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc , <span class="keyword">char</span> * argv [])</span></span>&#123;</span><br><span class="line">   <span class="keyword">int</span> fd = open(argv[<span class="number">1</span>], O_RDONLY);</span><br><span class="line">   <span class="keyword">size_t</span> len = lseek(fd, <span class="number">0</span>, SEEK_END);</span><br><span class="line">   <span class="keyword">char</span> * res = mmap(<span class="literal">NULL</span> , len, PROT_READ, MAP_PRIVATE, fd , <span class="number">0</span>);</span><br><span class="line">   <span class="built_in">printf</span>(<span class="string">&quot;%s&quot;</span> , res);</span><br><span class="line">   close(fd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="Modified-solution-on-the-book"><a href="#Modified-solution-on-the-book" class="headerlink" title="Modified solution on the book:"></a>Modified solution on the book:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//No error checking below</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc , <span class="keyword">char</span> * argv [])</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> fd ; </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">stat</span> <span class="title">stat</span>;</span></span><br><span class="line">    fd = open(argv[<span class="number">1</span>], O_RDONLY , <span class="number">0</span> );</span><br><span class="line">    fstat(fd, &amp;stat);</span><br><span class="line">    <span class="keyword">char</span> * bufp = mmap(<span class="literal">NULL</span>, stat.st_size, PROT_READ, MAP_PRIVATE, fd, <span class="number">0</span>);</span><br><span class="line">    write(<span class="number">1</span>, bufp, stat.st_size);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="9-9-Dynamic-Memory-Allocation"><a href="#9-9-Dynamic-Memory-Allocation" class="headerlink" title="9.9 Dynamic Memory Allocation"></a>9.9 Dynamic Memory Allocation</h2>
+<h2 id="9-9-Dynamic-Memory-Allocation"><a href="#9-9-Dynamic-Memory-Allocation" class="headerlink" title="9.9 Dynamic Memory Allocation"></a>9.9 Dynamic Memory Allocation</h2><p><em>For each process, the kernel maintains a variable <code>brk</code> (pronounced “break”) that <strong>points to the top of the heap</strong></em></p>
+<ul>
+<li><p>An allocator maintains the heap as a collection of <strong>various-size blocks</strong>.</p>
+</li>
+<li><p>Allocators come in two basic styles. Both styles require the application to explicitly allocate blocks. They differ about <strong>which entity is responsible for freeing allocated blocks.</strong></p>
+<ul>
+<li><p>Explicit allocators : require the application to explicitly free any allocated blocks.(<code>malloc</code> and <code>free</code>)</p>
+</li>
+<li><p>Implicit allocators : require the allocator to detect when an allocated block is no longer being used by the program and then free the block.(<strong>garbage collectors</strong>)</p>
+</li>
+</ul>
+</li>
+<li><p> memory allocation is a general idea that arises in a variety of contexts(Not only for manage heap memory)</p>
+</li>
+</ul>
+<h3 id="9-9-1-The-malloc-and-free-Functions"><a href="#9-9-1-The-malloc-and-free-Functions" class="headerlink" title="9.9.1 The malloc and free Functions"></a>9.9.1 The malloc and free Functions</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">malloc</span><span class="params">(<span class="keyword">size_t</span> size)</span></span>;</span><br><span class="line"><span class="comment">//Returns: pointer to allocated block if OK, NULL on error</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>The <code>malloc</code> function returns a pointer to a block of memory of <strong>at least</strong> <code>size</code> bytes that is <strong>suitably aligned</strong></p>
+</li>
+<li><p><code>malloc</code> <strong>does not initialize the memory</strong> it returns</p>
+<ul>
+<li>Applications that want initialized dynamic memory can use <code>calloc</code>, a thin wrapper around the <code>malloc</code></li>
+<li>Applications that want to change the size of a previously allocated block can use the <code>realloc</code> function.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">sbrk</span><span class="params">(<span class="keyword">intptr_t</span> incr)</span></span>;</span><br><span class="line"><span class="comment">//Returns: old brk pointer on success, −1 on error</span></span><br></pre></td></tr></table></figure>
+<p>The <code>sbrk</code> function grows or shrinks the heap by <strong>adding <code>incr</code> to the kernel’s brk pointer</strong></p>
+<ul>
+<li> Calling <code>sbrk</code> with a <strong>negative <code>incr</code></strong> is legal but tricky because the return value (the old value of brk) points to abs(incr) bytes past the new top of the heap.</li>
+</ul>
+<hr>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">free</span><span class="params">(<span class="keyword">void</span> *ptr)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>The <code>ptr</code> argument <strong>must point to the beginning of an allocated block that was obtained from</strong> <code>malloc</code>, <code>calloc</code>, or <code>realloc</code>. If not, then the behavior of free is <strong>undefined</strong></p>
+<hr>
+<p><img src="/2021/10/05/CSAPP/Ch9/mallocexample.png" alt="Example"></p>
+<h3 id="9-9-2-Why-Dynamic-Memory-Allocation"><a href="#9-9-2-Why-Dynamic-Memory-Allocation" class="headerlink" title="9.9.2 Why Dynamic Memory Allocation?"></a>9.9.2 Why Dynamic Memory Allocation?</h3><p><em>The most important reason that programs use dynamic memory allocation is that often <strong>they do not know the sizes of certain data structures until the program actually runs</strong></em></p>
+<h3 id="9-9-3-Allocator-Requirements-and-Goals"><a href="#9-9-3-Allocator-Requirements-and-Goals" class="headerlink" title="9.9.3 Allocator Requirements and Goals"></a>9.9.3 Allocator Requirements and Goals</h3><h4 id="Constraints"><a href="#Constraints" class="headerlink" title="Constraints"></a>Constraints</h4><p><em>Explicit allocators must <strong>operate within</strong> some rather stringent <strong>constraints</strong></em></p>
+<ul>
+<li>Handling arbitrary request sequences<ul>
+<li>An application can make an arbitrary sequence of allocate and free requests</li>
+<li> the allocator cannot make any assumptions about the ordering of allocate and free requests.</li>
+</ul>
+</li>
+<li>Making immediate responses to requests<ul>
+<li> the allocator is not allowed to reorder or buffer requests in order to improve performance.</li>
+</ul>
+</li>
+<li>Using only the heap</li>
+<li>Aligning blocks (alignment requirement). <ul>
+<li>The allocator must align blocks in such a way that they can <strong>hold any type of data object</strong></li>
+</ul>
+</li>
+<li>Not modifying allocated blocks.<ul>
+<li>Allocators can only manipulate or change free blocks. </li>
+<li>they are not allowed to modify or move blocks once they are allocated</li>
+<li> techniques such as compaction of allocated blocks are not permitted.</li>
+</ul>
+</li>
+</ul>
+<h4 id="Goals"><a href="#Goals" class="headerlink" title="Goals"></a>Goals</h4><ul>
+<li>Maximizing throughput.</li>
+<li>Maximizing memory utilization</li>
+</ul>
+<h3 id="9-9-4-Fragmentation"><a href="#9-9-4-Fragmentation" class="headerlink" title="9.9.4 Fragmentation"></a>9.9.4 Fragmentation</h3><p><em>unused memory is not available to satisfy allocate requests.</em></p>
+<p>There are two forms of fragmentation: </p>
+<h4 id="Internal-fragmentation"><a href="#Internal-fragmentation" class="headerlink" title="Internal fragmentation"></a>Internal fragmentation</h4><ul>
+<li>Internal fragmentation occurs when an allocated block size is larger than the required size</li>
+<li>It is simply the sum of the differences between the sizes of the allocated blocks and their requirements</li>
+<li>Thus, at any point in time, the amount of internal fragmentation depends only on the pattern of previous requests and the allocator implementation.</li>
+</ul>
+<h4 id="External-fragmentation"><a href="#External-fragmentation" class="headerlink" title="External fragmentation"></a>External fragmentation</h4><ul>
+<li><p>External fragmentation occurs when there is enough aggregate free memory to satisfy an allocate request, but no single free block is large enough to handle the request.</p>
+</li>
+<li><p>Figure 9.34 (e)</p>
+</li>
+<li><p>External fragmentation is much more difficult to quantify than internal fragmentation because it depends not only on the pattern of previous requests and the allocator implementation but also on the pattern of future requests</p>
+</li>
+</ul>
+<h3 id="9-9-5-Implementation-Issues"><a href="#9-9-5-Implementation-Issues" class="headerlink" title="9.9.5 Implementation Issues"></a>9.9.5 Implementation Issues</h3><p><em>A practical allocator that <strong>strikes a balance between throughput and utilization</strong> must consider the following issues:</em></p>
+<ul>
+<li>Free block organization. How do we keep track of free blocks?</li>
+<li>Placement. How do we choose an appropriate free block in which to place a newly allocated block?</li>
+<li>Splitting. After we place a newly allocated block in some free block, what do we do with the remainder of the free block?</li>
+<li>Coalescing. What do we do with a block that has just been freed?</li>
+</ul>
+<h3 id="9-9-6-Implicit-Free-Lists"><a href="#9-9-6-Implicit-Free-Lists" class="headerlink" title="9.9.6 Implicit Free Lists"></a>9.9.6 Implicit Free Lists</h3><p><em>Any practical allocator needs some <strong>data structure</strong> that allows it to <strong>distinguish block boundaries</strong> and to <strong>distinguish between allocated and free blocks</strong>.</em></p>
+<ul>
+<li>Most allocators em<strong>bed this information in the blocks themselves</strong>. </li>
+</ul>
+<p><img src="/2021/10/05/CSAPP/Ch9/heapblock.png" alt="block"></p>
+<ul>
+<li>A significant disadvantage is that the cost of any operation that requires a search of the free list, such as placing allocated blocks, will be linear in the total number of allocated and free blocks in the heap.</li>
+<li>Notice that we need some kind of specially marked end block(size of 0, allocated)</li>
+</ul>
+<p><img src="/2021/10/05/CSAPP/Ch9/simplelistorg.png" alt="simple list organziation"></p>
+<ul>
+<li><code>start of the heap</code> might no be aligned, so we need some <code>unused</code> block at the beginning to do the alignment</li>
+</ul>
+<h4 id="Practice-Problem-9-6"><a href="#Practice-Problem-9-6" class="headerlink" title="Practice Problem 9.6"></a>Practice Problem 9.6</h4><blockquote>
+<p>Determine the block sizes and header values that would result from the following sequence of <code>malloc</code> requests. </p>
+<p>Assumptions: (1) The allocator maintains double-word alignment and uses an implicit free list with the block format from Figure 9.35. (2) Block sizes are rounded up to the nearest multiple of 8 bytes.</p>
+<table>
+<thead>
+<tr>
+<th>Request</th>
+<th>Block size (decimal bytes)</th>
+<th>Block header (hex)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>malloc(2)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>malloc(9)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>malloc(15)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>malloc(20)</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="My-solution-white-check-mark-2"><a href="#My-solution-white-check-mark-2" class="headerlink" title="My solution : :white_check_mark:"></a>My solution : :white_check_mark:</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;0x&#123;:08x&#125;&#x27;</span>.<span class="built_in">format</span>(blocksize | <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>Request</th>
+<th>Block size (decimal bytes)</th>
+<th>Block header (hex)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>malloc(2)</td>
+<td>8</td>
+<td>0x00000009</td>
+</tr>
+<tr>
+<td>malloc(9)</td>
+<td>16</td>
+<td>0x00000011</td>
+</tr>
+<tr>
+<td>malloc(15)</td>
+<td>24</td>
+<td>0x00000019</td>
+</tr>
+<tr>
+<td>malloc(20)</td>
+<td>24</td>
+<td>0x00000019</td>
+</tr>
+</tbody></table>
+<h3 id="9-9-7-Placing-Allocated-Blocks"><a href="#9-9-7-Placing-Allocated-Blocks" class="headerlink" title="9.9.7 Placing Allocated Blocks"></a>9.9.7 Placing Allocated Blocks</h3><p>When an application requests a block of k bytes, the allocator <strong>searches the free list for a free block that is large enough to hold the requested block</strong>. The manner in which the allocator performs this search is determined by the placement policy. Some common policies are first fit, next fit, and best fit.</p>
+<ul>
+<li>First fit searches the free list from the beginning and chooses the first free block that fits</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">p = start ; <span class="comment">//start from the beginning</span></span><br><span class="line"><span class="keyword">while</span>( (p&lt;end) <span class="comment">//not pass the end</span></span><br><span class="line">      &amp;&amp; ( (*p &amp; <span class="number">1</span>) || (*p &amp; <span class="number">-2</span>) )) <span class="comment">// already allocated or size is too small</span></span><br><span class="line">&#123;</span><br><span class="line">    p = p + (*p &amp; <span class="number">-2</span>) ; <span class="comment">//go to next block via size</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Next fit is similar to first fit, but instead of starting each search at the beginning of the list, it starts each search where the previous search left off.</li>
+<li>Best fit examines every free block and chooses the free block with the smallest size that fits</li>
+</ul>
+<h3 id="9-9-8-Splitting-Free-Blocks"><a href="#9-9-8-Splitting-Free-Blocks" class="headerlink" title="9.9.8 Splitting Free Blocks"></a>9.9.8 Splitting Free Blocks</h3><h3 id="9-9-9-Getting-Additional-Heap-Memory"><a href="#9-9-9-Getting-Additional-Heap-Memory" class="headerlink" title="9.9.9 Getting Additional Heap Memory"></a>9.9.9 Getting Additional Heap Memory</h3><p><em>use <code>sbrk</code> to ask more space from the kernal</em></p>
+<h3 id="9-9-10-Coalescing-Free-Blocks"><a href="#9-9-10-Coalescing-Free-Blocks" class="headerlink" title="9.9.10 Coalescing Free Blocks"></a>9.9.10 Coalescing Free Blocks</h3><p><em>To combat false fragmentation, any practical allocator must merge adjacent free blocks in a process known as coalescing.</em></p>
+<p>This raises an important policy decision about when to perform coalescing.</p>
+<h3 id="9-9-11-Coalescing-with-Boundary-Tags"><a href="#9-9-11-Coalescing-with-Boundary-Tags" class="headerlink" title="9.9.11 Coalescing with Boundary Tags"></a>9.9.11 Coalescing with Boundary Tags</h3><p><img src="/2021/10/05/CSAPP/Ch9/boundarytag.png" alt="boundary tag"></p>
+<p>(If we were to <strong>store the allocated/free bit of the previous block in one of the excess loworder bits of the current block</strong>, then allocated blocks would not need footers, and we could use that extra space for payload. Note, however, that free blocks would still need footers)</p>
+<p>(When coalescing free blocks, we always update the <strong>first free block’s</strong> size)</p>
+<p><img src="/2021/10/05/CSAPP/Ch9/coalesce.png" alt="coalesce"></p>
+<h3 id="9-9-12-Putting-It-Together-Implementing-a-Simple-Allocator"><a href="#9-9-12-Putting-It-Together-Implementing-a-Simple-Allocator" class="headerlink" title="9.9.12 Putting It Together: Implementing a Simple Allocator"></a>9.9.12 Putting It Together: Implementing a Simple Allocator</h3><p>Implicit list strategy is not used in <code>malloc</code> and <code>free</code> for the sake of linear time complexity.</p>
+<h3 id="9-9-13-Explicit-Free-Lists"><a href="#9-9-13-Explicit-Free-Lists" class="headerlink" title="9.9.13 Explicit Free Lists"></a>9.9.13 Explicit Free Lists</h3><p><em>Since by definition the body of a free block is not needed by the program, the pointers that implement the data structure can be stored <strong>within the bodies of the free blocks</strong>.</em></p>
+<p><img src="/2021/10/05/CSAPP/Ch9/explicitexample.png" alt="explicit list"></p>
+<ul>
+<li>Using a doubly linked list instead of an implicit free list reduces the first-fit allocation time from linear in the total number of blocks to linear in the number of free blocks. </li>
+<li>A disadvantage of explicit lists in general is that free blocks must be large enough to contain all of the necessary pointers, as well as the header and possibly a footer. This results in a larger minimum block size and increases the potential for internal fragmentation.</li>
+</ul>
+<h3 id="9-9-14-Segregated-Free-Lists"><a href="#9-9-14-Segregated-Free-Lists" class="headerlink" title="9.9.14 Segregated Free Lists"></a>9.9.14 Segregated Free Lists</h3><p><em>A popular approach for reducing the allocation time, known generally as <strong>segregated storage</strong>, is to maintain multiple free lists, where <strong>each list holds blocks that are roughly the same size.</strong></em></p>
+<p><img src="/2021/10/05/CSAPP/Ch9/segregatelist.png" alt="segregate lists"></p>
+<p>For example</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># partition the block sizes by powers of 2</span></span><br><span class="line">&#123;<span class="number">1</span>&#125;, &#123;<span class="number">2</span>&#125;, &#123;<span class="number">3</span>, <span class="number">4</span>&#125;, &#123;<span class="number">5</span> – <span class="number">8</span>&#125;, ... , &#123;<span class="number">1025</span> – <span class="number">2048</span>&#125;, &#123;<span class="number">2049</span> – <span class="number">4096</span>&#125;, &#123;<span class="number">4097</span> – ∞&#125;</span><br><span class="line"><span class="comment"># Or we might assign small blocks to their own size classes and partition large blocks by powers of 2</span></span><br><span class="line">&#123;<span class="number">1</span>&#125;, &#123;<span class="number">2</span>&#125;, &#123;<span class="number">3</span>&#125;, ... , &#123;<span class="number">1023</span>&#125;, &#123;<span class="number">1024</span>&#125;, &#123;<span class="number">1025</span>–<span class="number">2048</span>&#125;, &#123;<span class="number">2049</span>–<span class="number">4096</span>&#125;, &#123;<span class="number">4097</span>–∞&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>The allocator maintains an array of free lists, with one free list per size class, ordered by increasing size</li>
+<li>When the allocator needs a block of size n, it searches the appropriate free list. If it cannot find a block that fits, it searches the next list, and so on.</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FreeBlock* lists[N];</span><br><span class="line"><span class="comment">//malloc(size)</span></span><br><span class="line"><span class="keyword">return</span> search(lists[index] , size);</span><br></pre></td></tr></table></figure>
+<h4 id="Simple-Segregated-Storage"><a href="#Simple-Segregated-Storage" class="headerlink" title="Simple Segregated Storage"></a>Simple Segregated Storage</h4><p><em>With simple segregated storage, the free list for each size class <strong>contains same-size blocks, each the size of the largest element of the size class</strong>.</em></p>
+<p>(For example, if some size class is defined as {17–32}, then the free list for that class consists entirely of blocks of size 32)</p>
+<h4 id="Segregated-Fits"><a href="#Segregated-Fits" class="headerlink" title="Segregated Fits"></a>Segregated Fits</h4><p><em>The segregated fits approach is a popular choice with production-quality allocators such as the GNU <code>malloc</code> package provided in the C standard library because it is both fast and memory efficient.</em></p>
+<ul>
+<li>With this approach, the allocator maintains an array of free lists. Each free list is associated with a size class and is organized as some kind of explicit or implicit list. Each list contains potentially different-size blocks whose sizes are members of the size class</li>
+<li>To allocate a block, we determine the size class of the request and do a firstfit search of the appropriate free list for a block that fits.<ul>
+<li>If we find one, then we (optionally) split it and insert the fragment in the appropriate free list. </li>
+<li>If we cannot find a block that fits, then we search the free list for the next larger size class.</li>
+<li>If none of the free lists yields a block that fits, then we request additional heap memory from the operating system, allocate the block out of this new heap memory, and place the remainder in the appropriate size class</li>
+</ul>
+</li>
+<li>To free a block, we coalesce and place the result on the appropriate free list.</li>
+</ul>
+<h4 id="Buddy-Systems"><a href="#Buddy-Systems" class="headerlink" title="Buddy Systems"></a>Buddy Systems</h4><p><em>A buddy system is a special case of segregated fits where each size class is a power of 2.</em></p>
+<ul>
+<li>The major advantage of a buddy system allocator is its fast searching and coalescing.</li>
+<li>The major disadvantage is that the power-of-2 requirement on the block size can cause significant internal fragmentation.</li>
+</ul>
+<h2 id="9-10-Garbage-Collection"><a href="#9-10-Garbage-Collection" class="headerlink" title="9.10 Garbage Collection"></a>9.10 Garbage Collection</h2><p><em>A garbage collector is a dynamic storage allocator that automatically frees allocated blocks that are no longer needed by the program</em></p>
+<h3 id="9-10-1-Garbage-Collector-Basics"><a href="#9-10-1-Garbage-Collector-Basics" class="headerlink" title="9.10.1 Garbage Collector Basics"></a>9.10.1 Garbage Collector Basics</h3><p><strong><em>A garbage collector views memory as a <code>directed reachability graph</code> of the form shown in Figure 9.49</em></strong></p>
+<p><img src="/2021/10/05/CSAPP/Ch9/graph.png" alt="directed reachability graph"></p>
+<ul>
+<li>The nodes of the graph are partitioned into a set of root nodes and a set of heap nodes<ul>
+<li>Each heap node corresponds to an allocated block in the heap. </li>
+<li>A directed edge<code> p → q</code> means that some location in block p points to some location in block q</li>
+<li>Root nodes correspond to locations not in the heap that contain pointers into the heap. These locations can be registers, variables on the stack, or global variables in the read/write data area of virtual memory</li>
+</ul>
+</li>
+<li>We say that a node p is reachable if there exists a directed path from any root node to p</li>
+<li>The role of a garbage collector is to <strong>maintain some representation of the reachability graph</strong> and <strong>periodically reclaim the unreachable nodes</strong> by freeing them and returning them to the free list.</li>
+</ul>
+<p>Collectors can provide their service on demand, or they can run as separate threads in parallel with the application, continuously updating the reachability graph and reclaiming garbage.</p>
+<h3 id="9-10-2-Mark-amp-Sweep-Garbage-Collectors"><a href="#9-10-2-Mark-amp-Sweep-Garbage-Collectors" class="headerlink" title="9.10.2 Mark&amp;Sweep Garbage Collectors"></a>9.10.2 Mark&amp;Sweep Garbage Collectors</h3><p><em>A Mark&amp;Sweep garbage collector consists of a <strong>mark phase, which marks all reachable and allocated descendants of the root nodes</strong>, followed by a <strong>sweep phase, which frees each unmarked allocated block</strong>.</em></p>
+<p><img src="/2021/10/05/CSAPP/Ch9/marksweep.png" alt="mark sweep example"></p>
+<h3 id="9-10-3-Conservative-Mark-amp-Sweep-for-C-Programs"><a href="#9-10-3-Conservative-Mark-amp-Sweep-for-C-Programs" class="headerlink" title="9.10.3 Conservative Mark&amp;Sweep for C Programs"></a>9.10.3 Conservative Mark&amp;Sweep for C Programs</h3><p><em>Since C does not tag memory locations with any type information(No way to determine if the data is a pointer or not), the algorithm have to be conservative.</em></p>
+<h2 id="9-11-Common-Memory-Related-Bugs-in-C-Programs"><a href="#9-11-Common-Memory-Related-Bugs-in-C-Programs" class="headerlink" title="9.11 Common Memory-Related Bugs in C Programs"></a>9.11 Common Memory-Related Bugs in C Programs</h2><h3 id="9-11-1-Dereferencing-Bad-Pointers"><a href="#9-11-1-Dereferencing-Bad-Pointers" class="headerlink" title="9.11.1 Dereferencing Bad Pointers"></a>9.11.1 Dereferencing Bad Pointers</h3><h3 id="9-11-2-Reading-Uninitialized-Memory"><a href="#9-11-2-Reading-Uninitialized-Memory" class="headerlink" title="9.11.2 Reading Uninitialized Memory"></a>9.11.2 Reading Uninitialized Memory</h3><p><em>A common error is to assume that heap memory is initialized to zero</em></p>
+<h3 id="9-11-3-Allowing-Stack-Buffer-Overflows"><a href="#9-11-3-Allowing-Stack-Buffer-Overflows" class="headerlink" title="9.11.3 Allowing Stack Buffer Overflows"></a>9.11.3 Allowing Stack Buffer Overflows</h3><h3 id="9-11-4-Assuming-That-Pointers-and-the-Objects-They-Point-to-Are-the-Same-Size"><a href="#9-11-4-Assuming-That-Pointers-and-the-Objects-They-Point-to-Are-the-Same-Size" class="headerlink" title="9.11.4 Assuming That Pointers and the Objects They Point to Are the Same Size"></a>9.11.4 Assuming That Pointers and the Objects They Point to Are the Same Size</h3><h3 id="9-11-5-Making-Off-by-One-Errors"><a href="#9-11-5-Making-Off-by-One-Errors" class="headerlink" title="9.11.5 Making Off-by-One Errors"></a>9.11.5 Making Off-by-One Errors</h3><h3 id="9-11-6-Referencing-a-Pointer-Instead-of-the-Object-It-Points-To"><a href="#9-11-6-Referencing-a-Pointer-Instead-of-the-Object-It-Points-To" class="headerlink" title="9.11.6 Referencing a Pointer Instead of the Object It Points To"></a>9.11.6 Referencing a Pointer Instead of the Object It Points To</h3><h3 id="9-11-7-Misunderstanding-Pointer-Arithmetic"><a href="#9-11-7-Misunderstanding-Pointer-Arithmetic" class="headerlink" title="9.11.7 Misunderstanding Pointer Arithmetic"></a>9.11.7 Misunderstanding Pointer Arithmetic</h3><h3 id="9-11-8-Referencing-Nonexistent-Variables"><a href="#9-11-8-Referencing-Nonexistent-Variables" class="headerlink" title="9.11.8 Referencing Nonexistent Variables"></a>9.11.8 Referencing Nonexistent Variables</h3><h3 id="9-11-9-Referencing-Data-in-Free-Heap-Blocks"><a href="#9-11-9-Referencing-Data-in-Free-Heap-Blocks" class="headerlink" title="9.11.9 Referencing Data in Free Heap Blocks"></a>9.11.9 Referencing Data in Free Heap Blocks</h3><h3 id="9-11-10-Introducing-Memory-Leaks"><a href="#9-11-10-Introducing-Memory-Leaks" class="headerlink" title="9.11.10 Introducing Memory Leaks"></a>9.11.10 Introducing Memory Leaks</h3><h2 id="9-12-Summary"><a href="#9-12-Summary" class="headerlink" title="9.12 Summary"></a>9.12 Summary</h2><p><img src="/2021/10/05/CSAPP/Ch9/dealwithbugs.png" alt="deal with bugs"></p>
+
       
     </div>
     <footer class="article-footer">
@@ -541,6 +783,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2021/10/09/CSAPP/malloclab/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          malloclab
+        
+      </div>
+    </a>
   
   
     <a href="/2021/09/29/CSAPP/cachelab/" id="article-nav-older" class="article-nav-link-wrap">
@@ -604,6 +855,10 @@
       <ul>
         
           <li>
+            <a href="/2021/10/09/CSAPP/malloclab/">malloclab</a>
+          </li>
+        
+          <li>
             <a href="/2021/10/05/CSAPP/Ch9/">Ch9</a>
           </li>
         
@@ -617,10 +872,6 @@
         
           <li>
             <a href="/2021/09/25/Network/IPv4address/">IPv4address</a>
-          </li>
-        
-          <li>
-            <a href="/2021/09/25/CSAPP/Ch8/">Ch8</a>
           </li>
         
       </ul>

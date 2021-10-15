@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>malloclab | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Malloc LabIn this lab you will be writing a dynamic storage allocator for C programs, i.e., your own version of the malloc, free and realloc routines. You are encouraged to explore the design space cr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="malloclab">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/10/09/CSAPP/malloclab/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Malloc LabIn this lab you will be writing a dynamic storage allocator for C programs, i.e., your own version of the malloc, free and realloc routines. You are encouraged to explore the design space cr">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-10-09T04:30:51.000Z">
+<meta property="article:modified_time" content="2021-10-14T15:20:37.129Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSAPP/malloclab" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/09/CSAPP/malloclab/" class="article-date">
+  <time class="dt-published" datetime="2021-10-09T04:30:51.000Z" itemprop="datePublished">2021-10-09</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/csapp/">csapp</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      malloclab
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Malloc-Lab"><a href="#Malloc-Lab" class="headerlink" title="Malloc Lab"></a>Malloc Lab</h1><p><em>In this lab you will be <strong>writing a dynamic storage allocator for C programs</strong>, i.e., your own version of the malloc, free and realloc routines. You are encouraged to explore the design space creatively and implement an allocator that is correct, efficient and fast.</em></p>
+<a id="more"></a>
+
+<ul>
+<li>The only file you will be modifying and handing in is <code>mm.c</code>.</li>
+<li>The <code>mdriver.c</code> program is a driver program that allows you to evaluate the performance of your solution.</li>
+<li>Use the command <code>make</code> to generate the driver code and run it with the command <code>./mdriver -V</code>. (The <code>-V</code> flag displays helpful summary information.)</li>
+</ul>
+<h3 id="How-to-Work-on-the-Lab"><a href="#How-to-Work-on-the-Lab" class="headerlink" title="How to Work on the Lab"></a>How to Work on the Lab</h3><p>Your dynamic storage allocator will consist of the following four functions, which are declared in <code>mm.h</code> and defined in <code>mm.c</code>.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mm_init</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="comment">//return value should be -1 if there was a problem in performing the initialization, 0 otherwise</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mm_malloc</span><span class="params">(<span class="keyword">size_t</span> size)</span></span>;</span><br><span class="line"><span class="comment">// returns a pointer to an allocated block payload of at least size bytes.</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mm_free</span><span class="params">(<span class="keyword">void</span> *ptr)</span></span>;</span><br><span class="line"><span class="comment">//frees the block pointed to by ptr. It returns nothing</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mm_realloc</span><span class="params">(<span class="keyword">void</span> *ptr, <span class="keyword">size_t</span> size)</span></span>;</span><br><span class="line"><span class="comment">//returns a pointer to an allocated region of at least size bytes with the following constraints.</span></span><br></pre></td></tr></table></figure>
+<h3 id="Heap-Consistency-Checker"><a href="#Heap-Consistency-Checker" class="headerlink" title="Heap Consistency Checker"></a>Heap Consistency Checker</h3><p><em>You will find it very helpful to write a heap checker that scans the heap and checks it for consistency.</em></p>
+<ul>
+<li>Your heap checker will consist of the function int <code>mm_check(void)</code> in <code>mm.c</code>. </li>
+<li>This consistency checker is for your own debugging during development. When you submit <code>mm.c</code>, make sure to remove any calls to <code>mm_check</code> as they will slow down your throughput.</li>
+</ul>
+<h3 id="Support-Routines"><a href="#Support-Routines" class="headerlink" title="Support Routines"></a>Support Routines</h3><p><em>You can invoke the following functions in <code>memlib.c</code>:</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mem_sbrk</span><span class="params">(<span class="keyword">int</span> incr)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mem_heap_lo</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mem_heap_hi</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function">size t <span class="title">mem_heapsize</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function">size t <span class="title">mem_pagesize</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="The-Trace-driven-Driver-Program"><a href="#The-Trace-driven-Driver-Program" class="headerlink" title="The Trace-driven Driver Program"></a>The Trace-driven Driver Program</h3><p>The driver program <code>mdriver.c</code> in the <code>malloclab-handout.tar</code> distribution tests your <code>mm.c</code> package for correctness, space utilization, and throughput.</p>
+<h3 id="Programming-Rules"><a href="#Programming-Rules" class="headerlink" title="Programming Rules"></a>Programming Rules</h3><ul>
+<li>You should not invoke any memory-management related library calls or system calls.</li>
+<li>You are not allowed to define any global or static compound data structures such as arrays, structs, trees, or lists in your mm.c program. However, you are allowed to declare global scalar variables such as integers, floats, and pointers in mm.c</li>
+</ul>
+<h3 id="Evaluation"><a href="#Evaluation" class="headerlink" title="Evaluation"></a>Evaluation</h3><h3 id="Hints"><a href="#Hints" class="headerlink" title="Hints"></a>Hints</h3><ul>
+<li>During initial development, using tiny trace files will simplify debugging and testing</li>
+<li>Don’t start working on your allocator until you understand everything about the simple implicit list allocator on the textbook</li>
+</ul>
+<hr>
+<h2 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h2><ul>
+<li>arithmetic of pointers pointing to<code>void </code> will result in undefined behavior(in C standard), although in <code>gcc</code> <code>void*</code> is treated as <code>char*</code> when doing pointer arithmetic</li>
+</ul>
+<hr>
+<h2 id="My-solution"><a href="#My-solution" class="headerlink" title="My solution :"></a>My solution :</h2><h3 id="Simple-implicit-free-list"><a href="#Simple-implicit-free-list" class="headerlink" title="Simple implicit free list"></a>Simple implicit free list</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+-----------+--------------+-----------+</span><br><span class="line">| 4(header) | payload size | 4(footer) |</span><br><span class="line">+-----------+--------------+-----------+</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*****************************************************************************/</span></span><br><span class="line"><span class="comment">/* single word (4) or double word (8) alignment */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ALIGNMENT 8</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> HFSize 4</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> HFTotalSize 8</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/* rounds up to the nearest multiple of ALIGNMENT */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ALIGN(size) (((size) + (ALIGNMENT-1)) &amp; ~0x7)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//size_t* f(char *)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> HeaderAddr(payloadptr)  ((size_t*)(payloadptr) - 1)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FooterAddr(payloadptr) ((size_t*)((payloadptr) + get_payload_size(payloadptr) ))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//size_t f( char *)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> get_block_size(payloadptr) ( (*(HeaderAddr(payloadptr))) &amp; ~0x7)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> get_allocated_status(payloadptr) ( (*(HeaderAddr(payloadptr))) &amp; 0x1)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> get_payload_size(payloadptr) ((get_block_size(payloadptr) - (HFTotalSize) )) </span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//char* f(void)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> heap_end() (((char*)mem_heap_hi() + 1))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*****************************************************************************/</span></span><br><span class="line"><span class="comment">//debug function heap checker</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printheap</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> * walk = (<span class="keyword">char</span>*)mem_heap_lo();</span><br><span class="line">    <span class="keyword">char</span> * end = (<span class="keyword">char</span>*)mem_heap_hi() + <span class="number">1</span> ;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;\nHeap start at : %p\n&quot;</span> , walk );</span><br><span class="line">    <span class="keyword">while</span> ( walk &lt; end )&#123;</span><br><span class="line">        <span class="keyword">size_t</span>* hf = (<span class="keyword">size_t</span>*)walk ;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;\nHeader : [%p] = %zu\n&quot;</span> , hf , *hf);</span><br><span class="line">        <span class="keyword">char</span> * pptr = (<span class="keyword">char</span>*)(hf + <span class="number">1</span>) ;</span><br><span class="line">        <span class="keyword">size_t</span> psize = get_payload_size(pptr);</span><br><span class="line">        <span class="keyword">size_t</span> bsize = get_block_size(pptr);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;psize : %zu , bsize : %zu\n&quot;</span> , psize , bsize );</span><br><span class="line">        <span class="comment">/*for (size_t cot = 0 ; cot &lt; psize ; cot++)&#123;*/</span></span><br><span class="line">            <span class="comment">/*printf(&quot;Byte [%zu] : %d\n&quot; , cot , *(pptr+cot));*/</span></span><br><span class="line">        <span class="comment">/*&#125;*/</span></span><br><span class="line">        hf = (<span class="keyword">size_t</span>*)(pptr + psize);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Footer : [%p] = %zu\n&quot;</span> , hf , *hf);</span><br><span class="line"></span><br><span class="line">        walk += bsize ;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Heap end at : %p\n&quot;</span> , end );</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;----------------------------------------\n&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*****************************************************************************/</span></span><br><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment"> * mm_init - initialize the malloc package.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mm_init</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> content = HFTotalSize; </span><br><span class="line">    <span class="keyword">size_t</span> * start = mem_sbrk( content );</span><br><span class="line">    *start = (content | <span class="number">0x1</span> );</span><br><span class="line">    *(start + <span class="number">1</span>) = (content | <span class="number">0x1</span> );</span><br><span class="line"></span><br><span class="line"><span class="comment">/*#ifdef  DEBUG */</span></span><br><span class="line">    <span class="comment">/*printheap();*/</span></span><br><span class="line"><span class="comment">/*#endif*/</span></span><br><span class="line">    <span class="keyword">return</span>  <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*****************************************************************************/</span></span><br><span class="line"><span class="comment">/* </span></span><br><span class="line"><span class="comment"> * mm_malloc - Allocate a block by incrementing the brk pointer.</span></span><br><span class="line"><span class="comment"> *     Always allocate a block whose size is a multiple of the alignment.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mm_malloc</span><span class="params">(<span class="keyword">size_t</span> size)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> newsize = ALIGN(size);</span><br><span class="line">    <span class="keyword">int</span> found = <span class="number">0</span> ;</span><br><span class="line">    <span class="keyword">char</span> * res = <span class="literal">NULL</span> ;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">size_t</span>* walk  = (<span class="keyword">size_t</span>*)(heap_end()) - <span class="number">1</span> ;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">size_t</span> content = *walk;</span><br><span class="line">        <span class="keyword">size_t</span> bsize = (content &amp; ~<span class="number">0x7</span>) ;</span><br><span class="line">        <span class="keyword">size_t</span> psize = bsize - HFTotalSize;</span><br><span class="line">        <span class="keyword">size_t</span> allocated = (content &amp; <span class="number">0x1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>( allocated == <span class="number">1</span> &amp;&amp; psize == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="comment">//hit end of free list </span></span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> ( allocated == <span class="number">0</span> &amp;&amp; psize &gt;= newsize )&#123;</span><br><span class="line">            found = <span class="number">1</span> ;</span><br><span class="line">            <span class="keyword">char</span> * pstart =  (<span class="keyword">char</span>*)walk - psize ;</span><br><span class="line">            res =  pstart ;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">//if the perfectly fit</span></span><br><span class="line">            <span class="keyword">if</span> (psize == newsize)&#123;</span><br><span class="line">               *HeaderAddr(res) = bsize | <span class="number">0x1</span> ;</span><br><span class="line">               *FooterAddr(res) = bsize | <span class="number">0x1</span> ; </span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//else fragment the block</span></span><br><span class="line">            <span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">size_t</span> cbsize = newsize + HFTotalSize ;</span><br><span class="line">                *HeaderAddr(pstart) = cbsize | <span class="number">0x1</span> ;</span><br><span class="line">                <span class="keyword">size_t</span> * newfooter  = (<span class="keyword">size_t</span>*)( pstart + newsize )  ;</span><br><span class="line">                *newfooter = cbsize | <span class="number">0x1</span> ; </span><br><span class="line"></span><br><span class="line">                <span class="comment">//new block result from fragmentation</span></span><br><span class="line">                <span class="keyword">size_t</span> nbsize = bsize - cbsize ;</span><br><span class="line">                <span class="keyword">size_t</span> npsize = nbsize - HFTotalSize ;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">size_t</span> * nnstart = newfooter + <span class="number">1</span> ;</span><br><span class="line">                *nnstart = nbsize;</span><br><span class="line">                <span class="keyword">size_t</span> * nnend = (<span class="keyword">size_t</span>*)( (<span class="keyword">char</span>*)(nnstart+<span class="number">1</span>) + npsize );</span><br><span class="line">                *nnend = nbsize;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//search next </span></span><br><span class="line">        walk =  (<span class="keyword">size_t</span>*)( (<span class="keyword">char</span>*)walk - bsize);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//no available space, extend the heap </span></span><br><span class="line">    <span class="keyword">if</span> (found == <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">size_t</span> increase = newsize + HFTotalSize ;</span><br><span class="line">        <span class="keyword">size_t</span>* estart = (<span class="keyword">size_t</span>*)mem_sbrk(increase);</span><br><span class="line">        *estart = (increase | <span class="number">0x1</span>);</span><br><span class="line"></span><br><span class="line">        res = (<span class="keyword">char</span>*)(estart+<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">size_t</span>* eend =(<span class="keyword">size_t</span>*)(res + newsize); </span><br><span class="line">        *eend = (increase | <span class="number">0x1</span> );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span>  (<span class="keyword">void</span>*)res ;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*#ifdef  DEBUG*/</span></span><br><span class="line">    <span class="comment">/*printheap();*/</span></span><br><span class="line"><span class="comment">/*#endif*/</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*****************************************************************************/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * mm_free - Freeing a block does nothing.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">coalesce_up</span><span class="params">(<span class="keyword">size_t</span> * myfoot , <span class="keyword">size_t</span> sz )</span></span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> mybsize = *myfoot &amp; ~<span class="number">0x7</span>;</span><br><span class="line">    <span class="keyword">size_t</span> mypsize = mybsize - HFTotalSize ;</span><br><span class="line">    <span class="keyword">char</span>* myptr = (<span class="keyword">char</span>*)(myfoot) - mypsize ;</span><br><span class="line">    *(HeaderAddr(myptr)) = mybsize + sz ;</span><br><span class="line">    <span class="comment">//Since FooterAddr use Header content to determine psize</span></span><br><span class="line">    *(FooterAddr(myptr)) = mybsize + sz ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">coalesce_down</span><span class="params">(<span class="keyword">size_t</span> * myhead , <span class="keyword">size_t</span> sz )</span></span>&#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> DEBUG</span></span><br><span class="line">    printheap();</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    <span class="keyword">size_t</span> mybsize = *myhead &amp; ~<span class="number">0x7</span>;</span><br><span class="line">    <span class="keyword">size_t</span> mypsize = mybsize - HFTotalSize ;</span><br><span class="line">    <span class="keyword">char</span>* myptr = (<span class="keyword">char</span>*)(myhead + <span class="number">1</span>);</span><br><span class="line">    *(<span class="keyword">size_t</span>*)(myptr + mypsize) = mybsize + sz ;</span><br><span class="line">    *(<span class="keyword">size_t</span>*)(myptr - HFSize - sz) = mybsize + sz ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">coalesce_both</span><span class="params">(<span class="keyword">size_t</span>* myfoot , <span class="keyword">size_t</span>* myhead , <span class="keyword">size_t</span> sz)</span></span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> after_mybsize = *myhead &amp; ~<span class="number">0x7</span>;</span><br><span class="line">    coalesce_up(myfoot, sz + after_mybsize);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mm_free</span><span class="params">(<span class="keyword">void</span> *ptr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span>* pstart = (<span class="keyword">char</span>*)ptr;</span><br><span class="line">    <span class="keyword">size_t</span> bsize = get_block_size(pstart);</span><br><span class="line">    <span class="comment">//when set the block free, only write the block size in, the 0(free bit) is implicitly set</span></span><br><span class="line">    <span class="keyword">size_t</span> * header = HeaderAddr(pstart);</span><br><span class="line">    <span class="keyword">size_t</span> * footer = FooterAddr(pstart);</span><br><span class="line">    *header = bsize ;</span><br><span class="line">    *footer = bsize ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//coalesce the adjacent free blocks</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">size_t</span> before_allocated = *( header - <span class="number">1</span> ) &amp; <span class="number">0x1</span> ;</span><br><span class="line">    <span class="keyword">size_t</span> after_allocated = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//if free the latest malloce block, only coalesce_up;</span></span><br><span class="line">    <span class="keyword">if</span>(  (<span class="keyword">char</span>*)(footer + <span class="number">1</span>) &lt; heap_end() )&#123;</span><br><span class="line">        after_allocated = *( footer + <span class="number">1</span> ) &amp; <span class="number">0x1</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (before_allocated == <span class="number">0</span> &amp;&amp; after_allocated == <span class="number">0</span>)&#123;</span><br><span class="line">        coalesce_both(header - <span class="number">1</span> , footer + <span class="number">1</span> , bsize );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (before_allocated == <span class="number">0</span>)&#123;</span><br><span class="line">        coalesce_up(header - <span class="number">1</span> , bsize );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (after_allocated == <span class="number">0</span>)&#123;</span><br><span class="line">        coalesce_down(footer + <span class="number">1</span> , bsize );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/*****************************************************************************/</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * mm_realloc - Implemented simply in terms of mm_malloc and mm_free</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">mm_realloc</span><span class="params">(<span class="keyword">void</span> *ptr, <span class="keyword">size_t</span> size)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">void</span> *oldptr = ptr;</span><br><span class="line">    <span class="keyword">void</span> *newptr;</span><br><span class="line">    <span class="keyword">size_t</span> copySize;</span><br><span class="line">    </span><br><span class="line">    newptr = mm_malloc(size);</span><br><span class="line">    <span class="keyword">if</span> (newptr == <span class="literal">NULL</span>)</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    copySize = *(<span class="keyword">size_t</span> *)((<span class="keyword">char</span> *)oldptr - HFSize);</span><br><span class="line">    <span class="keyword">if</span> (size &lt; copySize)</span><br><span class="line">      copySize = size;</span><br><span class="line">    <span class="built_in">memcpy</span>(newptr, oldptr, copySize);</span><br><span class="line">    mm_free(oldptr);</span><br><span class="line">    <span class="keyword">return</span> newptr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Be <strong><em>Fucking careful</em></strong> with <strong><em>Pointer arithmetic</em></strong> !!!!!!!</li>
+<li>When debugging with debug tools become difficult<ul>
+<li>execute the code line by line in source code mode(in <code>gdb</code>)</li>
+<li>Examine if the behavior is the one you want</li>
+<li><strong>Reread the source code carefully</strong></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$./mdriver </span><br><span class="line">Team Name:RinbowBinary</span><br><span class="line">Member 1 :RB:xxx@xxx</span><br><span class="line">Using default tracefiles <span class="keyword">in</span> traces/</span><br><span class="line">Perf index = 46 (util) + 14 (thru) = 60/100</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>Since the <code>malloc</code> search the whole heap for a free block the throughput is just terrible, explicit list and segregate list will perform better.</p>
+</li>
+<li><p>Also, I do not eliminate the footer of allocated block for convenience, do so may increase memory utilization.</p>
+</li>
+</ul>
+<h3 id="Explicit-list"><a href="#Explicit-list" class="headerlink" title="Explicit list"></a>Explicit list</h3><h3 id="Segregated-list"><a href="#Segregated-list" class="headerlink" title="Segregated list"></a>Segregated list</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/10/09/CSAPP/malloclab/" data-id="ckur3bmmf0000hcyq50oqaemn" data-title="malloclab" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/10/05/CSAPP/Ch9/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Ch9</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/10/09/CSAPP/malloclab/">malloclab</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/05/CSAPP/Ch9/">Ch9</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/29/CSAPP/cachelab/">cachelab</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/28/CSAPP/Ch8PartII/">Ch8PartII</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/25/Network/IPv4address/">IPv4address</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

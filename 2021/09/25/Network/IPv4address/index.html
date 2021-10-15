@@ -15,8 +15,13 @@
 <meta property="og:locale">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/Network/IPv4address/quiz.png">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/Network/IPv4address/historical.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/Network/IPv4address/inside.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/Network/IPv4address/LPM.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/Network/IPv4address/tableentry.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/Network/IPv4address/LPMquiz.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/09/25/Network/IPv4address/arpexample.png">
 <meta property="article:published_time" content="2021-09-25T13:01:19.000Z">
-<meta property="article:modified_time" content="2021-09-25T14:11:11.495Z">
+<meta property="article:modified_time" content="2021-10-11T06:09:35.431Z">
 <meta property="article:author" content="rubbish">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/09/25/Network/IPv4address/quiz.png">
@@ -83,7 +88,7 @@
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/csapp/">csapp</a>►<a class="article-category-link" href="/categories/csapp/Stanford-CS144/">Stanford CS144</a>
+    <a class="article-category-link" href="/categories/Networking/">Networking</a>►<a class="article-category-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a>
   </div>
 
   </div>
@@ -119,12 +124,39 @@
 <li>Still assign contiguous ranges of address to nearby networks</li>
 <li>Assign addresses by <code>block</code></li>
 <li>Address block is a pair : <code>(address , count)</code></li>
-<li><code>count</code> is power of 2, specifing the netmask length</li>
+<li><code>count</code> is power of 2, specifing the <strong>netmask length</strong></li>
 <li><code>171.64.0.0/16</code> means any address in range <code>171.64.0.0</code> to <code>171.64.255.255</code></li>
-<li><code>xxx.xxx.xxx.xxx/8</code> describe a block of 256 addresses</li>
+<li><code>xxx.xxx.xxx.xxx/24</code> describe a block of 256 addresses</li>
 </ul>
 <h3 id="How-IPv4-addresses-are-assigned"><a href="#How-IPv4-addresses-are-assigned" class="headerlink" title="How IPv4 addresses are assigned?"></a>How IPv4 addresses are assigned?</h3><p><em>Managed by IANA(International Assign Number Authority)</em></p>
-<h2 id="Longest-Prefix-Match"><a href="#Longest-Prefix-Match" class="headerlink" title="Longest Prefix Match"></a>Longest Prefix Match</h2>
+<h2 id="Longest-Prefix-Match"><a href="#Longest-Prefix-Match" class="headerlink" title="Longest Prefix Match"></a>Longest Prefix Match</h2><p><em>The algorithm used by routers to forward packages to different directions of link</em></p>
+<p><img src="/2021/09/25/Network/IPv4address/inside.png" alt="Inside each hop"></p>
+<ul>
+<li>The router resort to a <strong>Forwarding table</strong> to forword the package</li>
+<li>It search the forwarding table for a <strong>best match</strong> and forward the package</li>
+<li>If no match is found, any package will fall back to the default match whose pattern is <code>x.x.x.x</code>, matching any IP</li>
+</ul>
+<p><img src="/2021/09/25/Network/IPv4address/LPM.png" alt="Longest Prefix Match"></p>
+<p><img src="/2021/09/25/Network/IPv4address/tableentry.png" alt="actual table entry"></p>
+<h4 id="Quiz"><a href="#Quiz" class="headerlink" title="Quiz"></a>Quiz</h4><p><img src="/2021/09/25/Network/IPv4address/LPMquiz.png" alt="quiz"></p>
+<h4 id="My-solution-1"><a href="#My-solution-1" class="headerlink" title="My solution :"></a>My solution :</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># maybe some bit level searching tree will have better performance</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Entry</span>():</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self , dest , link</span>):</span></span><br><span class="line">        self.link = link</span><br><span class="line">        ls = dest.split(<span class="string">&#x27;/&#x27;</span>)</span><br><span class="line">        self.ip = ip2int(ls[<span class="number">0</span>])</span><br><span class="line">        self.masklen = <span class="built_in">int</span>(ls[<span class="number">1</span>])</span><br><span class="line">        self.mask = <span class="built_in">int</span>(<span class="string">&#x27;1&#x27;</span>*self.masklen + <span class="string">&#x27;0&#x27;</span>*(<span class="number">32</span> - self.masklen)  , <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isMatch</span>(<span class="params">self, packageip</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.ip &amp; self.mask == packageip &amp; self.mask</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getlen</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.masklen</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getlink</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.link</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ForwardingTable = [</span><br><span class="line">    Entry(<span class="string">&#x27;0.0.0.0/0&#x27;</span> , <span class="number">1</span>),</span><br><span class="line">    Entry(<span class="string">&#x27;18.0.0.0/8&#x27;</span> , <span class="number">5</span>),</span><br><span class="line">    Entry(<span class="string">&#x27;171.0.0.0/8&#x27;</span> , <span class="number">2</span>),</span><br><span class="line">    Entry(<span class="string">&#x27;171.0.0.0/10&#x27;</span> , <span class="number">4</span>),</span><br><span class="line">    Entry(<span class="string">&#x27;171.0.15.0/24&#x27;</span> , <span class="number">1</span>),</span><br><span class="line">    Entry(<span class="string">&#x27;55.128.0.0/10&#x27;</span> , <span class="number">6</span>),</span><br><span class="line">    Entry(<span class="string">&#x27;63.19.5.0/30&#x27;</span> , <span class="number">3</span>)</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">PackageIPs = [</span><br><span class="line">    <span class="string">&#x27;63.19.5.3&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;171.15.15.0&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;63.19.5.32&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;44.199.230.1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;171.128.16.0&#x27;</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> packageip <span class="keyword">in</span> PackageIPs:</span><br><span class="line">    maxlen = <span class="number">0</span></span><br><span class="line">    forward2 = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> entry <span class="keyword">in</span> ForwardingTable:</span><br><span class="line">        <span class="comment"># &lt;= here allow default link to update forward2</span></span><br><span class="line">        <span class="keyword">if</span> entry.isMatch(ip2int(packageip)) <span class="keyword">and</span> maxlen &lt;= entry.getlen():</span><br><span class="line">            maxlen = entry.getlen()</span><br><span class="line">            forward2 = entry.getlink()</span><br><span class="line"></span><br><span class="line">    print(<span class="string">&#x27;Package with IP : &#123;&#125; \tgoes to link &#123;&#125;&#x27;</span>.<span class="built_in">format</span>(packageip , forward2))</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Package with IP : 63.19.5.3 	goes to link 3</span><br><span class="line">Package with IP : 171.15.15.0 	goes to link 4</span><br><span class="line">Package with IP : 63.19.5.32 	goes to link 1</span><br><span class="line">Package with IP : 44.199.230.1 	goes to link 1</span><br><span class="line">Package with IP : 171.128.16.0 	goes to link 2</span><br></pre></td></tr></table></figure>
+<h2 id="Address-Resolution-Protocal-ARP"><a href="#Address-Resolution-Protocal-ARP" class="headerlink" title="Address Resolution Protocal(ARP)"></a>Address Resolution Protocal(ARP)</h2><p><em>ARP provides a mechanism to <strong>translate IP addresses to link-layer addresses</strong>.</em></p>
+<ul>
+<li>Each layer has its own address<ul>
+<li><code>port</code> for application layer</li>
+<li><code>IP address</code> for network layer</li>
+<li><code>link layer address(Network card address, MAC)</code> for link layer</li>
+</ul>
+</li>
+<li>An IP address specify a host in the network which can have multiple network card</li>
+<li>A <strong>link layer address can specify a unique device</strong>(network card) which can receive and send link frames</li>
+<li>A ethernet card is a typical network card whose address is in form of <code>xx:xx:xx:xx:xx:xx</code>, represented by hexadecimal, 48-bit long.</li>
+</ul>
+<p><img src="/2021/09/25/Network/IPv4address/arpexample.png" alt="why we need arp"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">A ------------------------------&gt; B</span><br><span class="line">A ---------&gt; gateway -----------&gt; B</span><br><span class="line">A.send(dstIP : <span class="number">171.43</span><span class="number">.22</span><span class="number">.5</span> , MAC : <span class="number">0</span>:<span class="number">18</span>:e7:f3:ce:1a)</span><br><span class="line">gateway.recevied()</span><br><span class="line">gateway.process()</span><br><span class="line">gateway.send(dstIP : <span class="number">171.43</span><span class="number">.22</span><span class="number">.5</span>, MAC : <span class="number">9</span>:<span class="number">9</span>:<span class="number">9</span>:<span class="number">9</span>:<span class="number">9</span>:<span class="number">9</span>)</span><br><span class="line">B.received()</span><br></pre></td></tr></table></figure>
+<p>So we can see that we need a way to <strong>decide a MAC address from a given IP address</strong>, which means <strong>we need a Mapping(ARP)</strong></p>
+
       
     </div>
     <footer class="article-footer">
@@ -209,6 +241,10 @@
       <ul>
         
           <li>
+            <a href="/2021/10/09/CSAPP/malloclab/">malloclab</a>
+          </li>
+        
+          <li>
             <a href="/2021/10/05/CSAPP/Ch9/">Ch9</a>
           </li>
         
@@ -222,10 +258,6 @@
         
           <li>
             <a href="/2021/09/25/Network/IPv4address/">IPv4address</a>
-          </li>
-        
-          <li>
-            <a href="/2021/09/25/CSAPP/Ch8/">Ch8</a>
           </li>
         
       </ul>
