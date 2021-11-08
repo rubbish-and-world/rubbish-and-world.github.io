@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Ch11 | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Network ProgrammingInterestingly, all network applications are based on the same basic programming model, have sim">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ch11">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/10/19/CSAPP/Ch11/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Network ProgrammingInterestingly, all network applications are based on the same basic programming model, have sim">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/19/CSAPP/Ch11/transaction.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/19/CSAPP/Ch11/networkonhost.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/19/CSAPP/Ch11/domainNameHierarchy.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/19/CSAPP/Ch11/uniqueSocket.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/19/CSAPP/Ch11/socketprocedures.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/19/CSAPP/Ch11/differentfd.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/19/CSAPP/Ch11/returnlist.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/19/CSAPP/Ch11/mime.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/19/CSAPP/Ch11/telnetexample.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/19/CSAPP/Ch11/status.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/19/CSAPP/Ch11/CGIenv.png">
+<meta property="article:published_time" content="2021-10-19T11:47:59.000Z">
+<meta property="article:modified_time" content="2021-10-24T06:12:19.564Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/10/19/CSAPP/Ch11/transaction.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSAPP/Ch11" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/19/CSAPP/Ch11/" class="article-date">
+  <time class="dt-published" datetime="2021-10-19T11:47:59.000Z" itemprop="datePublished">2021-10-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/csapp/">csapp</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Ch11
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+<h1 id="Network-Programming"><a href="#Network-Programming" class="headerlink" title="Network Programming"></a>Network Programming</h1><p><em>Interestingly, <strong>all network applications are based on the same basic programming model</strong>, have similar overall logical structures, and rely on the same programming interface.</em></p>
+<a id="more"></a>
+
+<h2 id="11-1-The-Client-Server-Programming-Model"><a href="#11-1-The-Client-Server-Programming-Model" class="headerlink" title="11.1 The Client-Server Programming Model"></a>11.1 The Client-Server Programming Model</h2><p><em>Every network application is based on the client-server model.</em></p>
+<p>The fundamental operation in the client-server model is the <strong>transaction</strong></p>
+<p><img src="/2021/10/19/CSAPP/Ch11/transaction.png" alt="client-server transaction"></p>
+<p>A client-server transaction consists of four steps:</p>
+<ol>
+<li>When a client needs service, it initiates a transaction by sending a request to the server. For example, when a Web browser needs a file, it sends a request to a Web server.</li>
+<li>The server receives the request, interprets it, and manipulates its resources in the appropriate way. For example, when a Web server receives a request from a browser, it reads a disk file.</li>
+<li>The server sends a response to the client and then waits for the next request. For example, a Web server sends the file back to a client.</li>
+<li>The client receives the response and manipulates it. For example, after a Web browser receives a page from the server, it displays it on the screen.</li>
+</ol>
+<p><strong><em>It is important to realize that <span style="color:red">clients and servers are processes and not machines</span>, or hosts as they are often called in this context !!!</em></strong></p>
+<p>A single host can run many different clients and servers concurrently, and a client and server transaction can be on the same or different hosts. The client-server model is the same, regardless of the mapping of clients and servers to hosts.</p>
+<h2 id="11-2-Networks"><a href="#11-2-Networks" class="headerlink" title="11.2 Networks"></a>11.2 Networks</h2><p>To a host, a network is just another I/O device that serves as a source and sink for data</p>
+<p><img src="/2021/10/19/CSAPP/Ch11/networkonhost.png" alt="Network on Host"></p>
+<h2 id="11-3-The-Global-IP-Internet"><a href="#11-3-The-Global-IP-Internet" class="headerlink" title="11.3 The Global IP Internet"></a>11.3 The Global IP Internet</h2><ul>
+<li>check your host ip(Linux only)</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hostname -i</span><br><span class="line">$ hostname -I</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Store IP address</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span>&#123;</span></span><br><span class="line">    <span class="keyword">uint32_t</span> s_addr ; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Convert to network endian</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">uint32_t</span> <span class="title">htonl</span><span class="params">(<span class="keyword">uint32_t</span> hostlong)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">uint16_t</span> <span class="title">htons</span><span class="params">(<span class="keyword">uint16_t</span> hostshort)</span></span>;</span><br><span class="line"><span class="comment">//Returns: value in network byte order</span></span><br><span class="line"><span class="function"><span class="keyword">uint32_t</span> <span class="title">ntohl</span><span class="params">(<span class="keyword">uint32_t</span> netlong)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">uint16_t</span> <span class="title">ntohs</span><span class="params">(<span class="keyword">unit16_t</span> netshort)</span></span>;</span><br><span class="line"><span class="comment">//Returns: value in host byte order</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//Note that there are no equivalent functions for manipulating 64-bit values !!!</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Application programs can <strong>convert back and forth between IP addresses and dotted-decimal strings</strong> using the functions<code> inet_pton</code> and <code>inet_ntop</code>.</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">inet_pton</span><span class="params">(<span class="keyword">int</span> af, <span class="keyword">const</span> <span class="keyword">char</span> *src, <span class="keyword">void</span> *dst)</span></span>;</span><br><span class="line"><span class="comment">//Returns: 1 if OK, 0 if src is invalid dotted decimal, −1 on error</span></span><br><span class="line"><span class="function"><span class="keyword">const</span> <span class="keyword">char</span> *<span class="title">inet_ntop</span><span class="params">(<span class="keyword">int</span> af, <span class="keyword">const</span> <span class="keyword">void</span> *src, <span class="keyword">char</span> *dst, <span class="keyword">socklen_t</span> size)</span></span>;</span><br><span class="line"><span class="comment">//Returns: pointer to a dotted-decimal string if OK, NULL on error</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//the “n” stands for network and the “p” stands for presentation</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//af is used to specify the address length(32 for ipv4 (AF_INET), 128 for ipv6(AF_INET6))</span></span><br></pre></td></tr></table></figure>
+<h4 id="Practice-Problem-11-1"><a href="#Practice-Problem-11-1" class="headerlink" title="Practice Problem 11.1"></a>Practice Problem 11.1</h4><blockquote>
+<p>Complete the following table:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">&quot;Dotted-decimal address&quot;</span>:<span class="string">&quot;Hex address&quot;</span>,</span><br><span class="line">    <span class="string">&quot;107.212.122.205&quot;</span> :</span><br><span class="line">    <span class="string">&quot;64.12.149.13&quot;</span> :</span><br><span class="line">	<span class="string">&quot;107.212.96.29&quot;</span> :</span><br><span class="line">    <span class="string">&quot;&quot;</span> : <span class="number">0x00000080</span>,</span><br><span class="line">    <span class="string">&quot;&quot;</span> : <span class="number">0xFFFFFF00</span>,</span><br><span class="line">    <span class="string">&quot;&quot;</span> : <span class="number">0x0A010140</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="My-solution-white-check-mark"><a href="#My-solution-white-check-mark" class="headerlink" title="My solution: :white_check_mark:"></a>My solution: :white_check_mark:</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdint.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> N 3</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> * addrs [N] = &#123;</span><br><span class="line">        <span class="string">&quot;107.212.122.205&quot;</span>,</span><br><span class="line">        <span class="string">&quot;64.12.149.13&quot;</span>,</span><br><span class="line">        <span class="string">&quot;107.212.96.29&quot;</span></span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">uint32_t</span> hexs [N] =&#123;</span><br><span class="line">        <span class="number">0x00000080</span>,</span><br><span class="line">        <span class="number">0xFFFFFF00</span>,</span><br><span class="line">        <span class="number">0x0A010140</span></span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> buf [<span class="number">16</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>  ; i&lt;N ; i++)&#123;</span><br><span class="line">        <span class="keyword">uint32_t</span> temp ;</span><br><span class="line">        inet_pton(AF_INET, addrs[i], &amp;temp);</span><br><span class="line">        temp = htonl(temp);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s\t: 0x%08x\n&quot;</span> , addrs[i] , temp);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i&lt; N ; i++)&#123;</span><br><span class="line">        <span class="keyword">uint32_t</span> temp = hexs[i];</span><br><span class="line">        temp = htonl(temp);</span><br><span class="line">        inet_ntop(AF_INET, &amp;temp, buf, <span class="number">16</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s\t: 0x%08x\n&quot;</span> , buf , hexs[i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ ./net</span><br><span class="line">107.212.122.205	: 0x6bd47acd</span><br><span class="line">64.12.149.13	: 0x400c950d</span><br><span class="line">107.212.96.29	: 0x6bd4601d</span><br><span class="line">0.0.0.128	: 0x00000080</span><br><span class="line">255.255.255.0	: 0xffffff00</span><br><span class="line">10.1.1.64	: 0x0a010140</span><br></pre></td></tr></table></figure>
+<p><span style="color:red">Be fxxking careful when processing network data, any data on host is host-endian !!!!</span></p>
+<h3 id="11-3-2-Internet-Domain-Names"><a href="#11-3-2-Internet-Domain-Names" class="headerlink" title="11.3.2 Internet Domain Names"></a>11.3.2 Internet Domain Names</h3><p><em>The set of domain names forms a <strong>hierarchy</strong>, and each domain name <strong>encodes its position in the hierarchy</strong></em></p>
+<p><img src="/2021/10/19/CSAPP/Ch11/domainNameHierarchy.png" alt="DN hierarchy"></p>
+<ul>
+<li>The nodes of the tree represent domain names that are formed by the path back to the root. Subtrees are referred to as subdomains. </li>
+</ul>
+<h3 id="11-3-3-Internet-Connections"><a href="#11-3-3-Internet-Connections" class="headerlink" title="11.3.3 Internet Connections"></a>11.3.3 Internet Connections</h3><p><strong><em>Internet clients and servers communicate by sending and receiving streams of bytes over connections</em></strong></p>
+<ul>
+<li><p> A connection is point-to-point in the sense that it <strong>connects a pair of processes.</strong> </p>
+</li>
+<li><p>It is full duplex in the sense that <strong>data can flow in both directions</strong> at the same time</p>
+</li>
+<li><p>And it is <strong>reliable</strong> in the sense that—barring some catastrophic failure such as a cable cut by the proverbial careless backhoe operator—the stream of bytes sent by the source process is eventually received by the destination process in the same order it was sent</p>
+</li>
+<li><p>A <strong>socket</strong> is an end point of a connection. </p>
+<ul>
+<li>Each socket has a corresponding <strong>socket address</strong> that consists of an Internet address and a 16-bit integer port and is denoted by the notation <code>address:port</code>.</li>
+<li>The port in the client’s socket address is <strong>assigned automatically by the kernel</strong> when the client makes a connection request and is known as an ephemeral port.</li>
+<li>The mapping between well-known names and well-known ports is contained in a file called <code>/etc/services</code>.(http-&gt;80 , https-&gt;443)</li>
+</ul>
+</li>
+<li><p>A connection is <strong>uniquely identified</strong> by the <strong>socket addresses of its two end points</strong>. This pair of socket addresses is known as a socket pair and is denoted by the tuple <code>(cliaddr:cliport, servaddr:servport)</code></p>
+</li>
+</ul>
+<p><img src="/2021/10/19/CSAPP/Ch11/uniqueSocket.png" alt="socket"></p>
+<h2 id="11-4-The-Sockets-Interface"><a href="#11-4-The-Sockets-Interface" class="headerlink" title="11.4 The Sockets Interface"></a>11.4 The Sockets Interface</h2><p><em>The <strong>sockets interface is a set of functions</strong> that are used in conjunction with the Unix I/O functions to build network applications</em></p>
+<p><img src="/2021/10/19/CSAPP/Ch11/socketprocedures.png" alt="socket interface"></p>
+<h3 id="11-4-1-Socket-Address-Structures"><a href="#11-4-1-Socket-Address-Structures" class="headerlink" title="11.4.1 Socket Address Structures"></a>11.4.1 Socket Address Structures</h3><ul>
+<li><p>From the perspective of the Linux kernel, a socket is an end point for communication. </p>
+</li>
+<li><p>From the perspective of a Linux program, a socket is an open file with a corresponding descriptor</p>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* IP socket address structure */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> &#123;</span></span><br><span class="line"><span class="keyword">uint16_t</span> sin_family; <span class="comment">/* Protocol family (always AF_INET) */</span></span><br><span class="line"><span class="keyword">uint16_t</span> sin_port; <span class="comment">/* Port number in network byte order */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span> <span class="title">sin_addr</span>;</span> <span class="comment">/* IP address in network byte order */</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> sin_zero[<span class="number">8</span>]; <span class="comment">/* Pad to sizeof(struct sockaddr) */</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">/* Generic socket address structure (for connect, bind, and accept) */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr</span> &#123;</span></span><br><span class="line"><span class="keyword">uint16_t</span> sa_family; <span class="comment">/* Protocol family */</span></span><br><span class="line"><span class="keyword">char</span> sa_data[<span class="number">14</span>]; <span class="comment">/* Address data */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="11-4-2-The-socket-Function"><a href="#11-4-2-The-socket-Function" class="headerlink" title="11.4.2 The socket Function"></a>11.4.2 The socket Function</h3><p><em>Clients and servers use the socket function to create a <strong>socket descriptor</strong>.</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">socket</span><span class="params">(<span class="keyword">int</span> domain, <span class="keyword">int</span> type, <span class="keyword">int</span> protocol)</span></span>;</span><br><span class="line"><span class="comment">//Returns: nonnegative descriptor if OK, −1 on error</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>The clientfd descriptor returned by socket is only partially opened and cannot yet be used for reading and writing.</li>
+<li> How we finish opening the socket depends on whether we are a client or a server</li>
+</ul>
+<h3 id="11-4-3-The-connect-Function"><a href="#11-4-3-The-connect-Function" class="headerlink" title="11.4.3 The connect Function"></a>11.4.3 The connect Function</h3><p><em>A client establishes a connection with a server by calling the connect function</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">connect</span><span class="params">(<span class="keyword">int</span> clientfd, <span class="keyword">const</span> struct sockaddr *addr,</span></span></span><br><span class="line"><span class="function"><span class="params"><span class="keyword">socklen_t</span> addrlen)</span></span>;</span><br><span class="line"><span class="comment">//Returns: 0 if OK, −1 on error</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>The connect function attempts to establish an Internet connection with the server at socket address addr, where addrlen is <code>sizeof(sockaddr_in)</code></p>
+</li>
+<li><p>The connect function blocks until either the connection is successfully established or an error occurs. </p>
+</li>
+<li><p>As with socket, the best practice is to use <code>getaddrinfo</code> to supply the arguments to connect </p>
+</li>
+</ul>
+<h3 id="11-4-4-The-bind-Function"><a href="#11-4-4-The-bind-Function" class="headerlink" title="11.4.4 The bind Function"></a>11.4.4 The bind Function</h3><p><em>The remaining sockets functions—<code>bind, listen</code>, and <code>accept</code>—are <strong>used by servers</strong> to establish connections with clients.</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bind</span><span class="params">(<span class="keyword">int</span> sockfd, <span class="keyword">const</span> struct sockaddr *addr, <span class="keyword">socklen_t</span> addrlen)</span></span>;</span><br><span class="line"><span class="comment">//Returns: 0 if OK, −1 on error</span></span><br></pre></td></tr></table></figure>
+<p>The bind function asks the kernel to associate the server’s socket address in addr with the socket descriptor sockfd. The addrlen argument is <code>sizeof(sockaddr_ in)</code></p>
+<h3 id="11-4-5-The-listen-Function"><a href="#11-4-5-The-listen-Function" class="headerlink" title="11.4.5 The listen Function"></a>11.4.5 The listen Function</h3><p>By default, the <strong>kernel assumes</strong> that a descriptor created by the socket function corresponds to an <strong>active socket</strong> that will <strong>live on the client end of a connection</strong>. A server calls the <code>listen</code> function to tell the kernel that the descriptor will be used by a server instead of a client.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">listen</span><span class="params">(<span class="keyword">int</span> sockfd, <span class="keyword">int</span> backlog)</span></span>;</span><br><span class="line"><span class="comment">//Returns: 0 if OK, −1 on error</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>The listen function converts sockfd from an active socket to a listening socket that can accept connection requests from clients.</li>
+<li> The <code>backlog</code> argument is a hint about the number of outstanding connection requests that the kernel should queue up before it starts to refuse requests</li>
+</ul>
+<h3 id="11-4-6-The-accept-Function"><a href="#11-4-6-The-accept-Function" class="headerlink" title="11.4.6 The accept Function"></a>11.4.6 The accept Function</h3><p>Servers wait for connection requests from clients by calling the accept function.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">accept</span><span class="params">(<span class="keyword">int</span> listenfd, struct sockaddr *addr, <span class="keyword">int</span> *addrlen)</span></span>;</span><br><span class="line"><span class="comment">//Returns: nonnegative connected descriptor if OK, −1 on error</span></span><br></pre></td></tr></table></figure>
+<h4 id="Why-two-different-fd"><a href="#Why-two-different-fd" class="headerlink" title="Why two different fd?"></a>Why two different <code>fd</code>?</h4><p>Because as a server, we want to serve multiple client simultaneously.</p>
+<ul>
+<li>The server use the <code>listenfd</code> to accept connection.</li>
+<li>Then use the <code>connfd</code> created by <code>accept()</code> to communicate with the server.</li>
+<li>Same port, same process, but different server.</li>
+</ul>
+<p><img src="/2021/10/19/CSAPP/Ch11/differentfd.png" alt="multiple fd"></p>
+<h3 id="11-4-7-Host-and-Service-Conversion"><a href="#11-4-7-Host-and-Service-Conversion" class="headerlink" title="11.4.7 Host and Service Conversion"></a>11.4.7 Host and Service Conversion</h3><ul>
+<li>Linux provides some powerful functions, called <code>getaddrinfo</code> and <code>getnameinfo</code>, for <strong>converting back and forth between binary socket address structures and the string representations</strong> of hostnames, host addresses, service names, and port numbers.</li>
+<li>When used in conjunction with the sockets interface, they allow us to write network programs that are <strong>independent of any particular version of the IP protocol.</strong></li>
+</ul>
+<h4 id="The-getaddrinfo-Function"><a href="#The-getaddrinfo-Function" class="headerlink" title="The getaddrinfo Function"></a>The getaddrinfo Function</h4><p>(Actually invoke DNS to do the job)</p>
+<p>The getaddrinfo function converts string representations of hostnames, host addresses, service names, and port numbers into socket address structures</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netdb.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getaddrinfo</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">const</span> <span class="keyword">char</span> *host,  <span class="comment">//(both IP or DomainName is OK)</span></span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">const</span> <span class="keyword">char</span> *service,<span class="comment">//(both port or ServiceName is OK)</span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="keyword">const</span> struct addrinfo *hints,<span class="comment">//(input args to this func)</span></span></span></span><br><span class="line"><span class="function"><span class="params">struct addrinfo **result <span class="comment">//output linked list</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"><span class="comment">//Returns: 0 if OK, nonzero error code on error</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">freeaddrinfo</span><span class="params">(struct addrinfo *result)</span></span>;</span><br><span class="line"><span class="comment">//Returns: nothing</span></span><br><span class="line"><span class="function"><span class="keyword">const</span> <span class="keyword">char</span> *<span class="title">gai_strerror</span><span class="params">(<span class="keyword">int</span> errcode)</span></span>;</span><br><span class="line"><span class="comment">//Returns: error message</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Given host and service (the <strong>two components of a socket address</strong>), getaddrinfo returns a result that points to a linked list of addrinfo structures, each of which points to a socket address structure that corresponds to host and service</li>
+<li>After a client calls getaddrinfo, it walks this list, trying each socket address in turn until the calls to socket and connect succeed and the connection is established(Similar for server side)</li>
+<li>To avoid memory leaks, the application must eventually free the list by calling freeaddrinfo</li>
+<li>If getaddrinfo returns a nonzero error code, the application can call gai_strerror to convert the code to a message string.</li>
+</ul>
+<p><img src="/2021/10/19/CSAPP/Ch11/returnlist.png" alt="return linked list"></p>
+<ul>
+<li>The optional hints argument is an addrinfo structure (Figure 11.16) that provides finer control over the list of socket addresses that getaddrinfo returns. </li>
+</ul>
+<p>Structure of list element</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">addrinfo</span> &#123;</span></span><br><span class="line"><span class="keyword">int</span> ai_flags; <span class="comment">/* Hints argument flags */</span></span><br><span class="line"><span class="keyword">int</span> ai_family; <span class="comment">/* First arg to socket function */</span></span><br><span class="line"><span class="keyword">int</span> ai_socktype; <span class="comment">/* Second arg to socket function */</span></span><br><span class="line"><span class="keyword">int</span> ai_protocol; <span class="comment">/* Third arg to socket function */</span></span><br><span class="line"><span class="keyword">char</span> *ai_canonname; <span class="comment">/* Canonical hostname */</span></span><br><span class="line"><span class="keyword">size_t</span> ai_addrlen; <span class="comment">/* Size of ai_addr struct */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr</span> *<span class="title">ai_addr</span>;</span> <span class="comment">/* Ptr to socket address structure */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">addrinfo</span> *<span class="title">ai_next</span>;</span> <span class="comment">/* Ptr to next item in linked list */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="The-getnameinfo-Function"><a href="#The-getnameinfo-Function" class="headerlink" title="The getnameinfo Function"></a>The getnameinfo Function</h4><p><em>The getnameinfo function is the inverse of getaddrinfo. It converts a socket address structure to the corresponding host and service name strings.</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netdb.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getnameinfo</span><span class="params">(<span class="keyword">const</span> struct sockaddr *sa, <span class="keyword">socklen_t</span> salen,</span></span></span><br><span class="line"><span class="function"><span class="params"><span class="keyword">char</span> *host, <span class="keyword">size_t</span> hostlen,</span></span></span><br><span class="line"><span class="function"><span class="params"><span class="keyword">char</span> *service, <span class="keyword">size_t</span> servlen, <span class="keyword">int</span> flags)</span></span>;</span><br><span class="line"><span class="comment">//Returns: 0 if OK, nonzero error code on error</span></span><br></pre></td></tr></table></figure>
+<h3 id="11-4-9-Example-Echo-Client-and-Server"><a href="#11-4-9-Example-Echo-Client-and-Server" class="headerlink" title="11.4.9 Example Echo Client and Server"></a>11.4.9 Example Echo Client and Server</h3><p><em>The best way to learn the sockets interface is to study example code</em></p>
+<h4 id="Echo-Client"><a href="#Echo-Client" class="headerlink" title="Echo Client"></a>Echo Client</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;csapp.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc , <span class="keyword">char</span> ** argv )</span></span>&#123;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">int</span> clientfd ; </span><br><span class="line">   <span class="keyword">char</span> * host ;</span><br><span class="line">   <span class="keyword">char</span> * port ;</span><br><span class="line">   <span class="keyword">char</span> buf [MAXLINE];</span><br><span class="line">   <span class="keyword">rio_t</span> rio ;</span><br><span class="line"></span><br><span class="line">   host = argv[<span class="number">1</span>];</span><br><span class="line">   port = argv[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">   clientfd = Open_clientfd(host, port);</span><br><span class="line"></span><br><span class="line">   Rio_readinitb(&amp;rio, clientfd);</span><br><span class="line"></span><br><span class="line">   <span class="keyword">while</span>(Fgets(buf, MAXLINE, <span class="built_in">stdin</span>) != <span class="literal">NULL</span>)&#123;</span><br><span class="line">        <span class="comment">//fflush(stdout);</span></span><br><span class="line">       Rio_writen(clientfd, buf, <span class="built_in">strlen</span>(buf));</span><br><span class="line">       Rio_readlineb(&amp;rio, buf, MAXLINE);</span><br><span class="line">       Fputs(buf, <span class="built_in">stdout</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   Close(clientfd);</span><br><span class="line">   <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;csapp.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">echo</span><span class="params">(<span class="keyword">int</span> connectfd )</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc , <span class="keyword">char</span> ** argv )</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> listenfd ;</span><br><span class="line">    <span class="keyword">int</span> connectfd ; </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">socklen_t</span> clientlen ;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_storage</span> <span class="title">clientaddr</span> ;</span> </span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> clienthostname[MAXLINE] , clientport[MAXLINE];</span><br><span class="line"></span><br><span class="line">    listenfd = Open_listenfd(argv[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">        clientlen = <span class="keyword">sizeof</span>(struct sockaddr_storage);</span><br><span class="line">        connectfd = Accept(listenfd, (struct sockaddr*)&amp;clientaddr,&amp;clientlen);</span><br><span class="line">        Getnameinfo((struct sockaddr *)&amp;clientaddr, clientlen, clienthostname, MAXLINE, clientport, MAXLINE, <span class="number">0</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Accepted connection from (%s:%s)\n&quot;</span> , clienthostname , clientport);</span><br><span class="line">        echo(connectfd);</span><br><span class="line">        Close(connectfd);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">echo</span><span class="params">(<span class="keyword">int</span> connectfd)</span></span>&#123;</span><br><span class="line">    <span class="keyword">size_t</span> n ;</span><br><span class="line">    <span class="keyword">char</span> buf [MAXLINE];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">rio_t</span> rio ;</span><br><span class="line"></span><br><span class="line">    Rio_readinitb(&amp;rio , connectfd);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>( (n = Rio_readlineb(&amp;rio, buf, MAXLINE)) != <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;server received %zu bytes from client\n&quot;</span> , n);</span><br><span class="line">        Rio_writen(connectfd, buf, n);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Test-your-server"><a href="#Test-your-server" class="headerlink" title="Test your server:"></a>Test your server:</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ telnet localhost 15213</span><br></pre></td></tr></table></figure>
+<p><strong><em>Notice that <code>telnet</code> is quite unsecure, you should NEVER use it in real life!!!</em></strong></p>
+<hr>
+<h2 id="11-5-Web-Servers"><a href="#11-5-Web-Servers" class="headerlink" title="11.5 Web Servers"></a>11.5 Web Servers</h2><h3 id="11-5-1-Web-Basics"><a href="#11-5-1-Web-Basics" class="headerlink" title="11.5.1 Web Basics"></a>11.5.1 Web Basics</h3><h3 id="11-5-2-Web-Content"><a href="#11-5-2-Web-Content" class="headerlink" title="11.5.2 Web Content"></a>11.5.2 Web Content</h3><p><em>To Web clients and servers, <strong>content</strong> is a sequence of bytes with an associated <strong>MIME</strong> (multipurpose internet mail extensions) type.</em></p>
+<p><img src="/2021/10/19/CSAPP/Ch11/mime.png" alt="mime"></p>
+<p>Web servers provide content to clients in two different ways:</p>
+<p>(Deprecated! Nowadays we have client side programming language like <code>javascript</code> executing code in browser to interact with server)</p>
+<ul>
+<li><p>Fetch a disk file and return its contents to the client.</p>
+<p>(The disk file is known as <strong>static content</strong> and the process of returning the file to the client is known as <strong>serving static content</strong>.)</p>
+</li>
+<li><p>Run an executable file and return its output to the client.</p>
+<p>(The output produced by the executable at run time is known as <strong>dynamic content</strong>, and the process of running the program and returning its output to the client is known as <strong>serving dynamic content.</strong>)</p>
+</li>
+</ul>
+<p>Every piece of content returned by a Web server is associated with some file that it manages. Each of these files has a unique name known as a <strong>URL</strong></p>
+<ul>
+<li><p>URLs for executable files can include program arguments after the filename. A <code>?</code> character separates the filename from the arguments, and each argument is separated by an <code>&amp;</code> character. </p>
+<ul>
+<li>For example, <code>http://bluefish.ics.cs.cmu.edu:8000/cgi-bin/adder?15000&amp;213</code> specify an executable file and give it two arguments</li>
+</ul>
+</li>
+<li><p>Clients and servers use different parts of the URL during a transaction.</p>
+<ul>
+<li>Client use prefix like <code>http://www.google.com:80</code> to determine what kind of server to contact, where the server is, and what port it is listening on.</li>
+<li>Server use the suffix like <code>/index.html</code> to find the file on its filesystem and to determine whether the request is for static or dynamic content.</li>
+</ul>
+</li>
+</ul>
+<h4 id="how-servers-interpret-the-suffix-of-a-URL"><a href="#how-servers-interpret-the-suffix-of-a-URL" class="headerlink" title="how servers interpret the suffix of a URL"></a>how servers interpret the suffix of a URL</h4><ul>
+<li>There are <strong>no standard rules for determining whether a URL refers to static or dynamic content</strong>.<ul>
+<li><strong>Each server has its own rules</strong> for the files it manages.</li>
+<li> A classic (old-fashioned) approach is to identify a set of directories, such as cgi-bin, where all executables must reside</li>
+</ul>
+</li>
+<li>The initial <code>/</code> in the suffix <strong>does NOT denote the Linux root directory</strong><ul>
+<li>Rather, it denotes the home directory for whatever kind of content is being requested.</li>
+<li>For example, a server might be configured so that all static content is stored in directory <code>/usr/httpd/html</code> and all dynamic content is stored in directory <code>/usr/httpd/cgi-bin</code>.</li>
+<li>The minimal URL suffix is the <code>/</code> character, which all servers expand to some default home page such as <code>/index.html</code>.</li>
+<li>This explains why it is possible to fetch the home page of a site by simply typing a domain name to the browser. The browser appends the missing <code>/</code> to the URL and passes it to the server, which expands the <code>/</code> to some default filename.</li>
+</ul>
+</li>
+</ul>
+<h3 id="11-5-3-HTTP-Transactions"><a href="#11-5-3-HTTP-Transactions" class="headerlink" title="11.5.3 HTTP Transactions"></a>11.5.3 HTTP Transactions</h3><p><img src="/2021/10/19/CSAPP/Ch11/telnetexample.png" alt="telnet example"></p>
+<h4 id="HTTP-Requests"><a href="#HTTP-Requests" class="headerlink" title="HTTP Requests"></a>HTTP Requests</h4><p>An HTTP request consists of </p>
+<ul>
+<li>a request line <ul>
+<li>A request line has the form <code>method URI version</code></li>
+<li>HTTP supports a number of different methods, including <code>GET, POST, OPTIONS, HEAD, PUT, DELETE</code>, and <code>TRACE</code></li>
+</ul>
+</li>
+<li>followed by zero or more request headers<ul>
+<li>Request headers provide additional information to the server, such as the brand name of the browser or the MIME types that the browser understands.</li>
+<li><code>header-name: header-data</code></li>
+</ul>
+</li>
+<li>followed by an empty text line that terminates the list of headers</li>
+</ul>
+<h4 id="HTTP-Responses"><a href="#HTTP-Responses" class="headerlink" title="HTTP Responses"></a>HTTP Responses</h4><p><img src="/2021/10/19/CSAPP/Ch11/status.png" alt="http response status message"></p>
+<p>An HTTP response consists of </p>
+<ul>
+<li>a response line <ul>
+<li>A response line has the form <code>version status-code status-message</code></li>
+</ul>
+</li>
+<li> followed by zero or more response headers</li>
+<li>followed by an empty line that terminates the headers </li>
+<li>followed by the response body </li>
+</ul>
+<h3 id="11-5-4-Serving-Dynamic-Content"><a href="#11-5-4-Serving-Dynamic-Content" class="headerlink" title="11.5.4 Serving Dynamic Content"></a>11.5.4 Serving Dynamic Content</h3><p><em>If we stop to think for a moment how a server might provide dynamic content to a client, lots of questions arise, and there is a solutio call CGI(Common Gateway Interface)</em></p>
+<h4 id="How-Does-the-Client-Pass-Program-Arguments-to-the-Server"><a href="#How-Does-the-Client-Pass-Program-Arguments-to-the-Server" class="headerlink" title="How Does the Client Pass Program Arguments to the Server?"></a>How Does the Client Pass Program Arguments to the Server?</h4><p>Arguments for GET requests are passed in the URI. As we have seen, a ‘?’ character separates the filename from the arguments, and each argument is separated by an ‘&amp;’ character</p>
+<h4 id="How-Does-the-Server-Pass-Arguments-to-the-Child"><a href="#How-Does-the-Server-Pass-Arguments-to-the-Child" class="headerlink" title="How Does the Server Pass Arguments to the Child?"></a>How Does the Server Pass Arguments to the Child?</h4><p>After a server receives a request such as <code>GET /cgi-bin/adder?15000&amp;213 HTTP/1.1</code>,it calls <code>fork</code> to create a child process and calls <code>execve</code> to run the <code>/cgi-bin/adder</code> program in the context of the child. Programs like the adder program are often referred to as CGI programs because they obey the rules of the CGI standard. Before the call to <code>execve</code>, the child process sets the CGI environment variable <code>QUERY_STRING</code> to <code>15000&amp;213</code>, which the adder program can reference at run time using the Linux <code>getenv</code> function.</p>
+<h4 id="How-Does-the-Server-Pass-Other-Information-to-the-Child"><a href="#How-Does-the-Server-Pass-Other-Information-to-the-Child" class="headerlink" title="How Does the Server Pass Other Information to the Child?"></a>How Does the Server Pass Other Information to the Child?</h4><p>CGI defines a number of other environment variables that a CGI program can expect to be set when it runs</p>
+<p><img src="/2021/10/19/CSAPP/Ch11/CGIenv.png" alt="CGI enviroment arguments"></p>
+<h4 id="Where-Does-the-Child-Send-Its-Output"><a href="#Where-Does-the-Child-Send-Its-Output" class="headerlink" title="Where Does the Child Send Its Output?"></a>Where Does the Child Send Its Output?</h4><p>A CGI program sends its dynamic content to the <strong>standard output</strong>. </p>
+<p>Before the child process loads and runs the CGI program, it uses the Linux <code>dup2</code> function to redirect standard output to the connected descriptor that is associated with the client. Thus, anything that the CGI program writes to standard output goes directly to the client.</p>
+<p>Notice that since the parent does not know the type or size of the content that the child generates, the child is responsible for generating the <code>Content-type </code>and <code>Content-length</code> response headers, as well as the empty line that terminates the headers</p>
+<h2 id="11-6-Putting-It-Together-The-Tiny-Web-Server"><a href="#11-6-Putting-It-Together-The-Tiny-Web-Server" class="headerlink" title="11.6 Putting It Together: The Tiny Web Server"></a>11.6 Putting It Together: The Tiny Web Server</h2><h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/10/19/CSAPP/Ch11/" data-id="ckvq507nh0001hdyq7ots1d5o" data-title="Ch11" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/10/20/Missing%20Semester/Introduction/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          Introduction
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/10/16/CSAPP/shellLab/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">shellLab</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/10/24/CSAPP/Ch12/">Ch12</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/20/Missing%20Semester/ShellScripting/">ShellScripting</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/20/Missing%20Semester/Introduction/">Introduction</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/19/CSAPP/Ch11/">Ch11</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/16/CSAPP/shellLab/">shellLab</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

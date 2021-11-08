@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Ch12 | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Concurrent Programmingconcurrency is not just limited to the kernel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ch12">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Concurrent Programmingconcurrency is not just limited to the kernel">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/threadmode.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/assembly.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/explanation.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/pgraph.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/pgraph2.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/safeunsafe.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/forbiddenRegion.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/producerconsumer.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/programs.png">
+<meta property="article:published_time" content="2021-10-24T06:12:26.000Z">
+<meta property="article:modified_time" content="2021-11-08T04:00:50.253Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/threadmode.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-CSAPP/Ch12" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/24/CSAPP/Ch12/" class="article-date">
+  <time class="dt-published" datetime="2021-10-24T06:12:26.000Z" itemprop="datePublished">2021-10-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/csapp/">csapp</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Ch12
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+<h1 id="Concurrent-Programming"><a href="#Concurrent-Programming" class="headerlink" title="Concurrent Programming"></a>Concurrent Programming</h1><p><em>concurrency is not just limited to the kernel</em></p>
+<a id="more"></a>
+
+<p><em>The kernal can use concurrency to run multiple process, our applications can also gain benefit from concurrency as well</em></p>
+<p>Accessing slow I/O devices : overlapping useful work with I/O requests</p>
+<ul>
+<li>Interacting with humans : Each time the user requests some action (say, by clicking the mouse), a separate concurrent logical flow is created to perform the action.</li>
+<li>Reducing latency by deferring work : </li>
+<li>Servicing multiple network clients.</li>
+<li>Computing in parallel on multi-core machines</li>
+</ul>
+<p>Modern operating systems provide three basic approaches for building concurrent programs:</p>
+<ul>
+<li>Processes</li>
+<li>I/O multiplexing.</li>
+<li>Threads</li>
+</ul>
+<h2 id="12-1-Concurrent-Programming-with-Processes"><a href="#12-1-Concurrent-Programming-with-Processes" class="headerlink" title="12.1 Concurrent Programming with Processes"></a>12.1 Concurrent Programming with Processes</h2><p><em>The simplest way to build a concurrent program is with processes</em></p>
+<p> For example, a natural approach for building a concurrent server is to accept client connection requests in the parent and then create a new child process to service each new client.</p>
+<h2 id="12-2-Concurrent-Programming-with-I-O-Multiplexing"><a href="#12-2-Concurrent-Programming-with-I-O-Multiplexing" class="headerlink" title="12.2 Concurrent Programming with I/O Multiplexing"></a>12.2 Concurrent Programming with I/O Multiplexing</h2><p><em>The basic idea is to use the <code>select</code> function to <strong>ask the kernel to suspend the process</strong>, returning control to the application <strong>only after one or more I/O events have occurred</strong></em></p>
+<p><code>select</code> is a complicated function with many different usage scenarios</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/select.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">select</span><span class="params">(<span class="keyword">int</span> n, fd_set *fdset, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>)</span></span>;</span><br><span class="line"><span class="comment">//Returns: nonzero count of ready descriptors, −1 on error</span></span><br><span class="line"></span><br><span class="line">FD_ZERO(fd_set *fdset); <span class="comment">/* Clear all bits in fdset */</span></span><br><span class="line">FD_CLR(<span class="keyword">int</span> fd, fd_set *fdset); <span class="comment">/* Clear bit fd in fdset */</span></span><br><span class="line">FD_SET(<span class="keyword">int</span> fd, fd_set *fdset); <span class="comment">/* Turn on bit fd in fdset */</span></span><br><span class="line">FD_ISSET(<span class="keyword">int</span> fd, fd_set *fdset); <span class="comment">/* Is bit fd in fdset on? */</span></span><br><span class="line">Macros <span class="keyword">for</span> manipulating descriptor sets</span><br></pre></td></tr></table></figure>
+<h2 id="12-3-Concurrent-Programming-with-Threads"><a href="#12-3-Concurrent-Programming-with-Threads" class="headerlink" title="12.3 Concurrent Programming with Threads"></a>12.3 Concurrent Programming with Threads</h2><p><em>A thread is a logical flow that runs in the context of a process.</em></p>
+<ul>
+<li>The threads are scheduled automatically by the kernel.</li>
+<li>Each thread has its own thread context, including a unique integer thread ID (TID), stack, stack pointer, program counter, general-purpose registers, and condition codes</li>
+<li>All threads running in a process share the entire virtual address space of that process.</li>
+</ul>
+<h3 id="12-3-1-Thread-Execution-Model"><a href="#12-3-1-Thread-Execution-Model" class="headerlink" title="12.3.1 Thread Execution Model"></a>12.3.1 Thread Execution Model</h3><p><em>The execution model for multiple threads is <strong>similar in some ways to the execution model for multiple processes</strong></em></p>
+<p><img src="/2021/10/24/CSAPP/Ch12/threadmode.png" alt="thread mode"></p>
+<p>Thread execution differs from processes in some important ways. </p>
+<ul>
+<li>Because a thread context is much smaller than a process context, a thread context switch is faster than a process context switch</li>
+<li><strong>Threads are not organized in a parent-child hierarchy. They are organized as a pool of threads !!!</strong><ul>
+<li> Independent of which threads were created by which other threads</li>
+<li>The main thread is distinguished from other threads only in the sense that it is always the first thread to run in the process</li>
+<li>A thread can kill any of its peers or wait for any of its peers to terminate.</li>
+<li>Each peer can read and write the same shared data.</li>
+</ul>
+</li>
+</ul>
+<h3 id="12-3-2-Posix-Threads"><a href="#12-3-2-Posix-Threads" class="headerlink" title="12.3.2 Posix Threads"></a>12.3.2 Posix Threads</h3><p><em>The code and local data for a thread are encapsulated in a <strong>thread routine</strong>.</em></p>
+<ul>
+<li>each thread routine takes as input a single generic pointer and returns a generic pointer.</li>
+<li>If you want to pass multiple arguments to a thread routine, then you should put the arguments into a structure and pass a pointer to the structure.(Return is the same)</li>
+</ul>
+<h3 id="12-3-3-Creating-Threads"><a href="#12-3-3-Creating-Threads" class="headerlink" title="12.3.3 Creating Threads"></a>12.3.3 Creating Threads</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">void</span> *(func)(<span class="keyword">void</span> *);</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_create</span><span class="params">(<span class="keyword">pthread_t</span> *tid, </span></span></span><br><span class="line"><span class="function"><span class="params">                   <span class="keyword">pthread_attr_t</span> *attr,</span></span></span><br><span class="line"><span class="function"><span class="params">                   func *f,</span></span></span><br><span class="line"><span class="function"><span class="params">                   <span class="keyword">void</span> *arg)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Returns: 0 if OK, nonzero on error</span></span><br></pre></td></tr></table></figure>
+<p>The <code>pthread_create</code> function creates a new thread and runs the thread routine <code>f</code> in the context of the new thread and with an input argument of <code>arg</code></p>
+<ul>
+<li>The <code>attr</code> argument can be used to change the default attributes of the newly created thread.</li>
+<li>When <code>pthread_create</code> returns, argument <code>tid</code> contains the ID of the newly created thread</li>
+<li>The new thread can determine its own thread ID by calling the <code>pthread_self </code>function.</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">pthread_t</span> <span class="title">pthread_self</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="comment">//Returns: thread ID of caller</span></span><br></pre></td></tr></table></figure>
+<h3 id="12-3-4-Terminating-Threads"><a href="#12-3-4-Terminating-Threads" class="headerlink" title="12.3.4 Terminating Threads"></a>12.3.4 Terminating Threads</h3><p>A thread terminates in one of the following ways:</p>
+<ul>
+<li>The thread terminates <strong>implicitly</strong> when its top-level thread routine <strong>returns</strong>.</li>
+<li>The thread terminates <strong>explicitly</strong> by calling the <code>pthread_exit</code> function`. If the main thread calls pthread_exit, it waits for all other peer threads to terminate and then terminates the main thread and the entire process with a return value of thread_return.</li>
+<li>Some peer thread calls the Linux <code>exit</code> function, which <strong>terminates the process</strong> and all threads associated with the process.</li>
+<li><strong>Another peer thread terminates the current thread</strong> by calling the <code>pthread_ cancel</code> function with the ID of the current thread</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">pthread_exit</span><span class="params">(<span class="keyword">void</span> *thread_return)</span></span>;</span><br><span class="line"><span class="comment">//Never returns</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_cancel</span><span class="params">(<span class="keyword">pthread_t</span> tid)</span></span>;</span><br><span class="line"><span class="comment">//Returns: 0 if OK, nonzero on error</span></span><br></pre></td></tr></table></figure>
+<h3 id="12-3-5-Reaping-Terminated-Threads"><a href="#12-3-5-Reaping-Terminated-Threads" class="headerlink" title="12.3.5 Reaping Terminated Threads"></a>12.3.5 Reaping Terminated Threads</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_join</span><span class="params">(<span class="keyword">pthread_t</span> tid, <span class="keyword">void</span> **thread_return)</span></span>;</span><br><span class="line"><span class="comment">//Returns: 0 if OK, nonzero on error</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>The <code>pthread_join</code> function <strong>blocks until thread tid terminates</strong>, assigns the generic (<code>void *</code>) pointer returned by the thread routine to the location pointed to by <code>thread_return</code>, and then <strong>reaps any memory resources</strong> held by the terminated thread.</li>
+</ul>
+<h3 id="12-3-6-Detaching-Threads"><a href="#12-3-6-Detaching-Threads" class="headerlink" title="12.3.6 Detaching Threads"></a>12.3.6 Detaching Threads</h3><p><em>At any point in time, a thread is joinable or detached</em></p>
+<ul>
+<li>A joinable thread can be reaped and killed by other threads. Its memory resources (such as the stack) are not freed until it is reaped by another thread.</li>
+<li>a detached thread cannot be reaped or killed by other threads. Its memory resources are freed automatically by the system when it terminates.</li>
+</ul>
+<p>By default, threads are created joinable. </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_detach</span><span class="params">(<span class="keyword">pthread_t</span> tid)</span></span>;</span><br><span class="line"><span class="comment">//Returns: 0 if OK, nonzero on error</span></span><br></pre></td></tr></table></figure>
+<p>The pthread_detach function detaches the joinable thread tid</p>
+<h3 id="12-3-7-Initializing-Threads"><a href="#12-3-7-Initializing-Threads" class="headerlink" title="12.3.7 Initializing Threads"></a>12.3.7 Initializing Threads</h3><p><em>The <code>pthread_once</code> function allows you to initialize the state associated with a thread routine.</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="keyword">pthread_once_t</span> once_control = PTHREAD_ONCE_INIT;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pthread_once</span><span class="params">(<span class="keyword">pthread_once_t</span> *once_control,</span></span></span><br><span class="line"><span class="function"><span class="params"><span class="keyword">void</span> (*init_routine)(<span class="keyword">void</span>))</span></span>;</span><br><span class="line"><span class="comment">//Always returns 0</span></span><br></pre></td></tr></table></figure>
+<h2 id="12-4-Shared-Variables-in-Threaded-Programs"><a href="#12-4-Shared-Variables-in-Threaded-Programs" class="headerlink" title="12.4 Shared Variables in Threaded Programs"></a>12.4 Shared Variables in Threaded Programs</h2><h3 id="12-4-1-Threads-Memory-Model"><a href="#12-4-1-Threads-Memory-Model" class="headerlink" title="12.4.1 Threads Memory Model"></a>12.4.1 Threads Memory Model</h3><p><em>registers are never shared, whereas virtual memory is always shared.</em></p>
+<ul>
+<li><p>These stacks are <strong>contained in the stack area of the virtual address space</strong> and are <strong>usually</strong>(Not Always) accessed independently by their respective threads.</p>
+</li>
+<li><p>Because different thread stacks are <strong>not protected</strong> from other threads</p>
+<ul>
+<li>if a thread somehow manages to acquire a pointer to another thread’s stack, then it can read and write any part of that stack</li>
+</ul>
+</li>
+</ul>
+<h3 id="12-4-2-Mapping-Variables-to-Memory"><a href="#12-4-2-Mapping-Variables-to-Memory" class="headerlink" title="12.4.2 Mapping Variables to Memory"></a>12.4.2 Mapping Variables to Memory</h3><p><em>Variables in threaded C programs are mapped to virtual memory according to their storage classes:</em></p>
+<ul>
+<li>Global variables<ul>
+<li>At run time, the read/write area of virtual memory contains exactly one instance of each global variable that can be referenced by any thread.</li>
+</ul>
+</li>
+<li>Local automatic variables<ul>
+<li>At run time, each thread’s stack contains its own instances of any local automatic variables</li>
+</ul>
+</li>
+<li>Local static variables<ul>
+<li>As with global variables, the read/write area of virtual memory contains exactly one instance of each local static variable declared in a program</li>
+<li>Each peer thread reads and writes this instance.</li>
+</ul>
+</li>
+</ul>
+<h4 id="Practice-Problem-12-6-white-check-mark"><a href="#Practice-Problem-12-6-white-check-mark" class="headerlink" title="Practice Problem 12.6 :white_check_mark:"></a>Practice Problem 12.6 :white_check_mark:</h4><blockquote>
+<table>
+<thead>
+<tr>
+<th>variable intance</th>
+<th>referred in main?</th>
+<th>referred in thread 0?</th>
+<th>referred in thread 1?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ptr</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>cnt</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>i.m</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>msgs.m</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>myid.p0</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>myid.p1</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+</tbody></table>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span>  N 2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> ** ptr ; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> * <span class="title">thread</span> <span class="params">(<span class="keyword">void</span> * args)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> i ; </span><br><span class="line">    <span class="keyword">char</span> * msgs [N] = &#123; <span class="string">&quot;Hello from foo&quot;</span>, <span class="string">&quot;Hello from bar&quot;</span> &#125;;</span><br><span class="line"></span><br><span class="line">    ptr = msgs ;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">pthread_t</span> tid ;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (i=<span class="number">0</span> ; i &lt; N ; i++)&#123;</span><br><span class="line">        pthread_create(&amp;tid , <span class="literal">NULL</span> , &amp;thread , (<span class="keyword">void</span>*)i );</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    pthread_exit(<span class="literal">NULL</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> * <span class="title">thread</span> <span class="params">(<span class="keyword">void</span> * args)</span></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> myid = (<span class="keyword">long</span>)args;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> cnt = <span class="number">0</span> ;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;[%ld] : %s (cnt= %d)\n&quot;</span> , myid , ptr[myid] , ++cnt);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="12-5-Synchronizing-Threads-with-Semaphores"><a href="#12-5-Synchronizing-Threads-with-Semaphores" class="headerlink" title="12.5 Synchronizing Threads with Semaphores"></a>12.5 Synchronizing Threads with Semaphores</h2><p><em>Shared variables can be convenient, but they introduce the possibility of nasty synchronization errors.</em></p>
+<p>For example</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="keyword">volatile</span> <span class="keyword">int</span> cot ;</span><br><span class="line"><span class="function"><span class="keyword">void</span> * <span class="title">thread</span> <span class="params">(<span class="keyword">void</span> * args)</span></span>&#123;</span><br><span class="line">    <span class="keyword">long</span> local = (<span class="keyword">long</span>)args;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">long</span> i ; i &lt; local ; i++)&#123;</span><br><span class="line">        cot++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>  <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc , <span class="keyword">char</span> * argv [])</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (argc != <span class="number">2</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">long</span> n = atoi(argv[<span class="number">1</span>]);</span><br><span class="line">    <span class="keyword">pthread_t</span> tid1 , tid2 ;</span><br><span class="line">    pthread_create(&amp;tid1 , <span class="literal">NULL</span> , &amp;thread , (<span class="keyword">void</span>*)n );</span><br><span class="line">    pthread_create(&amp;tid2 , <span class="literal">NULL</span> , &amp;thread , (<span class="keyword">void</span>*)n );</span><br><span class="line">    pthread_join(tid1, <span class="literal">NULL</span>);</span><br><span class="line">    pthread_join(tid2, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">if</span> (cot != n*<span class="number">2</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Failed, cot = %d\n&quot;</span> , cot );</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">       <span class="built_in">printf</span>(<span class="string">&quot;Success!\n&quot;</span>); </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ ./bad 200000</span><br><span class="line">Failed, cot = 250127</span><br><span class="line">$ ./bad 200000</span><br><span class="line">Failed, cot = 257676</span><br><span class="line">$ ./bad 200000</span><br><span class="line">Failed, cot = 253744</span><br><span class="line">$ ./bad 10</span><br><span class="line">Success!</span><br><span class="line">$ ./bad 10</span><br><span class="line">Failed, cot = 10</span><br></pre></td></tr></table></figure>
+<h4 id="Why"><a href="#Why" class="headerlink" title="Why?"></a>Why?</h4><p><img src="/2021/10/24/CSAPP/Ch12/assembly.png" alt="assembly for loop"></p>
+<p><img src="/2021/10/24/CSAPP/Ch12/explanation.png" alt="explanation"></p>
+<p>Threads may read the unupdated data and increase it !!!</p>
+<p>They can even override the correct value !!!</p>
+<h3 id="12-5-1-Progress-Graphs"><a href="#12-5-1-Progress-Graphs" class="headerlink" title="12.5.1 Progress Graphs"></a>12.5.1 Progress Graphs</h3><p><em>A progress graph models the execution of n concurrent threads as a trajectory through an n-dimensional Cartesian space.</em></p>
+<p>(<strong><em>Multiprocessors behave in ways that cannot be explained by progress graphs.</em></strong>)</p>
+<ul>
+<li>A progress graph models instruction execution as a transition from one state to another. A transition is represented as a directed edge from one point to an adjacent point.</li>
+<li>Legal transitions move to the right or up. Two instructions cannot complete at the same time—diagonal transitions are not allowed. Programs never run backward so transitions that move down or to the left are not legal either.</li>
+</ul>
+<p><img src="/2021/10/24/CSAPP/Ch12/pgraph.png" alt="progress graph"></p>
+<p><img src="/2021/10/24/CSAPP/Ch12/pgraph2.png" alt="example"></p>
+<p>For thread i, the instructions (Li, Ui, Si) that manipulate the contents of the shared variable cnt constitute a <strong>critical section</strong> that should not be interleaved with the critical section of the other thread.</p>
+<p>In other words, we want to ensure that each thread has <strong>mutually exclusive access</strong> to the shared variable while it is executing the instructions in its critical section</p>
+<p><img src="/2021/10/24/CSAPP/Ch12/safeunsafe.png" alt="safe trajectory and unsafe trajectory"></p>
+<h3 id="12-5-2-Semaphores"><a href="#12-5-2-Semaphores" class="headerlink" title="12.5.2 Semaphores"></a>12.5.2 Semaphores</h3><p><em>A semaphore, <code>s</code>, is a global <strong>variable</strong> with a nonnegative integer value that can only be manipulated by two special operations, called P and V</em></p>
+<ul>
+<li>P(s)<ul>
+<li>If s is nonzero, then P decrements s and returns immediately. </li>
+<li>If s is zero, then suspend the thread until s becomes nonzero and the thread is restarted by a V operation.</li>
+<li>After restarting, the P operation decrements s and returns control to the caller.</li>
+</ul>
+</li>
+<li>V(s)<ul>
+<li>The V operation incrementss by 1. </li>
+<li>If there are any threads blocked at a P operation waiting for s to become nonzero, then the V operation restarts exactly one of these threads, which then completes its P operation by decrementing s.</li>
+<li>When several threads are waiting at a semaphore, you cannot predict which one will be restarted as a result of the V</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>Both P and V operation is indivisible, that is to say that they cannot be interrupted.</li>
+<li>The definitions of P and V ensure that a running program can never enter a state where a properly initialized semaphore has a negative value</li>
+</ul>
+<hr>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sem_init</span><span class="params">(<span class="keyword">sem_t</span> *sem, <span class="number">0</span>, <span class="keyword">unsigned</span> <span class="keyword">int</span> value)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sem_wait</span><span class="params">(<span class="keyword">sem_t</span> *s)</span></span>; <span class="comment">/* P(s) */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sem_post</span><span class="params">(<span class="keyword">sem_t</span> *s)</span></span>; <span class="comment">/* V(s) */</span></span><br><span class="line"><span class="comment">//Returns: 0 if OK, −1 on error</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>The sem_init function initializes semaphore sem to value. Each semaphore must be initialized before it can be used.</li>
+</ul>
+<hr>
+<p><strong><em><code>s</code> means the number of available resource of this type. <code>P(s)</code> means lock, saying that 1 resource is used, any other request of this resource should by blocked. <code>V(s)</code> means unlock, saying that 1 resource is released, request of this resource is available</em></strong></p>
+<hr>
+<h3 id="12-5-3-Using-Semaphores-for-Mutual-Exclusion"><a href="#12-5-3-Using-Semaphores-for-Mutual-Exclusion" class="headerlink" title="12.5.3 Using Semaphores for Mutual Exclusion"></a>12.5.3 Using Semaphores for Mutual Exclusion</h3><p><em>The basic idea is to associate a semaphore <code>s</code>, initially 1, with each shared variable (or related set of shared variables) and then surround the corresponding critical section with P(s) and V (s) operations.</em></p>
+<ul>
+<li><p>A semaphore that is used in this way to protect shared variables is called a <strong>binary semaphore</strong> because its value is always 0 or 1</p>
+</li>
+<li><p>Binary semaphores whose purpose is to provide mutual exclusion are often called <strong>mutexes</strong>. </p>
+</li>
+<li><p>Performing a P operation on a mutex is called <strong>locking</strong> the mutex.</p>
+</li>
+<li><p>Similarly, performing the V operation is called <strong>unlocking</strong> the mutex. </p>
+<p>Combination of P and V operations creates a collection of states, called a forbidden region, where s &lt; 0.</p>
+</li>
+</ul>
+<p><img src="/2021/10/24/CSAPP/Ch12/forbiddenRegion.png" alt="forbidden region"></p>
+<p>(<code>-1</code> is not allowed means that there are only 1 shared resource of this kind, threads cannot access it simultaneously !)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">volatile</span> <span class="keyword">long</span> cnt = <span class="number">0</span>; <span class="comment">/* Counter */</span></span><br><span class="line"><span class="keyword">sem_t</span> mutex; <span class="comment">/* Semaphore that protects counter */</span></span><br><span class="line"></span><br><span class="line">Sem_init(&amp;mutex, <span class="number">0</span>, <span class="number">1</span>); <span class="comment">/* mutex = 1 */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; niters; i++) &#123;</span><br><span class="line">P(&amp;mutex);</span><br><span class="line">cnt++;</span><br><span class="line">V(&amp;mutex);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="12-5-4-Using-Semaphores-to-Schedule-Shared-Resources"><a href="#12-5-4-Using-Semaphores-to-Schedule-Shared-Resources" class="headerlink" title="12.5.4 Using Semaphores to Schedule Shared Resources"></a>12.5.4 Using Semaphores to Schedule Shared Resources</h3><p><em>schedule accesses to shared resources : a thread uses a semaphore operation to notify another thread that some condition in the program state has become true</em></p>
+<h4 id="Producer-Consumer-Problem"><a href="#Producer-Consumer-Problem" class="headerlink" title="Producer-Consumer Problem"></a>Producer-Consumer Problem</h4><p><img src="/2021/10/24/CSAPP/Ch12/producerconsumer.png" alt="consumer"></p>
+<h4 id="Readers-Writers-Problem"><a href="#Readers-Writers-Problem" class="headerlink" title="Readers-Writers Problem"></a>Readers-Writers Problem</h4><p><em>Writers must have exclusive access to the object, but readers may share the object with an unlimited number of other readers</em></p>
+<h3 id="12-5-5-Putting-It-Together-A-Concurrent-Server-Based-on-Prethreading"><a href="#12-5-5-Putting-It-Together-A-Concurrent-Server-Based-on-Prethreading" class="headerlink" title="12.5.5 Putting It Together: A Concurrent Server Based on Prethreading"></a>12.5.5 Putting It Together: A Concurrent Server Based on Prethreading</h3><h2 id="12-6-Using-Threads-for-Parallelism"><a href="#12-6-Using-Threads-for-Parallelism" class="headerlink" title="12.6 Using Threads for Parallelism"></a>12.6 Using Threads for Parallelism</h2><p><em>Operating system kernel schedules the concurrent threads in parallel on multiple cores, rather than sequentially on a single core</em></p>
+<p><img src="/2021/10/24/CSAPP/Ch12/programs.png" alt="programs"></p>
+<ul>
+<li>A parallel program is a concurrent program running on multiple processors. </li>
+<li>Synchronization overhead is expensive and should be avoided if possible. If it cannot be avoided, the overhead should be amortized by as much useful computation as possible.(This is why some sequential program will run faster than parallel programs)</li>
+</ul>
+<h4 id="Characterizing-the-Performance-of-Parallel-Programs"><a href="#Characterizing-the-Performance-of-Parallel-Programs" class="headerlink" title="Characterizing the Performance of Parallel Programs"></a>Characterizing the Performance of Parallel Programs</h4><h2 id="12-7-Other-Concurrency-Issues"><a href="#12-7-Other-Concurrency-Issues" class="headerlink" title="12.7 Other Concurrency Issues"></a>12.7 Other Concurrency Issues</h2><h2 id="12-8-Summary"><a href="#12-8-Summary" class="headerlink" title="12.8 Summary"></a>12.8 Summary</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/" data-id="ckvq507ns0005hdyqax6de4o0" data-title="Ch12" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/10/20/Missing%20Semester/ShellScripting/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">ShellScripting</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/10/24/CSAPP/Ch12/">Ch12</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/20/Missing%20Semester/ShellScripting/">ShellScripting</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/20/Missing%20Semester/Introduction/">Introduction</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/19/CSAPP/Ch11/">Ch11</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/16/CSAPP/shellLab/">shellLab</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
