@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/producerconsumer.png">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/programs.png">
 <meta property="article:published_time" content="2021-10-24T06:12:26.000Z">
-<meta property="article:modified_time" content="2021-11-08T04:00:50.253Z">
+<meta property="article:modified_time" content="2021-11-16T05:37:10.010Z">
 <meta property="article:author" content="rubbish">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/threadmode.png">
@@ -73,10 +73,10 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
       </div>
     </div>
   </div>
@@ -309,7 +309,7 @@
 <li>The sem_init function initializes semaphore sem to value. Each semaphore must be initialized before it can be used.</li>
 </ul>
 <hr>
-<p><strong><em><code>s</code> means the number of available resource of this type. <code>P(s)</code> means lock, saying that 1 resource is used, any other request of this resource should by blocked. <code>V(s)</code> means unlock, saying that 1 resource is released, request of this resource is available</em></strong></p>
+<p><strong><em><code>s</code> means the number of available resource of this type. <code>P(s)</code> means <code>lock</code>, saying that 1 resource is used, any other request of this resource should by blocked. <code>V(s)</code> means <code>unlock</code>, saying that 1 resource is released, request of this resource is available</em></strong></p>
 <hr>
 <h3 id="12-5-3-Using-Semaphores-for-Mutual-Exclusion"><a href="#12-5-3-Using-Semaphores-for-Mutual-Exclusion" class="headerlink" title="12.5.3 Using Semaphores for Mutual Exclusion"></a>12.5.3 Using Semaphores for Mutual Exclusion</h3><p><em>The basic idea is to associate a semaphore <code>s</code>, initially 1, with each shared variable (or related set of shared variables) and then surround the corresponding critical section with P(s) and V (s) operations.</em></p>
 <ul>
@@ -328,6 +328,7 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">volatile</span> <span class="keyword">long</span> cnt = <span class="number">0</span>; <span class="comment">/* Counter */</span></span><br><span class="line"><span class="keyword">sem_t</span> mutex; <span class="comment">/* Semaphore that protects counter */</span></span><br><span class="line"></span><br><span class="line">Sem_init(&amp;mutex, <span class="number">0</span>, <span class="number">1</span>); <span class="comment">/* mutex = 1 */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; niters; i++) &#123;</span><br><span class="line">P(&amp;mutex);</span><br><span class="line">cnt++;</span><br><span class="line">V(&amp;mutex);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="12-5-4-Using-Semaphores-to-Schedule-Shared-Resources"><a href="#12-5-4-Using-Semaphores-to-Schedule-Shared-Resources" class="headerlink" title="12.5.4 Using Semaphores to Schedule Shared Resources"></a>12.5.4 Using Semaphores to Schedule Shared Resources</h3><p><em>schedule accesses to shared resources : a thread uses a semaphore operation to notify another thread that some condition in the program state has become true</em></p>
 <h4 id="Producer-Consumer-Problem"><a href="#Producer-Consumer-Problem" class="headerlink" title="Producer-Consumer Problem"></a>Producer-Consumer Problem</h4><p><img src="/2021/10/24/CSAPP/Ch12/producerconsumer.png" alt="consumer"></p>
+<p>(For example, in GUI mode, user inputs are viewed as producer, handlers are viewed as consumers)</p>
 <h4 id="Readers-Writers-Problem"><a href="#Readers-Writers-Problem" class="headerlink" title="Readers-Writers Problem"></a>Readers-Writers Problem</h4><p><em>Writers must have exclusive access to the object, but readers may share the object with an unlimited number of other readers</em></p>
 <h3 id="12-5-5-Putting-It-Together-A-Concurrent-Server-Based-on-Prethreading"><a href="#12-5-5-Putting-It-Together-A-Concurrent-Server-Based-on-Prethreading" class="headerlink" title="12.5.5 Putting It Together: A Concurrent Server Based on Prethreading"></a>12.5.5 Putting It Together: A Concurrent Server Based on Prethreading</h3><h2 id="12-6-Using-Threads-for-Parallelism"><a href="#12-6-Using-Threads-for-Parallelism" class="headerlink" title="12.6 Using Threads for Parallelism"></a>12.6 Using Threads for Parallelism</h2><p><em>Operating system kernel schedules the concurrent threads in parallel on multiple cores, rather than sequentially on a single core</em></p>
 <p><img src="/2021/10/24/CSAPP/Ch12/programs.png" alt="programs"></p>
@@ -335,11 +336,16 @@
 <li>A parallel program is a concurrent program running on multiple processors. </li>
 <li>Synchronization overhead is expensive and should be avoided if possible. If it cannot be avoided, the overhead should be amortized by as much useful computation as possible.(This is why some sequential program will run faster than parallel programs)</li>
 </ul>
-<h4 id="Characterizing-the-Performance-of-Parallel-Programs"><a href="#Characterizing-the-Performance-of-Parallel-Programs" class="headerlink" title="Characterizing the Performance of Parallel Programs"></a>Characterizing the Performance of Parallel Programs</h4><h2 id="12-7-Other-Concurrency-Issues"><a href="#12-7-Other-Concurrency-Issues" class="headerlink" title="12.7 Other Concurrency Issues"></a>12.7 Other Concurrency Issues</h2><h2 id="12-8-Summary"><a href="#12-8-Summary" class="headerlink" title="12.8 Summary"></a>12.8 Summary</h2>
+<h4 id="Characterizing-the-Performance-of-Parallel-Programs"><a href="#Characterizing-the-Performance-of-Parallel-Programs" class="headerlink" title="Characterizing the Performance of Parallel Programs"></a>Characterizing the Performance of Parallel Programs</h4><h2 id="12-7-Other-Concurrency-Issues"><a href="#12-7-Other-Concurrency-Issues" class="headerlink" title="12.7 Other Concurrency Issues"></a>12.7 Other Concurrency Issues</h2><ul>
+<li><strong><em>Don’t use thread-unsafe function in your multi-thread program</em></strong></li>
+<li>All standard C library functions are thread-safe, such as <code>malloc</code>, <code>free</code>, <code>printf</code>,<code>scanf</code>…..</li>
+<li>Beware of <strong>deadlock</strong>(program wait for some condition which will never happen)</li>
+</ul>
+<h2 id="12-8-Summary"><a href="#12-8-Summary" class="headerlink" title="12.8 Summary"></a>12.8 Summary</h2>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/" data-id="ckvq507ns0005hdyqax6de4o0" data-title="Ch12" class="article-share-link">Teilen</a>
+      <a data-url="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/" data-id="ckvq507ns0005hdyqax6de4o0" data-title="Ch12" class="article-share-link">Share</a>
       
       
       
@@ -349,9 +355,18 @@
     
 <nav id="article-nav">
   
+    <a href="/2021/11/16/miscellaneous/Debug-libc/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Debug libc
+        
+      </div>
+    </a>
+  
   
     <a href="/2021/10/20/Missing%20Semester/ShellScripting/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
+      <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">ShellScripting</div>
     </a>
   
@@ -367,7 +382,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Kategorien</h3>
+    <h3 class="widget-title">Categories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
     </div>
@@ -396,9 +411,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
     </div>
   </div>
 
@@ -406,9 +421,17 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2021/11/16/miscellaneous/NetworkProgrammingFAQ/">NetworkProgrammingFAQ</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/16/miscellaneous/Debug-libc/">Debug libc</a>
+          </li>
         
           <li>
             <a href="/2021/10/24/CSAPP/Ch12/">Ch12</a>
@@ -420,14 +443,6 @@
         
           <li>
             <a href="/2021/10/20/Missing%20Semester/Introduction/">Introduction</a>
-          </li>
-        
-          <li>
-            <a href="/2021/10/19/CSAPP/Ch11/">Ch11</a>
-          </li>
-        
-          <li>
-            <a href="/2021/10/16/CSAPP/shellLab/">shellLab</a>
           </li>
         
       </ul>
