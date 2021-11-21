@@ -23,7 +23,7 @@
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/producerconsumer.png">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/programs.png">
 <meta property="article:published_time" content="2021-10-24T06:12:26.000Z">
-<meta property="article:modified_time" content="2021-11-16T05:37:10.010Z">
+<meta property="article:modified_time" content="2021-11-17T08:37:33.725Z">
 <meta property="article:author" content="rubbish">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/10/24/CSAPP/Ch12/threadmode.png">
@@ -341,7 +341,14 @@
 <li>All standard C library functions are thread-safe, such as <code>malloc</code>, <code>free</code>, <code>printf</code>,<code>scanf</code>…..</li>
 <li>Beware of <strong>deadlock</strong>(program wait for some condition which will never happen)</li>
 </ul>
-<h2 id="12-8-Summary"><a href="#12-8-Summary" class="headerlink" title="12.8 Summary"></a>12.8 Summary</h2>
+<h2 id="12-8-Summary"><a href="#12-8-Summary" class="headerlink" title="12.8 Summary"></a>12.8 Summary</h2><hr>
+<h2 id="Thread-level-parallelism"><a href="#Thread-level-parallelism" class="headerlink" title="Thread-level parallelism"></a>Thread-level parallelism</h2><ul>
+<li>Multi-thread program doesn’t mean fast program : lock and unlock operation can be really expensive</li>
+<li>Multi-thread program is hard to write, when you start the job, problems keep upbringing</li>
+<li>Even with a good idea and a lot of work, the performance may not improve.</li>
+<li>Before you start coding, <strong>parallelization strategy is super important</strong>(How your program parallelize?)</li>
+</ul>
+
       
     </div>
     <footer class="article-footer">
@@ -384,7 +391,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/missing-semester/">missing semester</a></li></ul>
     </div>
   </div>
 
@@ -426,23 +433,23 @@
       <ul>
         
           <li>
+            <a href="/2021/11/19/Missing%20Semester/VersionControl/">VersionControl</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/17/Missing%20Semester/CmdEnv/">CmdEnv</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/16/Missing%20Semester/DataWrangling/">DataWrangling</a>
+          </li>
+        
+          <li>
             <a href="/2021/11/16/miscellaneous/NetworkProgrammingFAQ/">NetworkProgrammingFAQ</a>
           </li>
         
           <li>
             <a href="/2021/11/16/miscellaneous/Debug-libc/">Debug libc</a>
-          </li>
-        
-          <li>
-            <a href="/2021/10/24/CSAPP/Ch12/">Ch12</a>
-          </li>
-        
-          <li>
-            <a href="/2021/10/20/Missing%20Semester/ShellScripting/">ShellScripting</a>
-          </li>
-        
-          <li>
-            <a href="/2021/10/20/Missing%20Semester/Introduction/">Introduction</a>
           </li>
         
       </ul>
