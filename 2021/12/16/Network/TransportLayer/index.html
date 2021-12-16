@@ -17,8 +17,12 @@
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/16/Network/TransportLayer/TCPseg.png">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/16/Network/TransportLayer/teardown.png">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/16/Network/TransportLayer/TCPheader.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/16/Network/TransportLayer/UDPheader.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/16/Network/TransportLayer/above.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/16/Network/TransportLayer/DUR.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/16/Network/TransportLayer/ErrorDetect.png">
 <meta property="article:published_time" content="2021-12-16T08:29:55.000Z">
-<meta property="article:modified_time" content="2021-12-16T09:34:53.389Z">
+<meta property="article:modified_time" content="2021-12-16T14:32:50.470Z">
 <meta property="article:author" content="rubbish">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/12/16/Network/TransportLayer/handshake.png">
@@ -68,10 +72,10 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
       </div>
     </div>
   </div>
@@ -140,11 +144,66 @@
 <li><p>Acknowledgment Sequence indicate the next desired sequence number, that is to say, all data before this number is successfully received.</p>
 </li>
 </ul>
-
+<h1 id="UDP-User-Datagram-Protocol"><a href="#UDP-User-Datagram-Protocol" class="headerlink" title="UDP(User Datagram Protocol)"></a>UDP(User Datagram Protocol)</h1><p><em>UPD is much much simpler than TCP</em></p>
+<p><img src="/2021/12/16/Network/TransportLayer/UDPheader.png" alt="udp header"></p>
+<ul>
+<li>The only valuable information is port number(So it is also called “User Demulitplexing Protocol”)</li>
+<li>Checksum is optional</li>
+<li>No connection is established</li>
+</ul>
+<h4 id="Applicaiton-of-UDP"><a href="#Applicaiton-of-UDP" class="headerlink" title="Applicaiton of UDP"></a>Applicaiton of UDP</h4><ul>
+<li>let people build their own protocol at application layer</li>
+<li>For the purpose of “Request-Answer” service, for example DNS</li>
+</ul>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://softwareengineering.stackexchange.com/questions/342254/tcp-or-udp-for-a-multiplayer-game">Transport layer protocol in network gaming</a></p>
+<p>Depends on if you’re talking about peer-to-peer, client/server with the users running the server, or client/server with a data center running the server. Only in the latter-most case is the internet really fast and reliable. Your users’ computers are <strong>not</strong> guaranteed to be fast, and certainly won’t be reliable.</p>
+<p>UDP allows you greater control over the sort of TCP-like implementation you’re making. It gives you greater flexibility to execute packets out of order, discard packets that you consider unnecessary while retrying packets you consider important, that sort of thing. <strong><em>But this should only be done if needed and if you have the necessary expertise.</em></strong></p>
+<p>If you can do without that flexibility, TCP works well enough and saves you a whole lot of time. Even professional studios (like one I worked at) use TCP if they don’t absolutely need UDP, and they have people <em>dedicated</em> to network programming.</p>
+</blockquote>
+<h2 id="ICMP-Internet-Control-Message-Protocol"><a href="#ICMP-Internet-Control-Message-Protocol" class="headerlink" title="ICMP(Internet Control Message Protocol)"></a>ICMP(Internet Control Message Protocol)</h2><p><em>providing error message or diagnose message of <strong>Network layer</strong></em></p>
+<p><img src="/2021/12/16/Network/TransportLayer/above.png" alt="ICMP above network layer"></p>
+<p><img src="/2021/12/16/Network/TransportLayer/DUR.png" alt="Destination Unreachable"></p>
+<p>(If the router does not know how to forward the package)</p>
+<ul>
+<li>Used by tools like <code>ping</code>, <code>traceroute</code>,…</li>
+<li>ICMP package is usually generated by routers</li>
+<li>The IP header of the original package which leads to the error will be included in the ICMP body.</li>
+</ul>
+<h2 id="End-to-end-Principle"><a href="#End-to-end-Principle" class="headerlink" title="End-to-end Principle"></a>End-to-end Principle</h2><p><em>Network can do more jobs to help, but it can only help, not ensure. The responsibility lies on endpoints since only the endpoints have enough information to ensure the job.</em></p>
+<p><strong><em>Always remember that the network is unreliable !!! It might be correct, might !</em></strong></p>
+<h3 id="Strong-End-to-end-Principle"><a href="#Strong-End-to-end-Principle" class="headerlink" title="Strong End-to-end Principle"></a>Strong End-to-end Principle</h3><blockquote>
+<p>The network’s job is to transmit datagrams as efficiently and flexibly as possible. Everything else should be done at the fringes</p>
+</blockquote>
+<ul>
+<li>Don’t make any assumption</li>
+<li>Lots of people do not follow the principle when they are designing networks, so it might has good performance, but hard to change.</li>
+</ul>
+<h2 id="Error-Detection"><a href="#Error-Detection" class="headerlink" title="Error Detection"></a>Error Detection</h2><p><img src="/2021/12/16/Network/TransportLayer/ErrorDetect.png" alt="error detection"></p>
+<p><em>Some of the scheme only append the value after data</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ED = f(data)</span><br><span class="line">send(ED + data)</span><br></pre></td></tr></table></figure>
+<h3 id="Checksum"><a href="#Checksum" class="headerlink" title="Checksum"></a>Checksum</h3><ul>
+<li>Fast, cheap to implement</li>
+<li>Weak guarantee, if 2 bits error at the same time, the error will be canceled</li>
+<li>Used by IP , TCP</li>
+</ul>
+<h3 id="CRC-Cyclic-Redundancy-Code"><a href="#CRC-Cyclic-Redundancy-Code" class="headerlink" title="CRC(Cyclic Redundancy Code)"></a>CRC(Cyclic Redundancy Code)</h3><ul>
+<li>Compute the reminder of a polynomial</li>
+<li>Easy to implement in hardware</li>
+<li>strong guarantee, detect lots of errors</li>
+<li>Used by ethernet and link layer</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">polynomial_mod</span>(<span class="params">a,b</span>):</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">Generator = <span class="number">0b1011</span> <span class="comment"># given by the algorithm</span></span><br><span class="line">Data = message + polynomial_mod(message , Generator)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">validate</span>(<span class="params">Data, Generator</span>):</span></span><br><span class="line">    <span class="keyword">return</span> polynomial_mod(Data, Generator) == <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h3 id="MAC-Message-Authenticate-Code"><a href="#MAC-Message-Authenticate-Code" class="headerlink" title="MAC(Message Authenticate Code)"></a>MAC(Message Authenticate Code)</h3><ul>
+<li>For cryptographical purpose</li>
+<li>More security then error detection</li>
+<li>Used by TLS</li>
+</ul>
+<h2 id="Finite-Status-Machines"><a href="#Finite-Status-Machines" class="headerlink" title="Finite Status Machines"></a>Finite Status Machines</h2>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2021/12/16/Network/TransportLayer/" data-id="ckx8ro6sq0001coyq4mgk6ur6" data-title="TransportLayer" class="article-share-link">Teilen</a>
+      <a data-url="http://rubbish-and-world.github.io/2021/12/16/Network/TransportLayer/" data-id="ckx8ro6sq0001coyq4mgk6ur6" data-title="TransportLayer" class="article-share-link">Share</a>
       
       
       
@@ -156,7 +215,7 @@
   
   
     <a href="/2021/12/16/Network/lab0/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
+      <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">lab0</div>
     </a>
   
@@ -172,7 +231,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Kategorien</h3>
+    <h3 class="widget-title">Categories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
     </div>
@@ -201,7 +260,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
     </div>
@@ -211,7 +270,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
