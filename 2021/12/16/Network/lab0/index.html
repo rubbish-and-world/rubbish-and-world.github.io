@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>lab0 | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Lab Checkpoint 0: networking warmuppdf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="lab0">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/12/16/Network/lab0/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Lab Checkpoint 0: networking warmuppdf">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-12-16T05:28:55.000Z">
+<meta property="article:modified_time" content="2021-12-16T08:18:25.105Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Network/lab0" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/12/16/Network/lab0/" class="article-date">
+  <time class="dt-published" datetime="2021-12-16T05:28:55.000Z" itemprop="datePublished">2021-12-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Networking/">Networking</a>►<a class="article-category-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      lab0
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Lab-Checkpoint-0-networking-warmup"><a href="#Lab-Checkpoint-0-networking-warmup" class="headerlink" title="Lab Checkpoint 0: networking warmup"></a>Lab Checkpoint 0: networking warmup</h1><p><a target="_blank" rel="noopener" href="https://cs144.github.io/assignments/lab0.pdf">pdf</a></p>
+<a id="more"></a>
+
+<p>(The lab documents are written closer to the level of detail that a software engineer will get from a boss or client. If you think something might not be fully specified, sometimes the truth is that it doesn’t matter—you could try one approach or the other and see what happens.)</p>
+<h2 id="1-Set-up-GNU-Linux-on-your-computer"><a href="#1-Set-up-GNU-Linux-on-your-computer" class="headerlink" title="1 Set up GNU/Linux on your computer"></a>1 Set up GNU/Linux on your computer</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://web.stanford.edu/class/cs144/vm_howto/setup_dev_env.sh</span><br></pre></td></tr></table></figure>
+<h2 id="2-Networking-by-hand"><a href="#2-Networking-by-hand" class="headerlink" title="2 Networking by hand"></a>2 Networking by hand</h2><h3 id="2-1-Fetch-a-Web-page"><a href="#2-1-Fetch-a-Web-page" class="headerlink" title="2.1 Fetch a Web page"></a>2.1 Fetch a Web page</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ telnet cs144.keithw.org http</span><br><span class="line">Trying 104.196.238.229...</span><br><span class="line">Connected to cs144.keithw.org.</span><br><span class="line">Escape character is <span class="string">&#x27;^]&#x27;</span>.</span><br><span class="line">GET /hello HTTP/1.1		<span class="comment"># path to the file you are asking</span></span><br><span class="line">Host: cs144.keithw.org  <span class="comment"># server host name</span></span><br><span class="line">Connection: close  <span class="comment">#  This tells the server that you are finished  making requests, and it should close the connection as soon as it finishes replying     </span></span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Date: Thu, 16 Dec 2021 05:49:04 GMT</span><br><span class="line">Server: Apache</span><br><span class="line">Last-Modified: Thu, 13 Dec 2018 15:45:29 GMT</span><br><span class="line">ETag: <span class="string">&quot;e-57ce93446cb64&quot;</span></span><br><span class="line">Accept-Ranges: bytes</span><br><span class="line">Content-Length: 14</span><br><span class="line">Connection: close</span><br><span class="line">Content-Type: text/plain</span><br><span class="line"></span><br><span class="line">Hello, CS144!</span><br><span class="line">Connection closed by foreign host.</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ curl --verbose cs144.keithw.org/hello</span><br><span class="line">&gt; GET http://cs144.keithw.org/hello HTTP/1.1</span><br><span class="line">&gt; Host: cs144.keithw.org</span><br><span class="line">&gt; User-Agent: curl/7.58.0</span><br><span class="line">&gt; Accept: */*</span><br><span class="line">&gt; Proxy-Connection: Keep-Alive</span><br><span class="line">&gt;</span><br><span class="line">&lt; HTTP/1.1 200 OK</span><br><span class="line">&lt; Content-Length: 14</span><br><span class="line">&lt; Accept-Ranges: bytes</span><br><span class="line">&lt; Connection: keep-alive</span><br><span class="line">&lt; Content-Type: text/plain</span><br><span class="line">&lt; Date: Thu, 16 Dec 2021 06:04:03 GMT</span><br><span class="line">&lt; Etag: <span class="string">&quot;e-57ce93446cb64&quot;</span></span><br><span class="line">&lt; Keep-Alive: timeout=4</span><br><span class="line">&lt; Last-Modified: Thu, 13 Dec 2018 15:45:29 GMT</span><br><span class="line">&lt; Proxy-Connection: keep-alive</span><br><span class="line">&lt; Server: Apache</span><br><span class="line">&lt;</span><br><span class="line">Hello, CS144!</span><br></pre></td></tr></table></figure>
+<p>if you want to do this with <code>nc</code>, beware that nc send the line each time you hit <code>&lt;Enter&gt;</code>, so there will be a <code>400 Bad Request</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ nc cs144.keithw.org http</span><br><span class="line">GET /hello HTTP/1.1</span><br><span class="line">HTTP/1.1 400 Bad Request</span><br><span class="line">Date: Thu, 16 Dec 2021 06:09:33 GMT</span><br><span class="line">Server: Apache</span><br><span class="line">Content-Length: 226</span><br><span class="line">Connection: close</span><br><span class="line">Content-Type: text/html; charset=iso-8859-1</span><br><span class="line"></span><br><span class="line">&lt;!DOCTYPE HTML PUBLIC <span class="string">&quot;-//IETF//DTD HTML 2.0//EN&quot;</span>&gt;</span><br><span class="line">&lt;html&gt;&lt;head&gt;</span><br><span class="line">&lt;title&gt;400 Bad Request&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;&lt;body&gt;</span><br><span class="line">&lt;h1&gt;Bad Request&lt;/h1&gt;</span><br><span class="line">&lt;p&gt;Your browser sent a request that this server could not understand.&lt;br /&gt;</span><br><span class="line">&lt;/p&gt;</span><br><span class="line">&lt;/body&gt;&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://osric.com/chris/accidental-developer/2018/01/using-nc-netcat-to-make-an-http-request/">use http in nc</a></p>
+<p>just take a look at <a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2616#section-5.2">HTTP specification 5.2</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">printf</span> <span class="string">&#x27;GET /hello HTTP/1.1\r\nHost: cs144.keithw.org\r\nConnection: close\r\n\r\n&#x27;</span> | nc cs144.keithw.org http</span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Date: Thu, 16 Dec 2021 06:08:02 GMT</span><br><span class="line">Server: Apache</span><br><span class="line">Last-Modified: Thu, 13 Dec 2018 15:45:29 GMT</span><br><span class="line">ETag: <span class="string">&quot;e-57ce93446cb64&quot;</span></span><br><span class="line">Accept-Ranges: bytes</span><br><span class="line">Content-Length: 14</span><br><span class="line">Connection: close</span><br><span class="line">Content-Type: text/plain</span><br><span class="line"></span><br><span class="line">Hello, CS144!</span><br></pre></td></tr></table></figure>
+<h3 id="Assignment"><a href="#Assignment" class="headerlink" title="Assignment"></a>Assignment</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">printf</span> <span class="string">&#x27;GET /lab0/01 HTTP/1.1\r\nHost: cs144.keithw.org\r\nConnection: close\r\n\r\n&#x27;</span> | nc cs144.keithw.org http</span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Date: Thu, 16 Dec 2021 06:14:24 GMT</span><br><span class="line">Server: Apache</span><br><span class="line">X-You-Said-Your-SunetID-Was: 01</span><br><span class="line">X-Your-Code-Is: 966759</span><br><span class="line">Content-length: 106</span><br><span class="line">Vary: Accept-Encoding</span><br><span class="line">Connection: close</span><br><span class="line">Content-Type: text/plain</span><br><span class="line"></span><br><span class="line">Hello! You told us that your SUNet ID was <span class="string">&quot;01&quot;</span>. Please see the HTTP headers (above) <span class="keyword">for</span> your secret code.</span><br><span class="line"></span><br><span class="line">$ curl cs144.keithw.org/lab0/01 --verbose</span><br><span class="line">*   Trying 127.0.0.1...</span><br><span class="line">* TCP_NODELAY <span class="built_in">set</span></span><br><span class="line">* Connected to 127.0.0.1 (127.0.0.1) port 7890 (<span class="comment">#0)</span></span><br><span class="line">&gt; GET http://cs144.keithw.org/lab0/01 HTTP/1.1</span><br><span class="line">&gt; Host: cs144.keithw.org</span><br><span class="line">&gt; User-Agent: curl/7.58.0</span><br><span class="line">&gt; Accept: */*</span><br><span class="line">&gt; Proxy-Connection: Keep-Alive</span><br><span class="line">&gt;</span><br><span class="line">&lt; HTTP/1.1 200 OK</span><br><span class="line">&lt; Connection: keep-alive</span><br><span class="line">&lt; Content-Type: text/plain</span><br><span class="line">&lt; Date: Thu, 16 Dec 2021 06:15:18 GMT</span><br><span class="line">&lt; Keep-Alive: timeout=4</span><br><span class="line">&lt; Proxy-Connection: keep-alive</span><br><span class="line">&lt; Server: Apache</span><br><span class="line">&lt; Vary: Accept-Encoding</span><br><span class="line">&lt; X-You-Said-Your-Sunetid-Was: 01</span><br><span class="line">&lt; X-Your-Code-Is: 109591</span><br><span class="line">* no chunk, no close, no size. Assume close to signal end</span><br><span class="line">&lt;</span><br><span class="line">Hello! You told us that your SUNet ID was <span class="string">&quot;01&quot;</span>. Please see the HTTP headers (above) <span class="keyword">for</span> your secret code.</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-Send-yourself-an-email"><a href="#2-2-Send-yourself-an-email" class="headerlink" title="2.2 Send yourself an email"></a>2.2 Send yourself an email</h3><p><em>since we are not on stanford network and we don’t have a valid sunetid we cannot complish this part of the lab</em></p>
+<h3 id="2-3-Listening-and-connecting"><a href="#2-3-Listening-and-connecting" class="headerlink" title="2.3 Listening and connecting"></a>2.3 Listening and connecting</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ netcat -v -l -p 9091</span><br><span class="line">Listening on [0.0.0.0] (family 0, port 9091)</span><br><span class="line">Connection from localhost 47546 received!</span><br><span class="line">hello netcat</span><br><span class="line">hello telnet</span><br><span class="line"><span class="built_in">bye</span></span><br><span class="line"><span class="built_in">bye</span></span><br><span class="line">^C</span><br><span class="line">$ telnet localhost 9091</span><br><span class="line">Trying ::1...</span><br><span class="line">Trying 127.0.0.1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is <span class="string">&#x27;^]&#x27;</span>.</span><br><span class="line">hello netcat</span><br><span class="line">hello telnet</span><br><span class="line"><span class="built_in">bye</span></span><br><span class="line"><span class="built_in">bye</span></span><br><span class="line">Connection closed by foreign host.</span><br></pre></td></tr></table></figure>
+<h2 id="3-Writing-a-network-program-using-an-OS-stream-socket"><a href="#3-Writing-a-network-program-using-an-OS-stream-socket" class="headerlink" title="3 Writing a network program using an OS stream socket"></a>3 Writing a network program using an OS stream socket</h2><p>In the next part of this warmup lab, you will write a short program that fetches a Web page over the Internet.</p>
+<ul>
+<li><p>When two <strong>stream sockets</strong> are <strong>connected</strong>, any bytes written to one socket will eventually come out in the same order from the other socket on the other computer.</p>
+</li>
+<li><p>Although the network tries to deliver every datagram, in practice datagrams can be (1) lost, (2) delivered out of order, (3) delivered with the contents altered, or even (4) duplicated and delivered more than once. It’s normally the <strong><em>job of the operating systems</em></strong> on either end of the connection to turn “best-effort datagrams” (the abstraction the Internet provides) into “reliable byte streams” (the abstraction that applications usually want).</p>
+</li>
+<li><p>The two computers have to cooperate to make sure that each byte in the stream eventually gets delivered, in its proper place in line, to the stream socket on the other side. This was done by TCP</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/cs144/sponge</span><br><span class="line">$ <span class="built_in">cd</span> sponge</span><br><span class="line">$ mkdir build</span><br><span class="line">$ <span class="built_in">cd</span> build</span><br><span class="line">$ cmake ..</span><br><span class="line">$ make</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">$ cmake -DCMAKE_CXX_COMPILER=`<span class="built_in">which</span> g++-8` -DCMAKE_C_COMPILER=`<span class="built_in">which</span> gcc-8` ..</span><br><span class="line">-- The C compiler identification is GNU 8.4.0</span><br><span class="line">-- The CXX compiler identification is GNU 8.4.0</span><br><span class="line">-- Check <span class="keyword">for</span> working C compiler: /usr/bin/gcc-8</span><br><span class="line">-- Check <span class="keyword">for</span> working C compiler: /usr/bin/gcc-8 -- works</span><br><span class="line">-- Detecting C compiler ABI info</span><br><span class="line">-- Detecting C compiler ABI info - <span class="keyword">done</span></span><br><span class="line">-- Detecting C compile features</span><br><span class="line">-- Detecting C compile features - <span class="keyword">done</span></span><br><span class="line">-- Check <span class="keyword">for</span> working CXX compiler: /usr/bin/g++-8</span><br><span class="line">-- Check <span class="keyword">for</span> working CXX compiler: /usr/bin/g++-8 -- works</span><br><span class="line">-- Detecting CXX compiler ABI info</span><br><span class="line">-- Detecting CXX compiler ABI info - <span class="keyword">done</span></span><br><span class="line">-- Detecting CXX compile features</span><br><span class="line">-- Detecting CXX compile features - <span class="keyword">done</span></span><br><span class="line">-- Setting build <span class="built_in">type</span> to <span class="string">&#x27;Release&#x27;</span></span><br><span class="line">--   NOTE: You can choose a build <span class="built_in">type</span> by calling cmake with one of:</span><br><span class="line">--     -DCMAKE_BUILD_TYPE=Release   -- full optimizations</span><br><span class="line">--     -DCMAKE_BUILD_TYPE=Debug     -- better debugging experience <span class="keyword">in</span> gdb</span><br><span class="line">--     -DCMAKE_BUILD_TYPE=RelASan   -- full optimizations plus address and undefined-behavior sanitizers</span><br><span class="line">--     -DCMAKE_BUILD_TYPE=DebugASan -- debug plus sanitizers</span><br><span class="line">-- Could NOT find Doxygen (missing: DOXYGEN_EXECUTABLE)</span><br><span class="line">-- Configuring <span class="keyword">done</span></span><br><span class="line">-- Generating <span class="keyword">done</span></span><br><span class="line">-- Build files have been written to: /home/vagrant/CS144/lab0/3/sponge/build</span><br><span class="line">$ make</span><br><span class="line">[100%] Built target parser_dt</span><br></pre></td></tr></table></figure>
+<h3 id="My-solution"><a href="#My-solution" class="headerlink" title="My solution:"></a>My solution:</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get_URL</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;host, <span class="keyword">const</span> <span class="built_in">string</span> &amp;path)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Your code here.</span></span><br><span class="line">    <span class="comment">// You will need to connect to the &quot;http&quot; service on</span></span><br><span class="line">    <span class="comment">// the computer whose name is in the &quot;host&quot; string,</span></span><br><span class="line">    Address target = Address(host , <span class="string">&quot;http&quot;</span>);</span><br><span class="line">    TCPSocket request ;</span><br><span class="line">    request.connect(target);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// then request the URL path given in the &quot;path&quot; string.</span></span><br><span class="line"></span><br><span class="line">    request.write(<span class="string">&quot;GET &quot;</span> + path + <span class="string">&quot; HTTP/1.1\r\n&quot;</span>);</span><br><span class="line">    request.write(<span class="string">&quot;Host: &quot;</span> + host + <span class="string">&quot;\r\n&quot;</span>);</span><br><span class="line">    request.write(<span class="string">&quot;Connection: close\r\n\r\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Then you&#x27;ll need to print out everything the server sends back,</span></span><br><span class="line">    <span class="comment">// (not just one call to read() -- everything) until you reach</span></span><br><span class="line">    <span class="comment">// the &quot;eof&quot; (end of file).</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">string</span> received_content ;</span><br><span class="line">    <span class="keyword">while</span>(!request.eof())&#123;</span><br><span class="line">        received_content += request.read();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ make check_webget</span><br><span class="line">[100%] Testing webget...</span><br><span class="line">Test project /home/vagrant/CS144/lab0/3/sponge/build</span><br><span class="line">    Start 31: t_webget</span><br><span class="line">1/1 Test <span class="comment">#31: t_webget .........................   Passed    1.03 sec</span></span><br><span class="line"></span><br><span class="line">100% tests passed, 0 tests failed out of 1</span><br><span class="line"></span><br><span class="line">Total Test time (real) =   1.03 sec</span><br><span class="line">[100%] Built target check_webget</span><br></pre></td></tr></table></figure>
+<h2 id="4-An-in-memory-reliable-byte-stream"><a href="#4-An-in-memory-reliable-byte-stream" class="headerlink" title="4 An in-memory reliable byte stream"></a>4 An in-memory reliable byte stream</h2><p><em>just a simple <code>std::queue&lt;char&gt;</code></em></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/12/16/Network/lab0/" data-id="ckx8ro6sr0002coyq8xem2nbz" data-title="lab0" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/12/16/Network/TransportLayer/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          TransportLayer
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/12/14/feelings/code-cold/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">code&amp;cold</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/12/16/Network/TransportLayer/">TransportLayer</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/16/Network/lab0/">lab0</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/14/feelings/code-cold/">code&amp;cold</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/28/Missing%20Semester/Security-Hash/">Security&amp;Hash</a>
+          </li>
+        
+          <li>
+            <a href="/2021/11/27/Missing%20Semester/MetaProgramming/">MetaProgramming</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
