@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>PackageSwitch | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Speed of Network">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PackageSwitch">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Speed of Network">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/example.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/propagationdelay.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/packetizationdelay.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/End2enddelay.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/detailed.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/queuedelay.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/queuemodel.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/Qexample.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/Qexample2.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/why.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/StatisticalMultiplexing.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/ps1.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/ps2.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/ps3.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/netrouter.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/VQ1.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/VQ2.png">
+<meta property="article:published_time" content="2021-12-18T12:09:38.000Z">
+<meta property="article:modified_time" content="2021-12-21T07:38:32.393Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/example.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Network/PackageSwitch" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/12/18/Network/PackageSwitch/" class="article-date">
+  <time class="dt-published" datetime="2021-12-18T12:09:38.000Z" itemprop="datePublished">2021-12-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Networking/">Networking</a>►<a class="article-category-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      PackageSwitch
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+<h1 id="Speed-of-Network"><a href="#Speed-of-Network" class="headerlink" title="Speed of Network"></a>Speed of Network</h1><a id="more"></a>
+
+<h2 id="Predecessor-of-Package-Switching"><a href="#Predecessor-of-Package-Switching" class="headerlink" title="Predecessor of Package Switching"></a>Predecessor of Package Switching</h2><h3 id="Circuit-Switching"><a href="#Circuit-Switching" class="headerlink" title="Circuit Switching"></a>Circuit Switching</h3><ul>
+<li>used in telephone system</li>
+<li>Each phone call has unique connection(physcial wire) that doesn’t shared with others</li>
+</ul>
+<h3 id="Problems"><a href="#Problems" class="headerlink" title="Problems"></a>Problems</h3><ul>
+<li>Inefficient, computer communication tend to be bursty</li>
+<li>Diverse rate, different application diff a lot in speed requirement, for example ssh vs video</li>
+<li>State management</li>
+</ul>
+<h2 id="Package-Switching"><a href="#Package-Switching" class="headerlink" title="Package Switching"></a>Package Switching</h2><p><img src="/2021/12/18/Network/PackageSwitch/example.png" alt="example"></p>
+<ul>
+<li>The router can only route exactly <strong>one</strong> package at any given time, so other packages must be <strong>buffered</strong></li>
+<li>No state need to be managed, all communication share the whole link</li>
+</ul>
+<h2 id="Definitions"><a href="#Definitions" class="headerlink" title="Definitions"></a>Definitions</h2><blockquote>
+<p>Propagation speed is <strong>how fast can the link transmit a bit</strong></p>
+<p>Data rate is <strong>how fast can we put bits on the link</strong>(how many bits can we put on the link per second)</p>
+</blockquote>
+<h3 id="Propagation-Delay"><a href="#Propagation-Delay" class="headerlink" title="Propagation Delay"></a>Propagation Delay</h3><p><img src="/2021/12/18/Network/PackageSwitch/propagationdelay.png" alt="pd"></p>
+<ul>
+<li><p>The propagation speed is about 80% of the speed of light, so we use $c$ to represent the speed</p>
+</li>
+<li><p>The propagation speed is defined by the material of the link rather then the data rate of the link</p>
+</li>
+</ul>
+<h3 id="Packetization-Delay"><a href="#Packetization-Delay" class="headerlink" title="Packetization Delay"></a>Packetization Delay</h3><p><img src="/2021/12/18/Network/PackageSwitch/packetizationdelay.png" alt="pd"></p>
+<ul>
+<li>The data rate of the link is $r$, the total bits need to be transmitted is $p$</li>
+<li>Do not affected by propagation speed or the distance</li>
+</ul>
+<h3 id="End-to-end-Delay"><a href="#End-to-end-Delay" class="headerlink" title="End to end Delay"></a>End to end Delay</h3><p><img src="/2021/12/18/Network/PackageSwitch/End2enddelay.png" alt="end 2 end"></p>
+<ul>
+<li><p>sum of propagation delay and packetization delay</p>
+</li>
+<li><p>Why it is addition here rather than multiplication?</p>
+</li>
+</ul>
+<p><img src="/2021/12/18/Network/PackageSwitch/detailed.png" alt="detailed"></p>
+<ul>
+<li>Sending bits is the link’s job, putting bits on link is the host’s job, they can be done simultaneously.</li>
+<li>Bits can be sent simultaneously, the link do not need to wait for the previous bit to arrive before sending the next one.</li>
+</ul>
+<h3 id="Queue-Delay"><a href="#Queue-Delay" class="headerlink" title="Queue Delay"></a>Queue Delay</h3><p><img src="/2021/12/18/Network/PackageSwitch/queuedelay.png" alt="qd"></p>
+<ul>
+<li><p>Your package will be buffered if other package’s arrival is ahead of yours, you have to wait</p>
+</li>
+<li><p>Why $Q(t)$ is a function of time ? Because we don’t know at which time the network will become crowded and make you package wait.</p>
+</li>
+<li><p>Due to the queueing(UK style of spelling here) delay, the end-to-end delay is unpredictable</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ ping www.stanford.edu</span><br><span class="line">PING pantheon-systems.map.fastly.net (151.101.230.133): 56 data bytes</span><br><span class="line">64 bytes from 151.101.230.133: icmp_seq=0 ttl=52 time=107.877 ms</span><br><span class="line">64 bytes from 151.101.230.133: icmp_seq=1 ttl=52 time=116.139 ms</span><br><span class="line">64 bytes from 151.101.230.133: icmp_seq=2 ttl=52 time=117.227 ms</span><br><span class="line">64 bytes from 151.101.230.133: icmp_seq=3 ttl=52 time=115.867 ms</span><br><span class="line">64 bytes from 151.101.230.133: icmp_seq=4 ttl=52 time=106.592 ms</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+<p>The <code>time</code> varies between each package, it is the round-trip time(sum of to and back)</p>
+<ul>
+<li>Video applications can set a playback buffer to absorb the queueing delay</li>
+</ul>
+<h2 id="Queue-model"><a href="#Queue-model" class="headerlink" title="Queue model"></a>Queue model</h2><p><img src="/2021/12/18/Network/PackageSwitch/queuemodel.png" alt="queue model"><br>$$<br>Q(t) = A(t) - D(t)<br>$$</p>
+<p>$$<br>delay(t) = D^{-1}(bytes) - A^{-1}(bytes)<br>$$</p>
+<p><img src="/2021/12/18/Network/PackageSwitch/Qexample.png" alt="Qexample"></p>
+<p><img src="/2021/12/18/Network/PackageSwitch/Qexample2.png" alt="Qexample2"></p>
+<h3 id="Why-we-use-package-switching"><a href="#Why-we-use-package-switching" class="headerlink" title="Why we use package switching"></a>Why we use package switching</h3><p><img src="/2021/12/18/Network/PackageSwitch/why.png" alt="why"></p>
+<h3 id="Statistical-Multiplexing"><a href="#Statistical-Multiplexing" class="headerlink" title="Statistical Multiplexing"></a>Statistical Multiplexing</h3><p><img src="/2021/12/18/Network/PackageSwitch/StatisticalMultiplexing.png" alt="sm"></p>
+<h2 id="Queueing-Theory"><a href="#Queueing-Theory" class="headerlink" title="Queueing Theory"></a>Queueing Theory</h2><ul>
+<li><p>Burstiness increase delay</p>
+</li>
+<li><p>Little’ result</p>
+</li>
+<li><p>Poisson’ process</p>
+</li>
+</ul>
+<p>….</p>
+<h2 id="Switching-and-forwarding"><a href="#Switching-and-forwarding" class="headerlink" title="Switching and forwarding"></a>Switching and forwarding</h2><p><img src="/2021/12/18/Network/PackageSwitch/ps1.png" alt="package switch"></p>
+<hr>
+<p><img src="/2021/12/18/Network/PackageSwitch/ps2.png" alt="package switch"></p>
+<hr>
+<p><img src="/2021/12/18/Network/PackageSwitch/ps3.png" alt="package switch"></p>
+<h3 id="Ethernet-switcher"><a href="#Ethernet-switcher" class="headerlink" title="Ethernet switcher"></a>Ethernet switcher</h3><p>The forwarding table store <strong>hash value</strong> of destination address and the matching process is fully matching, that is to say, the addresses must be exactly the same.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">EthernetSwitcher</span>():</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process</span>(<span class="params">self,package</span>):</span></span><br><span class="line">        <span class="comment"># 1 examine header</span></span><br><span class="line">        header = getheader(package)</span><br><span class="line">        <span class="comment"># 2 if in forwarding table, forward</span></span><br><span class="line">        <span class="keyword">if</span> header.destination_addr <span class="keyword">in</span> self.forwarding_table:</span><br><span class="line">        send(package,self.forwarding_table[<span class="built_in">hash</span>(header.destination_addr)])</span><br><span class="line">        <span class="comment"># if not in forwarding table, broadcast</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            send(package, all_ports)</span><br><span class="line">        <span class="comment"># 3 learn from source</span></span><br><span class="line">        self.forwarding_table[<span class="built_in">hash</span>(header.source_addr)] = package.from_which_link</span><br></pre></td></tr></table></figure>
+<h3 id="Internet-router"><a href="#Internet-router" class="headerlink" title="Internet router"></a>Internet router</h3><p><img src="/2021/12/18/Network/PackageSwitch/netrouter.png" alt="net router"></p>
+<h2 id="Virtual-Output-Queue"><a href="#Virtual-Output-Queue" class="headerlink" title="Virtual Output Queue"></a>Virtual Output Queue</h2><p>Problem with single queue</p>
+<p><img src="/2021/12/18/Network/PackageSwitch/VQ1.png" alt="single queue"></p>
+<p>Pre-categoried strategy</p>
+<p><img src="/2021/12/18/Network/PackageSwitch/VQ2.png" alt="virtual queue"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/12/18/Network/PackageSwitch/" data-id="ckxu4nm4k0001nmyqd6g998u0" data-title="PackageSwitch" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/12/21/Network/ApplicationLayer/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          ApplicationLayer
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/12/18/Network/lab1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">lab1</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/12/30/Network/Routing/">Routing</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/25/feelings/HalfWayToTheEnd/">HalfWayToTheEnd</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/21/Network/ApplicationLayer/">ApplicationLayer</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/18/Network/PackageSwitch/">PackageSwitch</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/18/Network/lab1/">lab1</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

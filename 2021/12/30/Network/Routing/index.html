@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Routing | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Package Delivering">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Routing">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/12/30/Network/Routing/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Package Delivering">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/30/Network/Routing/problem.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/30/Network/Routing/flooding.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/30/Network/Routing/source.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/30/Network/Routing/spanning.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/30/Network/Routing/minicost.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/30/Network/Routing/DVexample.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/30/Network/Routing/badnews.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/30/Network/Routing/Dijkstra.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/30/Network/Routing/AS.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/30/Network/Routing/peer.png">
+<meta property="article:published_time" content="2021-12-30T12:35:35.000Z">
+<meta property="article:modified_time" content="2021-12-31T08:20:48.168Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/12/30/Network/Routing/problem.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Network/Routing" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/12/30/Network/Routing/" class="article-date">
+  <time class="dt-published" datetime="2021-12-30T12:35:35.000Z" itemprop="datePublished">2021-12-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Networking/">Networking</a>►<a class="article-category-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Routing
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+<h1 id="Package-Delivering"><a href="#Package-Delivering" class="headerlink" title="Package Delivering"></a>Package Delivering</h1><a id="more"></a>
+
+<h2 id="Routing-Basic"><a href="#Routing-Basic" class="headerlink" title="Routing Basic"></a>Routing Basic</h2><p><em>Routing is about solving a simple question</em></p>
+<p><img src="/2021/12/30/Network/Routing/problem.png" alt="problem"></p>
+<h3 id="Legacy-Solutions"><a href="#Legacy-Solutions" class="headerlink" title="Legacy Solutions"></a>Legacy Solutions</h3><h4 id="Flooding"><a href="#Flooding" class="headerlink" title="Flooding"></a>Flooding</h4><p><em>each router send the package to each port except the incoming one</em></p>
+<ul>
+<li>Inefficient</li>
+<li>Package can keep looping in the network</li>
+<li>Simple, <strong>do not need to know any topology information</strong> about the whole network</li>
+<li>The router do not need any thing like forwarding table, they just copy and send packages</li>
+</ul>
+<p><img src="/2021/12/30/Network/Routing/flooding.png" alt="flooding"></p>
+<h4 id="Source-Routing"><a href="#Source-Routing" class="headerlink" title="Source Routing"></a>Source Routing</h4><p><em>The path is specified in the package</em></p>
+<p><img src="/2021/12/30/Network/Routing/source.png" alt="source routing"></p>
+<ul>
+<li><p>“End-to-end” solution, the jobs is delegated to host A, A is responsible for choosing path now.</p>
+</li>
+<li><p>Routers just look the header and send the package, no forwarding table needed.</p>
+</li>
+<li><p>Host A must know the topology of the network first</p>
+</li>
+<li><p>The router list may be very very long</p>
+</li>
+<li><p>Used when end user want to control the routing path</p>
+</li>
+</ul>
+<h3 id="Nowaday-Network"><a href="#Nowaday-Network" class="headerlink" title="Nowaday Network"></a>Nowaday Network</h3><h4 id="Forwarding-Table"><a href="#Forwarding-Table" class="headerlink" title="Forwarding Table"></a>Forwarding Table</h4><p><em>We already know this</em></p>
+<ul>
+<li>But how can a router generate the forwarding table ? Routers populate the forwarding tables.</li>
+<li>So we have pre-destination state(forwarding table) in the router,but the flow can still be mutable.</li>
+</ul>
+<h4 id="Spanning-Tree"><a href="#Spanning-Tree" class="headerlink" title="Spanning Tree"></a>Spanning Tree</h4><p><em>a tree with no loop, can each leaf node can reach the root</em></p>
+<p><img src="/2021/12/30/Network/Routing/spanning.png" alt="spanning tree"></p>
+<p>But how can we know which spanning tree is the most efficient?</p>
+<h5 id="Possible-metrics"><a href="#Possible-metrics" class="headerlink" title="Possible metrics"></a>Possible metrics</h5><ul>
+<li>minimum distance</li>
+<li>minimun hop-count</li>
+<li>minimun delay</li>
+<li>maximize the throughput</li>
+<li>most reliable path</li>
+<li>…..</li>
+</ul>
+<h5 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h5><p><em>Weighted graph + Minimun cost spanning tree</em></p>
+<p><img src="/2021/12/30/Network/Routing/minicost.png" alt="minimum cost spanning tree"></p>
+<ul>
+<li>We give each path a wighth according to our metric</li>
+</ul>
+<p>Next, you might think that we can run some kind of algorithm to generate the spanning tree then have the forwarding table</p>
+<p>However, this is the Internet, it is dynamic(new devices keep coming in, old ones get evicted) and large(billions of nodes and paths), running a algorithm at such scale is unpractical.</p>
+<p>So we have protocols!</p>
+<p>We let router run the algorithm on small scale network and generate a “local forwarding table” and then populate it to others, in this way, we can let routers exchange topology information!</p>
+<h4 id="Multipath"><a href="#Multipath" class="headerlink" title="Multipath"></a>Multipath</h4><p><em>send packages via multiple paths, try to distribute traffic evenly over the network</em></p>
+<h4 id="Multicast"><a href="#Multicast" class="headerlink" title="Multicast"></a>Multicast</h4><p><em>Router will do some replication in a broadcast situation</em></p>
+<h2 id="Generate-the-minimum-cost-spanning-tree"><a href="#Generate-the-minimum-cost-spanning-tree" class="headerlink" title="Generate the minimum cost spanning tree"></a>Generate the minimum cost spanning tree</h2><h3 id="Distance-Vector-Bellman-Ford-Algorithm"><a href="#Distance-Vector-Bellman-Ford-Algorithm" class="headerlink" title="Distance Vector:Bellman Ford Algorithm"></a>Distance Vector:Bellman Ford Algorithm</h3><p>Assumption : The router know cost of each link of its neighbor and the current distance between $R$ and itself.</p>
+<p>How can we find a minimun cost spnning tree to router $R$ in a network</p>
+<ol>
+<li>Overall distance vector $\vec{C} = {C_1 , C_2 , …,C_n}$,$C_i$ is the current distance(cost) between $R_i$ and $R$</li>
+<li>The distance vector is initialized to <code>C = [∞ , ∞ , ... , ∞]</code></li>
+</ol>
+<ul>
+<li>Each $T$ seconds, $R_i$ send $C_i$ to its neighbors</li>
+<li>If $R_i$ learn lower cost path to $R$ , updating $C_i$</li>
+<li>Repeat</li>
+</ul>
+<h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><p><img src="/2021/12/30/Network/Routing/DVexample.png" alt="Distance Vector Example"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">show</span>(<span class="params">C , r</span>):</span></span><br><span class="line">    print(<span class="string">&quot;Distance Vector at round &#123;&#125;:&quot;</span>.<span class="built_in">format</span>(r) , C)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span>(<span class="params">i , newcost</span>):</span></span><br><span class="line">   current = C[i-<span class="number">1</span>]</span><br><span class="line">   <span class="keyword">if</span> newcost &lt; current:</span><br><span class="line">       C[i-<span class="number">1</span>] = newcost</span><br><span class="line"></span><br><span class="line"><span class="comment"># initialization</span></span><br><span class="line">infty = <span class="number">2</span>**<span class="number">64</span></span><br><span class="line">numberOfRouter = <span class="number">8</span></span><br><span class="line">C = [infty <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(numberOfRouter)]</span><br><span class="line">show(C , <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Round 1, R8 update its neighbors</span></span><br><span class="line">C[<span class="number">2</span>] = <span class="number">4</span></span><br><span class="line">C[<span class="number">4</span>] = <span class="number">6</span></span><br><span class="line">C[<span class="number">6</span>] = <span class="number">1</span></span><br><span class="line">C[<span class="number">5</span>] = <span class="number">2</span></span><br><span class="line">show(C , <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Round 2, [R3,R5,R7,R6] update their neighbors</span></span><br><span class="line"><span class="comment"># R3</span></span><br><span class="line">R3 = C[<span class="number">2</span>]</span><br><span class="line">update(<span class="number">1</span> , <span class="number">4</span> + R3)</span><br><span class="line">update(<span class="number">2</span> , <span class="number">5</span> + R3)</span><br><span class="line"></span><br><span class="line"><span class="comment"># R5</span></span><br><span class="line">R5 = C[<span class="number">4</span>]</span><br><span class="line">update(<span class="number">2</span>,<span class="number">1</span>+R5)</span><br><span class="line">update(<span class="number">4</span>,<span class="number">2</span>+R5)</span><br><span class="line"></span><br><span class="line"><span class="comment"># R7</span></span><br><span class="line">R7 = C[<span class="number">6</span>]</span><br><span class="line">update(<span class="number">4</span>,<span class="number">1</span>+R7)</span><br><span class="line"></span><br><span class="line"><span class="comment"># R6</span></span><br><span class="line">R6 = C[<span class="number">5</span>]</span><br><span class="line">update(<span class="number">4</span>,<span class="number">4</span>+R6)</span><br><span class="line"></span><br><span class="line">show(C,<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Round 3 , each router will try to update its neighbors</span></span><br><span class="line">R1,R2,R3,R4,R5,R6,R7,R8 = <span class="built_in">tuple</span>(C)</span><br><span class="line">update(<span class="number">2</span>,<span class="number">1</span>+R1)</span><br><span class="line">update(<span class="number">3</span>,<span class="number">4</span>+R1)</span><br><span class="line"></span><br><span class="line">update(<span class="number">1</span>,<span class="number">1</span>+R2)</span><br><span class="line">update(<span class="number">3</span>,<span class="number">5</span>+R2)</span><br><span class="line">update(<span class="number">5</span>,<span class="number">1</span>+R2)</span><br><span class="line">update(<span class="number">4</span>,<span class="number">4</span>+R2)</span><br><span class="line"></span><br><span class="line">update(<span class="number">1</span>,<span class="number">4</span>+R3)</span><br><span class="line">update(<span class="number">2</span>,<span class="number">5</span>+R3)</span><br><span class="line"></span><br><span class="line">update(<span class="number">2</span>,<span class="number">4</span>+R4)</span><br><span class="line">update(<span class="number">5</span>,<span class="number">2</span>+R4)</span><br><span class="line">update(<span class="number">7</span>,<span class="number">1</span>+R4)</span><br><span class="line">update(<span class="number">6</span>,<span class="number">4</span>+R4)</span><br><span class="line"></span><br><span class="line">update(<span class="number">2</span>,<span class="number">1</span>+R5)</span><br><span class="line">update(<span class="number">4</span>,<span class="number">2</span>+R5)</span><br><span class="line"></span><br><span class="line">update(<span class="number">4</span>,<span class="number">4</span>+R6)</span><br><span class="line"></span><br><span class="line">update(<span class="number">4</span>,<span class="number">1</span>+R7)</span><br><span class="line"></span><br><span class="line">show(C,<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Round 4 , each router will try to update its neighbors</span></span><br><span class="line"><span class="keyword">for</span> R <span class="keyword">in</span> C:</span><br><span class="line">    <span class="keyword">for</span> neighbor <span class="keyword">in</span> R.neighbors:</span><br><span class="line">        update(neighbor,R+weight)</span><br><span class="line">        </span><br><span class="line"><span class="comment"># Round after</span></span><br><span class="line">....</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ python3 example.py</span><br><span class="line">Distance Vector at round 0: [18446744073709551616, 18446744073709551616, 18446744073709551616, 18446744073709551616, 18446744073709551616, 18446744073709551616, 18446744073709551616, 18446744073709551616]</span><br><span class="line">Distance Vector at round 1: [18446744073709551616, 18446744073709551616, 4, 18446744073709551616, 6, 2, 1, 18446744073709551616]</span><br><span class="line">Distance Vector at round 2: [8, 7, 4, 2, 6, 2, 1, 18446744073709551616]</span><br><span class="line">Distance Vector at round 3: [8, 6, 4, 2, 4, 2, 1, 18446744073709551616]</span><br><span class="line">Distance Vector at round 4: [7, 5, 4, 2, 4, 2, 1, 18446744073709551616]</span><br><span class="line">Distance Vector at round 5: [6, 5, 4, 2, 4, 2, 1, 18446744073709551616]</span><br><span class="line">Distance Vector at round 6: [6, 5, 4, 2, 4, 2, 1, 18446744073709551616]</span><br><span class="line">Distance Vector at round 7: [6, 5, 4, 2, 4, 2, 1, 18446744073709551616]</span><br><span class="line">Distance Vector at round 8: [6, 5, 4, 2, 4, 2, 1, 18446744073709551616]</span><br></pre></td></tr></table></figure>
+<h4 id="Analysis"><a href="#Analysis" class="headerlink" title="Analysis"></a>Analysis</h4><ul>
+<li><p>The algorithm always converge</p>
+</li>
+<li><p>If cost changes or link fails, “bad news travels slowly”</p>
+<ul>
+<li>the failed link cost become infty</li>
+<li>Then neighbors will feed each other with the bad information</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2021/12/30/Network/Routing/badnews.png" alt="bad news"></p>
+<ul>
+<li>Used in RIP(Router Information Protocol) in the past</li>
+<li>Distributed algorithm</li>
+</ul>
+<h3 id="Link-State-Algorithm-Dijkstra’s-shortest-path-first-algorithm"><a href="#Link-State-Algorithm-Dijkstra’s-shortest-path-first-algorithm" class="headerlink" title="Link State Algorithm : Dijkstra’s shortest path first algorithm"></a>Link State Algorithm : Dijkstra’s shortest path first algorithm</h3><p><em>Each router tell its neighbor about its own link state(topology information), and then run Dijkstra independently</em></p>
+<h4 id="The-algorithm"><a href="#The-algorithm" class="headerlink" title="The algorithm"></a>The algorithm</h4><p><em>Adding nodes one by one</em></p>
+<p><img src="/2021/12/30/Network/Routing/Dijkstra.png" alt="Dijkstra"></p>
+<h4 id="Analysis-1"><a href="#Analysis-1" class="headerlink" title="Analysis"></a>Analysis</h4><ul>
+<li>Each router need to know the entire link state and network topology</li>
+<li>Basis of OSPF(Open Shortest Path First)</li>
+</ul>
+<h2 id="Routing-in-Internet"><a href="#Routing-in-Internet" class="headerlink" title="Routing in Internet"></a>Routing in Internet</h2><p><em>The Internet is so large that we cannot run any kind of algorithm on it, and it is impossible for all router to use a same protocol. We divide network into <strong>autonomous systems(AS)</strong></em></p>
+<p><img src="/2021/12/30/Network/Routing/AS.png" alt="AS"></p>
+<ul>
+<li>Autonomous system gives different organization autonomies, they can configure their own network now</li>
+<li>The routers can be built with different hardware features, too</li>
+</ul>
+<h3 id="Hierarchy-of-the-Internet"><a href="#Hierarchy-of-the-Internet" class="headerlink" title="Hierarchy of the Internet"></a>Hierarchy of the Internet</h3><ul>
+<li>Autonomous system is the basic building block<ul>
+<li>within a AS, the owner can decide how the routing is done.</li>
+<li>between ASs, must be <strong>BGP-4(Border Gateway Protocol version 4)</strong></li>
+</ul>
+</li>
+<li>Finding the AS number</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ traceroute -a &lt;ip&gt;</span><br><span class="line">$ dig &lt;domain name or IP&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="Interior-Routing-Protocol"><a href="#Interior-Routing-Protocol" class="headerlink" title="Interior Routing Protocol"></a>Interior Routing Protocol</h3><h4 id="RIP-Routing-Information-Protocol"><a href="#RIP-Routing-Information-Protocol" class="headerlink" title="RIP(Routing Information Protocol)"></a>RIP(Routing Information Protocol)</h4><ul>
+<li>Distance Vector</li>
+<li>No authentication of updating !!!</li>
+<li>Out of date</li>
+</ul>
+<h4 id="OSPF-Open-Shortest-Path-First"><a href="#OSPF-Open-Shortest-Path-First" class="headerlink" title="OSPF(Open Shortest Path First)"></a>OSPF(Open Shortest Path First)</h4><ul>
+<li>Link state</li>
+<li>Dijkstra</li>
+<li>Authenticated updating</li>
+<li>Widely used nowadays</li>
+</ul>
+<h3 id="Exterior-Routing-Protocol-BGP-4"><a href="#Exterior-Routing-Protocol-BGP-4" class="headerlink" title="Exterior Routing Protocol : BGP-4"></a>Exterior Routing Protocol : BGP-4</h3><h4 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h4><p><em>Path vector : IP 202.49.0.0/16 can be reached by [ AS102 , AS3259 , AS32 ,… ]</em></p>
+<ul>
+<li>ISP(Internet Service Provider) provide transit</li>
+<li>peer relationship</li>
+</ul>
+<p><img src="/2021/12/30/Network/Routing/peer.png" alt="peer"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/12/30/Network/Routing/" data-id="ckxu4nm4o0003nmyq66s3cyj6" data-title="Routing" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/12/25/feelings/HalfWayToTheEnd/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">HalfWayToTheEnd</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/12/30/Network/Routing/">Routing</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/25/feelings/HalfWayToTheEnd/">HalfWayToTheEnd</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/21/Network/ApplicationLayer/">ApplicationLayer</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/18/Network/PackageSwitch/">PackageSwitch</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/18/Network/lab1/">lab1</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

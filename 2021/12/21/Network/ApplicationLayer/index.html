@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>ApplicationLayer | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Application and NAT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ApplicationLayer">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2021/12/21/Network/ApplicationLayer/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Application and NAT">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/21/Network/ApplicationLayer/nat.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/21/Network/ApplicationLayer/fullcone.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/21/Network/ApplicationLayer/restrictedcone.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/21/Network/ApplicationLayer/PortRestricted.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/21/Network/ApplicationLayer/Symmetric.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/21/Network/ApplicationLayer/incomming.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/21/Network/ApplicationLayer/NAT1.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/21/Network/ApplicationLayer/relay.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/21/Network/ApplicationLayer/hole1.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2021/12/21/Network/ApplicationLayer/hole2.png">
+<meta property="article:published_time" content="2021-12-21T07:39:42.000Z">
+<meta property="article:modified_time" content="2021-12-21T12:42:07.259Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2021/12/21/Network/ApplicationLayer/nat.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Network/ApplicationLayer" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/12/21/Network/ApplicationLayer/" class="article-date">
+  <time class="dt-published" datetime="2021-12-21T07:39:42.000Z" itemprop="datePublished">2021-12-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Networking/">Networking</a>►<a class="article-category-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      ApplicationLayer
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Application-and-NAT"><a href="#Application-and-NAT" class="headerlink" title="Application and NAT"></a>Application and NAT</h1><a id="more"></a>
+
+<h2 id="Network-Address-Translation-NAT"><a href="#Network-Address-Translation-NAT" class="headerlink" title="Network Address Translation(NAT)"></a>Network Address Translation(NAT)</h2><p><em>“strong proxy”</em></p>
+<p><img src="/2021/12/21/Network/ApplicationLayer/nat.png" alt="nat"></p>
+<ul>
+<li><p>NAT is usually your home router today</p>
+</li>
+<li><p>NAT override your package, changing some field(such as source IP, source port …)</p>
+</li>
+<li><p>IP addresses behind a NAT is a <strong>private</strong> IP address given by NAT, in form of <code>10.x.x.x</code></p>
+</li>
+<li><p>Many hosts can share a same public IP address via NAT</p>
+</li>
+</ul>
+<h3 id="Types-of-NAT"><a href="#Types-of-NAT" class="headerlink" title="Types of NAT"></a>Types of NAT</h3><p><img src="/2021/12/21/Network/ApplicationLayer/fullcone.png" alt="full cone"></p>
+<p>The NAT just do the translation blindly, if some new host C send a package to <code>128.34.22.8:6641</code>, the NAT will translate it into <code>10.0.0.101:4512</code>, and host A will see the package from C</p>
+<p><img src="/2021/12/21/Network/ApplicationLayer/restrictedcone.png" alt="restricted"></p>
+<p>The NAT will filter the incoming package according to its source IP, if source IP match the previous destination IP(It is a response), the NAT will do the translation</p>
+<p><img src="/2021/12/21/Network/ApplicationLayer/PortRestricted.png" alt="port restricted"></p>
+<p>The NAT not only filter on incoming package’s source IP but also the source port, it only allow responses from the requested port.(If the server want to use a different port to response, it will be blocked!)</p>
+<p><img src="/2021/12/21/Network/ApplicationLayer/Symmetric.png" alt="Symmetric"></p>
+<p>The NAT will create a new mapping for a <strong>different destination</strong>, even the packages come from the same internal host with the same port.</p>
+<h3 id="NAT-behavior-recommendation"><a href="#NAT-behavior-recommendation" class="headerlink" title="NAT behavior recommendation"></a>NAT behavior recommendation</h3><ul>
+<li>TCP : RFC5382</li>
+<li>UDP : RFC4787</li>
+</ul>
+<h3 id="NAT-implication"><a href="#NAT-implication" class="headerlink" title="NAT implication"></a>NAT implication</h3><h4 id="No-incomming-connection"><a href="#No-incomming-connection" class="headerlink" title="No incomming connection"></a>No incomming connection</h4><p><em>Generally, you can’t open a connection to a computer behind a NAT directly</em></p>
+<p><img src="/2021/12/21/Network/ApplicationLayer/incomming.png" alt="Incoming only"></p>
+<h4 id="Solution-1-connection-reversal"><a href="#Solution-1-connection-reversal" class="headerlink" title="Solution 1 : connection reversal"></a>Solution 1 : connection reversal</h4><p><img src="/2021/12/21/Network/ApplicationLayer/NAT1.png" alt="reversal 1"></p>
+<p>![reversal 2](/Users/rubbish/Library/Application Support/typora-user-images/image-20211221191041054.png)</p>
+<h4 id="Solution-2-Relay-server"><a href="#Solution-2-Relay-server" class="headerlink" title="Solution 2 : Relay server"></a>Solution 2 : Relay server</h4><p><img src="/2021/12/21/Network/ApplicationLayer/relay.png" alt="relay server"></p>
+<h3 id="Solution-3-NAT-hole-punching"><a href="#Solution-3-NAT-hole-punching" class="headerlink" title="Solution 3 : NAT hole punching"></a>Solution 3 : NAT hole punching</h3><p><img src="/2021/12/21/Network/ApplicationLayer/hole1.png" alt="holing"></p>
+<p><img src="/2021/12/21/Network/ApplicationLayer/hole2.png" alt="holing"></p>
+<p><em>This works for full cone and port restricted, but will not work for symmetric NAT</em></p>
+<h4 id="No-new-Transport"><a href="#No-new-Transport" class="headerlink" title="No new Transport !"></a>No new Transport !</h4><ul>
+<li><p>NAT violate the strong end-to-end protocol, it makes the assumption that TCP/UDP/ICMP is used, and these are what they translated</p>
+</li>
+<li><p>So it become unpossible to implement a new transport layer protocol until all people update their NATs</p>
+</li>
+<li><p>If you really want to implement something new, build it on top of UDP</p>
+</li>
+</ul>
+<h3 id="NAT-operations"><a href="#NAT-operations" class="headerlink" title="NAT operations"></a>NAT operations</h3><ul>
+<li>NAT is just a router, it can do anything a router can do</li>
+<li>In RFC, symmetric NAT is forbidden</li>
+<li>Read more at RFC</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2021/12/21/Network/ApplicationLayer/" data-id="ckxu4nm4i0000nmyqh3tk4kp7" data-title="ApplicationLayer" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/12/25/feelings/HalfWayToTheEnd/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          HalfWayToTheEnd
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/12/18/Network/PackageSwitch/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">PackageSwitch</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/12/30/Network/Routing/">Routing</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/25/feelings/HalfWayToTheEnd/">HalfWayToTheEnd</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/21/Network/ApplicationLayer/">ApplicationLayer</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/18/Network/PackageSwitch/">PackageSwitch</a>
+          </li>
+        
+          <li>
+            <a href="/2021/12/18/Network/lab1/">lab1</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2021 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
