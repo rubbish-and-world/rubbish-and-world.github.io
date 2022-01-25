@@ -14,7 +14,7 @@
 <meta property="og:description" content="Network Programming FAQ">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-11-16T13:43:36.000Z">
-<meta property="article:modified_time" content="2021-11-16T13:44:05.986Z">
+<meta property="article:modified_time" content="2022-01-21T03:29:34.109Z">
 <meta property="article:author" content="rubbish">
 <meta name="twitter:card" content="summary">
   
@@ -114,7 +114,10 @@
 <p>On common way is to use <code>ioctl(..)</code> to query <code>FIONREAD</code> of the socket which will return how much data is available.</p>
 </blockquote>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">ioctl(sock, FIONREAD, &amp;len);</span><br><span class="line"><span class="keyword">if</span> (len &gt; <span class="number">0</span>) &#123;</span><br><span class="line">  len = read(sock, buffer, len);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<h5 id="Solution-3-recommended"><a href="#Solution-3-recommended" class="headerlink" title="Solution 3 (recommended)"></a>Solution 3 (recommended)</h5><blockquote>
+<p>recv, recvfrom, recvmsg - receive a message from a socket<br>When a stream socket peer has performed an  orderly  shutdown, the  return  value  will  be  0 (the traditional “end-of-file” return).</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> BS 1024</span></span><br><span class="line"><span class="keyword">char</span> buffer [BS];</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> received ;</span><br><span class="line"><span class="keyword">while</span> ( received = recv(socketfd , (<span class="keyword">void</span>*)buffer , BS , <span class="number">0</span>)  &gt; <span class="number">0</span> )&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;received %d bytes : %.*s\n&quot;</span> , received , received , buffer);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="Each-client-request-must-be-responsed"><a href="#Each-client-request-must-be-responsed" class="headerlink" title="Each client request must be responsed"></a>Each client request must be responsed</h3><p><em>Not matter what kind of request it is, <code>GET</code> or <code>POST</code>, the server should send a response back</em></p>
 <hr>
 <h3 id="Heap-overflow"><a href="#Heap-overflow" class="headerlink" title="Heap overflow"></a>Heap overflow</h3><h5 id="Run-time-error-message"><a href="#Run-time-error-message" class="headerlink" title="Run time error message"></a>Run time error message</h5><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">free</span>(): <span class="function">invalid next <span class="title">size</span> <span class="params">(normal)</span> in SomeKindOfFunction</span></span><br><span class="line"><span class="function"><span class="comment">//or</span></span></span><br><span class="line">malloc: *** error: incorrect checksum for freed object - object was probably modified after being freed</span><br></pre></td></tr></table></figure>
@@ -169,7 +172,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
     </div>
   </div>
 
@@ -211,23 +214,23 @@
       <ul>
         
           <li>
-            <a href="/2022/01/01/feelings/2022/">2022</a>
+            <a href="/2022/01/25/30DayOS/Day3/">Day3</a>
           </li>
         
           <li>
-            <a href="/2021/12/30/Network/Routing/">Routing</a>
+            <a href="/2022/01/24/30DayOS/Day2/">Day2</a>
           </li>
         
           <li>
-            <a href="/2021/12/25/feelings/HalfWayToTheEnd/">HalfWayToTheEnd</a>
+            <a href="/2022/01/24/30DayOS/Day1/">Day1</a>
           </li>
         
           <li>
-            <a href="/2021/12/21/Network/ApplicationLayer/">ApplicationLayer</a>
+            <a href="/2022/01/24/30DayOS/Day0/">Day0</a>
           </li>
         
           <li>
-            <a href="/2021/12/18/Network/PackageSwitch/">PackageSwitch</a>
+            <a href="/2022/01/24/30DayOS/Introduction/">Introduction</a>
           </li>
         
       </ul>

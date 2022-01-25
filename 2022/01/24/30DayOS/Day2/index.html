@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Day2 | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Assembly language and Makefile">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Day2">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2022/01/24/30DayOS/Day2/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Assembly language and Makefile">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-01-24T07:29:45.000Z">
+<meta property="article:modified_time" content="2022-01-24T13:57:12.117Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-30DayOS/Day2" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/01/24/30DayOS/Day2/" class="article-date">
+  <time class="dt-published" datetime="2022-01-24T07:29:45.000Z" itemprop="datePublished">2022-01-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/OS/">OS</a>►<a class="article-category-link" href="/categories/OS/30DayOS/">30DayOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Day2
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Assembly-language-and-Makefile"><a href="#Assembly-language-and-Makefile" class="headerlink" title="Assembly language and Makefile"></a>Assembly language and Makefile</h1><a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">; source of helloos.nas</span><br><span class="line"></span><br><span class="line">org 0x7c00   ; these code should be loaded into memory 0x7c00</span><br><span class="line"></span><br><span class="line">; FAT12 requirement code</span><br><span class="line">jmp entry</span><br><span class="line">db 0x90</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">; main program</span><br><span class="line">entry:</span><br><span class="line">	mov ax,0</span><br><span class="line">	mov ss,ax</span><br><span class="line">	mov sp,0x7c00</span><br><span class="line">	mov ds,ax</span><br><span class="line">	mov es,ax</span><br><span class="line">	mov si,msg</span><br><span class="line">putloop:</span><br><span class="line">	mov al,[si]</span><br><span class="line">	add si,1</span><br><span class="line">	cmp al,0</span><br><span class="line">	je fin</span><br><span class="line">	mov ah,0x0e</span><br><span class="line">	mov bx,15</span><br><span class="line">	int 0x10     ; use bios to show one character</span><br><span class="line">	jmp putloop</span><br><span class="line">fin:</span><br><span class="line">	hlt     ; put cpu into sleep, waiting for interrupt</span><br><span class="line">	jmp fin</span><br><span class="line">	</span><br><span class="line">msg:</span><br><span class="line">	db 0xa,0xa ; &#39;\n&#39;, &#39;\n&#39;</span><br><span class="line">	db &quot;hello world&quot;</span><br><span class="line">	db 0xa</span><br><span class="line">	db 0</span><br></pre></td></tr></table></figure>
+<h3 id="Rebuild-the-IPL"><a href="#Rebuild-the-IPL" class="headerlink" title="Rebuild the IPL"></a>Rebuild the IPL</h3><p><em>Only the first 512 bytes is needed</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">; source of ipl.nas</span><br><span class="line">	ORG    0x7c00      </span><br><span class="line"></span><br><span class="line">    JMP    entry</span><br><span class="line">    DB    0x90</span><br><span class="line">    DB    &quot;HELLOIPL&quot;    </span><br><span class="line">    DW    512        </span><br><span class="line">    DB    1        </span><br><span class="line">    DW    1        </span><br><span class="line">    DB    2        </span><br><span class="line">    DW    224        </span><br><span class="line">    DW    2880      </span><br><span class="line">    DB    0xf0      </span><br><span class="line">    DW    9        </span><br><span class="line">    DW    18        </span><br><span class="line">    DW    2        </span><br><span class="line">    DD    0        </span><br><span class="line">    DD    2880      </span><br><span class="line">    DB    0,0,0x29    </span><br><span class="line">    DD    0xffffffff    </span><br><span class="line">    DB    &quot;HELLO-OS   &quot;  </span><br><span class="line">    DB    &quot;FAT12   &quot;    </span><br><span class="line">    RESB  18        </span><br><span class="line"></span><br><span class="line">entry:</span><br><span class="line">    MOV    AX,0      </span><br><span class="line">    MOV    SS,AX</span><br><span class="line">    MOV    SP,0x7c00</span><br><span class="line">    MOV    DS,AX</span><br><span class="line">    MOV    ES,AX</span><br><span class="line"></span><br><span class="line">    MOV    SI,msg</span><br><span class="line">putloop:</span><br><span class="line">    MOV    AL,[SI]</span><br><span class="line">    ADD    SI,1      </span><br><span class="line">    CMP    AL,0</span><br><span class="line">    JE    fin</span><br><span class="line">    MOV    AH,0x0e      </span><br><span class="line">    MOV    BX,15      </span><br><span class="line">    INT    0x10      </span><br><span class="line">    JMP    putloop</span><br><span class="line">fin:</span><br><span class="line">    HLT            </span><br><span class="line">    JMP    fin        </span><br><span class="line"></span><br><span class="line">msg:</span><br><span class="line">    DB    0x0a, 0x0a    </span><br><span class="line">    DB    &quot;hello, world&quot;</span><br><span class="line">    DB    0x0a      </span><br><span class="line">    DB    0</span><br><span class="line"></span><br><span class="line">    RESB  0x7dfe-$    </span><br><span class="line"></span><br><span class="line">    DB    0x55, 0xaa</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">% nask.exe ipl.nas ipl.bin ipl.lst</span><br><span class="line">% edimg.exe imgin:fdimg0at.tek wbinimg src:ipl.bin len:<span class="number">512</span> from:<span class="number">0</span> to:<span class="number">0</span> imgout:helloos.img</span><br><span class="line"><span class="comment"># equivlent to `qemu-img create` and `dd` under Unix-like system</span></span><br><span class="line">% <span class="built_in">copy</span> helloos.img qemu/fdimage0.bin</span><br><span class="line">% make.exe <span class="literal">-C</span> qemu/</span><br></pre></td></tr></table></figure>
+<h2 id="Makefile"><a href="#Makefile" class="headerlink" title="Makefile"></a>Makefile</h2><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">default:</span></span><br><span class="line">	make.exe img</span><br><span class="line"></span><br><span class="line"><span class="section">ipl.bin: ipl.nas</span></span><br><span class="line">	nask.exe ipl.nas ipl.bin</span><br><span class="line">	</span><br><span class="line"><span class="section">helloos.img: ipl.bin</span></span><br><span class="line">	dimg.exe imgin:fdimg0at.tek wbinimg src:ipl.bin len:512 from:0 to:0 imgout:helloos.img</span><br><span class="line">	</span><br><span class="line"><span class="section">asm:</span></span><br><span class="line">	make.exe -r ipl.bin</span><br><span class="line"></span><br><span class="line"><span class="section">img:</span></span><br><span class="line">	make.exe -r helloos.img</span><br><span class="line">	</span><br><span class="line"><span class="section">run:</span></span><br><span class="line">	make.exe img</span><br><span class="line">	copy helloos.img qemu/fdimage0.bin</span><br><span class="line">	make.exe -C qemu/</span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	del ipl.bin</span><br><span class="line">	del helloos.img</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2022/01/24/30DayOS/Day2/" data-id="ckytktc290006ckyq7rxi9nsr" data-title="Day2" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/01/25/30DayOS/Day3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          Day3
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/01/24/30DayOS/Day1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">Day1</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/01/25/30DayOS/Day3/">Day3</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/24/30DayOS/Day2/">Day2</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/24/30DayOS/Day1/">Day1</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/24/30DayOS/Day0/">Day0</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/24/30DayOS/Introduction/">Introduction</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

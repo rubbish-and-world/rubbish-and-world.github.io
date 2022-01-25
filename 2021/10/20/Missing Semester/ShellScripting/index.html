@@ -14,7 +14,7 @@
 <meta property="og:description" content="Shell Scripting">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-10-20T15:31:50.000Z">
-<meta property="article:modified_time" content="2021-10-21T17:28:35.595Z">
+<meta property="article:modified_time" content="2022-01-23T03:17:31.956Z">
 <meta property="article:author" content="rubbish">
 <meta name="twitter:card" content="summary">
   
@@ -139,6 +139,17 @@
 <li><code>locate</code> search a cached database for you target</li>
 <li><code>updatedb</code> can update the database for <code>locate</code></li>
 </ul>
+<h5 id="Perform-further-operation-on-results-of-find"><a href="#Perform-further-operation-on-results-of-find" class="headerlink" title="Perform further operation on results of find"></a>Perform further operation on results of <code>find</code></h5><blockquote>
+<p>-exec utility [argument …] ;</p>
+<ul>
+<li>The expression must be terminated by a semicolon (<code>;</code>). If you invoke find from a shell you may need to quote the semicolon if the shell would otherwise treat it as a control operator.</li>
+<li>If the string <code>&#123;&#125;</code> appears anywhere in the utility name or the arguments it is replaced by the pathname of the current file.</li>
+<li>Utility will be executed from the directory from which find was executed.</li>
+<li>Utility and arguments are NOT subject to the further expansion of shell patterns and constructs.</li>
+</ul>
+</blockquote>
+<p><em>this argument is very useful, see more at <code>man find</code></em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ find . -name <span class="string">&#x27;*.md&#x27;</span> -<span class="built_in">exec</span> <span class="built_in">echo</span> <span class="string">&quot;[&#123;&#125;]&quot;</span> \;</span><br><span class="line">[./file.md]</span><br><span class="line">[./f.md]</span><br><span class="line">[./some.md]</span><br></pre></td></tr></table></figure>
 <h3 id="Redo-previous-cmds"><a href="#Redo-previous-cmds" class="headerlink" title="Redo previous cmds"></a>Redo previous cmds</h3><h4 id="History"><a href="#History" class="headerlink" title="History"></a>History</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">history</span></span><br><span class="line">$ <span class="built_in">history</span> 1 | grep ls</span><br></pre></td></tr></table></figure>
 <h4 id="Ctrl-R"><a href="#Ctrl-R" class="headerlink" title="Ctrl-R"></a>Ctrl-R</h4><ul>
 <li>Enter your target word</li>
@@ -191,7 +202,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
     </div>
   </div>
 
@@ -233,23 +244,23 @@
       <ul>
         
           <li>
-            <a href="/2022/01/01/feelings/2022/">2022</a>
+            <a href="/2022/01/25/30DayOS/Day3/">Day3</a>
           </li>
         
           <li>
-            <a href="/2021/12/30/Network/Routing/">Routing</a>
+            <a href="/2022/01/24/30DayOS/Day2/">Day2</a>
           </li>
         
           <li>
-            <a href="/2021/12/25/feelings/HalfWayToTheEnd/">HalfWayToTheEnd</a>
+            <a href="/2022/01/24/30DayOS/Day1/">Day1</a>
           </li>
         
           <li>
-            <a href="/2021/12/21/Network/ApplicationLayer/">ApplicationLayer</a>
+            <a href="/2022/01/24/30DayOS/Day0/">Day0</a>
           </li>
         
           <li>
-            <a href="/2021/12/18/Network/PackageSwitch/">PackageSwitch</a>
+            <a href="/2022/01/24/30DayOS/Introduction/">Introduction</a>
           </li>
         
       </ul>
