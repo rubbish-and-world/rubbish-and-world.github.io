@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Day5 | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Show text and initialize GDT&#x2F;IDT">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Day5">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2022/01/26/OS/30DayOS/Day5/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Show text and initialize GDT&#x2F;IDT">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/01/26/OS/30DayOS/Day5/bitmap.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/01/26/OS/30DayOS/Day5/A.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/01/26/OS/30DayOS/Day5/fonts.png">
+<meta property="article:published_time" content="2022-01-26T03:16:06.000Z">
+<meta property="article:modified_time" content="2022-01-26T10:12:17.163Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2022/01/26/OS/30DayOS/Day5/bitmap.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-OS/30DayOS/Day5" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/01/26/OS/30DayOS/Day5/" class="article-date">
+  <time class="dt-published" datetime="2022-01-26T03:16:06.000Z" itemprop="datePublished">2022-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/OS/">OS</a>►<a class="article-category-link" href="/categories/OS/30DayOS/">30DayOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Day5
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Show-text-and-initialize-GDT-IDT"><a href="#Show-text-and-initialize-GDT-IDT" class="headerlink" title="Show text and initialize GDT/IDT"></a>Show text and initialize GDT/IDT</h1><a id="more"></a>
+
+<h3 id="Using-struct"><a href="#Using-struct" class="headerlink" title="Using struct"></a>Using <code>struct</code></h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">BOOTINFO</span> &#123;</span></span><br><span class="line">    <span class="keyword">char</span> cyls , leds , vmode , reserve ;</span><br><span class="line">    <span class="keyword">short</span> scrnx , scrny ;</span><br><span class="line">    <span class="keyword">char</span> * vram ;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HariMain</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> * vram ; </span><br><span class="line">    <span class="keyword">int</span> xsize , ysize ;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">BOOTINFO</span> * <span class="title">binfo</span> ;</span></span><br><span class="line">    </span><br><span class="line">    init_palette();</span><br><span class="line">    binfo = (struct BOOTINFO *) (<span class="number">0x0ff0</span>) ; <span class="comment">// we store boot info at this address in boot stage using assembly and BIOS</span></span><br><span class="line">    xsize = binfo-&gt;scrnx ;</span><br><span class="line">    ysize = binfo-&gt;scrny ;</span><br><span class="line">    vram = binfo-&gt;vram ;</span><br><span class="line">    </span><br><span class="line">    init_screen(xsize , ysize , vram);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Show-text"><a href="#Show-text" class="headerlink" title="Show text"></a>Show text</h3><p><em>In vga video mode, we use bitmap</em></p>
+<p><img src="/2022/01/26/OS/30DayOS/Day5/bitmap.png" alt="bit map"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> fontA [<span class="number">16</span>] =&#123;</span><br><span class="line">    <span class="number">0b00000000</span>,</span><br><span class="line">    <span class="number">0b00011000</span>,</span><br><span class="line">    <span class="number">0b00011000</span>,</span><br><span class="line">    <span class="number">0b00011000</span>,</span><br><span class="line">    <span class="number">0b00011000</span>,</span><br><span class="line">    <span class="number">0b00100100</span>,</span><br><span class="line">    <span class="number">0b00100100</span>,</span><br><span class="line">    <span class="number">0b00100100</span>,</span><br><span class="line">    <span class="number">0b00100100</span>,</span><br><span class="line">    <span class="number">0b01111110</span>,</span><br><span class="line">    <span class="number">0b01000010</span>,</span><br><span class="line">    <span class="number">0b01000010</span>,</span><br><span class="line">    <span class="number">0b01000010</span>,</span><br><span class="line">    <span class="number">0b11100111</span>,</span><br><span class="line">    <span class="number">0b00000000</span>,</span><br><span class="line">    <span class="number">0b00000000</span></span><br><span class="line">&#125; ;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">putfont8</span><span class="params">(<span class="keyword">char</span> * vram , <span class="keyword">int</span> xsize, <span class="keyword">int</span> x , <span class="keyword">int</span> y , <span class="keyword">char</span> c , <span class="keyword">char</span> * font )</span></span>&#123;</span><br><span class="line">    <span class="comment">//c stand for color</span></span><br><span class="line">    <span class="keyword">int</span> i ; </span><br><span class="line">    <span class="keyword">char</span> * p , d ;</span><br><span class="line">    <span class="comment">//16 bytes per character</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span> ; i &lt; <span class="number">16</span> ; i++)&#123;</span><br><span class="line">        p = vram + (y+i)*xsize + x ; <span class="comment">//2D to 1D, (x,y) indicate the position</span></span><br><span class="line">        d = font[i] ; <span class="comment">//get the byte</span></span><br><span class="line">        </span><br><span class="line">     <span class="comment">//check the byte bit by bit, if non-zero, fill it</span></span><br><span class="line">    <span class="keyword">if</span> ((d &amp; <span class="number">0x80</span>) != <span class="number">0</span>) &#123; p[<span class="number">0</span>] = c; &#125;</span><br><span class="line">    <span class="keyword">if</span> ((d &amp; <span class="number">0x40</span>) != <span class="number">0</span>) &#123; p[<span class="number">1</span>] = c; &#125;</span><br><span class="line">    <span class="keyword">if</span> ((d &amp; <span class="number">0x20</span>) != <span class="number">0</span>) &#123; p[<span class="number">2</span>] = c; &#125;</span><br><span class="line">    <span class="keyword">if</span> ((d &amp; <span class="number">0x10</span>) != <span class="number">0</span>) &#123; p[<span class="number">3</span>] = c; &#125;</span><br><span class="line">    <span class="keyword">if</span> ((d &amp; <span class="number">0x08</span>) != <span class="number">0</span>) &#123; p[<span class="number">4</span>] = c; &#125;</span><br><span class="line">    <span class="keyword">if</span> ((d &amp; <span class="number">0x04</span>) != <span class="number">0</span>) &#123; p[<span class="number">5</span>] = c; &#125;</span><br><span class="line">    <span class="keyword">if</span> ((d &amp; <span class="number">0x02</span>) != <span class="number">0</span>) &#123; p[<span class="number">6</span>] = c; &#125;</span><br><span class="line">    <span class="keyword">if</span> ((d &amp; <span class="number">0x01</span>) != <span class="number">0</span>) &#123; p[<span class="number">7</span>] = c; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/01/26/OS/30DayOS/Day5/A.png" alt="A"></p>
+<p>It will be troublesome for us to make the font one by one, so we use a external font family and link it with out OS</p>
+<h4 id="hankaku-txt"><a href="#hankaku-txt" class="headerlink" title="hankaku.txt"></a>hankaku.txt</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># part of hankaku.txt</span></span><br><span class="line"></span><br><span class="line">char <span class="number">0x49</span></span><br><span class="line">........</span><br><span class="line">.*****..</span><br><span class="line">...*....</span><br><span class="line">...*....</span><br><span class="line">...*....</span><br><span class="line">...*....</span><br><span class="line">...*....</span><br><span class="line">...*....</span><br><span class="line">...*....</span><br><span class="line">...*....</span><br><span class="line">...*....</span><br><span class="line">...*....</span><br><span class="line">...*....</span><br><span class="line">.*****..</span><br><span class="line">........</span><br><span class="line">........</span><br><span class="line"></span><br><span class="line">char <span class="number">0x4a</span></span><br><span class="line">........</span><br><span class="line">...*****</span><br><span class="line">.....*..</span><br><span class="line">.....*..</span><br><span class="line">.....*..</span><br><span class="line">.....*..</span><br><span class="line">.....*..</span><br><span class="line">.....*..</span><br><span class="line">.....*..</span><br><span class="line">.....*..</span><br><span class="line">.....*..</span><br><span class="line">.....*..</span><br><span class="line">*....*..</span><br><span class="line">.*..*...</span><br><span class="line">..**....</span><br><span class="line">........</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">% makefont.exe hankaku.txt font.bin</span><br></pre></td></tr></table></figure>
+<p>Each character is represented by 16 bytes</p>
+<p><img src="/2022/01/26/OS/30DayOS/Day5/fonts.png" alt="fonts"></p>
+<p>Turn binary data to an linkable object file format</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">% bin2obj.exe font.bin font.obj hankaku</span><br></pre></td></tr></table></figure>
+<p>Usage</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">char</span> hankaku [<span class="number">4096</span>];</span><br><span class="line"></span><br><span class="line">putfont8(binfo-&gt;vram , binfo-&gt;scrnx , <span class="number">8</span> ,<span class="number">8</span> , COL8_FFFFFF , hankaku + <span class="string">&#x27;A&#x27;</span> * <span class="number">16</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="Show-string"><a href="#Show-string" class="headerlink" title="Show string"></a>Show string</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">putfonts8_asc</span><span class="params">(<span class="keyword">char</span> * vram , <span class="keyword">int</span> xsize , <span class="keyword">int</span> x , <span class="keyword">int</span> y , <span class="keyword">char</span> c , <span class="keyword">unsigned</span> <span class="keyword">char</span> * s)</span></span>&#123;</span><br><span class="line">    <span class="keyword">extern</span> <span class="keyword">char</span> hankaku [<span class="number">4096</span>];</span><br><span class="line">    <span class="keyword">for</span> (; *s != <span class="string">&#x27;\0&#x27;</span> ; s++)&#123;</span><br><span class="line">        putfont8(vram ,xsize , x, y, c , hankaku+ (*s) * <span class="number">16</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Use-sprintf-for-debug-purpose"><a href="#Use-sprintf-for-debug-purpose" class="headerlink" title="Use sprintf for debug purpose"></a>Use <code>sprintf</code> for debug purpose</h3><p><em>As declared by the auther, this version is <code>sprintf</code> is OS independent</em></p>
+<h3 id="Show-cursor"><a href="#Show-cursor" class="headerlink" title="Show cursor"></a>Show cursor</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init_mouse_cursor8</span><span class="params">(<span class="keyword">char</span> *mouse, <span class="keyword">char</span> bc)</span></span></span><br><span class="line"><span class="function"><span class="comment">/* prepare cursor buffer(16×16), write into mouse */</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">char</span> cursor[<span class="number">16</span>][<span class="number">16</span>] = &#123;</span><br><span class="line"><span class="string">&quot;**************..&quot;</span>,</span><br><span class="line"><span class="string">&quot;*OOOOOOOOOOO*...&quot;</span>,</span><br><span class="line"><span class="string">&quot;*OOOOOOOOOO*....&quot;</span>,</span><br><span class="line"><span class="string">&quot;*OOOOOOOOO*.....&quot;</span>,</span><br><span class="line"><span class="string">&quot;*OOOOOOOO*......&quot;</span>,</span><br><span class="line"><span class="string">&quot;*OOOOOOO*.......&quot;</span>,</span><br><span class="line"><span class="string">&quot;*OOOOOOO*.......&quot;</span>,</span><br><span class="line"><span class="string">&quot;*OOOOOOOO*......&quot;</span>,</span><br><span class="line"><span class="string">&quot;*OOOO**OOO*.....&quot;</span>,</span><br><span class="line"><span class="string">&quot;*OOO*..*OOO*....&quot;</span>,</span><br><span class="line"><span class="string">&quot;*OO*....*OOO*...&quot;</span>,</span><br><span class="line"><span class="string">&quot;*O*......*OOO*..&quot;</span>,</span><br><span class="line"><span class="string">&quot;**........*OOO*.&quot;</span>,</span><br><span class="line"><span class="string">&quot;*..........*OOO*&quot;</span>,</span><br><span class="line"><span class="string">&quot;............*OO*&quot;</span>,</span><br><span class="line"><span class="string">&quot;.............***&quot;</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">int</span> x, y;</span><br><span class="line"><span class="keyword">for</span> (y = <span class="number">0</span>; y &lt; <span class="number">16</span>; y++) &#123;</span><br><span class="line"><span class="keyword">for</span> (x = <span class="number">0</span>; x &lt; <span class="number">16</span>; x++) &#123;</span><br><span class="line"><span class="keyword">if</span> (cursor[y][x] == <span class="string">&#x27;*&#x27;</span>) &#123;</span><br><span class="line">mouse[y * <span class="number">16</span> + x] = COL8_000000;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (cursor[y][x] == <span class="string">&#x27;O&#x27;</span>) &#123;</span><br><span class="line">mouse[y * <span class="number">16</span> + x] = COL8_FFFFFF;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (cursor[y][x] == <span class="string">&#x27;.&#x27;</span>) &#123;</span><br><span class="line">mouse[y * <span class="number">16</span> + x] = bc;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//bc stand for background color</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">putblock8_8</span><span class="params">(<span class="keyword">char</span> * vram , <span class="keyword">int</span> vxsize , <span class="keyword">int</span> pxsize , <span class="keyword">int</span> pysize , <span class="keyword">int</span> px0,<span class="keyword">int</span> py0, <span class="keyword">char</span> * buf , <span class="keyword">int</span> bxszie )</span></span>&#123;</span><br><span class="line">    <span class="comment">// vram : video memory</span></span><br><span class="line">    <span class="comment">// vxsize : screen x resolution</span></span><br><span class="line">    <span class="comment">// pxsize : picture x size</span></span><br><span class="line">    <span class="comment">// pysize : picture y size</span></span><br><span class="line">    <span class="comment">// (px0 , py0) : position</span></span><br><span class="line">    <span class="comment">// buf : picture data</span></span><br><span class="line">    <span class="comment">// bxsize : picture data x size, usually equals to pxsize</span></span><br><span class="line">    <span class="keyword">int</span> x , y ;</span><br><span class="line">    <span class="keyword">for</span> ( y = <span class="number">0</span> ; y &lt; pysize ; y++)&#123;</span><br><span class="line">        <span class="keyword">for</span> (x = <span class="number">0</span> ; x &lt; pxsize ; x++)&#123;</span><br><span class="line">            vram[(py0+y) * vxszie + (px0+x)] = buf[y * bxsize + x];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="GDT-and-IDT"><a href="#GDT-and-IDT" class="headerlink" title="GDT and IDT"></a>GDT and IDT</h2><h3 id="Segments-management"><a href="#Segments-management" class="headerlink" title="Segments management"></a>Segments management</h3><h4 id="How-to-describe-a-segment"><a href="#How-to-describe-a-segment" class="headerlink" title="How to describe a segment ?"></a>How to describe a segment ?</h4><p><strong><em>64 bits segment discriptor</em></strong></p>
+<ul>
+<li>Segment size</li>
+<li>Start address of the segment</li>
+<li>Accessibility of the segment</li>
+</ul>
+<p><strong>However, the segment base register is still 16 bit, we need a external data structure to store these infomation</strong></p>
+<p><strong><em>The value in DS(segment register) is called <code>segment selector</code>, funtions like the index of an array(GDT)</em></strong></p>
+<p>For some historical reason, the lowest 3 bits of DS is unusable, so the size of GDT is <code>(2**13) * 64 </code> bits</p>
+<h3 id="GDT-Global-segment-Desciptor-Table"><a href="#GDT-Global-segment-Desciptor-Table" class="headerlink" title="GDT(Global segment Desciptor Table)"></a>GDT(Global segment Desciptor Table)</h3><ul>
+<li>Stored in memory</li>
+<li>The start address of GDT and size limitation is stored in <code>GDTR</code> (global discriptor table register)</li>
+</ul>
+<h3 id="IDT-Interrupt-Descriptor-Table"><a href="#IDT-Interrupt-Descriptor-Table" class="headerlink" title="IDT(Interrupt Descriptor Table)"></a>IDT(Interrupt Descriptor Table)</h3><ul>
+<li>Same with “interrupt vector table” in real mode</li>
+<li>Stored in memory</li>
+</ul>
+<hr>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//GDT entry</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">SEGMENT_DESCRIPTOR</span>&#123;</span></span><br><span class="line">    <span class="keyword">short</span> limit_low;</span><br><span class="line">    <span class="keyword">short</span> base_low ;</span><br><span class="line">    <span class="keyword">char</span> base_mid ;</span><br><span class="line">    <span class="keyword">char</span> access_right ;</span><br><span class="line">    <span class="keyword">char</span> limit_high ;</span><br><span class="line">    <span class="keyword">char</span> base_high ;</span><br><span class="line"></span><br><span class="line"><span class="comment">//segment base addr = catenate(base_high , base_mid , base_low)</span></span><br><span class="line"><span class="comment">//why divide 4 bytes address into 3 parts?</span></span><br><span class="line"><span class="comment">//For back compatibility of 80286</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//segment size limit = catenate(limit_high &amp; 0xffff , limit_low)</span></span><br><span class="line"><span class="comment">//why size limit is only 20 bits ?</span></span><br><span class="line"><span class="comment">//12 bits for access infomation</span></span><br><span class="line"><span class="comment">//So the biggest size is 1 MB ?</span></span><br><span class="line"><span class="comment">//If G_bit in accessInfo is turned on, the limitSize will be interpreted as number of pages</span></span><br><span class="line"><span class="comment">// max_seg_size = 1MB * 4KB(page size) = 4G</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//segment access right</span></span><br><span class="line"><span class="comment">// limit_high &amp; 0xffff0000 is called extended access right bits, used as xx00</span></span><br><span class="line"><span class="comment">// the first bit is G_bit</span></span><br><span class="line"><span class="comment">// the second bit is used to indicate protected mode or real mode(only for 80286, not for BIOS)</span></span><br><span class="line"><span class="comment">// access_right :</span></span><br><span class="line"><span class="comment">// 0x00 : not allocated</span></span><br><span class="line"><span class="comment">// 0x92 : OS only, rw_</span></span><br><span class="line"><span class="comment">// 0x9a : OS only, r_x</span></span><br><span class="line"><span class="comment">// 0xf2 : User seg , rw_</span></span><br><span class="line"><span class="comment">// 0xfa : User seg , r_x</span></span><br><span class="line"><span class="comment">// OS only (ring0) , User (ring3)</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//IDT entry</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">GATE_DESCRIPTOR</span>&#123;</span></span><br><span class="line">    <span class="keyword">short</span> offset_low ;</span><br><span class="line">    <span class="keyword">short</span> selector ;</span><br><span class="line">    <span class="keyword">char</span> dw_count ;</span><br><span class="line">    <span class="keyword">char</span> access_right ;</span><br><span class="line">    <span class="keyword">short</span> offset_high ;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//the struct format is required by CPU manufacturer, please read the manual</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init_gdtidt</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="comment">//arbitrarily pick two free address region in memory for GDT and IDT</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">SEGMENT_DESCRIPTOR</span> * <span class="title">gdt</span> =</span> (struct SEGMENT_DESCRIPTOR*) <span class="number">0x00270000</span> ;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">GATE_DESCRIPTOR</span> * <span class="title">idt</span> =</span> (struct GATE_DESCRIPTOR) <span class="number">0x0026f800</span> ;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> i ; </span><br><span class="line">    </span><br><span class="line">    <span class="comment">//init GDT</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span> ; i &lt; <span class="number">8192</span> ; i++)&#123;</span><br><span class="line">        set_segmdesc(gdt + i , <span class="number">0</span> , <span class="number">0</span> , <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//set entry 1 and 2</span></span><br><span class="line">    set_segmdesc(gdt + <span class="number">1</span> ,<span class="number">0xffffffff</span>,<span class="number">0x00000000</span>,<span class="number">0x4092</span>);</span><br><span class="line">    <span class="comment">//CPU access segment ,4G</span></span><br><span class="line">    set_segmdesc(gdt + <span class="number">2</span> ,<span class="number">0x0007ffff</span>,<span class="number">0x00280000</span>,<span class="number">0x409a</span>);</span><br><span class="line">    <span class="comment">// bootpack access segment, 512 bytes</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//load GDT address into GDTR</span></span><br><span class="line">    load_gdtr(<span class="number">0xffff</span>,<span class="number">0x00270000</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//init IDT</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span> ; i &lt; <span class="number">256</span> ; i++)&#123;</span><br><span class="line">        set_gatedesc(idt + i  , <span class="number">0</span> , <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    load_idtr(<span class="number">0x7ff</span> , <span class="number">0x0026f800</span>) ;</span><br><span class="line">    <span class="keyword">return</span> ;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">limit : size upper bound</span></span><br><span class="line"><span class="comment">base : base address</span></span><br><span class="line"><span class="comment">ar : access right</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">set_segmdesc</span><span class="params">(struct SEGMENT_DESCRIPTOR *sd, <span class="keyword">unsigned</span> <span class="keyword">int</span> limit, <span class="keyword">int</span> base, <span class="keyword">int</span> ar)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (limit &gt; <span class="number">0xfffff</span>) &#123;</span><br><span class="line">    ar |= <span class="number">0x8000</span>; <span class="comment">/* G_bit = 1 */</span></span><br><span class="line">    limit /= <span class="number">0x1000</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  sd-&gt;limit_low    = limit &amp; <span class="number">0xffff</span>;</span><br><span class="line">  sd-&gt;base_low     = base &amp; <span class="number">0xffff</span>;</span><br><span class="line">  sd-&gt;base_mid     = (base &gt;&gt; <span class="number">16</span>) &amp; <span class="number">0xff</span>;</span><br><span class="line">  sd-&gt;access_right = ar &amp; <span class="number">0xff</span>;</span><br><span class="line">  sd-&gt;limit_high   = ((limit &gt;&gt; <span class="number">16</span>) &amp; <span class="number">0x0f</span>) | ((ar &gt;&gt; <span class="number">8</span>) &amp; <span class="number">0xf0</span>);</span><br><span class="line">  sd-&gt;base_high    = (base &gt;&gt; <span class="number">24</span>) &amp; <span class="number">0xff</span>;</span><br><span class="line">  <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">set_gatedesc</span><span class="params">(struct GATE_DESCRIPTOR *gd, <span class="keyword">int</span> offset, <span class="keyword">int</span> selector, <span class="keyword">int</span> ar)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  gd-&gt;offset_low   = offset &amp; <span class="number">0xffff</span>;</span><br><span class="line">  gd-&gt;selector     = selector;</span><br><span class="line">  gd-&gt;dw_count     = (ar &gt;&gt; <span class="number">8</span>) &amp; <span class="number">0xff</span>;</span><br><span class="line">  gd-&gt;access_right = ar &amp; <span class="number">0xff</span>;</span><br><span class="line">  gd-&gt;offset_high  = (offset &gt;&gt; <span class="number">16</span>) &amp; <span class="number">0xffff</span>;</span><br><span class="line">  <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2022/01/26/OS/30DayOS/Day5/" data-id="ckyx0u7ci0006zdyq50a2dqvm" data-title="Day5" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/01/26/OS/30DayOS/Day6/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          Day6
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/01/25/OS/30DayOS/Day4/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">Day4</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/01/27/novel/motivation/">motivation</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/27/OS/30DayOS/Day7/">Day7</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/26/OS/30DayOS/Day6/">Day6</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/26/OS/30DayOS/Day5/">Day5</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/25/OS/30DayOS/Day4/">Day4</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

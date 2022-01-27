@@ -9,17 +9,17 @@
   <meta name="description" content="From computer architecture to assembly">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Day1">
-<meta property="og:url" content="http://rubbish-and-world.github.io/2022/01/24/30DayOS/Day1/index.html">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2022/01/24/OS/30DayOS/Day1/index.html">
 <meta property="og:site_name" content="rubbishbin">
 <meta property="og:description" content="From computer architecture to assembly">
 <meta property="og:locale">
-<meta property="og:image" content="http://rubbish-and-world.github.io/2022/01/24/30DayOS/Day1/binarycode.png">
-<meta property="og:image" content="http://rubbish-and-world.github.io/2022/01/24/30DayOS/Day1/helloworld.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/01/24/OS/30DayOS/Day1/binarycode.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/01/24/OS/30DayOS/Day1/helloworld.png">
 <meta property="article:published_time" content="2022-01-24T05:42:28.000Z">
 <meta property="article:modified_time" content="2022-01-24T07:29:19.904Z">
 <meta property="article:author" content="rubbish">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://rubbish-and-world.github.io/2022/01/24/30DayOS/Day1/binarycode.png">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2022/01/24/OS/30DayOS/Day1/binarycode.png">
   
     <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
   
@@ -76,9 +76,9 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-30DayOS/Day1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-OS/30DayOS/Day1" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
-    <a href="/2022/01/24/30DayOS/Day1/" class="article-date">
+    <a href="/2022/01/24/OS/30DayOS/Day1/" class="article-date">
   <time class="dt-published" datetime="2022-01-24T05:42:28.000Z" itemprop="datePublished">2022-01-24</time>
 </a>
     
@@ -104,9 +104,9 @@
       
         <h1 id="From-computer-architecture-to-assembly"><a href="#From-computer-architecture-to-assembly" class="headerlink" title="From computer architecture to assembly"></a>From computer architecture to assembly</h1><a id="more"></a>
 
-<h3 id="Write-a-program-which-can-be-run-without-OS-via-binary"><a href="#Write-a-program-which-can-be-run-without-OS-via-binary" class="headerlink" title="Write a program which can be run without OS via binary"></a>Write a program which can be run without OS via binary</h3><p><img src="/2022/01/24/30DayOS/Day1/binarycode.png" alt="binary code"></p>
+<h3 id="Write-a-program-which-can-be-run-without-OS-via-binary"><a href="#Write-a-program-which-can-be-run-without-OS-via-binary" class="headerlink" title="Write a program which can be run without OS via binary"></a>Write a program which can be run without OS via binary</h3><p><img src="/2022/01/24/OS/30DayOS/Day1/binarycode.png" alt="binary code"></p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">% <span class="built_in">copy</span> helloos.img ..\z_tools\qemu\fdimage0.bin <span class="comment"># copy image file to qemu folder and rename it to fdimage0.bin</span></span><br><span class="line"></span><br><span class="line">% <span class="built_in">cd</span> ..\z_tools\qemu</span><br><span class="line">% <span class="built_in">cat</span> .\Makefile</span><br><span class="line">default :</span><br><span class="line">        qemu<span class="literal">-win</span>.bat</span><br><span class="line">        </span><br><span class="line">% <span class="built_in">cat</span> .\qemu<span class="literal">-win</span>.bat</span><br><span class="line">@<span class="built_in">set</span> SDL_VIDEODRIVER=windib</span><br><span class="line">@<span class="built_in">set</span> QEMU_AUDIO_DRV=none</span><br><span class="line">@<span class="built_in">set</span> QEMU_AUDIO_LOG_TO_MONITOR=<span class="number">0</span></span><br><span class="line">qemu.exe <span class="literal">-L</span> . <span class="literal">-m</span> <span class="number">32</span> <span class="literal">-localtime</span> <span class="literal">-std</span><span class="literal">-vga</span> <span class="literal">-fda</span> fdimage0.bin</span><br><span class="line"></span><br><span class="line">% ..\z_tools\make.exe <span class="literal">-C</span> ..\z_tools\qemu</span><br><span class="line"><span class="comment"># use GNU make to run qemu emulator</span></span><br><span class="line"><span class="comment"># the makefile contain only one line : qemu-win.bat</span></span><br><span class="line"><span class="comment"># then qemu will boot a machine from fdimag0.bin</span></span><br></pre></td></tr></table></figure>
-<p><img src="/2022/01/24/30DayOS/Day1/helloworld.png" alt="hello world in qemu"></p>
+<p><img src="/2022/01/24/OS/30DayOS/Day1/helloworld.png" alt="hello world in qemu"></p>
 <h3 id="Rewrite-the-program-with-author-modified-assembly-language"><a href="#Rewrite-the-program-with-author-modified-assembly-language" class="headerlink" title="Rewrite the program with (author modified) assembly language"></a>Rewrite the program with (author modified) assembly language</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">; source of helloos.nas</span><br><span class="line">        DB      0xeb, 0x4e, 0x90, 0x48, 0x45, 0x4c, 0x4c, 0x4f</span><br><span class="line">        DB      0x49, 0x50, 0x4c, 0x00, 0x02, 0x01, 0x01, 0x00</span><br><span class="line">        DB      0x02, 0xe0, 0x00, 0x40, 0x0b, 0xf0, 0x09, 0x00</span><br><span class="line">        DB      0x12, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00</span><br><span class="line">        DB      0x40, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x29, 0xff</span><br><span class="line">        DB      0xff, 0xff, 0xff, 0x48, 0x45, 0x4c, 0x4c, 0x4f</span><br><span class="line">        DB      0x2d, 0x4f, 0x53, 0x20, 0x20, 0x20, 0x46, 0x41</span><br><span class="line">        DB      0x54, 0x31, 0x32, 0x20, 0x20, 0x20, 0x00, 0x00</span><br><span class="line">        RESB    16</span><br><span class="line">        DB      0xb8, 0x00, 0x00, 0x8e, 0xd0, 0xbc, 0x00, 0x7c</span><br><span class="line">        DB      0x8e, 0xd8, 0x8e, 0xc0, 0xbe, 0x74, 0x7c, 0x8a</span><br><span class="line">        DB      0x04, 0x83, 0xc6, 0x01, 0x3c, 0x00, 0x74, 0x09</span><br><span class="line">        DB      0xb4, 0x0e, 0xbb, 0x0f, 0x00, 0xcd, 0x10, 0xeb</span><br><span class="line">        DB      0xee, 0xf4, 0xeb, 0xfd, 0x0a, 0x0a, 0x68, 0x65</span><br><span class="line">        DB      0x6c, 0x6c, 0x6f, 0x2c, 0x20, 0x77, 0x6f, 0x72</span><br><span class="line">        DB      0x6c, 0x64, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00</span><br><span class="line">        RESB    368</span><br><span class="line">        DB      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x55, 0xaa</span><br><span class="line">        DB      0xf0, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00</span><br><span class="line">        RESB    4600</span><br><span class="line">        DB      0xf0, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00</span><br><span class="line">        RESB    1469432</span><br></pre></td></tr></table></figure>
 <p><code>db</code> for define byte, <code>resb</code> for reserve bytes</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">% <span class="built_in">cat</span> .\asm.bat</span><br><span class="line">..\z_tools\nask.exe helloos.nas helloos.img</span><br><span class="line"><span class="comment"># use author modified nasm to assemble helloos.nas into helloos.img</span></span><br></pre></td></tr></table></figure>
@@ -122,7 +122,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2022/01/24/30DayOS/Day1/" data-id="ckytktc1w0001ckyq7s7xbvsq" data-title="Day1" class="article-share-link">Teilen</a>
+      <a data-url="http://rubbish-and-world.github.io/2022/01/24/OS/30DayOS/Day1/" data-id="ckyx0u7c10002zdyqfyoi5teu" data-title="Day1" class="article-share-link">Teilen</a>
       
       
       
@@ -132,7 +132,7 @@
     
 <nav id="article-nav">
   
-    <a href="/2022/01/24/30DayOS/Day2/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2022/01/24/OS/30DayOS/Day2/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Neuer</strong>
       <div class="article-nav-title">
         
@@ -142,7 +142,7 @@
     </a>
   
   
-    <a href="/2022/01/24/30DayOS/Day0/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2022/01/24/OS/30DayOS/Day0/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Älter</strong>
       <div class="article-nav-title">Day0</div>
     </a>
@@ -161,7 +161,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
     </div>
   </div>
 
@@ -203,23 +203,23 @@
       <ul>
         
           <li>
-            <a href="/2022/01/25/30DayOS/Day4/">Day4</a>
+            <a href="/2022/01/27/novel/motivation/">motivation</a>
           </li>
         
           <li>
-            <a href="/2022/01/25/30DayOS/Day3/">Day3</a>
+            <a href="/2022/01/27/OS/30DayOS/Day7/">Day7</a>
           </li>
         
           <li>
-            <a href="/2022/01/24/30DayOS/Day2/">Day2</a>
+            <a href="/2022/01/26/OS/30DayOS/Day6/">Day6</a>
           </li>
         
           <li>
-            <a href="/2022/01/24/30DayOS/Day1/">Day1</a>
+            <a href="/2022/01/26/OS/30DayOS/Day5/">Day5</a>
           </li>
         
           <li>
-            <a href="/2022/01/24/30DayOS/Day0/">Day0</a>
+            <a href="/2022/01/25/OS/30DayOS/Day4/">Day4</a>
           </li>
         
       </ul>

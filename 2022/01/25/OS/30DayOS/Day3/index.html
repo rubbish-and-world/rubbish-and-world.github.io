@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Day3 | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Entering 32-bit mode and the C language">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Day3">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2022/01/25/OS/30DayOS/Day3/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Entering 32-bit mode and the C language">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/01/25/OS/30DayOS/Day3/floppy.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/01/25/OS/30DayOS/Day3/black.png">
+<meta property="article:published_time" content="2022-01-25T03:44:40.000Z">
+<meta property="article:modified_time" content="2022-01-25T07:35:25.922Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2022/01/25/OS/30DayOS/Day3/floppy.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-OS/30DayOS/Day3" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/01/25/OS/30DayOS/Day3/" class="article-date">
+  <time class="dt-published" datetime="2022-01-25T03:44:40.000Z" itemprop="datePublished">2022-01-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/OS/">OS</a>►<a class="article-category-link" href="/categories/OS/30DayOS/">30DayOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Day3
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Entering-32-bit-mode-and-the-C-language"><a href="#Entering-32-bit-mode-and-the-C-language" class="headerlink" title="Entering 32-bit mode and the C language"></a>Entering 32-bit mode and the C language</h1><a id="more"></a>
+
+<h3 id="Load-the-second-sector"><a href="#Load-the-second-sector" class="headerlink" title="Load the second sector"></a>Load the second sector</h3><p><em>using BIOS interrupt, see more at wikipedia BIOS interrupt</em></p>
+<p>BIOS : Read Sectors from driver</p>
+<h5 id="Parameters"><a href="#Parameters" class="headerlink" title="Parameters"></a>Parameters</h5><table>
+<thead>
+<tr>
+<th>Register</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AH</td>
+<td>0x02</td>
+</tr>
+<tr>
+<td>AL</td>
+<td>Sector to read count</td>
+</tr>
+<tr>
+<td>CH (10 bits)</td>
+<td>Cylinder</td>
+</tr>
+<tr>
+<td>CL (6 bits)</td>
+<td>Sector</td>
+</tr>
+<tr>
+<td>DH</td>
+<td>Head</td>
+</tr>
+<tr>
+<td>DL</td>
+<td>Driver</td>
+</tr>
+<tr>
+<td>ES:BX</td>
+<td>Buffer Address Pointer</td>
+</tr>
+</tbody></table>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cylinder_number = ((<span class="number">0b11000000</span> &amp; cl) &lt;&lt; <span class="number">8</span>) | ch;</span><br><span class="line">sector_number = cl &amp; <span class="number">0b00111111</span>;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">CX =       ---CH--- ---CL---</span></span><br><span class="line"><span class="comment">cylinder : 76543210 98</span></span><br><span class="line"><span class="comment">sector   :            543210</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h5 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h5><table>
+<thead>
+<tr>
+<th>Register</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CF</td>
+<td>Set On Error,Clear if no error</td>
+</tr>
+<tr>
+<td>AH</td>
+<td>Return code</td>
+</tr>
+<tr>
+<td>AL</td>
+<td>Actual sectors read count</td>
+</tr>
+</tbody></table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">; add the following code to IPL.nas</span><br><span class="line"></span><br><span class="line">; read floppy disk data into memory 0x0820:0000</span><br><span class="line">mov ax,0x0820</span><br><span class="line">mov es,ax</span><br><span class="line">mov bx,0</span><br><span class="line"></span><br><span class="line">; select sector to read</span><br><span class="line">mov ch,0 ; cylinder 0</span><br><span class="line">mov cl,2 ; sector 2</span><br><span class="line">mov dh,0 ; head 0</span><br><span class="line">mov dl,0 ; driver A</span><br><span class="line">mov al,1 ; read only 1 sector</span><br><span class="line"></span><br><span class="line">; invoke bios to read</span><br><span class="line">mov ah,2</span><br><span class="line">int 0x13</span><br><span class="line"></span><br><span class="line">; check error</span><br><span class="line">jc error</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/01/25/OS/30DayOS/Day3/floppy.png" alt="floppy disk geometry"></p>
+<h3 id="Add-retry-section"><a href="#Add-retry-section" class="headerlink" title="Add retry section"></a>Add retry section</h3><p>BIOS : reset disk system</p>
+<h5 id="Parameter"><a href="#Parameter" class="headerlink" title="Parameter"></a>Parameter</h5><table>
+<thead>
+<tr>
+<th>Register</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AH</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>DL</td>
+<td>Driver number</td>
+</tr>
+</tbody></table>
+<h5 id="Result-1"><a href="#Result-1" class="headerlink" title="Result"></a>Result</h5><table>
+<thead>
+<tr>
+<th>Register</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CF</td>
+<td>Set on Error</td>
+</tr>
+<tr>
+<td>AH</td>
+<td>return code</td>
+</tr>
+</tbody></table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">retry:</span><br><span class="line">	; try to read</span><br><span class="line">	mov ah,0x02</span><br><span class="line">	mov al,1</span><br><span class="line">	mov bx,0</span><br><span class="line">	mov dl,0x00</span><br><span class="line">	int 0x13</span><br><span class="line">	jnc fin ;if success halt the machine</span><br><span class="line">	add si, 1 ; fail time +&#x3D; 1</span><br><span class="line">	cmp si,5 ; maximum fail time is 5</span><br><span class="line">	jae error</span><br><span class="line">	mov ah,0x00 ; reset floppy disk</span><br><span class="line">	mov dl,0x00</span><br><span class="line">	int 0x13 </span><br><span class="line">	jmp retry</span><br></pre></td></tr></table></figure>
+<h3 id="Read-more-sectors"><a href="#Read-more-sectors" class="headerlink" title="Read more sectors"></a>Read more sectors</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cl += <span class="number">1</span></span><br><span class="line">es:bx += <span class="number">512</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">next:</span><br><span class="line">	mov ax,es</span><br><span class="line">	add ax,0x20 ;add 512</span><br><span class="line">	mov es,ax</span><br><span class="line">	add cl,1</span><br><span class="line">	cmp cl,18 ; read 18 sectors</span><br><span class="line">	jbe readloop</span><br></pre></td></tr></table></figure>
+<h3 id="Read-more-cylinders"><a href="#Read-more-cylinders" class="headerlink" title="Read more cylinders"></a>Read more cylinders</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">next:</span><br><span class="line">	mov ax,es</span><br><span class="line">	add ax,0x20</span><br><span class="line">	mov es,ax</span><br><span class="line">	add cl,1</span><br><span class="line">	cmp cl,18</span><br><span class="line">	jbe readloop</span><br><span class="line">	; if finish reading one surface(18 sector), read the other</span><br><span class="line">	mov cl,1</span><br><span class="line">	add dh,1</span><br><span class="line">	cmp dh,2</span><br><span class="line">	jb readloop</span><br><span class="line">	; next cylinder</span><br><span class="line">	mov dh,0</span><br><span class="line">	add ch, 1 ; cylinder number +&#x3D; 1</span><br><span class="line">	cmp ch,CYLS ; const CYLS &#x3D; 10</span><br><span class="line">	jb readloop</span><br></pre></td></tr></table></figure>
+<h3 id="Start-Develop-our-OS"><a href="#Start-Develop-our-OS" class="headerlink" title="Start Develop our OS"></a>Start Develop our OS</h3><p>when saving files into a floppy disk</p>
+<ul>
+<li>file name is saved at 0x002600</li>
+<li>file content is saved at 0x004200</li>
+</ul>
+<h4 id="BIOS-int-0x10"><a href="#BIOS-int-0x10" class="headerlink" title="BIOS int 0x10"></a>BIOS int 0x10</h4><table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Function code</th>
+<th>Parameters</th>
+<th>Return</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Set video mode</td>
+<td>AH=0x00</td>
+<td>AL=video mode</td>
+<td>AL=video mode flag</td>
+</tr>
+</tbody></table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">; source of haribote.sys</span><br><span class="line"></span><br><span class="line">;code should start at memory 0x8000 + 0x4200 &#x3D; 0xc200</span><br><span class="line">org 0xc200 ; originate from 0xc200</span><br><span class="line"></span><br><span class="line">mov al,0x13 ; use vga video card, 320x200x8 bit color</span><br><span class="line">mov ah,0x00</span><br><span class="line">int 0x10</span><br><span class="line"></span><br><span class="line">fin:</span><br><span class="line">	hlt</span><br><span class="line">	jmp fin</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">; source of ipt.nas</span><br><span class="line">; add two line after &#96;next&#96; section</span><br><span class="line">mov [0x0ff0],ch ;save number of cylinder read to memory</span><br><span class="line">jmp 0xc200 ;execute code of haribote.sys</span><br></pre></td></tr></table></figure>
+<p><img src="/2022/01/25/OS/30DayOS/Day3/black.png" alt="blank screen in video mode"></p>
+<h3 id="Preparing-for-32-bit-mode"><a href="#Preparing-for-32-bit-mode" class="headerlink" title="Preparing for 32-bit mode"></a>Preparing for 32-bit mode</h3><p><em>switching from real mode to protected mode</em></p>
+<p><strong>16-bit mode machine code differs from 32-bit mode machine code !</strong></p>
+<p><strong>So No BIOS function in 32-bit mode, since BIOS is written in 16-bit assembly !</strong></p>
+<h4 id="Use-BIOS-to-get-some-information-before-entrying-protected-mode"><a href="#Use-BIOS-to-get-some-information-before-entrying-protected-mode" class="headerlink" title="Use BIOS to get some information before entrying protected mode"></a>Use BIOS to get some information before entrying protected mode</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">; source of haribote.nas</span><br><span class="line"></span><br><span class="line">;boot info location</span><br><span class="line">CYLS equ 0x0ff0 ; cylinder read</span><br><span class="line">LEDS equ 0x0ff1 ; keyboard led status</span><br><span class="line">VMODE equ 0x0ff2 ; video mode</span><br><span class="line">SCRNX equ 0x0ff4 ; screen resolution x</span><br><span class="line">SCRNY equ 0x0ff6 ; screen resolution y</span><br><span class="line">VRAM equ 0x0ff8  ; start of video RAM</span><br><span class="line"></span><br><span class="line">org 0xc200</span><br><span class="line">mov al,0x13 ; set video mode</span><br><span class="line">mov ah,0x00</span><br><span class="line">int 0x10</span><br><span class="line">mov byte [VMODE], 8</span><br><span class="line">mov word [SCRNX], 320</span><br><span class="line">mov word [SCRNY], 200</span><br><span class="line">mov dword [VRAM], 0x000a0000</span><br><span class="line"></span><br><span class="line">;use bios to get keyboard led status</span><br><span class="line">mov ah,0x02</span><br><span class="line">int 0x16</span><br><span class="line">mov [LEDS],al</span><br><span class="line"></span><br><span class="line">fin:</span><br><span class="line">	hlt</span><br><span class="line">	jmp fin</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其实VRAM分布在内存分布图上好几个不同的地方。这是因为，不同画</p>
+<p>面模式的像素数也不一样。当画面模式为〇×时使用这个VRAM；而画</p>
+<p>面模式为◇△时可能使用那个VRAM，像这样，不同画面模式可以使用</p>
+<p>的内存也不一样。</p>
+<p>在INT 0x10的说明的最后写着，这种画面模式下“VRAM是0xa0000～0xaffff的64KB</p>
+</blockquote>
+<h3 id="Using-the-C-language"><a href="#Using-the-C-language" class="headerlink" title="Using the C language"></a>Using the C language</h3><p><em>Before using the C, we still need to do some job in real mode, but the code in <code>asmhead.nas</code> will be explicated later</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// source of bootpack.c</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HariMain</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    fin:</span><br><span class="line">    	<span class="comment">//hlt here</span></span><br><span class="line">    <span class="keyword">goto</span> fin;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>the author use a bounch of customized tools to do the compilation and linking</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$ file bootpack.obj</span><br><span class="line">bootpack.obj: Intel 80386 COFF object file, not stripped, 3 sections, symbol offset=0x91, 9 symbols</span><br><span class="line">$ objdump -d bootpack.obj</span><br><span class="line">bootpack.obj:	file format COFF-i386</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disassembly of section .text:</span><br><span class="line"></span><br><span class="line">00000000 _HariMain:</span><br><span class="line">       0: 55                           	pushl	%ebp</span><br><span class="line">       1: 89 e5                        	movl	%esp, %ebp</span><br><span class="line">       3: eb fe                        	jmp	-2 &lt;_HariMain+0x3&gt;</span><br><span class="line">$ objdump -d halt.obj</span><br><span class="line"></span><br><span class="line">halt.obj:	file format Mach-O 32-bit i386</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disassembly of section __TEXT,__text:</span><br><span class="line"></span><br><span class="line">00000000 _main:</span><br><span class="line">       0: 55                           	pushl	%ebp</span><br><span class="line">       1: 89 e5                        	movl	%esp, %ebp</span><br><span class="line">       3: e9 00 00 00 00               	jmp	0 &lt;_main+0x8&gt;</span><br><span class="line">       8: e9 fb ff ff ff               	jmp	-5 &lt;_main+0x8&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">% cc1.exe <span class="comment"># c preprocessor</span></span><br><span class="line">% gas2nask.exe <span class="comment"># compiler</span></span><br><span class="line">% nask.exe <span class="comment"># assembler</span></span><br><span class="line">% obi2bim.exe <span class="comment"># linker</span></span><br><span class="line">% bim2hrb.exe <span class="comment"># format transferring, can be transformed into windows,linux and hariboteOS</span></span><br></pre></td></tr></table></figure>
+<h3 id="Add-a-hlt-function"><a href="#Add-a-hlt-function" class="headerlink" title="Add a hlt function"></a>Add a <code>hlt</code> function</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">; source of naskfunc.nas</span><br><span class="line">[FORMAT &quot;WCOFF&quot;]</span><br><span class="line">[BITS 32]</span><br><span class="line">[FILE &quot;naskfunc.nas&quot;]</span><br><span class="line"></span><br><span class="line">global _io_hlt</span><br><span class="line">[SECTION .text]</span><br><span class="line"></span><br><span class="line">_io_hlt:</span><br><span class="line">	hlt</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//bootpack.c</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">io_hlt</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HariMain</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    fin:</span><br><span class="line">    	io_hlt();</span><br><span class="line">    	<span class="keyword">goto</span> fin;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>You see that we link c program and assembly program together</em></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2022/01/25/OS/30DayOS/Day3/" data-id="ckyx0u7cg0005zdyqe5spdh45" data-title="Day3" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/01/25/30DayOS/Day3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          Day3
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/01/24/OS/30DayOS/Day2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">Day2</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/01/27/novel/motivation/">motivation</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/27/OS/30DayOS/Day7/">Day7</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/26/OS/30DayOS/Day6/">Day6</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/26/OS/30DayOS/Day5/">Day5</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/25/OS/30DayOS/Day4/">Day4</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Day6 | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Separated compilation and Interrupt handling">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Day6">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2022/01/26/OS/30DayOS/Day6/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Separated compilation and Interrupt handling">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/01/26/OS/30DayOS/Day6/PIC.png">
+<meta property="article:published_time" content="2022-01-26T07:46:29.000Z">
+<meta property="article:modified_time" content="2022-01-26T12:08:50.029Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2022/01/26/OS/30DayOS/Day6/PIC.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-OS/30DayOS/Day6" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/01/26/OS/30DayOS/Day6/" class="article-date">
+  <time class="dt-published" datetime="2022-01-26T07:46:29.000Z" itemprop="datePublished">2022-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/OS/">OS</a>►<a class="article-category-link" href="/categories/OS/30DayOS/">30DayOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Day6
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Separated-compilation-and-Interrupt-handling"><a href="#Separated-compilation-and-Interrupt-handling" class="headerlink" title="Separated compilation and Interrupt handling"></a>Separated compilation and Interrupt handling</h1><a id="more"></a>
+
+<h2 id="Setting-GDT-and-IDT"><a href="#Setting-GDT-and-IDT" class="headerlink" title="Setting GDT and IDT"></a>Setting GDT and IDT</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GDT Register : 48 bits</span><br><span class="line">GDTR &amp; 0xff &#x3D; GDTsizelimit &#x3D;(number of bytes of GDT - 1)</span><br><span class="line">GDTR &amp; 0xffffffff00 &#x3D; GDTstartAddr</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">;supplyment to naskfunc.nas</span><br><span class="line"></span><br><span class="line">;void load_gdtr(int limit , int addr )</span><br><span class="line">_load_gdtr:</span><br><span class="line">	mov ax,[esp + 4] ; limit</span><br><span class="line">	mov [esp+6],ax </span><br><span class="line">	lgdt [esp+6] ; load 6 bytes into gdt</span><br><span class="line">	ret</span><br><span class="line">	</span><br><span class="line">;similar to GDTR</span><br><span class="line">_load_idtr:</span><br><span class="line">	mov ax,[esp+4]</span><br><span class="line">	mov [esp+6],ax</span><br><span class="line">	lidt [esp+6]</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<h2 id="Init-PIC-Program-Interrupt-Controller"><a href="#Init-PIC-Program-Interrupt-Controller" class="headerlink" title="Init PIC(Program Interrupt Controller)"></a>Init PIC(Program Interrupt Controller)</h2><p><em>Here is where the 8259A come !</em></p>
+<p><img src="/2022/01/26/OS/30DayOS/Day6/PIC.png" alt="PIC"></p>
+<ul>
+<li>IRQ stands for Interrupt Request</li>
+<li>The CPU can only accept 1 interrupt at a time, since there is only one pin !</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//source of int.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;bootpack.h&quot;</span></span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">#define PIC0_ICW1    0x0020</span></span><br><span class="line"><span class="comment">#define PIC0_OCW2    0x0020</span></span><br><span class="line"><span class="comment">#define PIC0_IMR    0x0021</span></span><br><span class="line"><span class="comment">#define PIC0_ICW2    0x0021</span></span><br><span class="line"><span class="comment">#define PIC0_ICW3    0x0021</span></span><br><span class="line"><span class="comment">#define PIC0_ICW4    0x0021</span></span><br><span class="line"><span class="comment">#define PIC1_ICW1    0x00a0</span></span><br><span class="line"><span class="comment">#define PIC1_OCW2    0x00a0</span></span><br><span class="line"><span class="comment">#define PIC1_IMR    0x00a1</span></span><br><span class="line"><span class="comment">#define PIC1_ICW2    0x00a1</span></span><br><span class="line"><span class="comment">#define PIC1_ICW3    0x00a1</span></span><br><span class="line"><span class="comment">#define PIC1_ICW4    0x00a1</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">IMR : Interrupt Mask Register</span></span><br><span class="line"><span class="comment">ICW : Init Control Word</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init_pic</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"><span class="comment">/* PIC的初始化 */</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">io_out8(PIC0_IMR, <span class="number">0xff</span> ); <span class="comment">/* 禁止所有中断 */</span></span><br><span class="line">io_out8(PIC1_IMR, <span class="number">0xff</span> ); <span class="comment">/* 禁止所有中断 */</span></span><br><span class="line">io_out8(PIC0_ICW1, <span class="number">0x11</span> ); <span class="comment">/* 边沿触发模式（edge trigger mode） */</span></span><br><span class="line">io_out8(PIC0_ICW2, <span class="number">0x20</span> ); <span class="comment">/* IRQ0-7由INT20-27接收 */</span></span><br><span class="line">io_out8(PIC0_ICW3, <span class="number">1</span> &lt;&lt; <span class="number">2</span>); <span class="comment">/* PIC1由IRQ2连接 */</span></span><br><span class="line">io_out8(PIC0_ICW4, <span class="number">0x01</span> ); <span class="comment">/* 无缓冲区模式 */</span></span><br><span class="line">io_out8(PIC1_ICW1, <span class="number">0x11</span> ); <span class="comment">/* 边沿触发模式（edge trigger mode） */</span></span><br><span class="line">io_out8(PIC1_ICW2, <span class="number">0x28</span> ); <span class="comment">/* IRQ8-15由INT28-2f接收 */</span></span><br><span class="line">io_out8(PIC1_ICW3, <span class="number">2</span> ); <span class="comment">/* PIC1由IRQ2连接 */</span></span><br><span class="line">io_out8(PIC1_ICW4, <span class="number">0x01</span> ); <span class="comment">/* 无缓冲区模式 */</span></span><br><span class="line">io_out8(PIC0_IMR, <span class="number">0xfb</span> ); <span class="comment">/* 11111011 PIC1以外全部禁止 */</span></span><br><span class="line">io_out8(PIC1_IMR, <span class="number">0xff</span> ); <span class="comment">/* 11111111 禁止所有中断 */</span></span><br><span class="line"><span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>ICW1和ICW4与PIC主板配线方式、中断信号的电气特性等有关，所以就不详细说明了。电脑上设定的是上述程序所示的固定值，不会设定其他的值。如果故意改成别的什么值的话，早期的电脑说不定会烧断保险丝，或者器件冒烟；最近的电脑，对这种设定起反应的电路本身被省略了，所以不会有任何反应。</p>
+<p>电路上，+5V与GND（地）短路时，就会发生保险丝熔断、器件冒烟的现象。这可不是吓唬你，而是真的会发生.</p>
+</blockquote>
+<h4 id="Since-CPU-only-has-one-interrupt-pin-how-can-it-know-the-interrupt-number"><a href="#Since-CPU-only-has-one-interrupt-pin-how-can-it-know-the-interrupt-number" class="headerlink" title="Since CPU only has one interrupt pin, how can it know the interrupt number ?"></a>Since CPU only has one interrupt pin, how can it know the interrupt number ?</h4><blockquote>
+<p>中断发生以后，如果CPU可以受理这个中断，CPU就会命令PIC发送2个字节的数据。</p>
+<p>这2个字节是怎么传送的呢？CPU与PIC用IN或OUT进行数据传送时，有数据信号线连在一起。PIC就是利用这个信号线发送这2个字节数据的。送过来的数据是“0xcd 0x??”这两个字节。</p>
+<p>由于电路设计的原因，这两个字节的数据在CPU看来，与从内存读进来的程序是完全一样的，所以CPU就把送过来的“0xcd 0x??”作为机器语言执行。这恰恰就是把数据当作程序来执行的情况。</p>
+<p>这里的0xcd就是调用BIOS时使用的那个INT指令。我们在程序里写的“INT 0x10”，最后就被编译成了“0xcd 0x10”。所以，CPU上了PIC的当，按照PIC所希望的中断号执行了INT指令</p>
+</blockquote>
+<h4 id="Why-why-int-number-is-not-start-from-0x00"><a href="#Why-why-int-number-is-not-start-from-0x00" class="headerlink" title="Why why int number is not start from 0x00 ?"></a>Why why int number is not start from 0x00 ?</h4><blockquote>
+<p>这次是以INT 0x20<del>0x2f接收中断信号IRQ0</del>15而设定的。这里大家可能又会有疑问了。“直接用INT 0x00~0x0f就不行吗？这样与IRQ的号码不就一样了吗？为什么非要加上0x20？”</p>
+<p>是这样的，INT 0x00~0x1f不能用于IRQ，仅此而已。</p>
+<p>之所以不能用，是因为应用程序想要对操作系统干坏事的时候，CPU内部会自动产生INT 0x00~0x1f，如果IRQ与这些号码重复了， CPU就分不清它到底是IRQ，还是CPU的系统保护通知。</p>
+</blockquote>
+<h2 id="Interrupt-handler"><a href="#Interrupt-handler" class="headerlink" title="Interrupt handler"></a>Interrupt handler</h2><p><em>keyboard : IRQ1 , mouse : IRQ12</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// int.c</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">inthandler21</span><span class="params">(<span class="keyword">int</span> * esp)</span></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">BOOTINFO</span> * <span class="title">binfo</span> =</span> (struct BOOTINFO*) ADR_BOOTINFO ; </span><br><span class="line">    boxfill8(binfo-&gt;vram , binfo-&gt;scrnx , COL8_000000 , <span class="number">0</span> , <span class="number">0</span> <span class="number">32</span> * <span class="number">8</span> - <span class="number">1</span> , <span class="number">15</span>);</span><br><span class="line">    putfonts8_asc(binfo-&gt;vram , binfo-&gt;scrnx , <span class="number">0</span>,<span class="number">0</span>,COL8_FFFFFF , <span class="string">&quot;INT 21 (IRQ-1) : PS/2 keyboard&quot;</span>);</span><br><span class="line">    <span class="keyword">for</span>(;;) io_hlt();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>In order to return from interrupt handler, <code>iretd</code> instruction must be used, so we need assembly here</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">;naskfunc.nas</span><br><span class="line">extern _inthandler21</span><br><span class="line">_asm_inthandler21:</span><br><span class="line">	push es</span><br><span class="line">	push ds</span><br><span class="line">	pushad ;push all common registers</span><br><span class="line">	mov eax,esp</span><br><span class="line">	push eax</span><br><span class="line">	mov ax,ss</span><br><span class="line">	mov ds,ax</span><br><span class="line">	mov es,ax</span><br><span class="line">	call _inthandler21</span><br><span class="line">	pop eax</span><br><span class="line">	popad</span><br><span class="line">	pop ds</span><br><span class="line">	pop es</span><br><span class="line">	iretd</span><br></pre></td></tr></table></figure>
+<p>Then write the function to IDT</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">set_gatedesc(idt+<span class="number">0x21</span> , (<span class="keyword">int</span>)asm_inthandler21 , <span class="number">2</span>&lt;&lt;<span class="number">3</span> , AR_INTGATE32);</span><br><span class="line"><span class="comment">//2 indicate the segment (bootpack.c)</span></span><br><span class="line"><span class="comment">//the lowest 3 bits are saved for other use</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2022/01/26/OS/30DayOS/Day6/" data-id="ckyx0u7ck000azdyqg0rb29r1" data-title="Day6" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/01/27/OS/30DayOS/Day7/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          Day7
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/01/26/OS/30DayOS/Day5/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">Day5</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/01/27/novel/motivation/">motivation</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/27/OS/30DayOS/Day7/">Day7</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/26/OS/30DayOS/Day6/">Day6</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/26/OS/30DayOS/Day5/">Day5</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/25/OS/30DayOS/Day4/">Day4</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

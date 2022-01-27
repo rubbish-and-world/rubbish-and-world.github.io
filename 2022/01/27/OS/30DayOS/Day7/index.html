@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Day7 | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="FIFO and mouse control">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Day7">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2022/01/27/OS/30DayOS/Day7/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="FIFO and mouse control">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/01/27/OS/30DayOS/Day7/interend.png">
+<meta property="article:published_time" content="2022-01-27T03:41:40.000Z">
+<meta property="article:modified_time" content="2022-01-27T07:02:47.039Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2022/01/27/OS/30DayOS/Day7/interend.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-OS/30DayOS/Day7" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/01/27/OS/30DayOS/Day7/" class="article-date">
+  <time class="dt-published" datetime="2022-01-27T03:41:40.000Z" itemprop="datePublished">2022-01-27</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/OS/">OS</a>►<a class="article-category-link" href="/categories/OS/30DayOS/">30DayOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Day7
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="FIFO-and-mouse-control"><a href="#FIFO-and-mouse-control" class="headerlink" title="FIFO and mouse control"></a>FIFO and mouse control</h1><a id="more"></a>
+
+<h2 id="GET-key-stroke-code"><a href="#GET-key-stroke-code" class="headerlink" title="GET key stroke code"></a>GET key stroke code</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//int.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PORT_KEYDAT 0x0060</span></span><br><span class="line"><span class="comment">//key code port</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">inthandler21</span><span class="params">(<span class="keyword">int</span> * esp )</span></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">BOOTINFO</span> * <span class="title">binfo</span> =</span> (struct BOOTINFO*) ADR_BOOTINFO ; </span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> data ; </span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> s [<span class="number">4</span>] ;</span><br><span class="line">    io_out8(PIC0_OCW2 , <span class="number">0x61</span> ) ; <span class="comment">//notify PIC handling of IRQ-01 is finished</span></span><br><span class="line">    data = io_in8(PORT_KEYDAT); <span class="comment">//read the key code</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">sprintf</span>(s , <span class="string">&quot;%02x&quot;</span> , data);</span><br><span class="line">    boxfill8(binfo-&gt;vram , binfo-&gt;scrnx , COL8_008484, <span class="number">0</span>, <span class="number">16</span> , <span class="number">15</span> , <span class="number">32</span>);</span><br><span class="line">    putfonts8_asc(binfo-&gt;vram , binfo-&gt;scrnx , <span class="number">0</span> , <span class="number">16</span> , COL8_FFFFFF , s);</span><br><span class="line">    <span class="keyword">return</span> ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>送中断结束命令字</p>
+</blockquote>
+<p><img src="/2022/01/27/OS/30DayOS/Day7/interend.png" alt="interrupt end"></p>
+<h2 id="Accelerate-interrupt-handling"><a href="#Accelerate-interrupt-handling" class="headerlink" title="Accelerate interrupt handling"></a>Accelerate interrupt handling</h2><p><em>since interrupt handler work at very low level and is invoked frequently, they should be fast and elegant</em></p>
+<p>Shift show text code from handler to main function</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//int.c </span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">KEYBUF</span> &#123;</span></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">char</span> data , flag ;  </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PORT_KEYDAT     0x0060</span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">KEYBUF</span> <span class="title">keybuf</span>;</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">inthandler21</span><span class="params">(<span class="keyword">int</span> *esp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> data;</span><br><span class="line">    io_out8(PIC0_OCW2, <span class="number">0x61</span>);  </span><br><span class="line">    data = io_in8(PORT_KEYDAT);</span><br><span class="line">    <span class="keyword">if</span> (keybuf.flag == <span class="number">0</span>) &#123;</span><br><span class="line">        keybuf.data = data;</span><br><span class="line">        keybuf.flag = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//bootpack.c</span></span><br><span class="line"><span class="keyword">for</span> (;;) &#123;</span><br><span class="line">    io_cli();</span><br><span class="line">    <span class="keyword">if</span> (keybuf.flag == <span class="number">0</span>) &#123;</span><br><span class="line">      io_stihlt();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      i = keybuf.data;</span><br><span class="line">      keybuf.flag = <span class="number">0</span>;</span><br><span class="line">      io_sti();</span><br><span class="line">      <span class="built_in">sprintf</span>(s, <span class="string">&quot;%02X&quot;</span>, i);</span><br><span class="line">      boxfill8(binfo-&gt;vram, binfo-&gt;scrnx, COL8_008484, <span class="number">0</span>, <span class="number">16</span>, <span class="number">15</span>, <span class="number">31</span>);</span><br><span class="line">      putfonts8_asc(binfo-&gt;vram, binfo-&gt;scrnx, <span class="number">0</span>, <span class="number">16</span>, COL8_FFFFFF, s);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Use-loop-queue-to-buffer-key-stroke-code"><a href="#Use-loop-queue-to-buffer-key-stroke-code" class="headerlink" title="Use loop queue to buffer key stroke code"></a>Use loop queue to buffer key stroke code</h2><blockquote>
+<p>通过查资料2得知，当按下右Ctrl键时，会产生两个字节的键码值“E0 1D”，而松开这个键之后，会产生两个字节的键码值“E0 9D”。在一次产生两个字节键码值的情况下，因为键盘内部电路一次只能发送一个字节，所以一次按键就会产生两次中断，第一次中断时发送E0，第二次中断时发送1D。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2022/01/27/OS/30DayOS/Day7/" data-id="ckyx0u7cl000czdyq6hyfb60m" data-title="Day7" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/01/27/novel/motivation/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          motivation
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/01/26/OS/30DayOS/Day6/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">Day6</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/01/27/novel/motivation/">motivation</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/27/OS/30DayOS/Day7/">Day7</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/26/OS/30DayOS/Day6/">Day6</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/26/OS/30DayOS/Day5/">Day5</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/25/OS/30DayOS/Day4/">Day4</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
