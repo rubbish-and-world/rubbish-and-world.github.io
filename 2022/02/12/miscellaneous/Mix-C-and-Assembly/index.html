@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Mix-C-and-Assembly | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Following a guide from OSdev">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mix-C-and-Assembly">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2022/02/12/miscellaneous/Mix-C-and-Assembly/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Following a guide from OSdev">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-02-12T10:07:14.000Z">
+<meta property="article:modified_time" content="2022-02-13T23:28:31.229Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Buscar"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-miscellaneous/Mix-C-and-Assembly" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/02/12/miscellaneous/Mix-C-and-Assembly/" class="article-date">
+  <time class="dt-published" datetime="2022-02-12T10:07:14.000Z" itemprop="datePublished">2022-02-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/misc/">misc</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Mix-C-and-Assembly
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Following-a-guide-from-OSdev"><a href="#Following-a-guide-from-OSdev" class="headerlink" title="Following a guide from OSdev"></a>Following a guide from <a href="www.osdev.org">OSdev</a></h2><a id="more"></a>
+
+<p><a target="_blank" rel="noopener" href="https://www.osdev.org/howtos/1/">The guide</a></p>
+<h3 id="Using-gcc-in-OS-dev"><a href="#Using-gcc-in-OS-dev" class="headerlink" title="Using gcc in OS dev"></a>Using <code>gcc</code> in OS dev</h3><ul>
+<li>First is that <strong>you can’t include any header files that you didn’t write yourself</strong>.<ul>
+<li>Most header files have dependinces on the OS for which they were written for.</li>
+<li>For example, <code>printf</code> and <code>cout</code>, when a program is run that uses either one of these commands an OS service(the <code>syscall</code> I guess) is called to display text.</li>
+<li>the only portions of C/C++ that we can use are what we will call the <strong>core language</strong>. The core language includes only the <strong>reserved keywords and expressions that are avalible when no header files are included</strong>.</li>
+</ul>
+</li>
+</ul>
+<h4 id="A-simple-kernel-which-do-nothing"><a href="#A-simple-kernel-which-do-nothing" class="headerlink" title="A simple kernel which do nothing"></a>A simple kernel which do nothing</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    repeat:</span><br><span class="line">    	<span class="keyword">goto</span> repeat;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -ffreestanding -c -o kernel.o kernel.c</span><br><span class="line"><span class="comment"># -ffreestanding means to produce code that is meant to be run without an OS</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ld -Ttext 0x100000 --oformat binary -o kernel.bin kernel.o</span><br><span class="line">ld: warning: cannot find entry symbol _start; defaulting to 0000000000100000</span><br><span class="line"><span class="comment"># --oformat specify the output format, we&#x27;ll be using binary</span></span><br><span class="line"><span class="comment"># -Ttext specify the address that the code will be loaded too, similar to `org 0x100000` in assembly</span></span><br><span class="line"><span class="comment"># -o specify the name of the file that is created</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ man gcc</span><br><span class="line">$ man ld</span><br></pre></td></tr></table></figure>
+<h4 id="Recreat-the-kernel-in-assembly"><a href="#Recreat-the-kernel-in-assembly" class="headerlink" title="Recreat the kernel in assembly"></a>Recreat the kernel in assembly</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[BITS 32]</span><br><span class="line">repeat:</span><br><span class="line">	jmp repeat</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ nasm -f coff ker.asm -o ker.o</span><br><span class="line"><span class="comment"># -f specify the output format, we&#x27;ll be using coff (coff is a type of object file)</span></span><br></pre></td></tr></table></figure>
+<h3 id="Mixing-C-and-Assembly"><a href="#Mixing-C-and-Assembly" class="headerlink" title="Mixing C and Assembly"></a>Mixing C and Assembly</h3><h4 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h4><p>The caller pushes the function’s parameters on the stack, one after another, <strong>in reverse order (right to left, so that the first argument specified to the function is pushed last)</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">; define C useable functions in assembly</span><br><span class="line">global __funcname</span><br><span class="line">__funcname:</span><br><span class="line">	...</span><br><span class="line">	leave</span><br><span class="line">	ret</span><br><span class="line">	</span><br><span class="line">; call a C function in assembly</span><br><span class="line">extern __Cfun</span><br><span class="line">push byte ptr [arg2] ; the second argument</span><br><span class="line">push byte ptr [arg1] ;the first argument</span><br><span class="line">call __Cfun</span><br><span class="line">add esp,2 ; clear the argment space on stack</span><br></pre></td></tr></table></figure>
+<h4 id="Accessing-data-item"><a href="#Accessing-data-item" class="headerlink" title="Accessing data item"></a>Accessing data item</h4><p><em>To get at the contents of C variables, or to declare variables which C can access, you need only declare the names as <code>GLOBAL</code> or <code>EXTERN</code>.</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">; access C data</span><br><span class="line">; int i &#x3D; 0x7800 ;</span><br><span class="line">extern __i</span><br><span class="line">mov eax, [__i]</span><br><span class="line"></span><br><span class="line">; export data to C</span><br><span class="line">segment data</span><br><span class="line">	global __d</span><br><span class="line">	__d db 99</span><br><span class="line">ends</span><br></pre></td></tr></table></figure>
+<h3 id="Mixed-kernel"><a href="#Mixed-kernel" class="headerlink" title="Mixed kernel"></a>Mixed kernel</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">void</span> <span class="title">sayhi</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">extern</span> <span class="keyword">void</span> <span class="title">quit</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	sayhi();</span><br><span class="line">	quit();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[BITS 32]</span><br><span class="line"></span><br><span class="line">GLOBAL _sayhi</span><br><span class="line">GLOBAL _quit</span><br><span class="line"></span><br><span class="line">SECTION .text</span><br><span class="line"></span><br><span class="line">_sayhi:	mov byte [es:0xb8f9c],&#39;H&#39;</span><br><span class="line">	mov byte [es:0xb8f9e],&#39;i&#39;</span><br><span class="line">	ret</span><br><span class="line"></span><br><span class="line">_quit:	mov esp,ebp</span><br><span class="line">	pop ebp</span><br><span class="line">	retf</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -ffreestanding -c -o mix_c.o mix_c.c</span><br><span class="line">$ nasm -f coff -o mix_asm.o mix_asm.asm</span><br><span class="line">$ ld -Ttext 0x100000 --oformat binary -o kernel32.bin mix_c.o mix_asm.o</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>Linux Warning</strong>: There is a problem with ld on Linux. The problem is that the <code>ld</code> that comes with linux distros lists support for the coff object format, but apparently you have to rebuilt binutils from gnu.org to get it working. I found two possible solutions. Recompile <code>ld</code> or <strong>edit your assembly files and remove all the leading underscores</strong>. Then when you assemble with nasm use the <code>-f aout</code> option instead of <code>coff</code>. I’ve tested the second method briefly and it works.</p>
+</blockquote>
+<h4 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h4><p>If you get this error (<code>ld: i386 architecture of input file xxxx.o is incompatible with i386:x86-64 output</code>)when linking, add this arguemnt <code>-m elf_i386</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2022/02/12/miscellaneous/Mix-C-and-Assembly/" data-id="ckzlwglm00050v0yq2459evge" data-title="Mix-C-and-Assembly" class="article-share-link">Compartir</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/02/14/miscellaneous/HowSystemBoot/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Nuevo</strong>
+      <div class="article-nav-title">
+        
+          HowSystemBoot
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/02/11/miscellaneous/Debug-Qemu/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Viejo</strong>
+      <div class="article-nav-title">Debug-Qemu</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categorías</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nube de Tags</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archivos</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Posts recientes</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/02/14/miscellaneous/HowSystemBoot/">HowSystemBoot</a>
+          </li>
+        
+          <li>
+            <a href="/2022/02/12/miscellaneous/Mix-C-and-Assembly/">Mix-C-and-Assembly</a>
+          </li>
+        
+          <li>
+            <a href="/2022/02/11/miscellaneous/Debug-Qemu/">Debug-Qemu</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/27/novel/motivation/">motivation</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/27/OS/30DayOS/Day7/">Day7</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 rubbish<br>
+      Construido por <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
