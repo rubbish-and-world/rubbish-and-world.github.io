@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Introduction | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="CMU 15-445&#x2F;645 (FALL 2021), DATABASE SYSTEMS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Introduction">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2022/02/22/Database/Introduction/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="CMU 15-445&#x2F;645 (FALL 2021), DATABASE SYSTEMS">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/02/22/Database/Introduction/jointable.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/02/22/Database/Introduction/operations.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/02/22/Database/Introduction/predicate.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/02/22/Database/Introduction/projection.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/02/22/Database/Introduction/union.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/02/22/Database/Introduction/intersection.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/02/22/Database/Introduction/difference.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/02/22/Database/Introduction/product.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/02/22/Database/Introduction/join.png">
+<meta property="article:published_time" content="2022-02-22T01:35:05.000Z">
+<meta property="article:modified_time" content="2022-02-22T06:28:30.972Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2022/02/22/Database/Introduction/jointable.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Buscar"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Buscar"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Database/Introduction" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/02/22/Database/Introduction/" class="article-date">
+  <time class="dt-published" datetime="2022-02-22T01:35:05.000Z" itemprop="datePublished">2022-02-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Introduction
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="CMU-15-445-645-FALL-2021-DATABASE-SYSTEMS"><a href="#CMU-15-445-645-FALL-2021-DATABASE-SYSTEMS" class="headerlink" title="CMU 15-445/645 (FALL 2021), DATABASE SYSTEMS"></a>CMU 15-445/645 (FALL 2021), DATABASE SYSTEMS</h1><a id="more"></a>
+
+<p><a target="_blank" rel="noopener" href="https://15445.courses.cs.cmu.edu/fall2021/">course website</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/playlist?list=PLSE8ODhjZXjZaHA6QcxDfJ0SIWBzQFKEG">online videos</a></p>
+<p><strong><em>This is a course about designing and implementing database system rather than how to use a database system !</em></strong></p>
+<p>If you want to learn how to develop apps with database, go to other courses.</p>
+<h3 id="Project"><a href="#Project" class="headerlink" title="Project"></a>Project</h3><p>You will build your own database system over the semester, <code>c++17</code> is used.</p>
+<h2 id="DataBase"><a href="#DataBase" class="headerlink" title="DataBase"></a>DataBase</h2><h3 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h3><blockquote>
+<p>What is a <strong>Database</strong> ?</p>
+<p><strong>Organized collection of inter-related data</strong> that <strong>models some aspect of the real-world</strong>.</p>
+</blockquote>
+<blockquote>
+<p>What is a <strong>Database Management System</strong> ?</p>
+<p>A <strong>software</strong> which allow applications to store and analyze infomation in a database.</p>
+</blockquote>
+<blockquote>
+<p>What is a <strong>Data Model</strong> ?</p>
+<p>A collection of concepts for describing the data in database.</p>
+<ul>
+<li>Relational</li>
+<li>Key/Value</li>
+<li>Graph</li>
+<li>Matrix</li>
+<li>…</li>
+</ul>
+</blockquote>
+<h2 id="Relational-Model"><a href="#Relational-Model" class="headerlink" title="Relational Model"></a>Relational Model</h2><p><code>Artist(name,year,country)</code></p>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>year</th>
+<th>country</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Wu-Tang Clan</td>
+<td>1992</td>
+<td>USA</td>
+</tr>
+<tr>
+<td>Notorious BIG</td>
+<td>1992</td>
+<td>USA</td>
+</tr>
+<tr>
+<td>Ice Cube</td>
+<td>1989</td>
+<td>USA</td>
+</tr>
+</tbody></table>
+<h3 id="Relation"><a href="#Relation" class="headerlink" title="Relation"></a>Relation</h3><blockquote>
+<p>A relation is an <strong>unordered set</strong>  that contain the relationship of <strong>attribute</strong> that represent the entities</p>
+</blockquote>
+<ul>
+<li><p><code>name,year,country</code> are <strong>attributes</strong> used to represent the entity <code>artist</code></p>
+</li>
+<li><p><strong>N-ary relaion</strong> is the same with <strong>A table with N columns</strong></p>
+</li>
+<li><p>The whole table, including the attributes, is a relation</p>
+</li>
+</ul>
+<h5 id="Tuple"><a href="#Tuple" class="headerlink" title="Tuple"></a>Tuple</h5><blockquote>
+<p>A <strong>set</strong> of attribute <strong>values</strong>(aka <strong>domain</strong>) in the relation</p>
+</blockquote>
+<ul>
+<li><p><code>(Wu-Tang Clan,1992,USA)</code> is one tuple</p>
+</li>
+<li><p><code>NULL</code> is a special value which is a member of every domain</p>
+</li>
+</ul>
+<h5 id="Primary-key"><a href="#Primary-key" class="headerlink" title="Primary key"></a>Primary key</h5><blockquote>
+<p>A relation’s primary key <strong>uniquely</strong> identifies a single tuple</p>
+</blockquote>
+<ul>
+<li><code>name</code> is the primary key of relation <code>name, year,country</code></li>
+<li>some popular DBS automatic create primary key if user do not define one, for example <code>AUTO_INCREATMENT</code> in <code>MySQL</code></li>
+</ul>
+<h5 id="Foreign-key"><a href="#Foreign-key" class="headerlink" title="Foreign key"></a>Foreign key</h5><blockquote>
+<p>A foreign key specifies that an attribute from one relation has to map to a tuple in another relation</p>
+</blockquote>
+<p><img src="/2022/02/22/Database/Introduction/jointable.png" alt="join table"></p>
+<p><code>artist_id</code> and <code>album_id</code> is both foregin key and primary key</p>
+<h5 id="DML-Data-Manipulate-Language"><a href="#DML-Data-Manipulate-Language" class="headerlink" title="DML(Data Manipulate Language)"></a>DML(Data Manipulate Language)</h5><blockquote>
+<p>Methods to store and retrieve information from a database.</p>
+</blockquote>
+<h6 id="Procedural"><a href="#Procedural" class="headerlink" title="Procedural"></a>Procedural</h6><ul>
+<li><p>The query specify the strategy DBSM should use to find the result</p>
+</li>
+<li><p><strong>How</strong> to retrieve the data, <strong>Relational Algebra</strong></p>
+</li>
+</ul>
+<h6 id="Declarative"><a href="#Declarative" class="headerlink" title="Declarative"></a>Declarative</h6><ul>
+<li><p>The query specify only what data is wanted and do not kown how to find it</p>
+</li>
+<li><p><strong>What</strong> is the data, <strong>Relational Calculus</strong></p>
+</li>
+</ul>
+<h3 id="Relational-Algebra"><a href="#Relational-Algebra" class="headerlink" title="Relational Algebra"></a>Relational Algebra</h3><p><em>Foundamental operations to retrieve and manipulate tuples in a relation, <strong>based on the idea of set algebra</strong></em></p>
+<ul>
+<li>Each operation takes 1 or more relations as input and produce 1 new relation</li>
+<li>We can chain operations to compose complex operation</li>
+</ul>
+<p><img src="/2022/02/22/Database/Introduction/operations.png" alt="operations"></p>
+<h3 id="Operations"><a href="#Operations" class="headerlink" title="Operations"></a>Operations</h3><h5 id="Predication"><a href="#Predication" class="headerlink" title="Predication"></a>Predication</h5><p>$$<br>\sigma \longrightarrow \text{WHERE}<br>$$</p>
+<p><em>choose a subset of the tuples from a relation that satisfies a selection predicate.</em></p>
+<ul>
+<li>Predication acts as a filter to retain only tuples that fulfills its qualifying requirement</li>
+<li>Can combine multiple predicates using conjunction/disjunction</li>
+</ul>
+<p><img src="/2022/02/22/Database/Introduction/predicate.png" alt="predicate"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> R <span class="keyword">WHERE</span> a_id<span class="operator">=</span><span class="string">&#x27;a2&#x27;</span></span><br></pre></td></tr></table></figure>
+<h4 id="Projection"><a href="#Projection" class="headerlink" title="Projection"></a>Projection</h4><p>$$<br>\pi \longrightarrow \text{SELECT}<br>$$</p>
+<p><em>generate a relation with tuples that contains only the specified attributes</em></p>
+<ul>
+<li>can rearrage the order of attributes</li>
+<li>can manipulate the values</li>
+</ul>
+<p><img src="/2022/02/22/Database/Introduction/projection.png" alt="projections"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> b_id<span class="number">-100</span>,a_id <span class="keyword">FROM</span> R <span class="keyword">WHERE</span> a_id <span class="operator">=</span><span class="string">&#x27;a2&#x27;</span></span><br></pre></td></tr></table></figure>
+<h4 id="Union"><a href="#Union" class="headerlink" title="Union"></a>Union</h4><p><em>same with set union</em></p>
+<p> <img src="/2022/02/22/Database/Introduction/union.png" alt="union"></p>
+<h4 id="Intersection"><a href="#Intersection" class="headerlink" title="Intersection"></a>Intersection</h4><p><em>same with set intersection</em></p>
+<p><img src="/2022/02/22/Database/Introduction/intersection.png" alt="intersection"></p>
+<h4 id="Difference"><a href="#Difference" class="headerlink" title="Difference"></a>Difference</h4><p><em>same with set difference</em></p>
+<p><img src="/2022/02/22/Database/Introduction/difference.png" alt="difference"></p>
+<h4 id="Product"><a href="#Product" class="headerlink" title="Product"></a>Product</h4><p><em>generate a relation that contain all possible combinations of tuples from the input relations</em></p>
+<p><img src="/2022/02/22/Database/Introduction/product.png" alt="product"></p>
+<h4 id="Join"><a href="#Join" class="headerlink" title="Join"></a>Join</h4><p>$$<br>\Join<br>$$</p>
+<p><em>generate a realtion that contains <strong>all tuples that are a combination of two tuples</strong>(one from each input relation) <strong>with a common value for one or more attributes</strong></em></p>
+<p><img src="/2022/02/22/Database/Introduction/join.png" alt="join"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2022/02/22/Database/Introduction/" data-id="ckzxtb04r00002gyq11wt59bx" data-title="Introduction" class="article-share-link">Compartir</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/02/14/miscellaneous/OSdevSetup/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Viejo</strong>
+      <div class="article-nav-title">OSdevSetup</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categorías</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Nube de Tags</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archivos</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Posts recientes</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/02/22/Database/Introduction/">Introduction</a>
+          </li>
+        
+          <li>
+            <a href="/2022/02/14/miscellaneous/OSdevSetup/">OSdevSetup</a>
+          </li>
+        
+          <li>
+            <a href="/2022/02/14/miscellaneous/HowSystemBoot/">HowSystemBoot</a>
+          </li>
+        
+          <li>
+            <a href="/2022/02/12/miscellaneous/Mix-C-and-Assembly/">Mix-C-and-Assembly</a>
+          </li>
+        
+          <li>
+            <a href="/2022/02/11/miscellaneous/Debug-Qemu/">Debug-Qemu</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 rubbish<br>
+      Construido por <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
