@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>IntermediateSQL | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Structured Query LanguageUser only need to specify what data they want rather than the strategy on how to query the data">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IntermediateSQL">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2022/02/24/Database/IntermediateSQL/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Structured Query LanguageUser only need to specify what data they want rather than the strategy on how to query the data">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/02/24/Database/IntermediateSQL/groupby.png">
+<meta property="article:published_time" content="2022-02-24T06:04:35.000Z">
+<meta property="article:modified_time" content="2022-02-25T16:07:01.385Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2022/02/24/Database/IntermediateSQL/groupby.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Database/IntermediateSQL" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/02/24/Database/IntermediateSQL/" class="article-date">
+  <time class="dt-published" datetime="2022-02-24T06:04:35.000Z" itemprop="datePublished">2022-02-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Database/">Database</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      IntermediateSQL
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Structured-Query-Language"><a href="#Structured-Query-Language" class="headerlink" title="Structured Query Language"></a>Structured Query Language</h1><p><em>User only need to specify what data they want rather than the strategy on how to query the data</em></p>
+<a id="more"></a>
+
+<h3 id="Three-part-of-SQL"><a href="#Three-part-of-SQL" class="headerlink" title="Three part of SQL"></a>Three part of SQL</h3><ul>
+<li>Data Manipulate Language(DML)</li>
+<li>Data Definition Language(DDL)</li>
+<li>Data Control Language(DCL)</li>
+</ul>
+<p><strong>SQL is based on <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Multiset">bags</a>(duplicate) rather then sets(no-duplicate)</strong></p>
+<h3 id="Basic-Syntax"><a href="#Basic-Syntax" class="headerlink" title="Basic Syntax"></a>Basic Syntax</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> column1,column2,... <span class="keyword">FROM</span> Relation <span class="keyword">WHERE</span> predicate1,...;</span><br><span class="line"># it<span class="string">&#x27;s OK to use lowercase key word</span></span><br><span class="line"><span class="string"># However, use capital for key words is convention</span></span><br><span class="line"><span class="string">select column1,column2,... from Relation where predicate1,...;</span></span><br></pre></td></tr></table></figure>
+<h3 id="Aggregation-Group-by"><a href="#Aggregation-Group-by" class="headerlink" title="Aggregation+Group by"></a>Aggregation+Group by</h3><h5 id="Aggregate-return-a-single-value-from-a-bag-of-tuples"><a href="#Aggregate-return-a-single-value-from-a-bag-of-tuples" class="headerlink" title="Aggregate: return a single value from a bag of tuples"></a>Aggregate: return a <strong>single</strong> value from a bag of tuples</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">AVG</span>(col);</span><br><span class="line"><span class="built_in">MIN</span>(col);</span><br><span class="line"><span class="built_in">MAX</span>(col);</span><br><span class="line"><span class="built_in">SUM</span>(col);</span><br><span class="line"><span class="built_in">COUNT</span>(col);</span><br></pre></td></tr></table></figure>
+<h5 id="Group-by-Project-tuples-into-subset-and-calculate-aggregate-against-each-subset"><a href="#Group-by-Project-tuples-into-subset-and-calculate-aggregate-against-each-subset" class="headerlink" title="Group by : Project tuples into subset and calculate aggregate against each subset"></a>Group by : Project tuples into subset and calculate aggregate against each subset</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span></span><br></pre></td></tr></table></figure>
+<p><img src="/2022/02/24/Database/IntermediateSQL/groupby.png" alt="group by"></p>
+<h3 id="String-Date-Time-Operation"><a href="#String-Date-Time-Operation" class="headerlink" title="String/Date/Time Operation"></a>String/Date/Time Operation</h3><p><em>In <code>mysql</code> string is case-insensitive while in <code>sql-92</code> it is case sensitive</em></p>
+<h5 id="Like"><a href="#Like" class="headerlink" title="Like"></a>Like</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">match</span> <span class="keyword">any</span> substring : <span class="operator">%</span></span><br><span class="line"># <span class="keyword">match</span> exactly <span class="keyword">one</span> <span class="type">character</span> : _</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> student <span class="keyword">AS</span> s <span class="keyword">WHERE</span> s.login <span class="keyword">LIKE</span> <span class="string">&#x27;%@cs&#x27;</span>;</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> enrolled <span class="keyword">AS</span> e <span class="keyword">WHERE</span> e.cid <span class="keyword">LIKE</span> <span class="string">&#x27;15-7_1&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<h5 id="String-functions"><a href="#String-functions" class="headerlink" title="String functions"></a>String functions</h5><p><em>Each DBMS have its own implementation</em></p>
+<h5 id="String-concatenation"><a href="#String-concatenation" class="headerlink" title="String concatenation"></a>String concatenation</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;a&#x27;</span> <span class="operator">||</span> <span class="string">&#x27;b&#x27;</span> # <span class="keyword">in</span> <span class="keyword">sql</span><span class="number">-92</span></span><br><span class="line">CONCAT(<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>) # <span class="keyword">in</span> MySQL</span><br></pre></td></tr></table></figure>
+<h5 id="Date-Operation"><a href="#Date-Operation" class="headerlink" title="Date Operation"></a>Date Operation</h5><p><em>differs widely between different DBMS</em></p>
+<h3 id="Output-Control-Redirection"><a href="#Output-Control-Redirection" class="headerlink" title="Output Control + Redirection"></a>Output Control + Redirection</h3><p><em>Redirect the query result to another new table</em></p>
+<h5 id="INTO"><a href="#INTO" class="headerlink" title="INTO"></a>INTO</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> cid <span class="keyword">INTO</span> newtable <span class="keyword">FROM</span> enrolled;</span><br></pre></td></tr></table></figure>
+<h5 id="INSERT"><a href="#INSERT" class="headerlink" title="INSERT"></a>INSERT</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> existTable (<span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> cid <span class="keyword">FROM</span> enrolled);</span><br><span class="line"># query <span class="keyword">result</span> must generate the same columns <span class="keyword">as</span> the <span class="keyword">to</span> be inserted <span class="keyword">table</span></span><br></pre></td></tr></table></figure>
+<h5 id="Order-by"><a href="#Order-by" class="headerlink" title="Order by"></a>Order by</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># <span class="keyword">order</span> the results <span class="keyword">by</span> a specified <span class="keyword">order</span></span><br><span class="line"><span class="keyword">SELECT</span> sid,grade <span class="keyword">FROM</span> enrolled <span class="keyword">WHERE</span> cid<span class="operator">=</span><span class="string">&#x27;15-721&#x27;</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> grade ;</span><br><span class="line"><span class="keyword">SELECT</span> sid,grade <span class="keyword">FROM</span> enrolled <span class="keyword">WHERE</span> cid<span class="operator">=</span><span class="string">&#x27;15-721&#x27;</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> grade [<span class="keyword">DESC</span> <span class="operator">|</span> <span class="keyword">ASC</span>];</span><br></pre></td></tr></table></figure>
+<h5 id="Limit"><a href="#Limit" class="headerlink" title="Limit"></a>Limit</h5><p>limit the number returned by querying</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> student LIMIT <span class="number">5</span>; # <span class="keyword">get</span> the <span class="keyword">first</span> <span class="number">5</span> students</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> student LIMIT <span class="number">5</span> <span class="keyword">OFFSET</span> <span class="number">2</span>; # <span class="keyword">get</span> student <span class="number">2</span><span class="operator">~</span><span class="number">7</span></span><br></pre></td></tr></table></figure>
+<h3 id="Nested-Queries"><a href="#Nested-Queries" class="headerlink" title="Nested Queries"></a>Nested Queries</h3><h5 id="IN-ANY-ALL-EXISTS"><a href="#IN-ANY-ALL-EXISTS" class="headerlink" title="IN/ANY/ALL/EXISTS"></a>IN/ANY/ALL/EXISTS</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name <span class="keyword">FROM</span> student <span class="keyword">WHERE</span> sid <span class="keyword">IN</span>(<span class="keyword">SELECT</span> sid <span class="keyword">FROM</span> enrolled);</span><br><span class="line"><span class="keyword">SELECT</span> name <span class="keyword">FROM</span> student <span class="keyword">WHERE</span> sid <span class="keyword">ALL</span>(<span class="keyword">SELECT</span> sid <span class="keyword">FROM</span> enrolled);</span><br><span class="line"># <span class="keyword">IN</span> (<span class="keyword">first</span> query)</span><br></pre></td></tr></table></figure>
+<h3 id="Common-Table-Expression"><a href="#Common-Table-Expression" class="headerlink" title="Common Table Expression"></a>Common Table Expression</h3><p><em>create temporary table in large query</em></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">WITH</span> sname <span class="keyword">AS</span> (<span class="keyword">SELECT</span> <span class="number">1</span>) <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> sname;</span><br></pre></td></tr></table></figure>
+<p>recursion can be implemented via common table expression</p>
+<h3 id="Window-Function"><a href="#Window-Function" class="headerlink" title="Window Function"></a>Window Function</h3><p><em>performs a “sliding” calculation across a set of tuples are related.</em></p>
+<hr>
+<h3 id="SQL-from-CS50"><a href="#SQL-from-CS50" class="headerlink" title="SQL from CS50"></a>SQL from CS50</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># CRUD</span><br><span class="line"># <span class="keyword">Create</span></span><br><span class="line"><span class="keyword">CREATE</span> , <span class="keyword">INSERT</span></span><br><span class="line"># Retrieve</span><br><span class="line"><span class="keyword">SELECT</span></span><br><span class="line"># <span class="keyword">Update</span></span><br><span class="line"><span class="keyword">UPDATE</span></span><br><span class="line"># <span class="keyword">Delete</span></span><br><span class="line"><span class="keyword">DELETE</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> tablename (columnname TYPE, ...);</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DISTINCT</span>()</span><br><span class="line"><span class="built_in">AVG</span>()</span><br><span class="line"><span class="built_in">MAX</span>()</span><br><span class="line"><span class="built_in">UPPER</span>()</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> ... <span class="keyword">FROM</span> ... <span class="keyword">WHERE</span> ... <span class="keyword">GROUP</span> <span class="keyword">BY</span> ... <span class="keyword">ORDER</span> <span class="keyword">BY</span> ... LIMIT ...;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="built_in">LOWER</span>(<span class="built_in">TRIM</span>(title)),<span class="built_in">COUNT</span>(<span class="built_in">LOWER</span>(<span class="built_in">TRIM</span>(title))) <span class="keyword">FROM</span> shows <span class="keyword">GROUP</span> <span class="keyword">BY</span> <span class="built_in">LOWER</span>(<span class="built_in">TRIM</span>(title)) <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="built_in">COUNT</span>(<span class="built_in">TRIM</span>(title)) <span class="keyword">DESC</span> LIMIT <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> tablename (columnname , ...) <span class="keyword">VALUES</span>(valuee,...);</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> tablename <span class="keyword">SET</span> column1 <span class="operator">=</span> value1, column2 <span class="operator">=</span> value2, ... <span class="keyword">WHERE</span> ...;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> table_name <span class="keyword">WHERE</span> <span class="keyword">condition</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="Main-Datatype"><a href="#Main-Datatype" class="headerlink" title="Main Datatype"></a>Main Datatype</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">BLOB</span> # <span class="type">binary</span> stuff</span><br><span class="line"><span class="type">INTEGER</span> # <span class="type">int</span></span><br><span class="line"><span class="type">NUMERIC</span></span><br><span class="line"><span class="type">REAL</span> # <span class="type">float</span></span><br><span class="line">TEXT</span><br></pre></td></tr></table></figure>
+<h3 id="INDEX"><a href="#INDEX" class="headerlink" title="INDEX"></a>INDEX</h3><p><em>you can build a B-tree in memory via <code>INDEX</code> in SQL</em></p>
+<h3 id="USER-Placeholder-to-avoid-SQLI-attack"><a href="#USER-Placeholder-to-avoid-SQLI-attack" class="headerlink" title="USER ? Placeholder to avoid SQLI attack"></a>USER <code>?</code> Placeholder to avoid SQLI attack</h3><h4 id="Comment-in-SQL"><a href="#Comment-in-SQL" class="headerlink" title="Comment in SQL"></a>Comment in SQL</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- some comment after `--`</span></span><br></pre></td></tr></table></figure>
+<h4 id="Connect-with-Python"><a href="#Connect-with-Python" class="headerlink" title="Connect with Python"></a>Connect with Python</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sqlite3 <span class="keyword">as</span> sql</span><br><span class="line"><span class="built_in">open</span>(<span class="string">&#x27;new.db&#x27;</span>,<span class="string">&#x27;wb&#x27;</span>).close()</span><br><span class="line">con = sql.connect(<span class="string">&#x27;new.db&#x27;</span>)</span><br><span class="line">cur = con.cursor()</span><br><span class="line">cur.execute(<span class="string">&quot;CREATE TABLE shows (id INTEGER , title TEXT , PRIMARY KEY(id))&quot;</span>)</span><br><span class="line">cur.execute(<span class="string">&quot;CREATE TABLE genres (show_id INTEGER , genre TEXT , FOREIGN KEY(show_id) REFERENCES shows(id))&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> csv</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;favorites.csv&#x27;</span>,<span class="string">&#x27;rt&#x27;</span>) <span class="keyword">as</span> file:</span><br><span class="line">    reader = csv.DictReader(file)</span><br><span class="line">    cot = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> row <span class="keyword">in</span> reader:</span><br><span class="line">        title = row[<span class="string">&#x27;title&#x27;</span>].strip().lower()</span><br><span class="line">        cmd = <span class="string">&#x27;INSERT INTO shows (id , title) VALUES(&#123;&#125; , &quot;&#123;&#125;&quot;)&#x27;</span>.<span class="built_in">format</span>(cot , title)</span><br><span class="line">        cur.execute(cmd)</span><br><span class="line">        <span class="keyword">for</span> genre <span class="keyword">in</span> row[<span class="string">&#x27;genres&#x27;</span>].split():</span><br><span class="line">            cmd = <span class="string">&#x27;INSERT INTO genres (show_id , genre) VALUES( &#123;&#125; , &quot;&#123;&#125;&quot;)&#x27;</span>.<span class="built_in">format</span>(cot , genre)</span><br><span class="line">            cur.execute(cmd)</span><br><span class="line">        cot += <span class="number">1</span></span><br><span class="line">con.commit() <span class="comment"># Don&#x27;t forget to commit !</span></span><br><span class="line">con.close()</span><br><span class="line">print(<span class="string">&quot;OK&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2022/02/24/Database/IntermediateSQL/" data-id="cl0ax6e8t000050yqa4jc5spb" data-title="IntermediateSQL" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/02/25/feelings/short/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          short
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/02/22/Database/Introduction/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Introduction</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/feeling/">feeling</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/feelings/">feelings</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/03/03/feelings/Solution/">Solution</a>
+          </li>
+        
+          <li>
+            <a href="/2022/02/25/feelings/short/">short</a>
+          </li>
+        
+          <li>
+            <a href="/2022/02/24/Database/IntermediateSQL/">IntermediateSQL</a>
+          </li>
+        
+          <li>
+            <a href="/2022/02/22/Database/Introduction/">Introduction</a>
+          </li>
+        
+          <li>
+            <a href="/2022/02/14/miscellaneous/OSdevSetup/">OSdevSetup</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
