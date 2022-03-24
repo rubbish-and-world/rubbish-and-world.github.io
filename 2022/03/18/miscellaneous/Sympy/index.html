@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Sympy | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Following the Sympy tutorialSymPy Tutorial This tutorial assumes a decent mathematical background.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sympy">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2022/03/18/miscellaneous/Sympy/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Following the Sympy tutorialSymPy Tutorial This tutorial assumes a decent mathematical background.">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/03/18/miscellaneous/Sympy/latex.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/03/18/miscellaneous/Sympy/power.png">
+<meta property="article:published_time" content="2022-03-18T12:07:36.000Z">
+<meta property="article:modified_time" content="2022-03-18T16:50:19.990Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2022/03/18/miscellaneous/Sympy/latex.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS-hírfolyam"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Keresés"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Keresés"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-miscellaneous/Sympy" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/03/18/miscellaneous/Sympy/" class="article-date">
+  <time class="dt-published" datetime="2022-03-18T12:07:36.000Z" itemprop="datePublished">2022-03-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/misc/">misc</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Sympy
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+<h1 id="Following-the-Sympy-tutorial"><a href="#Following-the-Sympy-tutorial" class="headerlink" title="Following the Sympy tutorial"></a>Following the Sympy tutorial</h1><p><a target="_blank" rel="noopener" href="https://docs.sympy.org/latest/tutorial/index.html">SymPy Tutorial</a></p>
+<p><em>This tutorial assumes a decent mathematical background.</em></p>
+<a id="more"></a>
+
+<h2 id="What-is-Symbolic-Computation"><a href="#What-is-Symbolic-Computation" class="headerlink" title="What is Symbolic Computation?"></a>What is Symbolic Computation?</h2><blockquote>
+<p>the mathematical objects are represented exactly, not approximately, and mathematical expressions with unevaluated variables are left in symbolic form.</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> sympy <span class="keyword">as</span> s</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> math <span class="keyword">as</span> m</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>m.sqrt(<span class="number">8</span>)</span><br><span class="line"><span class="number">2.8284271247461903</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.sqrt(<span class="number">8</span>)</span><br><span class="line"><span class="number">2</span>*sqrt(<span class="number">2</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>m.sqrt(<span class="number">8</span>)*m.sqrt(<span class="number">8</span>) == <span class="number">8.0</span></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.sqrt(<span class="number">8</span>)*s.sqrt(<span class="number">8</span>) == <span class="number">8.0</span></span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<p>Unlike many symbolic manipulation systems, <strong>variables in SymPy must be defined before they are used</strong></p>
+<h4 id="Create-symbols"><a href="#Create-symbols" class="headerlink" title="Create symbols"></a>Create symbols</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>x,y=s.symbols(<span class="string">&quot;x y&quot;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x,y</span><br><span class="line">(x, y)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x</span><br><span class="line">x</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(x)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> &#x27;<span class="title">sympy</span>.<span class="title">core</span>.<span class="title">symbol</span>.<span class="title">Symbol</span>&#x27;&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="Use-symbols"><a href="#Use-symbols" class="headerlink" title="Use symbols"></a>Use symbols</h4><blockquote>
+<p><code>symbols</code> takes a string of variable names separated by <strong>spaces or commas</strong>, and creates Symbols out of them.</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>expr = x + <span class="number">2</span>*y</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>expr</span><br><span class="line">x + <span class="number">2</span>*y</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>expr * x</span><br><span class="line">x*(x + <span class="number">2</span>*y)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>expr - x</span><br><span class="line"><span class="number">2</span>*y</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>expr / x</span><br><span class="line">(x + <span class="number">2</span>*y)/x</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>most simplifications are not performed automatically.</p>
+<p>Both forms are useful in different circumstances. </p>
+<p>In SymPy, there are functions to go from one form to the other</p>
+</blockquote>
+<h4 id="Simplification"><a href="#Simplification" class="headerlink" title="Simplification"></a>Simplification</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>simplify = s.expand</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>factor = s.factor</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>expr</span><br><span class="line">x + <span class="number">2</span>*y</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>expr*x</span><br><span class="line">x*(x + <span class="number">2</span>*y)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>simplify(expr*x)</span><br><span class="line">x**<span class="number">2</span> + <span class="number">2</span>*x*y</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>factor(_)</span><br><span class="line">x*(x + <span class="number">2</span>*y)</span><br></pre></td></tr></table></figure>
+<h2 id="The-Power-of-Symbolic-Computation"><a href="#The-Power-of-Symbolic-Computation" class="headerlink" title="The Power of Symbolic Computation"></a>The Power of Symbolic Computation</h2><blockquote>
+<p>The real power of a symbolic computation system such as SymPy is the ability to do all sorts of computations symbolically. SymPy can simplify expressions, compute derivatives, integrals, and limits, solve equations, work with matrices, and much, much more, and do it all symbolically. It includes modules for plotting, printing (like 2D pretty printed output of math formulas, or LATEX), code generation, physics, statistics, combinatorics, number theory, geometry, logic, and more.</p>
+</blockquote>
+<h4 id="Prettify-the-output"><a href="#Prettify-the-output" class="headerlink" title="Prettify the output"></a>Prettify the output</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">help</span>(s.init_printing)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.init_printing() <span class="comment"># This will automatically enable the best printer available in your environment.</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">init_printing(pretty_print=<span class="literal">True</span>) <span class="comment"># default argument</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.init_printing()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.sqrt(<span class="number">8</span>)</span><br><span class="line"><span class="number">2</span>⋅√<span class="number">2</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.init_printing(use_unicode=<span class="literal">True</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.sqrt(<span class="number">8</span>)</span><br><span class="line"><span class="number">2</span>⋅√<span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.diff(s.sin(x)*s.exp(x) , x)</span><br><span class="line"> x           x</span><br><span class="line">ℯ ⋅sin(x) + ℯ ⋅cos(x)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s.init_printing(use_latex=<span class="string">&#x27;mathjax&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>Get the latex expression</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.latex(s.diff(s.sin(x)*s.exp(x) , x))</span><br><span class="line">e^&#123;x&#125; \sin&#123;\left(x \right)&#125; + e^&#123;x&#125; \cos&#123;\left(x \right)&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Derivative"><a href="#Derivative" class="headerlink" title="Derivative"></a>Derivative</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s.diff(expression , x)</span><br></pre></td></tr></table></figure>
+<h4 id="Integral"><a href="#Integral" class="headerlink" title="Integral"></a>Integral</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s.integrate(expression  , x)</span><br><span class="line">s.integrate(exprssion , (x,-oo,+oo))</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.integrate(s.sin(x) , (x,s.pi/<span class="number">4</span>,s.pi*<span class="number">3</span>/<span class="number">4</span>))</span><br><span class="line">√<span class="number">2</span></span><br></pre></td></tr></table></figure>
+<h4 id="Limit"><a href="#Limit" class="headerlink" title="Limit"></a>Limit</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s.limit(expression,x,to_what)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.limit(s.sin(x)/x , x , <span class="number">0</span>)</span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+<h4 id="Normal-equation"><a href="#Normal-equation" class="headerlink" title="Normal equation"></a>Normal equation</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s.solve(expression , x) <span class="comment"># expression = 0</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.solve(x**<span class="number">2</span> - <span class="number">2</span>, x)</span><br><span class="line">[-√<span class="number">2</span>, √<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<h4 id="Differential-equation"><a href="#Differential-equation" class="headerlink" title="Differential equation"></a>Differential equation</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">y = s.Function(<span class="string">&quot;y&quot;</span>)</span><br><span class="line">s.dsovle(s.Eq(expression , target ) , y(x))</span><br><span class="line"><span class="comment"># expression = target</span></span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.dsolve(s.Eq(y(x).diff(x,x)-y(x) , s.exp(x)) , y(x))</span><br><span class="line">           -x   ⎛     x⎞  x</span><br><span class="line">y(x) = C₂⋅ℯ   + ⎜C₁ + ─⎟⋅ℯ</span><br><span class="line">                ⎝     <span class="number">2</span>⎠</span><br></pre></td></tr></table></figure>
+<h3 id="Gotcha"><a href="#Gotcha" class="headerlink" title="Gotcha"></a>Gotcha</h3><blockquote>
+<p>To begin, we should make something about SymPy clear. </p>
+<p>SymPy is nothing more than a Python library, like <code>NumPy</code>, <code>Django</code>, or even modules in the Python standard library <code>sys</code> or <code>re</code>. </p>
+<p>What this means is that SymPy does not add anything to the Python language. </p>
+</blockquote>
+<h4 id="Gotcha1"><a href="#Gotcha1" class="headerlink" title="Gotcha1"></a>Gotcha1</h4><p><em>Symbols can have names longer than one character if we want.</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crazy = sympy.symbols(<span class="string">&quot;unrelated&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p><strong><em>==So it’s a good idea to let symbol names and Python variable names coincide !!==</em></strong></p>
+<h5 id="Update-value-in-a-expression"><a href="#Update-value-in-a-expression" class="headerlink" title="Update value in a expression"></a>Update value in a expression</h5><ol>
+<li>Evaluating an expression at a point. For example, if our expression is <code>cos(x) + 1</code> and we want to evaluate it at the point <code>x = 0</code>, so that we get <code>cos(0) + 1</code>, which is 2.</li>
+<li>Replacing a subexpression with another subexpression.</li>
+<li>To perform multiple substitutions at once, pass a list of <code>(old, new)</code> pairs to <code>subs</code>.</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>expr = x + y(x)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>expr</span><br><span class="line">x + y(x)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>expr.subs(x,s.sqrt(<span class="number">2</span>))</span><br><span class="line">y(√<span class="number">2</span>) + √<span class="number">2</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>expr</span><br><span class="line"><span class="number">3</span>*x + y</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>expr.subs([(x,<span class="number">5</span>),(y,<span class="number">1</span>)])</span><br><span class="line"><span class="number">16</span></span><br></pre></td></tr></table></figure>
+<p>There are two important things to note about <code>subs</code>. First, it returns a new expression. SymPy objects are immutable. That means that <code>subs</code> does not modify it in-place.</p>
+<p><strong><em>==In fact, since SymPy expressions are immutable, no function will change them in-place. All functions will return new expressions !==</em></strong></p>
+<h4 id="Gotcha2"><a href="#Gotcha2" class="headerlink" title="Gotcha2"></a>Gotcha2</h4><p><em>SymPy does not extend Python syntax is that <code>=</code> does not represent equality in SymPy.</em></p>
+<p>There is a separate object, called <code>Eq</code>, which can be used to create symbolic equalities</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>s.Eq(y(x) , s.exp(x))</span><br><span class="line">        x</span><br><span class="line">y(x) = ℯ</span><br></pre></td></tr></table></figure>
+<h4 id="Gotcha3"><a href="#Gotcha3" class="headerlink" title="Gotcha3"></a>Gotcha3</h4><p><em>Do not use <code>==</code> to test if two expressions are equal, use <code>a.equals(b)</code> instead</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = cos(x)**<span class="number">2</span> - sin(x)**<span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = cos(<span class="number">2</span>*x)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a.equals(b)</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<h4 id="Gotcha4"><a href="#Gotcha4" class="headerlink" title="Gotcha4"></a>Gotcha4</h4><p><em>Combination of different types</em></p>
+<blockquote>
+<p>Whenever you combine a SymPy object and a SymPy object, or <strong>a SymPy object and a Python object, you get a SymPy object</strong>, but whenever you combine two Python objects, SymPy never comes into play, and so you get a Python object.</p>
+</blockquote>
+<h2 id="SymPy-Features"><a href="#SymPy-Features" class="headerlink" title="SymPy Features"></a>SymPy Features</h2><h4 id="Converting-Strings-to-SymPy-Expressions"><a href="#Converting-Strings-to-SymPy-Expressions" class="headerlink" title="Converting Strings to SymPy Expressions"></a>Converting Strings to SymPy Expressions</h4><p><em>The <code>sympify</code> function (that’s <code>sympify</code>, not to be confused with <code>simplify</code>) can be used to convert strings into SymPy expressions.</em></p>
+<blockquote>
+<p>Warning : <code>sympify</code> uses <code>eval</code>. Don’t use it on unsanitized input.</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>new = sympify(<span class="string">&#x27;z**4 + z**2 + z&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>new</span><br><span class="line">z**<span class="number">4</span> + z**<span class="number">2</span> + z</span><br></pre></td></tr></table></figure>
+<h4 id="Evaluate-an-expression"><a href="#Evaluate-an-expression" class="headerlink" title="Evaluate an expression"></a>Evaluate an expression</h4><p><em>To evaluate a numerical expression into a floating point number, use <code>evalf</code>.</em></p>
+<p>SymPy can evaluate floating point expressions to arbitrary precision. By default, 15 digits of precision are used, but you can pass any number as the argument to <code>evalf</code>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>expr.subs(y , x**<span class="number">2</span>)</span><br><span class="line">x**<span class="number">2</span> + <span class="number">3</span>*x</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>_.subs(x,sqrt(<span class="number">2</span>))</span><br><span class="line"><span class="number">2</span> + <span class="number">3</span>*sqrt(<span class="number">2</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>_.evalf(<span class="number">10</span>)</span><br><span class="line"><span class="number">6.242640687</span></span><br></pre></td></tr></table></figure>
+<p>it is more efficient and numerically stable to pass the substitution to <code>evalf</code> using the <code>subs</code> flag, which takes a dictionary of <code>Symbol: point</code> pairs.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>new.evalf( <span class="number">3</span>, subs=&#123;z:<span class="number">5</span>&#125;)</span><br><span class="line"><span class="number">655.</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>new</span><br><span class="line">z**<span class="number">4</span> + z**<span class="number">2</span> + z</span><br></pre></td></tr></table></figure>
+<p>Sometimes there are roundoff errors smaller than the desired precision that remain after an expression is evaluated. Such numbers can be removed at the user’s discretion by setting the <code>chop</code> flag to True.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>one = cos(<span class="number">1</span>)**<span class="number">2</span> + sin(<span class="number">1</span>)**<span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>(one - <span class="number">1</span>).evalf()</span><br><span class="line">-<span class="number">0.e-124</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>(one - <span class="number">1</span>).evalf(chop=<span class="literal">True</span>)</span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>if you wanted to evaluate an expression at a thousand points, using SymPy would be far slower than it needs to be, especially if you only care about machine precision. Instead, you should use libraries like <a target="_blank" rel="noopener" href="http://www.numpy.org/">NumPy</a> and <a target="_blank" rel="noopener" href="http://www.scipy.org/">SciPy</a>.</p>
+</blockquote>
+<h4 id="Lambdify"><a href="#Lambdify" class="headerlink" title="Lambdify"></a>Lambdify</h4><p><code>lambdify</code> acts like a <code>lambda</code> function, except it converts the SymPy names to the names of the given numerical library, usually NumPy. </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> numpy</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>domain = numpy.arange(<span class="number">10</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>domain</span><br><span class="line">array([<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>function = lambdify(z,new,<span class="string">&quot;numpy&quot;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>function(domain)</span><br><span class="line">array([   <span class="number">0</span>,    <span class="number">3</span>,   <span class="number">22</span>,   <span class="number">93</span>,  <span class="number">276</span>,  <span class="number">655</span>, <span class="number">1338</span>, <span class="number">2457</span>, <span class="number">4168</span>, <span class="number">6651</span>])</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Warning : <code>lambdify</code> uses <code>eval</code>. Don’t use it on unsanitized input.</p>
+</blockquote>
+<h2 id="Printing"><a href="#Printing" class="headerlink" title="Printing"></a>Printing</h2><p>There are several printers available in SymPy. The most common ones are</p>
+<ul>
+<li>str</li>
+<li>srepr</li>
+<li>ASCII pretty printer</li>
+<li>Unicode pretty printer</li>
+<li>LaTeX</li>
+<li>MathML</li>
+<li>Dot</li>
+</ul>
+<p><strong><em>In order to see latex output, you should in an GUI Python console, for example, JupyterNoteBook</em></strong></p>
+<p><img src="/2022/03/18/miscellaneous/Sympy/latex.png" alt="latex display"></p>
+<h2 id="Simplification-1"><a href="#Simplification-1" class="headerlink" title="Simplification"></a>Simplification</h2><p><em>SymPy has dozens of functions to perform various kinds of simplification. There is also one general function called <code>simplify()</code> that attempts to apply all of these functions in an intelligent way to arrive at the simplest form of an expression.</em></p>
+<p>the <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Gamma_function">gamma function</a><br>$$<br>\Gamma(n) = (n-1)!<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>simplify(gamma(x)/gamma(x-<span class="number">1</span>))</span><br><span class="line">x - <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>simplify()</code> is best when used interactively, when you just want to whittle down an expression to a simpler form. You may then choose to apply specific functions once you see what <code>simplify()</code> returns, to get a more precise result. It is also useful when you have no idea what form an expression will take, and you need a catchall function to simplify it</p>
+</blockquote>
+<h3 id="Polynomial-Rational-Function-Simplification"><a href="#Polynomial-Rational-Function-Simplification" class="headerlink" title="Polynomial/Rational Function Simplification"></a>Polynomial/Rational Function Simplification</h3><p><em>Given a polynomial, <code>expand()</code> will put it into a canonical form of a sum of monomials.</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>expand( (x-<span class="number">2</span>)**<span class="number">2</span> + (x+sqrt(<span class="number">2</span>))**<span class="number">2</span>)</span><br><span class="line">   <span class="number">2</span></span><br><span class="line"><span class="number">2</span>⋅x  - <span class="number">4</span>⋅x + <span class="number">2</span>⋅√<span class="number">2</span>⋅x + <span class="number">6</span></span><br></pre></td></tr></table></figure>
+<p><em><code>factor()</code> takes a polynomial and factors it into irreducible factors over the rational numbers. For polynomials, <code>factor()</code> is the opposite of <code>expand()</code>.</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>factor( x**<span class="number">2</span> - <span class="number">2</span>*x + <span class="number">1</span>)</span><br><span class="line">       <span class="number">2</span></span><br><span class="line">(x - <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p><code>collect()</code> collects common powers of a term in an expression. </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>collect( <span class="number">2</span>*x**<span class="number">2</span> + <span class="number">4</span>*x**<span class="number">4</span> + <span class="number">16</span>*x**<span class="number">16</span> + <span class="number">7</span>*x**<span class="number">7</span> , x)</span><br><span class="line">    <span class="number">16</span>      <span class="number">7</span>      <span class="number">4</span>      <span class="number">2</span></span><br><span class="line"><span class="number">16</span>⋅x   + <span class="number">7</span>⋅x  + <span class="number">4</span>⋅x  + <span class="number">2</span>⋅x</span><br></pre></td></tr></table></figure>
+<p><code>expr.coeff(x, n)</code> gives the coefficient of <code>x**n</code> in <code>expr</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>collect( <span class="number">2</span>*x**<span class="number">2</span> + <span class="number">4</span>*x**<span class="number">4</span> + <span class="number">16</span>*x**<span class="number">16</span> + <span class="number">7</span>*x**<span class="number">7</span> , x).coeff(x,<span class="number">16</span>)</span><br><span class="line"><span class="number">16</span></span><br></pre></td></tr></table></figure>
+<p><code>cancel()</code> will take any rational function and put it into the standard canonical form</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>cancel( (x-<span class="number">2</span>)**<span class="number">3</span> / (x-<span class="number">2</span>) )</span><br><span class="line"> <span class="number">2</span></span><br><span class="line">x  - <span class="number">4</span>⋅x + <span class="number">4</span></span><br></pre></td></tr></table></figure>
+<p><code>apart()</code> performs a <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Partial_fraction_decomposition">partial fraction decomposition</a> on a rational function</p>
+<h3 id="Trigonometric-Simplification"><a href="#Trigonometric-Simplification" class="headerlink" title="Trigonometric Simplification"></a>Trigonometric Simplification</h3><h3 id="Power"><a href="#Power" class="headerlink" title="Power"></a>Power</h3><p><img src="/2022/03/18/miscellaneous/Sympy/power.png" alt="power"></p>
+<p>This is important to remember, because by default, SymPy will not perform simplifications if they are not true in general.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># so we can specify type of number when we defining they</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x, y = symbols(<span class="string">&#x27;x y&#x27;</span>, positive=<span class="literal">True</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a, b = symbols(<span class="string">&#x27;a b&#x27;</span>, real=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="Exponentials-and-logarithms"><a href="#Exponentials-and-logarithms" class="headerlink" title="Exponentials and logarithms"></a>Exponentials and logarithms</h3><p>Logarithms have similar issues as powers.</p>
+<h2 id="Special-Functions"><a href="#Special-Functions" class="headerlink" title="Special Functions"></a>Special Functions</h2><p>SymPy implements dozens of special functions, ranging from functions in combinatorics to mathematical physics.</p>
+<ul>
+<li><code>factorial(n)</code></li>
+<li><code>binomial(n, k)</code></li>
+<li>….</li>
+</ul>
+<h3 id="Rewrite"><a href="#Rewrite" class="headerlink" title="Rewrite"></a>Rewrite</h3><p>To rewrite an expression in terms of a function,use<code>expr.rewrite(function)</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>gamma(x).rewrite(factorial)</span><br><span class="line">(x - <span class="number">1</span>)!</span><br></pre></td></tr></table></figure>
+<h2 id="Calculus"><a href="#Calculus" class="headerlink" title="Calculus"></a>Calculus</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2022/03/18/miscellaneous/Sympy/" data-id="cl14afqky000h3tyqc3iw18qb" data-title="Sympy" class="article-share-link">Megosztás</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/03/15/Database/DataBaseStorage/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Régebbi</strong>
+      <div class="article-nav-title">DataBaseStorage</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategóriák</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/feelings/">feelings</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Címkék</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Címkefelhő</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archív</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Legfrissebb bejegyzések</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/03/18/miscellaneous/Sympy/">Sympy</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/15/Database/DataBaseStorage/">DataBaseStorage</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/12/miscellaneous/SimpleOSdev/">SimpleOSdev</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/07/feelings/Interesting-money-meaning-of-life/">Interesting,money,meaning-of-life</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/03/feelings/Solution/">Solution</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
