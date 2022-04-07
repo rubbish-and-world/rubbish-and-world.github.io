@@ -13,12 +13,22 @@
 <meta property="og:site_name" content="rubbishbin">
 <meta property="og:description" content="Storage">
 <meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/03/15/Database/DataBaseStorage/hierarchy.png">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2022/03/15/Database/DataBaseStorage/disk.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/03/15/Database/DataBaseStorage/Pages.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/03/15/Database/DataBaseStorage/linkedlist.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/03/15/Database/DataBaseStorage/Directory.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/03/15/Database/DataBaseStorage/SlotArray.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/03/15/Database/DataBaseStorage/logstruct.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/03/15/Database/DataBaseStorage/rescan.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/03/15/Database/DataBaseStorage/Tuple.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/03/15/Database/DataBaseStorage/listtable.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/03/15/Database/DataBaseStorage/workload.png">
 <meta property="article:published_time" content="2022-03-15T08:07:37.000Z">
-<meta property="article:modified_time" content="2022-03-15T12:28:03.593Z">
+<meta property="article:modified_time" content="2022-03-29T07:02:03.054Z">
 <meta property="article:author" content="rubbish">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://rubbish-and-world.github.io/2022/03/15/Database/DataBaseStorage/disk.png">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2022/03/15/Database/DataBaseStorage/hierarchy.png">
   
     <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
   
@@ -82,7 +92,7 @@
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/DataBase/">DataBase</a>
+    <a class="article-category-link" href="/categories/Database/">Database</a>
   </div>
 
   </div>
@@ -103,23 +113,129 @@
       
         <h1 id="Storage"><a href="#Storage" class="headerlink" title="Storage"></a>Storage</h1><a id="more"></a>
 
-<p><em>DBMS should try their best to reduce read/write operations</em></p>
+<h3 id="Storage-hierarchy"><a href="#Storage-hierarchy" class="headerlink" title="Storage hierarchy"></a>Storage hierarchy</h3><p><img src="/2022/03/15/Database/DataBaseStorage/hierarchy.png" alt="hierarchy"></p>
+<p><em>Note that when accessing the slow, non-volatile device, we are recommended to read <strong>a whole block</strong> at a time</em></p>
+<h3 id="Goal"><a href="#Goal" class="headerlink" title="Goal"></a>Goal</h3><p>Just like the virtual memory system provided by OS, DBMS should provide other applications with the illusion that the whole database is stored in memory despite the fact that it is stored on disk.</p>
+<h3 id="Implementation"><a href="#Implementation" class="headerlink" title="Implementation"></a>Implementation</h3><p><em>DBMS should try their best to reduce the cost of moving data</em></p>
+<ul>
+<li>read/write disk as few as you can</li>
+<li>avoid large stall</li>
+</ul>
 <p><img src="/2022/03/15/Database/DataBaseStorage/disk.png" alt="disk"></p>
 <p>This seems like the job OS should do</p>
-<h4 id="Why-not-use-OS"><a href="#Why-not-use-OS" class="headerlink" title="Why not use OS ?"></a>Why not use OS ?</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mmap();</span><br><span class="line"><span class="comment">//Some DBMS use it</span></span><br></pre></td></tr></table></figure>
-<p><em>The OS cannot understand your storage operation patterns, raising performance bottleneck later</em></p>
+<h3 id="Why-not-use-OS"><a href="#Why-not-use-OS" class="headerlink" title="Why not use OS ?"></a>Why not use OS ?</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mmap();</span><br><span class="line"><span class="comment">//Some DBMS use it</span></span><br></pre></td></tr></table></figure>
+<p><em>The OS cannot understand your storage operation patterns, raising performance bottleneck later. The replace algorithm should be different !</em></p>
 <ul>
 <li>Flushing dirty page to disk in correct order</li>
 <li>Sepecification prefetching</li>
 <li>Buffer replace algorithm</li>
 <li>Thread/process scheduling</li>
+<li>Cocurrency problem</li>
 </ul>
 <p><em>DBMS always want to control every thing rather than delegating the job to OS</em></p>
-<h2 id="How-DBMS-represent-data-on-disk"><a href="#How-DBMS-represent-data-on-disk" class="headerlink" title="How DBMS represent data on disk?"></a>How DBMS represent data on disk?</h2><h2 id="How-DBMS-move-data-back-and-forth-from-between-disk-and-memory-buffer-pool"><a href="#How-DBMS-move-data-back-and-forth-from-between-disk-and-memory-buffer-pool" class="headerlink" title="How DBMS move data back-and-forth from between disk and memory(buffer pool)"></a>How DBMS move data back-and-forth from between disk and memory(buffer pool)</h2>
+<hr>
+<h2 id="How-DBMS-represent-data-on-disk"><a href="#How-DBMS-represent-data-on-disk" class="headerlink" title="How DBMS represent data on disk?"></a>How DBMS represent data on disk?</h2><h3 id="File-storage"><a href="#File-storage" class="headerlink" title="File storage"></a>File storage</h3><p><em>Database is just file. One file or more. For the OS, it is not special</em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ file new.db</span><br><span class="line">new.db: SQLite 3.x database, last written using SQLite version 3037002</span><br><span class="line">$ xxd new.db | head -n 5</span><br><span class="line">00000000: 5351 4c69 7465 2066 6f72 6d61 7420 3300  SQLite format 3.</span><br><span class="line">00000010: 1000 0101 0040 2020 0000 0003 0000 0005  .....@  ........</span><br><span class="line">00000020: 0000 0000 0000 0000 0000 0002 0000 0004  ................</span><br><span class="line">00000030: 0000 0000 0000 0000 0000 0001 0000 0000  ................</span><br><span class="line">00000040: 0000 0000 0000 0000 0000 0000 0000 0000  ................</span><br></pre></td></tr></table></figure>
+<ul>
+<li>The format is specified to DBMS, you cannot open a <code>SQLite</code> database with <code>MySQL</code></li>
+<li>Some database may be multi-file to avoid file system storage limitation</li>
+</ul>
+<h4 id="Storage-manager"><a href="#Storage-manager" class="headerlink" title="Storage manager"></a>Storage manager</h4><p><em>Responsible for managing the database file</em></p>
+<ul>
+<li>Some may have customized read/write scheduling</li>
+<li>Organize files as collection of <code>pages</code>(Don’t muddle up with pages in VM, it is just a block of bytes)</li>
+</ul>
+<p><img src="/2022/03/15/Database/DataBaseStorage/Pages.png" alt="page"></p>
+<ul>
+<li>Each page has a unique page ID generated by the DBMS, later mapped to physical location</li>
+</ul>
+<h4 id="Page-hierarchy"><a href="#Page-hierarchy" class="headerlink" title="Page hierarchy"></a>Page hierarchy</h4><ul>
+<li><p>Heap file organization</p>
+<ul>
+<li>must support traversal of all pages</li>
+<li>Implemented in page directory(sync the directory page with data pages) or linked list(maintain a header page)</li>
+</ul>
+<p><img src="/2022/03/15/Database/DataBaseStorage/linkedlist.png" alt="linked list"></p>
+<p><img src="/2022/03/15/Database/DataBaseStorage/Directory.png" alt="page directory"></p>
+</li>
+<li><p>Sequencial file organization</p>
+</li>
+<li><p>Hashing file organization</p>
+</li>
+<li><p>….</p>
+</li>
+</ul>
+<h3 id="Page-layout"><a href="#Page-layout" class="headerlink" title="Page layout"></a>Page layout</h3><p><em>How data is organized inside a page</em></p>
+<h4 id="Page-header"><a href="#Page-header" class="headerlink" title="Page header"></a>Page header</h4><p>Every page contains a header of metadata about the page’s contents.</p>
+<ul>
+<li>Page Size</li>
+<li>Checksum</li>
+<li>DBMS Version</li>
+<li>Transaction Visibility</li>
+<li>Compression Information</li>
+<li>…</li>
+</ul>
+<h4 id="Tuple-oriented"><a href="#Tuple-oriented" class="headerlink" title="Tuple-oriented"></a>Tuple-oriented</h4><p><img src="/2022/03/15/Database/DataBaseStorage/SlotArray.png" alt="slot array"></p>
+<ul>
+<li>There can be tuples with different length</li>
+<li>Easy rearrangement</li>
+<li>Only middle of the page is wasted(the gap)</li>
+</ul>
+<h4 id="Log-structured"><a href="#Log-structured" class="headerlink" title="Log-structured"></a>Log-structured</h4><p><em>The system appends log records to the file of how the database was modified</em></p>
+<p>(Sequential write operation, fast)</p>
+<p><img src="/2022/03/15/Database/DataBaseStorage/logstruct.png" alt="log struct"></p>
+<p>To read a record, the DBMS scans the log backwards and “recreates” the tuple to find what it needs.</p>
+<p><img src="/2022/03/15/Database/DataBaseStorage/rescan.png" alt="rescan"></p>
+<h3 id="Tuple-layout"><a href="#Tuple-layout" class="headerlink" title="Tuple layout"></a>Tuple layout</h3><p><em>A tuple is just a sequence of bytes</em></p>
+<p><img src="/2022/03/15/Database/DataBaseStorage/Tuple.png" alt="tuple"></p>
+<ul>
+<li>Header store some meta data like visibility info (concurrency control)or Bit Map for NULL values.</li>
+<li>We do not need to store meta-data about the schema.</li>
+<li>Attributes are typically stored in the order that you specify them when you create the table</li>
+</ul>
+<h3 id="Data-Representation"><a href="#Data-Representation" class="headerlink" title="Data Representation"></a>Data Representation</h3><ul>
+<li><p>Some DBMS build their own type for numbers in order to have more control</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">integer</span>&#123;</span></span><br><span class="line">    ...</span><br><span class="line">&#125; LargeInteger ;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">floating</span>&#123;</span></span><br><span class="line">    ...</span><br><span class="line">&#125; Float ;</span><br><span class="line"><span class="function">LargeInteger <span class="title">add</span><span class="params">(LargeInteger a , LargeInteger b)</span></span>;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<ul>
+<li>large range</li>
+<li>more precision</li>
+<li>…</li>
+</ul>
+</li>
+<li><p>What if a tuple is too large for one page?</p>
+<ul>
+<li>An auxiliary <code>overflow page</code> is used, then we only store a pointer to the overflow page at original position</li>
+</ul>
+</li>
+<li><p>How about large binary files, for example the <strong>Netflix Movie DB</strong></p>
+<ul>
+<li>use <code>BLOB</code> data type provided by some database</li>
+<li>Again we only store pointers to files, let the data be in where they are on the disk(<strong>Bad idea, we lose our control and protection!</strong>)</li>
+</ul>
+</li>
+</ul>
+<h3 id="System-catalog"><a href="#System-catalog" class="headerlink" title="System catalog"></a>System catalog</h3><p><em>DBMS store attribute infomation of tuples</em></p>
+<p><code>INFORMATOIN_SCHEME</code></p>
+<p><img src="/2022/03/15/Database/DataBaseStorage/listtable.png" alt="list tables"></p>
+<h3 id="Workload"><a href="#Workload" class="headerlink" title="Workload"></a>Workload</h3><p><em>DBMS mainly has two kinds of operation OLTP and OLAP</em></p>
+<ul>
+<li>OLTP(On-Line Transaction Process) : read/write small amount of data frequently<ul>
+<li>The storage model should be row-based</li>
+<li>The DBMS stores all attributes for a single tuple contiguously in a page</li>
+</ul>
+</li>
+<li>OLAP(On-Line Analytic Process) : read large amount data to perform statistic analysis<ul>
+<li>The storage model should be column-based</li>
+<li>The DBMS stores the values of a single attribute for all tuples contiguously in a page.</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2022/03/15/Database/DataBaseStorage/workload.png" alt="workload"></p>
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2022/03/15/Database/DataBaseStorage/" data-id="cl14almgm002m7vyq9ub6blay" data-title="DataBaseStorage" class="article-share-link">Teilen</a>
+      <a data-url="http://rubbish-and-world.github.io/2022/03/15/Database/DataBaseStorage/" data-id="cl1otyssl001kghyq1rsegear" data-title="DataBaseStorage" class="article-share-link">Teilen</a>
       
       
       
@@ -158,7 +274,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/DataBase/">DataBase</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/feelings/">feelings</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/feelings/">feelings</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
     </div>
   </div>
 
