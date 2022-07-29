@@ -6,17 +6,17 @@
   
   <title>Introduction | rubbishbin</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  MIT 18.06L1 : The geometry of linear algebra">
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  MIT 18.06MIT 18.06 L1 : The geometry of linear algebra">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Introduction">
 <meta property="og:url" content="http://rubbish-and-world.github.io/2022/05/12/Math/LinearAlgebra/Introduction/index.html">
 <meta property="og:site_name" content="rubbishbin">
-<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  MIT 18.06L1 : The geometry of linear algebra">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  MIT 18.06MIT 18.06 L1 : The geometry of linear algebra">
 <meta property="og:locale">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2022/05/12/Math/LinearAlgebra/Introduction/row.png">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2022/05/12/Math/LinearAlgebra/Introduction/column.png">
 <meta property="article:published_time" content="2022-05-12T02:17:35.000Z">
-<meta property="article:modified_time" content="2022-07-01T04:57:54.681Z">
+<meta property="article:modified_time" content="2022-07-22T23:42:36.358Z">
 <meta property="article:author" content="rubbish">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://rubbish-and-world.github.io/2022/05/12/Math/LinearAlgebra/Introduction/row.png">
@@ -103,9 +103,11 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
         <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
 <script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
 
-<h1 id="MIT-18-06"><a href="#MIT-18-06" class="headerlink" title="MIT 18.06"></a>MIT 18.06</h1><h2 id="L1-The-geometry-of-linear-algebra"><a href="#L1-The-geometry-of-linear-algebra" class="headerlink" title="L1 : The geometry of linear algebra"></a>L1 : The geometry of linear algebra</h2><a id="more"></a>
+<h1 id="MIT-18-06"><a href="#MIT-18-06" class="headerlink" title="MIT 18.06"></a>MIT 18.06</h1><p><a target="_blank" rel="noopener" href="https://web.mit.edu/18.06/www/videos.shtml">MIT 18.06</a></p>
+<h2 id="L1-The-geometry-of-linear-algebra"><a href="#L1-The-geometry-of-linear-algebra" class="headerlink" title="L1 : The geometry of linear algebra"></a>L1 : The geometry of linear algebra</h2><a id="more"></a>
 
 <p><strong><em>The fundamental of linear algebra is to represent the linear equation system</em></strong></p>
 <h5 id="Three-big-picture"><a href="#Three-big-picture" class="headerlink" title="Three big picture"></a>Three big picture</h5><ul>
@@ -114,7 +116,8 @@
 <li>Matrix picture</li>
 </ul>
 <h5 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h5><p>$$<br>\begin{cases}<br>2x-y=0\<br>-x+2y=3<br>\end{cases}<br>$$</p>
-<p>Can be represented in the form of matrix<br>$$<br>\begin{bmatrix}<br>2 &amp; -1 \<br>-1 &amp; 2<br>\end{bmatrix}<br>\begin{bmatrix}<br>x\<br>y<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>0\<br>3<br>\end{bmatrix}<br>$$</p>
+<p>Can be represented in the form of matrix</p>
+<p>$$<br>\begin{bmatrix}<br>2 &amp; -1 \<br>-1 &amp; 2<br>\end{bmatrix}<br>\begin{bmatrix}<br>x\<br>y<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>0\<br>3<br>\end{bmatrix}<br>$$</p>
 <p>$$<br>AX=B<br>$$</p>
 <h3 id="Row-picture"><a href="#Row-picture" class="headerlink" title="Row picture"></a>Row picture</h3><p><em>view the equations in order of row</em></p>
 <ul>
@@ -124,7 +127,10 @@
 </ul>
 <p><img src="/2022/05/12/Math/LinearAlgebra/Introduction/row.png" alt="row picture"></p>
 <h3 id="Column-picture"><a href="#Column-picture" class="headerlink" title="Column picture"></a>Column picture</h3><p><em>find linear combination of the coefficients</em></p>
-<p>==important perspective !==<br>$$<br>x\begin{bmatrix}<br>2 \ -1<br>\end{bmatrix}<br>+y\begin{bmatrix}<br>-1 \ 2<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>0\3<br>\end{bmatrix}<br>$$<br><img src="/2022/05/12/Math/LinearAlgebra/Introduction/column.png" alt="column view"></p>
+<p><mark>important perspective !</mark></p>
+<p><mark>Linear combination !</mark></p>
+<p>$$<br>x\begin{bmatrix}<br>2 \ -1<br>\end{bmatrix}<br>+y\begin{bmatrix}<br>-1 \ 2<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>0\3<br>\end{bmatrix}<br>$$</p>
+<p><img src="/2022/05/12/Math/LinearAlgebra/Introduction/column.png" alt="column view"></p>
 <ul>
 <li>The combination of <strong>vectors</strong></li>
 <li>In fact, using the given two bases, we can get to any point in the 2-D space. We say that the two bases forms a space.</li>
@@ -136,12 +142,20 @@
 </li>
 </ul>
 <h3 id="Matrix-Multiplication"><a href="#Matrix-Multiplication" class="headerlink" title="Matrix Multiplication"></a>Matrix Multiplication</h3><p>$$<br>\begin{bmatrix}<br>2 &amp; 5 \<br>1 &amp; 3<br>\end{bmatrix}<br>\begin{bmatrix}<br>1\2<br>\end{bmatrix}<br>$$</p>
-<h4 id="Column-view-recommended"><a href="#Column-view-recommended" class="headerlink" title="Column view (recommended !)"></a>Column view (recommended !)</h4><p><em>start from the right matrix and linear combination</em><br>$$<br>1 \begin{bmatrix}<br>2 \ 1<br>\end{bmatrix}<br>+<br>2\begin{bmatrix}<br>5 \ 3<br>\end{bmatrix}<br>=\begin{bmatrix}<br>2+10 \ 1+6<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>12 \ 7<br>\end{bmatrix}<br>$$</p>
-<h3 id="Row-view"><a href="#Row-view" class="headerlink" title="Row view"></a>Row view</h3><p><em>row by row</em><br>$$<br>\begin{bmatrix}<br>2 &amp; 5 \<br>1 &amp; 3<br>\end{bmatrix}<br>\begin{bmatrix}<br>1\2<br>\end{bmatrix} =<br>\begin{bmatrix}<br>2 + 10 \<br>1 + 6<br>\end{bmatrix}<br>$$</p>
-<h2 id="L2-Elimination-with-matrixs"><a href="#L2-Elimination-with-matrixs" class="headerlink" title="L2 : Elimination with matrixs"></a>L2 : Elimination with matrixs</h2><p><em>This is the method how computer solve equations</em></p>
-<p><em>Matrix is a <strong>language</strong></em></p>
+<h4 id="Column-view-recommended"><a href="#Column-view-recommended" class="headerlink" title="Column view (recommended !)"></a>Column view (recommended !)</h4><p><em>start from the right matrix and linear combination</em></p>
+<p>$$<br>AX=B<br>$$</p>
+<p>$X$ is a combination of $A$ which gives $B$ </p>
+<p>$$<br>1 \begin{bmatrix}<br>2 \ 1<br>\end{bmatrix}<br>+<br>2\begin{bmatrix}<br>5 \ 3<br>\end{bmatrix}<br>=\begin{bmatrix}<br>2+10 \ 1+6<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>12 \ 7<br>\end{bmatrix}<br>$$</p>
+<h3 id="Row-view"><a href="#Row-view" class="headerlink" title="Row view"></a>Row view</h3><p><em>row by row</em></p>
+<p>$$<br>\begin{bmatrix}<br>2 &amp; 5 \<br>1 &amp; 3<br>\end{bmatrix}<br>\begin{bmatrix}<br>1\2<br>\end{bmatrix} =<br>\begin{bmatrix}<br>2 + 10 \<br>1 + 6<br>\end{bmatrix}<br>$$</p>
+<h2 id="L2-Elimination-with-matrixes"><a href="#L2-Elimination-with-matrixes" class="headerlink" title="L2 : Elimination with matrixes"></a>L2 : Elimination with matrixes</h2><p><em>This is the method how computer solve equations</em></p>
+<p><strong>Matrix is a language</strong></p>
 <h3 id="Elimination-success"><a href="#Elimination-success" class="headerlink" title="Elimination : success"></a>Elimination : success</h3><p><em>The Gaussian elimination : Canceling the variables one by one</em></p>
-<h5 id="Example-1"><a href="#Example-1" class="headerlink" title="Example"></a>Example</h5><p>The equations<br>$$<br>\begin{cases}<br>x + 2y + z = 2 \<br>3x + 8y+z = 12 \<br>4y + z = 2<br>\end{cases}<br>$$<br>The matrix<br>$$<br>\begin{bmatrix}<br>1 &amp; 2 &amp; 1\<br>3 &amp; 8 &amp; 1\<br>0 &amp; 4 &amp; 1<br>\end{bmatrix}<br>\begin{bmatrix}<br>x\ y \z<br>\end{bmatrix}<br>= \begin{bmatrix}<br>2\ 12 \2<br>\end{bmatrix}<br>$$<br>We just cancel out variables via normal math</p>
+<h5 id="Example-1"><a href="#Example-1" class="headerlink" title="Example"></a>Example</h5><p>The equations</p>
+<p>$$<br>\begin{cases}<br>x + 2y + z = 2 \<br>3x + 8y+z = 12 \<br>4y + z = 2<br>\end{cases}<br>$$</p>
+<p>The matrix</p>
+<p>$$<br>\begin{bmatrix}<br>1 &amp; 2 &amp; 1\<br>3 &amp; 8 &amp; 1\<br>0 &amp; 4 &amp; 1<br>\end{bmatrix}<br>\begin{bmatrix}<br>x\ y \z<br>\end{bmatrix}<br>= \begin{bmatrix}<br>2\ 12 \2<br>\end{bmatrix}<br>$$</p>
+<p>We just cancel out variables via normal math</p>
 <h3 id="Cancel-pivot-0-0"><a href="#Cancel-pivot-0-0" class="headerlink" title="Cancel pivot [0][0]"></a>Cancel pivot <code>[0][0]</code></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">line2 = line2 - <span class="number">3</span> * line1</span><br></pre></td></tr></table></figure>
 <p>$$<br>\begin{bmatrix}<br>1 &amp; 2 &amp; 1\<br>0 &amp; 2 &amp; -2\<br>0 &amp; 4 &amp; 1<br>\end{bmatrix}</p>
 <p>= \begin{bmatrix}<br>2\ 6 \2<br>\end{bmatrix}<br>$$</p>
@@ -153,14 +167,19 @@
 <li>Fatal failure : when canceling the pivot, the next pivot is also cancelled. In other word, the “actual” given equations do not provide enough constraints to solve the problem.</li>
 </ul>
 <h3 id="Back-substitution"><a href="#Back-substitution" class="headerlink" title="Back substitution"></a>Back substitution</h3><p><em>Just substitute the pivots with their value in backwards order</em></p>
-<p>The equations after transformation<br>$$<br>\begin{cases}<br>x + 2y + z = 2\<br>2y-2z = 6 \<br>5z = -10<br>\end{cases}<br>$$</p>
+<p>The equations after transformation</p>
+<p>$$<br>\begin{cases}<br>x + 2y + z = 2\<br>2y-2z = 6 \<br>5z = -10<br>\end{cases}<br>$$</p>
 <p>$$<br>\begin{cases}<br>x = 2\<br> y =1 \<br>z = -2<br>\end{cases}<br>$$</p>
-<h3 id="The-Matrix-Language"><a href="#The-Matrix-Language" class="headerlink" title="The Matrix Language"></a>The Matrix Language</h3><h4 id="Multiply-by-left-row-selector"><a href="#Multiply-by-left-row-selector" class="headerlink" title="Multiply by left : row selector"></a>Multiply by left : row selector</h4><p>$$<br>\begin{bmatrix}<br>x &amp; y  &amp; z<br>\end{bmatrix}<br>\begin{bmatrix}<br>a_1 &amp; b_1 &amp; c_1\<br>a_2 &amp; b_2 &amp; c_2\<br>a_3 &amp; b_3 &amp; c_3<br>\end{bmatrix}</p>
+<h3 id="The-Matrix-Language"><a href="#The-Matrix-Language" class="headerlink" title="The Matrix Language"></a>The Matrix Language</h3><p><mark>The operations performed on matrixes can also be expressed in form of matrixes!</mark></p>
+<h4 id="Multiply-by-left-row-selector"><a href="#Multiply-by-left-row-selector" class="headerlink" title="Multiply by left : row selector"></a>Multiply by left : row selector</h4><p><em>The result is a linear combination of rows</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x <span class="comment"># select row 1</span></span><br><span class="line">y <span class="comment"># select row 2</span></span><br><span class="line">z <span class="comment"># select row 3</span></span><br></pre></td></tr></table></figure>
+<p>$$<br>\begin{bmatrix}<br>x &amp; y  &amp; z<br>\end{bmatrix}<br>\begin{bmatrix}<br>a_1 &amp; b_1 &amp; c_1\<br>a_2 &amp; b_2 &amp; c_2\<br>a_3 &amp; b_3 &amp; c_3<br>\end{bmatrix}</p>
 <p>= \begin{bmatrix}<br>x’ &amp;  y’ &amp; z’<br>\end{bmatrix}<br>$$</p>
 <p>$$<br>\begin{cases}<br>x’ = a_1x+a_2y+a_3z\<br>y’ = b_1x+b_2y+b_3z\<br>z’ = c_1x + c_2y+c_3z<br>\end{cases}<br>$$</p>
 <p>$$<br>\begin{bmatrix}<br>x’ &amp;  y’ &amp; z’<br>\end{bmatrix}<br>=\begin{bmatrix}<br>a_1x&amp;  b_1x &amp; c_1x<br>\end{bmatrix}+\begin{bmatrix}<br>a_1y&amp;  b_1y &amp; c_1y<br>\end{bmatrix}+\begin{bmatrix}<br>a_1z&amp;  b_1z &amp; c_1z<br>\end{bmatrix}<br>$$</p>
 <p>$$<br>\begin{bmatrix}<br>x’ &amp;  y’ &amp; z’<br>\end{bmatrix}<br>= x \begin{bmatrix}<br>a_1&amp;  b_1 &amp; c_1<br>\end{bmatrix}+y\begin{bmatrix}<br>a_1&amp;  b_1 &amp; c_1<br>\end{bmatrix}+z\begin{bmatrix}<br>a_1&amp;  b_1 &amp; c_1<br>\end{bmatrix}<br>$$</p>
-<h4 id="Multiply-by-right-column-selector"><a href="#Multiply-by-right-column-selector" class="headerlink" title="Multiply by right : column selector"></a>Multiply by right : column selector</h4><p><em>the linear combination</em><br>$$<br>\begin{bmatrix}<br>a_1 &amp; b_1 &amp; c_1\<br>a_2 &amp; b_2 &amp; c_2\<br>a_3 &amp; b_3 &amp; c_3<br>\end{bmatrix}<br>\begin{bmatrix}<br>x \ y  \ z<br>\end{bmatrix}<br>= \begin{bmatrix}<br>x’ \ y’ \ z’<br>\end{bmatrix}<br>$$</p>
+<h4 id="Multiply-by-right-column-selector"><a href="#Multiply-by-right-column-selector" class="headerlink" title="Multiply by right : column selector"></a>Multiply by right : column selector</h4><p><em>the linear combination</em></p>
+<p>$$<br>\begin{bmatrix}<br>a_1 &amp; b_1 &amp; c_1\<br>a_2 &amp; b_2 &amp; c_2\<br>a_3 &amp; b_3 &amp; c_3<br>\end{bmatrix}<br>\begin{bmatrix}<br>x \ y  \ z<br>\end{bmatrix}<br>= \begin{bmatrix}<br>x’ \ y’ \ z’<br>\end{bmatrix}<br>$$</p>
 <p>$$<br>\begin{bmatrix}<br>x’ \ y’ \ z’<br>\end{bmatrix} = x\begin{bmatrix}<br>a_1 \ a_2 \ a_3<br>\end{bmatrix}<br>+y\begin{bmatrix}<br>b_1 \ b_2 \ b_3<br>\end{bmatrix}<br>+z\begin{bmatrix}<br>c_1 \ c_2 \ c_3<br>\end{bmatrix}<br>$$</p>
 <h4 id="Express-the-Elimination-in-Matrix-language"><a href="#Express-the-Elimination-in-Matrix-language" class="headerlink" title="Express the Elimination in Matrix language"></a>Express the Elimination in Matrix language</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">line2 = line2 - <span class="number">3</span> * line1</span><br></pre></td></tr></table></figure>
 <p>$$<br>\begin{bmatrix}<br>1 &amp; 0 &amp; 0\<br>-3 &amp; 1 &amp; 0\<br>0 &amp; 0 &amp; 1<br>\end{bmatrix}<br>\begin{bmatrix}<br>1 &amp; 2 &amp; 1\<br>3 &amp; 8 &amp; 1\<br>0 &amp; 4 &amp; 1<br>\end{bmatrix} = \begin{bmatrix}<br>1 &amp; 2 &amp; 1\<br>0 &amp; 2 &amp; -2\<br>0 &amp; 4 &amp; 1<br>\end{bmatrix}<br>$$</p>
@@ -169,11 +188,74 @@
 <li>The first row will be <code>1*old_first_row + 0*old_second_row+0*old_third_row</code></li>
 <li>The second row will be <code>-3*old_first_row + 1*old_second_row+0*old_third_row</code></li>
 <li>…</li>
-<li>And this is why the element matrix is “element”</li>
+<li>And this is why the identity matrix is “identity”, it only select the original ones and do nothing</li>
 </ul>
 <h5 id="Associativity"><a href="#Associativity" class="headerlink" title="Associativity"></a>Associativity</h5><p>$$<br>E_1(E_2A) = U<br>$$</p>
 <p>$$<br>(E_1E_2)A = U<br>$$</p>
+<hr>
+<h2 id="Multiplication-of-Matrixes"><a href="#Multiplication-of-Matrixes" class="headerlink" title="Multiplication of Matrixes"></a>Multiplication of Matrixes</h2><h3 id="Column-View"><a href="#Column-View" class="headerlink" title="Column View"></a>Column View</h3><p>$$<br>m \Biggl{ \underbrace{<br>\begin{bmatrix}<br>a_{11} &amp; a_{12} &amp; … &amp;a_{1n}\<br>a_{21}&amp;a_{22}&amp;…&amp;a_{2n}\<br>…&amp;…&amp;…&amp;…\<br>a_{m1}&amp;a_{m2}&amp;…&amp;a_{mn}<br>\end{bmatrix}<br>}<em>n<br>\times<br>n \Biggl{ \underbrace{<br>\begin{bmatrix}<br>b</em>{11} &amp; b_{12} &amp; … &amp;b_{1p}\<br>b_{21}&amp;b_{22}&amp;…&amp;a_{2p}\<br>…&amp;…&amp;…&amp;…\<br>a_{n1}&amp;a_{n2}&amp;…&amp;a_{np}<br>\end{bmatrix}<br>}_p<br>$$</p>
+<p>$$</p>
+<p>\stackrel{\text{concatenation of }}{=}</p>
+<p>\begin{bmatrix}<br>a_{11} &amp; a_{12} &amp; … &amp;a_{1n}\<br>a_{21}&amp;a_{22}&amp;…&amp;a_{2n}\<br>…&amp;…&amp;…&amp;…\<br>a_{m1}&amp;a_{m2}&amp;…&amp;a_{mn}<br>\end{bmatrix}<br>\times<br>\begin{bmatrix}<br>b_{11}\<br>b_{21}\<br>…\<br>b_{n1}<br>\end{bmatrix}<br>$$</p>
+<p><strong>The result is concatenation of linear combination of matrix A, Columns of result are combination of columns of A</strong></p>
+<p>Since there are $n$ vectors in A, so B must have $n$ rows, $p$ can be whatever</p>
+<h3 id="Row-View"><a href="#Row-View" class="headerlink" title="Row View"></a>Row View</h3><p>$$<br>\stackrel{ \text{vertically concatenation}}{=}<br>\begin{bmatrix}<br>a_{11}&amp;a_{12}&amp;…&amp;a_{1n}<br>\end{bmatrix}<br>\times<br>\begin{bmatrix}<br>b_{11} &amp; b_{12} &amp; … &amp;b_{1p}\<br>b_{21}&amp;b_{22}&amp;…&amp;a_{2p}\<br>…&amp;…&amp;…&amp;…\<br>a_{n1}&amp;a_{n2}&amp;…&amp;a_{np}<br>\end{bmatrix}</p>
+<p>$$</p>
+<p>Since there are $n$ rows in B, so A must have $n$ columns, $m$ can be whatever</p>
+<p><strong>Rows of result are combination of rows of B</strong></p>
+<h3 id="The-forth-way"><a href="#The-forth-way" class="headerlink" title="The forth way"></a>The forth way</h3><p>What if we do <code>column * row</code> instead of regular <code>row * column</code> ?</p>
+<p>$$<br>m \Biggl{ \underbrace{<br>\begin{bmatrix}<br>a_{11} \<br>a_{21}\<br>…&amp;\<br>a_{m1}<br>\end{bmatrix}<br>}<em>1<br>\times<br>1 { \underbrace{<br>\begin{bmatrix}<br>b</em>{11} &amp; b_{12} &amp; … &amp;b_{1p}<br>\end{bmatrix}<br>}_p<br>$$</p>
+<p>We get a <strong>full matrix</strong> !</p>
+<p>$$<br>AB= \sum(\text{columns of A)} \times (\text{rows of B})<br>$$</p>
+<h4 id="Example-2"><a href="#Example-2" class="headerlink" title="Example"></a>Example</h4><p>$$<br>\begin{bmatrix}<br>2 &amp; 7 \<br>3 &amp; 8 \<br>4 &amp; 9<br>\end{bmatrix}<br>\times<br>\begin{bmatrix}<br>1&amp;6\<br>0 &amp; 0<br>\end{bmatrix}<br>$$</p>
+<h1 id=""><a href="#" class="headerlink" title="$$"></a>$$</h1><p>\begin{bmatrix} 2 \ 3 \ 4 \end{bmatrix} \times \begin{bmatrix}1 &amp; 6\end{bmatrix}<br>+\begin{bmatrix} 7 \ 8 \ 9 \end{bmatrix} \times \begin{bmatrix}0 &amp; 0\end{bmatrix}</p>
+<p>$$</p>
+<h1 id="-1"><a href="#-1" class="headerlink" title="$$"></a>$$</h1><p> \begin{bmatrix}<br> 2 &amp; 12 \<br> 3 &amp; 18 \<br> 4 &amp; 24<br>\end{bmatrix}<br> +<br>  \begin{bmatrix}<br> 0 &amp; 0 \<br> 0 &amp; 0 \<br> 0 &amp; 0<br>\end{bmatrix}<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>A = array( [ [<span class="number">2</span>,<span class="number">7</span>],[<span class="number">3</span>,<span class="number">8</span>],[<span class="number">4</span>,<span class="number">9</span>] ] )</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>B = array( [ [<span class="number">1</span>,<span class="number">6</span>] , [<span class="number">0</span>,<span class="number">0</span>] ] )</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>matmul(A,B)</span><br><span class="line">array([[ <span class="number">2</span>, <span class="number">12</span>],</span><br><span class="line">       [ <span class="number">3</span>, <span class="number">18</span>],</span><br><span class="line">       [ <span class="number">4</span>, <span class="number">24</span>]])</span><br></pre></td></tr></table></figure>
+<h3 id="Block-View"><a href="#Block-View" class="headerlink" title="Block View"></a>Block View</h3><p>We can split matrix into sub matrix and treat them as elements.</p>
+<p>$$<br>AB = \left[<br>\begin{array}{c|c} A_{11} &amp; A_{12} \\hline A_{21} &amp; A_{22} \end{array} \right]\cdot<br>\left[<br>\begin{array}{c|c} B_{11} &amp; B_{12} \\hline B_{21} &amp; B_{22} \end{array} \right]<br>=<br>\left[<br>\begin{array}{c|c} A_{11}B_{11}+A_{12}B_{21} &amp; A_{11}B_{12}+A_{12}B_{22} \\hline A_{21}B_{11}+A_{22}B_{21} &amp; A_{22}B_{12}+A_{22}B_{22} \end{array} \right]<br>$$</p>
+<p>Recollect the strategy for faster matrix multiplication by exploiting the cache</p>
+<h2 id="Inverse"><a href="#Inverse" class="headerlink" title="Inverse"></a>Inverse</h2><p><a target="_blank" rel="noopener" href="https://math.stackexchange.com/questions/346400/why-is-only-a-square-matrix-invertible">only square is invertible</a></p>
+<h4 id="Singular-non-invertible-matrix"><a href="#Singular-non-invertible-matrix" class="headerlink" title="Singular/non-invertible matrix"></a>Singular/non-invertible matrix</h4><p>$$<br>\text{You can find a non zero}\ \vec{x},\text{gives }A \vec{x} = 0<br>$$</p>
+<p>$$<br>\because \text{if} \exist A ^{-1}<br>$$</p>
+<p>$$<br>\therefore A^{-1}A=I<br>$$</p>
+<p>$$<br> \therefore A^{-1}A \vec{x} = 0<br>$$</p>
+<p>$$<br>\therefore \vec{x} = 0 , \text{confliction}<br>$$</p>
+<p>$A$ transform $\vec{x}$ into $0$ and there is no way to get back $\vec{x}$, so  $A$ is non-invertible</p>
+<h4 id="Gaussian-Jorden-Elimination"><a href="#Gaussian-Jorden-Elimination" class="headerlink" title="Gaussian Jorden Elimination"></a>Gaussian Jorden Elimination</h4><p><em>How can we find the inverse matrix ?</em></p>
+<p>$$<br>A^{-1} \cdot [\begin{array}{c|c} A &amp; I \end{array}] = [\begin{array}{c|c} I &amp; A^{-1} \end{array}]<br>$$</p>
+<p>So we only need to transform $A$ into $A^{-1}$ along with $I$</p>
+<h5 id="Example-3"><a href="#Example-3" class="headerlink" title="Example"></a>Example</h5><p>$$<br>A= \begin{bmatrix} 1 &amp; 3 \ 2 &amp; 7 \end{bmatrix} , A^{-1}?<br>$$</p>
+<p>First we come with Gaussian</p>
+<p>$$<br>[A|I] =<br>\Big[\begin{array}{cc|cc}<br>1 &amp; 3 &amp; 1 &amp; 0\<br>2 &amp; 7 &amp; 0 &amp;1<br>\end{array}\Big]<br>$$</p>
+<p>$$<br>\stackrel{\text{row2 += row1 * -2 }}{=}<br>\Big[\begin{array}{cc|cc}<br>1 &amp; 3 &amp; 1 &amp; 0\<br>0 &amp; 1 &amp; -2 &amp; 1<br>\end{array}\Big]<br>$$</p>
+<p>Then Jorden say we cancel upwards</p>
+<p>$$<br>\stackrel{\text{row1 += -3 * row2}}{=}<br>\Big[\begin{array}{cc|cc}<br>1 &amp; 0 &amp; 7 &amp; -3\<br>0 &amp; 1 &amp; -2 &amp; 1<br>\end{array}\Big]<br>$$</p>
+<p>$$<br>A^{-1} = \begin{bmatrix} 7 &amp; -3 \ -2 &amp; 1 \end{bmatrix}<br>$$</p>
+<h5 id="More-about-the-example"><a href="#More-about-the-example" class="headerlink" title="More about the example"></a>More about the example</h5><p><code>row2 += row1 * -2</code></p>
+<p>$$<br>\begin{bmatrix}<br>1 &amp; 0 \<br>-2 &amp; 1<br>\end{bmatrix}<br>\cdot<br>\Big[\begin{array}{cc|cc}<br>1 &amp; 3 &amp; 1 &amp; 0\<br>2 &amp; 7 &amp; 0 &amp; 1<br>\end{array}\Big]<br>$$</p>
+<h1 id="-2"><a href="#-2" class="headerlink" title="$$"></a>$$</h1><p>\Bigg[<br>\begin{array}{c|cc}<br>\begin{bmatrix}<br>1 &amp; 0 \<br>-2 &amp; 1<br>\end{bmatrix}<br>\begin{bmatrix}<br>1 &amp; 3 \<br>2 &amp; 7<br>\end{bmatrix}<br>&amp;<br>\begin{bmatrix}<br>1 &amp; 0 \<br>-2 &amp; 1<br>\end{bmatrix}<br>\begin{bmatrix}<br>1 &amp; 0 \<br>0 &amp; 1<br>\end{bmatrix}<br>\end{array}</p>
+<p>\Bigg]<br>$$</p>
+<p>$$<br>= \Big[\begin{array}{cc|cc}<br>1 &amp; 3 &amp; 1 &amp; 0\<br>0 &amp; 1 &amp; -2 &amp; 1<br>\end{array}\Big]<br>$$</p>
+<p><code>row1 += -3 * row2</code></p>
+<p>$$<br>\begin{bmatrix}<br>1 &amp; -3\<br>0 &amp; 1<br>\end{bmatrix}<br>\cdot<br>\Big[\begin{array}{cc|cc}<br>1 &amp; 3 &amp; 1 &amp; 0\<br>0 &amp; 1 &amp; -2 &amp; 1<br>\end{array}\Big]<br>$$</p>
+<p>$$<br>= \Big[\begin{array}{cc|cc}<br>1 &amp; 0 &amp; 7 &amp; -3\<br>0 &amp; 1 &amp; -2 &amp; 1<br>\end{array}\Big]<br>$$</p>
+<p>$$<br>= \begin{bmatrix}<br>1 &amp; -3\<br>0 &amp; 1<br>\end{bmatrix}<br>\cdot<br>\begin{bmatrix}<br>1 &amp; 0 \<br>-2 &amp; 1<br>\end{bmatrix}<br>\cdot<br>\Big[\begin{array}{cc|cc}<br>1 &amp; 3 &amp; 1 &amp; 0\<br>2 &amp; 7 &amp; 0 &amp; 1<br>\end{array}\Big]<br>$$</p>
+<p>So the inverse can also be obtained by</p>
+<p>$$<br> \begin{bmatrix}<br>1 &amp; -3\<br>0 &amp; 1<br>\end{bmatrix}<br>\cdot<br>\begin{bmatrix}<br>1 &amp; 0 \<br>-2 &amp; 1<br>\end{bmatrix}<br> =<br> \begin{bmatrix}<br>7 &amp; -3 \<br>-2 &amp; 1<br>\end{bmatrix}<br> = A^{-1}<br>$$</p>
 <h4 id="Homework"><a href="#Homework" class="headerlink" title="Homework"></a>Homework</h4><p><a target="_blank" rel="noopener" href="http://web.mit.edu/18.06/www/psets.shtml">problem set</a></p>
+<ul>
+<li>pset1 - [x]</li>
+<li>pset2 - [ ]</li>
+<li>pset3 - [ ]</li>
+<li>pset4 - [ ]</li>
+<li>pset5 - [ ]</li>
+<li>pset6 - [ ]</li>
+<li>pset7 - [ ]</li>
+<li>pset8 - [ ]</li>
+<li>pset9 - [ ]</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/mitmath/1806">psets on Github(Jupyter Notebook version)</a></p>
 
       
     </div>
@@ -217,7 +299,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Kategorien</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Linear-Algebra/">Linear Algebra</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/feelings/">feelings</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/LLL/">LLL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Linear-Algebra/">Linear Algebra</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/feelings/">feelings</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
     </div>
   </div>
 
@@ -246,7 +328,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
     </div>
   </div>
 
@@ -259,23 +341,23 @@
       <ul>
         
           <li>
+            <a href="/2022/07/23/Math/LinearAlgebra/Transpose/">Transpose</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/08/LoaderLinkerLib/StaticLink/">StaticLink</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/08/LoaderLinkerLib/Introduction/">Introduction</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/03/miscellaneous/MoreAboutC/">MoreAboutC</a>
+          </li>
+        
+          <li>
             <a href="/2022/06/26/miscellaneous/ExtendGDBviaPy/">ExtendGDBviaPy</a>
-          </li>
-        
-          <li>
-            <a href="/2022/06/17/miscellaneous/K-RTheCPL/">K&amp;RTheCPL</a>
-          </li>
-        
-          <li>
-            <a href="/2022/06/11/feelings/Origin/">Origin</a>
-          </li>
-        
-          <li>
-            <a href="/2022/05/24/feelings/Civilization/">Civilization</a>
-          </li>
-        
-          <li>
-            <a href="/2022/05/12/DataStructure/FordFulkerson/">FordFulkerson</a>
           </li>
         
       </ul>

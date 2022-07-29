@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>StaticLink | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Part 2 : Static Linkage">
+<meta property="og:type" content="article">
+<meta property="og:title" content="StaticLink">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2022/07/08/LoaderLinkerLib/StaticLink/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="Part 2 : Static Linkage">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/07/08/LoaderLinkerLib/StaticLink/compilation.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/07/08/LoaderLinkerLib/StaticLink/ff.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/07/08/LoaderLinkerLib/StaticLink/elfformat.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/07/08/LoaderLinkerLib/StaticLink/decorated.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/07/08/LoaderLinkerLib/StaticLink/vc.png">
+<meta property="article:published_time" content="2022-07-08T03:34:40.000Z">
+<meta property="article:modified_time" content="2022-07-10T15:19:38.991Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2022/07/08/LoaderLinkerLib/StaticLink/compilation.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-LoaderLinkerLib/StaticLink" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/07/08/LoaderLinkerLib/StaticLink/" class="article-date">
+  <time class="dt-published" datetime="2022-07-08T03:34:40.000Z" itemprop="datePublished">2022-07-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/LLL/">LLL</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      StaticLink
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Part-2-Static-Linkage"><a href="#Part-2-Static-Linkage" class="headerlink" title="Part 2 : Static Linkage"></a>Part 2 : Static Linkage</h1><a id="more"></a>
+
+<h4 id="Simple-compilation-theory"><a href="#Simple-compilation-theory" class="headerlink" title="Simple compilation theory"></a>Simple compilation theory</h4><p><img src="/2022/07/08/LoaderLinkerLib/StaticLink/compilation.png" alt="compilation"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># scanner</span></span><br><span class="line">$ lex</span><br><span class="line"><span class="comment"># parser (yet another compiler compiler)</span></span><br><span class="line">$ yacc </span><br></pre></td></tr></table></figure>
+<h4 id="Question-address-of-the-symbol"><a href="#Question-address-of-the-symbol" class="headerlink" title="Question : address of the symbol ?"></a>Question : address of the symbol ?</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> <span class="built_in">array</span> [<span class="number">10</span>];</span><br><span class="line"><span class="built_in">array</span>[<span class="number">0</span>] = <span class="number">100</span>;</span><br><span class="line"><span class="comment">// What the address of array ?</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line">fun();</span><br><span class="line"><span class="comment">// Where should CPU go in order to find function  `fun` ?</span></span><br></pre></td></tr></table></figure>
+<p>In a word, the question is <strong>accessing symbols outside local module</strong>, whose address is unknown.</p>
+<h4 id="Solution-Linker"><a href="#Solution-Linker" class="headerlink" title="Solution : Linker"></a>Solution : Linker</h4><p>The main job of a linker :</p>
+<ul>
+<li><p>address and memory allocation</p>
+</li>
+<li><p>symbol resolution</p>
+</li>
+<li><p>relocation</p>
+</li>
+<li><p>…</p>
+</li>
+</ul>
+<h3 id="Object-File-format"><a href="#Object-File-format" class="headerlink" title="Object File format"></a>Object File format</h3><p><img src="/2022/07/08/LoaderLinkerLib/StaticLink/ff.png" alt="file format"></p>
+<p>(<code>.bss</code> is only a placeholder, it do not take space when stored on disk. It will obtain memory during run time)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">printf</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * format , ...)</span></span>;</span><br><span class="line"><span class="keyword">int</span> global_init_var = <span class="number">84</span> ;</span><br><span class="line"><span class="keyword">int</span> global_uninit_var ;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">(<span class="keyword">int</span> i )</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span> , i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> static_var = <span class="number">85</span> ;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> static_var2 ;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> b ;</span><br><span class="line"></span><br><span class="line">    func1( static_var + static_var2 + a + b);</span><br><span class="line">    <span class="keyword">return</span> a ;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">$ objdump -h main.o <span class="comment"># examine file header (TOC of sections)</span></span><br><span class="line"><span class="comment"># Only show some important sections, ignoring ancillary sections</span></span><br><span class="line"></span><br><span class="line">main.o:     file format elf64-x86-64</span><br><span class="line"></span><br><span class="line">Sections:</span><br><span class="line">Idx Name          Size      VMA               LMA               File off  Algn</span><br><span class="line">  0 .text         00000057  0000000000000000  0000000000000000  00000040  2**0</span><br><span class="line">                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE</span><br><span class="line">  1 .data         00000008  0000000000000000  0000000000000000  00000098  2**2</span><br><span class="line">                  CONTENTS, ALLOC, LOAD, DATA</span><br><span class="line">  2 .bss          00000004  0000000000000000  0000000000000000  000000a0  2**2</span><br><span class="line">                  ALLOC</span><br><span class="line">  3 .rodata       00000004  0000000000000000  0000000000000000  000000a0  2**0</span><br><span class="line">                  CONTENTS, ALLOC, LOAD, READONLY, DATA</span><br><span class="line">  4 .comment      0000002a  0000000000000000  0000000000000000  000000a4  2**0</span><br><span class="line">                  CONTENTS, READONLY</span><br><span class="line">  5 .note.GNU-stack 00000000  0000000000000000  0000000000000000  000000ce  2**0</span><br><span class="line">                  CONTENTS, READONLY</span><br><span class="line">  6 .eh_frame     00000058  0000000000000000  0000000000000000  000000d0  2**3</span><br><span class="line">                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA</span><br><span class="line"></span><br><span class="line">$ size main.o <span class="comment"># section sizes</span></span><br><span class="line">   text       data        bss        dec        hex    filename</span><br><span class="line">    179          8          4        191         bf    main.o</span><br></pre></td></tr></table></figure>
+<p>Extract one section</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ dd <span class="keyword">if</span>=main.o of=code.o bs=1 count=87 skip=64</span><br><span class="line">$ objdump -D -b binary -m i386 code.o &gt; codedump</span><br><span class="line">$ objdump -d main.o &gt; maindump</span><br><span class="line">$ diff maindump codedump</span><br><span class="line"><span class="comment"># We can see that we have the same bytes</span></span><br></pre></td></tr></table></figure>
+<p>View hexdump</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">$ objdump -s main.o</span><br><span class="line"></span><br><span class="line">main.o:     file format elf64-x86-64</span><br><span class="line"></span><br><span class="line">Contents of section .text:</span><br><span class="line"> 0000 554889e5 4883ec10 897dfc8b 45fc89c6  UH..H....&#125;..E...</span><br><span class="line"> 0010 488d3d00 000000b8 00000000 e8000000  H.=.............</span><br><span class="line"> 0020 0090c9c3 554889e5 4883ec10 c745f801  ....UH..H....E..</span><br><span class="line"> 0030 0000008b 15000000 008b0500 00000001  ................</span><br><span class="line"> 0040 c28b45f8 01c28b45 fc01d089 c7e80000  ..E....E........</span><br><span class="line"> 0050 00008b45 f8c9c3                      ...E...</span><br><span class="line"></span><br><span class="line">Contents of section .data:</span><br><span class="line"> 0000 54000000 55000000                    T...U...</span><br><span class="line"><span class="comment"># 0x00000054 = 84, int global_init_var = 84;</span></span><br><span class="line"><span class="comment"># 0x00000055 = 85, static int static_var = 85;</span></span><br><span class="line"></span><br><span class="line">Contents of section .rodata:</span><br><span class="line"> 0000 25640a00                             %d..</span><br><span class="line"><span class="string">&quot;%d\n&quot;</span></span><br><span class="line"></span><br><span class="line">Contents of section .comment:</span><br><span class="line"> 0000 00474343 3a202855 62756e74 7520372e  .GCC: (Ubuntu 7.</span><br><span class="line"> 0010 352e302d 33756275 6e747531 7e31382e  5.0-3ubuntu1~18.</span><br><span class="line"> 0020 30342920 372e352e 3000               04) 7.5.0.</span><br><span class="line"></span><br><span class="line">Contents of section .eh_frame:</span><br><span class="line"> 0000 14000000 00000000 017a5200 01781001  .........zR..x..</span><br><span class="line"> 0010 1b0c0708 90010000 1c000000 1c000000  ................</span><br><span class="line"> 0020 00000000 24000000 00410e10 8602430d  ....$....A....C.</span><br><span class="line"> 0030 065f0c07 08000000 1c000000 3c000000  ._..........&lt;...</span><br><span class="line"> 0040 00000000 33000000 00410e10 8602430d  ....3....A....C.</span><br><span class="line"> 0050 066e0c07 08000000                    .n......</span><br></pre></td></tr></table></figure>
+<p>Tell <code>gcc</code> to put variable/function in specified section</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__attribute__((section(<span class="string">&quot;foobar&quot;</span>)) <span class="keyword">int</span> var = <span class="number">99</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ readelf -x foobar test.o</span><br><span class="line"></span><br><span class="line">Hex dump of section <span class="string">&#x27;foobar&#x27;</span>:</span><br><span class="line">  0x00000000 63000000                            c...</span><br></pre></td></tr></table></figure>
+<h2 id="ELF-file-format"><a href="#ELF-file-format" class="headerlink" title="ELF file format"></a>ELF file format</h2><p><img src="/2022/07/08/LoaderLinkerLib/StaticLink/elfformat.png" alt="elf"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">$ readelf -S main.o <span class="comment"># show all the sections</span></span><br><span class="line">There are 13 section headers, starting at offset 0x448:</span><br><span class="line"></span><br><span class="line">Section Headers:</span><br><span class="line">  [Nr] Name              Type             Address           Offset</span><br><span class="line">       Size              EntSize          Flags  Link  Info  Align</span><br><span class="line">  [ 0]                   NULL             0000000000000000  00000000</span><br><span class="line">       0000000000000000  0000000000000000           0     0     0</span><br><span class="line">  [ 1] .text             PROGBITS         0000000000000000  00000040</span><br><span class="line">       0000000000000057  0000000000000000  AX       0     0     1</span><br><span class="line">  [ 2] .rela.text        RELA             0000000000000000  00000338</span><br><span class="line">       0000000000000078  0000000000000018   I      10     1     8</span><br><span class="line">  [ 3] .data             PROGBITS         0000000000000000  00000098</span><br><span class="line">       0000000000000008  0000000000000000  WA       0     0     4</span><br><span class="line">  [ 4] .bss              NOBITS           0000000000000000  000000a0</span><br><span class="line">       0000000000000004  0000000000000000  WA       0     0     4</span><br><span class="line">  [ 5] .rodata           PROGBITS         0000000000000000  000000a0</span><br><span class="line">       0000000000000004  0000000000000000   A       0     0     1</span><br><span class="line">  [ 6] .comment          PROGBITS         0000000000000000  000000a4</span><br><span class="line">       000000000000002a  0000000000000001  MS       0     0     1</span><br><span class="line">  [ 7] .note.GNU-stack   PROGBITS         0000000000000000  000000ce</span><br><span class="line">       0000000000000000  0000000000000000           0     0     1</span><br><span class="line">  [ 8] .eh_frame         PROGBITS         0000000000000000  000000d0</span><br><span class="line">       0000000000000058  0000000000000000   A       0     0     8</span><br><span class="line">  [ 9] .rela.eh_frame    RELA             0000000000000000  000003b0</span><br><span class="line">       0000000000000030  0000000000000018   I      10     8     8</span><br><span class="line">  [10] .symtab           SYMTAB           0000000000000000  00000128</span><br><span class="line">       0000000000000198  0000000000000018          11    11     8</span><br><span class="line">  [11] .strtab           STRTAB           0000000000000000  000002c0</span><br><span class="line">       0000000000000073  0000000000000000           0     0     1</span><br><span class="line">  [12] .shstrtab         STRTAB           0000000000000000  000003e0</span><br><span class="line">       0000000000000061  0000000000000000           0     0     1</span><br><span class="line">Key to Flags:</span><br><span class="line">  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),</span><br><span class="line">  L (link order), O (extra OS processing required), G (group), T (TLS),</span><br><span class="line">  C (compressed), x (unknown), o (OS specific), E (exclude),</span><br><span class="line">  l (large), p (processor specific)</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.rela.name <span class="comment"># providing info for linker to relocate `name` section</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .strtab for storing strings used in source code</span></span><br><span class="line">$ readelf -x .strtab main.o</span><br><span class="line"></span><br><span class="line">Hex dump of section <span class="string">&#x27;.strtab&#x27;</span>:</span><br><span class="line">  0x00000000 006d6169 6e2e6300 73746174 69635f76 .main.c.static_v</span><br><span class="line">  0x00000010 61722e31 38303200 73746174 69635f76 ar.1802.static_v</span><br><span class="line">  0x00000020 6172322e 31383033 00676c6f 62616c5f ar2.1803.global_</span><br><span class="line">  0x00000030 696e6974 5f766172 00676c6f 62616c5f init_var.global_</span><br><span class="line">  0x00000040 756e696e 69745f76 61720066 756e6331 uninit_var.func1</span><br><span class="line">  0x00000050 005f474c 4f42414c 5f4f4646 5345545f ._GLOBAL_OFFSET_</span><br><span class="line">  0x00000060 5441424c 455f0070 72696e74 66006d61 TABLE_.printf.ma</span><br><span class="line">  0x00000070 696e00                              <span class="keyword">in</span>.</span><br><span class="line"></span><br><span class="line"><span class="comment"># .shstrtab for strings used in section header</span></span><br><span class="line">$ readelf -x .shstrtab main.o</span><br><span class="line"></span><br><span class="line">Hex dump of section <span class="string">&#x27;.shstrtab&#x27;</span>:</span><br><span class="line">  0x00000000 002e7379 6d746162 002e7374 72746162 ..symtab..strtab</span><br><span class="line">  0x00000010 002e7368 73747274 6162002e 72656c61 ..shstrtab..rela</span><br><span class="line">  0x00000020 2e746578 74002e64 61746100 2e627373 .text..data..bss</span><br><span class="line">  0x00000030 002e726f 64617461 002e636f 6d6d656e ..rodata..commen</span><br><span class="line">  0x00000040 74002e6e 6f74652e 474e552d 73746163 t..note.GNU-stac</span><br><span class="line">  0x00000050 6b002e72 656c612e 65685f66 72616d65 k..rela.eh_frame</span><br><span class="line">  0x00000060 00                                  .</span><br></pre></td></tr></table></figure>
+<h4 id="Symbols"><a href="#Symbols" class="headerlink" title="Symbols"></a>Symbols</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">$ nm main.o</span><br><span class="line">                 U _GLOBAL_OFFSET_TABLE_</span><br><span class="line">0000000000000000 T func1</span><br><span class="line">0000000000000000 D global_init_var</span><br><span class="line">0000000000000004 C global_uninit_var</span><br><span class="line">0000000000000024 T main</span><br><span class="line">                 U <span class="built_in">printf</span></span><br><span class="line">0000000000000004 d static_var.1802</span><br><span class="line">0000000000000000 b static_var2.1803</span><br><span class="line"></span><br><span class="line">$ readelf -s main.o</span><br><span class="line"></span><br><span class="line">Symbol table <span class="string">&#x27;.symtab&#x27;</span> contains 17 entries:</span><br><span class="line">   Num:    Value          Size Type    Bind   Vis      Ndx Name</span><br><span class="line">     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND</span><br><span class="line">     1: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS main.c</span><br><span class="line">     2: 0000000000000000     0 SECTION LOCAL  DEFAULT    1</span><br><span class="line">     3: 0000000000000000     0 SECTION LOCAL  DEFAULT    3</span><br><span class="line">     4: 0000000000000000     0 SECTION LOCAL  DEFAULT    4</span><br><span class="line">     5: 0000000000000000     0 SECTION LOCAL  DEFAULT    5</span><br><span class="line">     6: 0000000000000004     4 OBJECT  LOCAL  DEFAULT    3 static_var.1802</span><br><span class="line">     7: 0000000000000000     4 OBJECT  LOCAL  DEFAULT    4 static_var2.1803</span><br><span class="line">     8: 0000000000000000     0 SECTION LOCAL  DEFAULT    7</span><br><span class="line">     9: 0000000000000000     0 SECTION LOCAL  DEFAULT    8</span><br><span class="line">    10: 0000000000000000     0 SECTION LOCAL  DEFAULT    6</span><br><span class="line">    11: 0000000000000000     4 OBJECT  GLOBAL DEFAULT    3 global_init_var</span><br><span class="line">    12: 0000000000000004     4 OBJECT  GLOBAL DEFAULT  COM global_uninit_var</span><br><span class="line">    13: 0000000000000000    36 FUNC    GLOBAL DEFAULT    1 func1</span><br><span class="line">    14: 0000000000000000     0 NOTYPE  GLOBAL DEFAULT  UND _GLOBAL_OFFSET_TABLE_</span><br><span class="line">    15: 0000000000000000     0 NOTYPE  GLOBAL DEFAULT  UND <span class="built_in">printf</span></span><br><span class="line">    16: 0000000000000024    51 FUNC    GLOBAL DEFAULT    1 main</span><br><span class="line"></span><br><span class="line">$ objdump --syms main.o</span><br><span class="line"></span><br><span class="line">main.o:     file format elf64-x86-64</span><br><span class="line"></span><br><span class="line">SYMBOL TABLE:</span><br><span class="line">0000000000000000 l    df *ABS*    0000000000000000 main.c</span><br><span class="line">0000000000000000 l    d  .text    0000000000000000 .text</span><br><span class="line">0000000000000000 l    d  .data    0000000000000000 .data</span><br><span class="line">0000000000000000 l    d  .bss    0000000000000000 .bss</span><br><span class="line">0000000000000000 l    d  .rodata    0000000000000000 .rodata</span><br><span class="line">0000000000000004 l     O .data    0000000000000004 static_var.1802</span><br><span class="line">0000000000000000 l     O .bss    0000000000000004 static_var2.1803</span><br><span class="line">0000000000000000 l    d  .note.GNU-stack    0000000000000000 .note.GNU-stack</span><br><span class="line">0000000000000000 l    d  .eh_frame    0000000000000000 .eh_frame</span><br><span class="line">0000000000000000 l    d  .comment    0000000000000000 .comment</span><br><span class="line">0000000000000000 g     O .data    0000000000000004 global_init_var</span><br><span class="line">0000000000000004       O *COM*    0000000000000004 global_uninit_var</span><br><span class="line">0000000000000000 g     F .text    0000000000000024 func1</span><br><span class="line">0000000000000000         *UND*    0000000000000000 _GLOBAL_OFFSET_TABLE_</span><br><span class="line">0000000000000000         *UND*    0000000000000000 <span class="built_in">printf</span></span><br><span class="line">0000000000000024 g     F .text    0000000000000033 main</span><br></pre></td></tr></table></figure>
+<h4 id="Symbol-decorate"><a href="#Symbol-decorate" class="headerlink" title="Symbol decorate"></a>Symbol decorate</h4><p><em>How <code>c++</code> support function overload and multi-namespace?</em></p>
+<p>The compiler will “hash” a symbol and assign a signature to it</p>
+<h5 id="G"><a href="#G" class="headerlink" title="G++"></a>G++</h5><p><img src="/2022/07/08/LoaderLinkerLib/StaticLink/decorated.png" alt="d"></p>
+<h5 id="Visual-C"><a href="#Visual-C" class="headerlink" title="Visual C++"></a>Visual C++</h5><p><img src="/2022/07/08/LoaderLinkerLib/StaticLink/vc.png" alt="vc"></p>
+<p><strong>Since different compiler use different decoration strategy we have difficult in linking object files compiled by different compiler</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ cat test.cpp</span><br><span class="line">int func(int) &#123;&#125;</span><br><span class="line">double func(double)&#123;&#125;</span><br><span class="line">$ g++ -c test.cpp -o cpp.o</span><br><span class="line">$ readelf -s cpp.o</span><br><span class="line"></span><br><span class="line">Symbol table <span class="string">&#x27;.symtab&#x27;</span> contains 10 entries:</span><br><span class="line">   Num:    Value          Size Type    Bind   Vis      Ndx Name</span><br><span class="line">     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND</span><br><span class="line">     1: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS test.cpp</span><br><span class="line">     2: 0000000000000000     0 SECTION LOCAL  DEFAULT    1</span><br><span class="line">     3: 0000000000000000     0 SECTION LOCAL  DEFAULT    2</span><br><span class="line">     4: 0000000000000000     0 SECTION LOCAL  DEFAULT    3</span><br><span class="line">     5: 0000000000000000     0 SECTION LOCAL  DEFAULT    5</span><br><span class="line">     6: 0000000000000000     0 SECTION LOCAL  DEFAULT    6</span><br><span class="line">     7: 0000000000000000     0 SECTION LOCAL  DEFAULT    4</span><br><span class="line">     8: 0000000000000000    10 FUNC    GLOBAL DEFAULT    1 _Z4funci</span><br><span class="line">     9: 000000000000000a    12 FUNC    GLOBAL DEFAULT    1 _Z4funcd</span><br></pre></td></tr></table></figure>
+<p><code>C</code> used to decorate symbols with a prefixed <code>_</code>, but it doesn’t do this nowadays, so we can prevent <code>c++</code> symbol decoration by declaring that these codes are <code>C</code> codes</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$ cat test.cpp</span><br><span class="line">int func(int) &#123;&#125;</span><br><span class="line">double func(double)&#123;&#125;</span><br><span class="line">extern <span class="string">&quot;C&quot;</span> &#123;</span><br><span class="line">    void func(void)&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line">$ g++ -c test.cpp -o cpp.o</span><br><span class="line">$ readelf -s cpp.o</span><br><span class="line"></span><br><span class="line">Symbol table <span class="string">&#x27;.symtab&#x27;</span> contains 11 entries:</span><br><span class="line">   Num:    Value          Size Type    Bind   Vis      Ndx Name</span><br><span class="line">     0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND</span><br><span class="line">     1: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS test.cpp</span><br><span class="line">     2: 0000000000000000     0 SECTION LOCAL  DEFAULT    1</span><br><span class="line">     3: 0000000000000000     0 SECTION LOCAL  DEFAULT    2</span><br><span class="line">     4: 0000000000000000     0 SECTION LOCAL  DEFAULT    3</span><br><span class="line">     5: 0000000000000000     0 SECTION LOCAL  DEFAULT    5</span><br><span class="line">     6: 0000000000000000     0 SECTION LOCAL  DEFAULT    6</span><br><span class="line">     7: 0000000000000000     0 SECTION LOCAL  DEFAULT    4</span><br><span class="line">     8: 0000000000000000    10 FUNC    GLOBAL DEFAULT    1 _Z4funci</span><br><span class="line">     9: 000000000000000a    12 FUNC    GLOBAL DEFAULT    1 _Z4funcd</span><br><span class="line">    10: 0000000000000016     7 FUNC    GLOBAL DEFAULT    1 func</span><br></pre></td></tr></table></figure>
+<h5 id="Reverse-c-name-decoration"><a href="#Reverse-c-name-decoration" class="headerlink" title="Reverse c++ name decoration"></a>Reverse <code>c++</code> name decoration</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ c++filt  _Z4funci</span><br><span class="line">func(int)</span><br></pre></td></tr></table></figure>
+<h5 id="System-programming-idiom"><a href="#System-programming-idiom" class="headerlink" title="System programming idiom"></a>System programming idiom</h5><p><em>C++ compiler will automatically define macro <code>__cplusplus</code> when compiling</em></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> &#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> * <span class="title">memset</span><span class="params">(<span class="keyword">void</span> * , <span class="keyword">int</span> value )</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>If compiled by C compiler, the <code>extern &quot;C&quot; &#123;&#125;</code> statement will not appear</p>
+</li>
+<li><p>If compiled by C++ compiler, the <code>memset</code> will not be decorated, so it can properly linked to C library function later</p>
+</li>
+</ul>
+<p>We can see this in <code>&lt;stdio.h&gt;</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># <span class="number">34</span> <span class="string">&quot;/usr/include/x86_64-linux-gnu/bits/libc-header-start.h&quot;</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span></span><br><span class="line"># <span class="number">28</span> <span class="string">&quot;/usr/include/stdio.h&quot;</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># <span class="number">29</span> <span class="string">&quot;/usr/include/stdio.h&quot;</span> <span class="number">3</span> <span class="number">4</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># <span class="number">1</span> <span class="string">&quot;/usr/lib/gcc/x86_64-linux-gnu/7/include/stddef.h&quot;</span> <span class="number">1</span> <span class="number">3</span> <span class="number">4</span></span><br><span class="line"># <span class="number">216</span> <span class="string">&quot;/usr/lib/gcc/x86_64-linux-gnu/7/include/stddef.h&quot;</span> <span class="number">3</span> <span class="number">4</span></span><br></pre></td></tr></table></figure>
+<h3 id="Strong-symbol-and-weak-symbol"><a href="#Strong-symbol-and-weak-symbol" class="headerlink" title="Strong symbol and weak symbol"></a>Strong symbol and weak symbol</h3><p>Strong : function definition and initialized global variable</p>
+<p>Weak : uninitialized global variable</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// We can manually define weak or strong</span></span><br><span class="line">__attribute__((weak)) <span class="keyword">int</span> var = <span class="number">3</span> ;</span><br></pre></td></tr></table></figure>
+<h4 id="Strong-reference-and-weak-reference"><a href="#Strong-reference-and-weak-reference" class="headerlink" title="Strong reference and weak reference"></a>Strong reference and weak reference</h4><p>Strong : the definition of the reference must be found, otherwise report <code>error</code></p>
+<p>Weak : If the definition not found, use a default value(usually <code>0</code>)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//We can manually define weak or strong</span></span><br><span class="line">__attribute__((weakref)) <span class="function"><span class="keyword">int</span> <span class="title">printf</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * , ...)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>This can be used to determine if some symbol appeared or not</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">__attribute__((weakref)) <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> ( fun ) &#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;fun is defined&quot;</span>);</span><br><span class="line">    fun();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;fun not found&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>We can exploit this feature to determine if some module or library is linked</p>
+<p><mark>However, this code doesn’t work. The theory in turn may also be wrong. Read the gcc manual.</mark></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wang1902568721/article/details/71159699">关于weakref的用法</a></p>
+<p><a target="_blank" rel="noopener" href="https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#Common-Function-Attributes">gcc attribute</a></p>
+<h4 id="Debug-info"><a href="#Debug-info" class="headerlink" title="Debug info"></a>Debug info</h4><p><code>DWARF</code> : Debug With Arbitrary Record Format</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ strip program <span class="comment"># remove debug info for release</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2022/07/08/LoaderLinkerLib/StaticLink/" data-id="cl669nn8s000095yq4lru7w3o" data-title="StaticLink" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/07/23/Math/LinearAlgebra/Transpose/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          Transpose
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/07/08/LoaderLinkerLib/Introduction/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">Introduction</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/LLL/">LLL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Linear-Algebra/">Linear Algebra</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/feelings/">feelings</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/07/23/Math/LinearAlgebra/Transpose/">Transpose</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/08/LoaderLinkerLib/StaticLink/">StaticLink</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/08/LoaderLinkerLib/Introduction/">Introduction</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/03/miscellaneous/MoreAboutC/">MoreAboutC</a>
+          </li>
+        
+          <li>
+            <a href="/2022/06/26/miscellaneous/ExtendGDBviaPy/">ExtendGDBviaPy</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
