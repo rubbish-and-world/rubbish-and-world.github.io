@@ -16,7 +16,7 @@
 <meta property="og:image" content="http://rubbish-and-world.github.io/2022/05/12/Math/LinearAlgebra/Introduction/row.png">
 <meta property="og:image" content="http://rubbish-and-world.github.io/2022/05/12/Math/LinearAlgebra/Introduction/column.png">
 <meta property="article:published_time" content="2022-05-12T02:17:35.000Z">
-<meta property="article:modified_time" content="2022-07-22T23:42:36.358Z">
+<meta property="article:modified_time" content="2022-08-08T15:06:10.441Z">
 <meta property="article:author" content="rubbish">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://rubbish-and-world.github.io/2022/05/12/Math/LinearAlgebra/Introduction/row.png">
@@ -66,10 +66,10 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
       </div>
     </div>
   </div>
@@ -194,8 +194,7 @@
 <p>$$<br>(E_1E_2)A = U<br>$$</p>
 <hr>
 <h2 id="Multiplication-of-Matrixes"><a href="#Multiplication-of-Matrixes" class="headerlink" title="Multiplication of Matrixes"></a>Multiplication of Matrixes</h2><h3 id="Column-View"><a href="#Column-View" class="headerlink" title="Column View"></a>Column View</h3><p>$$<br>m \Biggl{ \underbrace{<br>\begin{bmatrix}<br>a_{11} &amp; a_{12} &amp; … &amp;a_{1n}\<br>a_{21}&amp;a_{22}&amp;…&amp;a_{2n}\<br>…&amp;…&amp;…&amp;…\<br>a_{m1}&amp;a_{m2}&amp;…&amp;a_{mn}<br>\end{bmatrix}<br>}<em>n<br>\times<br>n \Biggl{ \underbrace{<br>\begin{bmatrix}<br>b</em>{11} &amp; b_{12} &amp; … &amp;b_{1p}\<br>b_{21}&amp;b_{22}&amp;…&amp;a_{2p}\<br>…&amp;…&amp;…&amp;…\<br>a_{n1}&amp;a_{n2}&amp;…&amp;a_{np}<br>\end{bmatrix}<br>}_p<br>$$</p>
-<p>$$</p>
-<p>\stackrel{\text{concatenation of }}{=}</p>
+<p>$$<br>\stackrel{\text{concatenation of }}{=}</p>
 <p>\begin{bmatrix}<br>a_{11} &amp; a_{12} &amp; … &amp;a_{1n}\<br>a_{21}&amp;a_{22}&amp;…&amp;a_{2n}\<br>…&amp;…&amp;…&amp;…\<br>a_{m1}&amp;a_{m2}&amp;…&amp;a_{mn}<br>\end{bmatrix}<br>\times<br>\begin{bmatrix}<br>b_{11}\<br>b_{21}\<br>…\<br>b_{n1}<br>\end{bmatrix}<br>$$</p>
 <p><strong>The result is concatenation of linear combination of matrix A, Columns of result are combination of columns of A</strong></p>
 <p>Since there are $n$ vectors in A, so B must have $n$ rows, $p$ can be whatever</p>
@@ -219,7 +218,7 @@
 <h4 id="Singular-non-invertible-matrix"><a href="#Singular-non-invertible-matrix" class="headerlink" title="Singular/non-invertible matrix"></a>Singular/non-invertible matrix</h4><p>$$<br>\text{You can find a non zero}\ \vec{x},\text{gives }A \vec{x} = 0<br>$$</p>
 <p>$$<br>\because \text{if} \exist A ^{-1}<br>$$</p>
 <p>$$<br>\therefore A^{-1}A=I<br>$$</p>
-<p>$$<br> \therefore A^{-1}A \vec{x} = 0<br>$$</p>
+<p>$$<br>\therefore A^{-1}A \vec{x} = 0<br>$$</p>
 <p>$$<br>\therefore \vec{x} = 0 , \text{confliction}<br>$$</p>
 <p>$A$ transform $\vec{x}$ into $0$ and there is no way to get back $\vec{x}$, so  $A$ is non-invertible</p>
 <h4 id="Gaussian-Jorden-Elimination"><a href="#Gaussian-Jorden-Elimination" class="headerlink" title="Gaussian Jorden Elimination"></a>Gaussian Jorden Elimination</h4><p><em>How can we find the inverse matrix ?</em></p>
@@ -242,25 +241,24 @@
 <p>$$<br>= \Big[\begin{array}{cc|cc}<br>1 &amp; 0 &amp; 7 &amp; -3\<br>0 &amp; 1 &amp; -2 &amp; 1<br>\end{array}\Big]<br>$$</p>
 <p>$$<br>= \begin{bmatrix}<br>1 &amp; -3\<br>0 &amp; 1<br>\end{bmatrix}<br>\cdot<br>\begin{bmatrix}<br>1 &amp; 0 \<br>-2 &amp; 1<br>\end{bmatrix}<br>\cdot<br>\Big[\begin{array}{cc|cc}<br>1 &amp; 3 &amp; 1 &amp; 0\<br>2 &amp; 7 &amp; 0 &amp; 1<br>\end{array}\Big]<br>$$</p>
 <p>So the inverse can also be obtained by</p>
-<p>$$<br> \begin{bmatrix}<br>1 &amp; -3\<br>0 &amp; 1<br>\end{bmatrix}<br>\cdot<br>\begin{bmatrix}<br>1 &amp; 0 \<br>-2 &amp; 1<br>\end{bmatrix}<br> =<br> \begin{bmatrix}<br>7 &amp; -3 \<br>-2 &amp; 1<br>\end{bmatrix}<br> = A^{-1}<br>$$</p>
+<p>$$<br>\begin{bmatrix}<br>1 &amp; -3\<br>0 &amp; 1<br>\end{bmatrix}<br>\cdot<br>\begin{bmatrix}<br>1 &amp; 0 \<br>-2 &amp; 1<br>\end{bmatrix}<br> =<br> \begin{bmatrix}<br>7 &amp; -3 \<br>-2 &amp; 1<br>\end{bmatrix}<br> = A^{-1}<br>$$</p>
 <h4 id="Homework"><a href="#Homework" class="headerlink" title="Homework"></a>Homework</h4><p><a target="_blank" rel="noopener" href="http://web.mit.edu/18.06/www/psets.shtml">problem set</a></p>
 <ul>
-<li>pset1 - [x]</li>
-<li>pset2 - [ ]</li>
-<li>pset3 - [ ]</li>
-<li>pset4 - [ ]</li>
-<li>pset5 - [ ]</li>
-<li>pset6 - [ ]</li>
-<li>pset7 - [ ]</li>
-<li>pset8 - [ ]</li>
-<li>pset9 - [ ]</li>
+<li><input checked="" disabled="" type="checkbox"> pset1 </li>
+<li><input checked="" disabled="" type="checkbox"> pset2 </li>
+<li><input checked="" disabled="" type="checkbox"> pset3<br>skipped pset4</li>
+<li><input checked="" disabled="" type="checkbox"> pset5 </li>
+<li><input disabled="" type="checkbox"> pset6 </li>
+<li><input disabled="" type="checkbox"> pset7 </li>
+<li><input disabled="" type="checkbox"> pset8 </li>
+<li><input disabled="" type="checkbox"> pset9 </li>
 </ul>
 <p><a target="_blank" rel="noopener" href="https://github.com/mitmath/1806">psets on Github(Jupyter Notebook version)</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://rubbish-and-world.github.io/2022/05/12/Math/LinearAlgebra/Introduction/" data-id="cl669tx4x007af6yq3gr22d7k" data-title="Introduction" class="article-share-link">Teilen</a>
+      <a data-url="http://rubbish-and-world.github.io/2022/05/12/Math/LinearAlgebra/Introduction/" data-id="cl669tx4x007af6yq3gr22d7k" data-title="Introduction" class="article-share-link">Share</a>
       
       
       
@@ -271,7 +269,7 @@
 <nav id="article-nav">
   
     <a href="/2022/05/12/DataStructure/FordFulkerson/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Neuer</strong>
+      <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
           FordFulkerson
@@ -281,7 +279,7 @@
   
   
     <a href="/2022/05/07/miscellaneous/MaxFlow/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Älter</strong>
+      <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">MaxFlow</div>
     </a>
   
@@ -297,7 +295,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Kategorien</h3>
+    <h3 class="widget-title">Categories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/LLL/">LLL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Linear-Algebra/">Linear Algebra</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/feelings/">feelings</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
     </div>
@@ -326,9 +324,9 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archiv</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
     </div>
   </div>
 
@@ -336,28 +334,28 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">letzter Beitrag</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
           <li>
-            <a href="/2022/07/23/Math/LinearAlgebra/VectorSpace/">VectorSpace</a>
+            <a href="/2022/08/06/Math/LinearAlgebra/PositiveDefinite/">PositiveDefinite</a>
           </li>
         
           <li>
-            <a href="/2022/07/23/Math/LinearAlgebra/Transpose/">Transpose</a>
+            <a href="/2022/08/05/Math/LinearAlgebra/Eigen/">Eigen</a>
           </li>
         
           <li>
-            <a href="/2022/07/08/LoaderLinkerLib/StaticLink/">StaticLink</a>
+            <a href="/2022/08/04/Math/LinearAlgebra/Determinant/">Determinant</a>
           </li>
         
           <li>
-            <a href="/2022/07/08/LoaderLinkerLib/Introduction/">Introduction</a>
+            <a href="/2022/08/01/Math/LinearAlgebra/Orthogonal/">Orthogonal</a>
           </li>
         
           <li>
-            <a href="/2022/07/03/miscellaneous/MoreAboutC/">MoreAboutC</a>
+            <a href="/2022/07/30/Math/LinearAlgebra/LAinGraph/">LAinGraph</a>
           </li>
         
       </ul>
