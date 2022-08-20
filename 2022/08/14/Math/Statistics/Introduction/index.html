@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Introduction | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  MIT RES.6-012introduction-to-probabilitycourse link">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Introduction">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2022/08/14/Math/Statistics/Introduction/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  MIT RES.6-012introduction-to-probabilitycourse link">
+<meta property="og:locale">
+<meta property="og:image" content="http://math.illinoisstate.edu/day/courses/old/312/session2101.gif">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/14/Math/Statistics/Introduction/continuous.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/14/Math/Statistics/Introduction/continuous.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/14/Math/Statistics/Introduction/additivity.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/14/Math/Statistics/Introduction/unionbound.jpg">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/14/Math/Statistics/Introduction/three.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/14/Math/Statistics/Introduction/countable.jpg">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/14/Math/Statistics/Introduction/summary.png">
+<meta property="article:published_time" content="2022-08-14T09:38:05.000Z">
+<meta property="article:modified_time" content="2022-08-17T03:12:21.791Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://math.illinoisstate.edu/day/courses/old/312/session2101.gif">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Math/Statistics/Introduction" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/08/14/Math/Statistics/Introduction/" class="article-date">
+  <time class="dt-published" datetime="2022-08-14T09:38:05.000Z" itemprop="datePublished">2022-08-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Math/">Math</a>►<a class="article-category-link" href="/categories/Math/Statistics/">Statistics</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Introduction
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+<h2 id="MIT-RES-6-012"><a href="#MIT-RES-6-012" class="headerlink" title="MIT RES.6-012"></a>MIT RES.6-012</h2><h3 id="introduction-to-probability"><a href="#introduction-to-probability" class="headerlink" title="introduction-to-probability"></a>introduction-to-probability</h3><p><a target="_blank" rel="noopener" href="https://ocw.mit.edu/courses/res-6-012-introduction-to-probability-spring-2018/resources/lecture-overview/">course link</a></p>
+<a id="more"></a>
+
+<h2 id="Overview-of-all-element-of-the-probability-model"><a href="#Overview-of-all-element-of-the-probability-model" class="headerlink" title="Overview of all element of the probability model"></a>Overview of all element of the probability model</h2><ul>
+<li><p>Sample space</p>
+</li>
+<li><p>probability laws</p>
+</li>
+<li><p>interpretation of probability</p>
+</li>
+</ul>
+<h3 id="Sample-space"><a href="#Sample-space" class="headerlink" title="Sample space"></a>Sample space</h3><p><em>All possible outcome of an activity/experiment, represented as a <strong>set</strong>.</em></p>
+<h5 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h5><p>$$<br>\Omega(\text{flip a coin}) = {\text{heads},\text{tails}}<br>$$</p>
+<p>$$<br>\Omega{(\text{roll a die})} = { 1,2,3,4,5,6 }<br>$$</p>
+<h5 id="Property"><a href="#Property" class="headerlink" title="Property"></a>Property</h5><ul>
+<li><p>mutual exclusive (exact one outcome could happen at one experiment)</p>
+</li>
+<li><p>collectively exhaustive (the set include all possible outcomes)</p>
+</li>
+<li><p>At right granularity (do not include irrelevant details and mix experiment)</p>
+</li>
+</ul>
+<p>Look at the coin flipping example again, we can also have a sample space of</p>
+<p>$$<br>\Omega(\text{flip a coin})={ \text{heads and rainy outside},\<br>\text{heads and no rain} , \text{tails and rainy} , \text{tails and no rain} }<br>$$</p>
+<p>If we are investigating the connection of weather and coin, this space space could be right, but otherwise we would better choose a “simple” one and removing all weather information.</p>
+<h5 id="More-examples"><a href="#More-examples" class="headerlink" title="More examples"></a>More examples</h5><h6 id="Sequential-outcome"><a href="#Sequential-outcome" class="headerlink" title="Sequential outcome"></a>Sequential outcome</h6><p><em>if the result of a experiment happen in “stage”/“phase” we can describe it by a tree</em></p>
+<p>Say we roll a die twice</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>SampleSpace = [(k,v) <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">7</span>) <span class="keyword">for</span> v <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">7</span>)]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>SampleSpace</span><br><span class="line">[(<span class="number">1</span>, <span class="number">1</span>), (<span class="number">1</span>, <span class="number">2</span>), (<span class="number">1</span>, <span class="number">3</span>), (<span class="number">1</span>, <span class="number">4</span>), (<span class="number">1</span>, <span class="number">5</span>), (<span class="number">1</span>, <span class="number">6</span>), (<span class="number">2</span>, <span class="number">1</span>), (<span class="number">2</span>, <span class="number">2</span>), (<span class="number">2</span>, <span class="number">3</span>), (<span class="number">2</span>, <span class="number">4</span>), (<span class="number">2</span>, <span class="number">5</span>), (<span class="number">2</span>, <span class="number">6</span>), (<span class="number">3</span>, <span class="number">1</span>), (<span class="number">3</span>, <span class="number">2</span>), (<span class="number">3</span>, <span class="number">3</span>), (<span class="number">3</span>, <span class="number">4</span>), (<span class="number">3</span>, <span class="number">5</span>), (<span class="number">3</span>, <span class="number">6</span>), (<span class="number">4</span>, <span class="number">1</span>), (<span class="number">4</span>, <span class="number">2</span>), (<span class="number">4</span>, <span class="number">3</span>), (<span class="number">4</span>, <span class="number">4</span>), (<span class="number">4</span>, <span class="number">5</span>), (<span class="number">4</span>, <span class="number">6</span>), (<span class="number">5</span>, <span class="number">1</span>), (<span class="number">5</span>, <span class="number">2</span>), (<span class="number">5</span>, <span class="number">3</span>), (<span class="number">5</span>, <span class="number">4</span>), (<span class="number">5</span>, <span class="number">5</span>), (<span class="number">5</span>, <span class="number">6</span>), (<span class="number">6</span>, <span class="number">1</span>), (<span class="number">6</span>, <span class="number">2</span>), (<span class="number">6</span>, <span class="number">3</span>), (<span class="number">6</span>, <span class="number">4</span>), (<span class="number">6</span>, <span class="number">5</span>), (<span class="number">6</span>, <span class="number">6</span>)]</span><br></pre></td></tr></table></figure>
+<p><img src="http://math.illinoisstate.edu/day/courses/old/312/session2101.gif" alt="What is the chance of predicting the outcome of a die roll? : r/askscience"></p>
+<h6 id="Continuous-example"><a href="#Continuous-example" class="headerlink" title="Continuous example"></a>Continuous example</h6><p><em>the sample space can be continuous and contain infinite outcomes</em></p>
+<p>Say we throwing a dart to the unit square in a 2 by 2 plane</p>
+<p><img src="/2022/08/14/Math/Statistics/Introduction/continuous.png" alt="continuous"></p>
+<p>$$<br>\Omega = { (x,y) | 0 \le x \le 1 \land 0 \le y \le 1}<br>$$</p>
+<h3 id="Probability-axioms"><a href="#Probability-axioms" class="headerlink" title="Probability axioms"></a>Probability axioms</h3><p><em>We only need 3 axioms to construction out models</em></p>
+<p><em>probability is the likelihood of a/some specified outcome will occur in one experiment</em></p>
+<h6 id="Trouble"><a href="#Trouble" class="headerlink" title="Trouble"></a>Trouble</h6><p>In the following case, what is the probability of the dart hit exactly the white point ?</p>
+<p><img src="/2022/08/14/Math/Statistics/Introduction/continuous.png" alt="continuous"></p>
+<p>Since there are <strong>infinite</strong> points in this area, the precision will always be 0</p>
+<p>$$<br>P(\text{hit white point}) = 0<br>$$</p>
+<h6 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h6><p><em>Instead of assigning probability to each individual outcome we assign probability to a <strong>subset</strong> of the whole set, that is, <strong>a subset of outcomes</strong>.</em></p>
+<p>$$<br>P(\text{hit upper half}) = \frac{1}{2}<br>$$</p>
+<p>We call this subset an <strong>event</strong>. In an experiment if the outcome is in the subset, we say that the event <strong>happened</strong>, otherwise event <strong>not happened</strong>.</p>
+<h5 id="Axioms"><a href="#Axioms" class="headerlink" title="Axioms"></a>Axioms</h5><ul>
+<li><p>Nonnegative : $P(A) \ge 0$</p>
+</li>
+<li><p>Normalization : $P(\Omega) = 1$</p>
+</li>
+<li><p>Additivity : $if A \cap B = \emptyset, then P(A \cup B) = P(A) + P(B)$</p>
+</li>
+</ul>
+<h5 id="Deduction"><a href="#Deduction" class="headerlink" title="Deduction"></a>Deduction</h5><p><mark>Draw the graph before your proving !!!</mark></p>
+<ul>
+<li>$P(A) + P(\bar{A}) = 1$</li>
+</ul>
+<p>$$<br>\because A \cap \bar{A} = \emptyset , A\cup \bar{A} = \Omega<br>$$</p>
+<p>$$<br>\therefore P(\Omega) = P(A\cup \bar{A} ) = P(A) + P(\bar{A}) = 1<br>$$</p>
+<ul>
+<li>$P(A) \le 1$</li>
+</ul>
+<p>$$<br>\because P(A)=1 - P(\bar{A}), P(\bar{A}) \ge 0<br>$$</p>
+<p>$$<br>\therefore P(A) \le 1<br>$$</p>
+<ul>
+<li>$P(\emptyset) = 0$</li>
+</ul>
+<p>$$<br>\because 1 = P(\Omega) + P(\bar{\Omega}) = 1 + P(\emptyset)<br>$$</p>
+<p>$$<br>\therefore P(\emptyset) = 0<br>$$</p>
+<ul>
+<li>for <strong>disjoint</strong> A,B,C,… $P(A\cup B\cup C …) = P(A)+P(B)+P(C)+…$</li>
+</ul>
+<p>So we have the way to compute the probability of an event A</p>
+<p>$$<br>P(A) = P({a_1}) + P({a_2}) + … + P({a_n}) = P(a_1) + P(a_2) + … + P(a_n)<br>$$</p>
+<p><img src="/2022/08/14/Math/Statistics/Introduction/additivity.png" alt="prof"></p>
+<ul>
+<li>$if A \subseteq B , then P(A) \le P(B)$</li>
+</ul>
+<p>$$<br>\because P(B)= P( A \cup (B-A)) , A \cap (B-A) = \emptyset<br>$$</p>
+<p>$$<br>\therefore P(B)=P(A)+P(B-A) \ge P(A)<br>$$</p>
+<ul>
+<li>For non-disjoint set A,B, $P(A\cup B) = P(A)+P(B) - P(A\cap B)$</li>
+</ul>
+<p><img src="/2022/08/14/Math/Statistics/Introduction/unionbound.jpg" alt="prof"></p>
+<p><img src="/2022/08/14/Math/Statistics/Introduction/three.png" alt="three"></p>
+<ul>
+<li>For infinite discrete disjoin subsets, if all events/subsets can be written as a <strong>sequence</strong> then the additivity law will still hold</li>
+</ul>
+<p>$$<br>P(A_1 \cup A_2 \cup … ) = P(A_1) + P(A_2) + …<br>$$</p>
+<h5 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h5><p>Suppose we flip a coin, record the number of flipping before heads first appear</p>
+<p><img src="/2022/08/14/Math/Statistics/Introduction/countable.jpg" alt="examples"></p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p><em>What is probability</em></p>
+<ul>
+<li><p>a bunch of mathematics (meaningless)</p>
+</li>
+<li><p><strong>the frequency</strong> of the event( how often will it happen in infinite times of experiments?)</p>
+</li>
+<li><p>Probability does not tell us exactly what will happen, it is just a <strong>guide</strong> (Probability says that heads have a 1/2 chance, so we can expect 50 Heads. But when we actually try it we might get 48 heads, or 55 heads … or anything really, but in most cases it will be a number near 50.)</p>
+</li>
+<li><p>a framework of analyzing uncertain outcomes</p>
+</li>
+</ul>
+<p><img src="/2022/08/14/Math/Statistics/Introduction/summary.png" alt="summary">  </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2022/08/14/Math/Statistics/Introduction/" data-id="cl71qnjv60085pyyq730o4ndc" data-title="Introduction" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/08/17/Math/Statistics/Conditioning/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Conditioning
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/08/06/Math/LinearAlgebra/PositiveDefinite/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">PositiveDefinite</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/LLL/">LLL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Linear-Algebra/">Linear Algebra</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Statistics/">Statistics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/feelings/">feelings</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/08/20/Math/Statistics/Independent/">Independent</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/18/feelings/Songs/">Songs</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/17/Math/Statistics/Conditioning/">Conditioning</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/14/Math/Statistics/Introduction/">Introduction</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/06/Math/LinearAlgebra/PositiveDefinite/">PositiveDefinite</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
