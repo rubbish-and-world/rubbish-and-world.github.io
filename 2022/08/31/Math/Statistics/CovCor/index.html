@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>CovCor | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Sum of two independent  r.v. and Covariance &amp; Correlation">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CovCor">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2022/08/31/Math/Statistics/CovCor/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Sum of two independent  r.v. and Covariance &amp; Correlation">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/31/Math/Statistics/CovCor/convolution.jpg">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/31/Math/Statistics/CovCor/normal.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/31/Math/Statistics/CovCor/specialcase.png">
+<meta property="article:published_time" content="2022-08-30T23:42:29.000Z">
+<meta property="article:modified_time" content="2022-08-31T08:50:40.270Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2022/08/31/Math/Statistics/CovCor/convolution.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Math/Statistics/CovCor" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/08/31/Math/Statistics/CovCor/" class="article-date">
+  <time class="dt-published" datetime="2022-08-30T23:42:29.000Z" itemprop="datePublished">2022-08-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Math/">Math</a>►<a class="article-category-link" href="/categories/Math/Statistics/">Statistics</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      CovCor
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+<h1 id="Sum-of-two-independent-r-v-and-Covariance-amp-Correlation"><a href="#Sum-of-two-independent-r-v-and-Covariance-amp-Correlation" class="headerlink" title="Sum of two independent  r.v. and Covariance &amp; Correlation"></a>Sum of two independent  r.v. and Covariance &amp; Correlation</h1><a id="more"></a>
+
+<h2 id="Sum-of-two-independent-r-v"><a href="#Sum-of-two-independent-r-v" class="headerlink" title="Sum of two independent r.v."></a>Sum of two independent r.v.</h2><p><img src="/2022/08/31/Math/Statistics/CovCor/convolution.jpg" alt="convolution"></p>
+<h5 id="Example-sum-of-finite-normal-distributed-r-v-is-still-normal-distributed-r-v"><a href="#Example-sum-of-finite-normal-distributed-r-v-is-still-normal-distributed-r-v" class="headerlink" title="Example : sum of finite normal distributed r.v. is still normal distributed r.v."></a>Example : sum of finite normal distributed r.v. is still normal distributed r.v.</h5><p><img src="/2022/08/31/Math/Statistics/CovCor/normal.png" alt="normal"></p>
+<h2 id="Covariance"><a href="#Covariance" class="headerlink" title="Covariance"></a>Covariance</h2><p><em>how independent r.v. related</em></p>
+<p><img src="/2022/08/31/Math/Statistics/CovCor/specialcase.png" alt="special"></p>
+<p>In picture 1 , When $X &gt; 0$ , $Y$ also tend to be $&gt; 0$, When $X &lt; 0 $ , $Y$ tend to be $&lt; 0$</p>
+<h3 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h3><p>$$<br>cov(X,Y) = E[(X-E[X]) (Y-E[Y])]<br>$$</p>
+<p>covariance indicate how much the two r.v. are related(grow in the same direction)</p>
+<p>$$<br>independent \implies Cov(X,Y) = 0<br>$$</p>
+<p>$$<br>Cov(X,Y) \not \implies independent<br>$$</p>
+<h3 id="Property"><a href="#Property" class="headerlink" title="Property"></a>Property</h3><p>$$<br>Cov(X,Y) = E[(X-E[X]) (Y-E[Y])]<br>$$</p>
+<p>using linearity</p>
+<p>$$<br>=E[XY]-E[XE[Y]]-E[E[X]Y]+E[X][Y]<br>$$</p>
+<p>extract constant</p>
+<p>$$<br>=E[XY]-E[Y]E[X]-E[Y]E[X]+E[X]E[Y]<br>$$</p>
+<p>$$<br>\therefore Cov(X,Y) = E[XY]-E[X]E[Y]<br>$$</p>
+<hr>
+<p>$$<br>Cov(aX+b,Y)=aCov(X,Y)<br>$$</p>
+<hr>
+<h3 id="Revisit-Variance"><a href="#Revisit-Variance" class="headerlink" title="Revisit Variance"></a>Revisit Variance</h3><p>$$<br>var(X_1+X_2), \text{for dependent} X_1,X_2<br>$$</p>
+<p>$$<br>var(X_1 + X_2) = E[(X_1+X_2-E[X_1 + X_2])^2]<br>$$</p>
+<p>By linearity</p>
+<p>$$<br>E[(X_1+X_2-E[X_1 + X_2])^2] = E[(X_1-E[X_1] + X_2  - E[X_2])^2]<br>$$</p>
+<p>$$<br>= var(X_1)+var(X_2)+2Cov(X,Y)<br>$$</p>
+<h2 id="Correlation-Coefficient"><a href="#Correlation-Coefficient" class="headerlink" title="Correlation Coefficient"></a>Correlation Coefficient</h2><p><em>dimensionless version of covariance</em></p>
+<p><em>We need a way to quantify how much are two r.v. are related or not</em></p>
+<h4 id="Standard-Deviation"><a href="#Standard-Deviation" class="headerlink" title="Standard Deviation"></a>Standard Deviation</h4><p><em>square root of variance</em></p>
+<p>$$<br>\sigma_X = \sqrt{var(X)}<br>$$</p>
+<h3 id="Definition-1"><a href="#Definition-1" class="headerlink" title="Definition"></a>Definition</h3><p>$$<br>\rho(X,Y) = E[\frac{X-E[X]}{\sigma_X}\frac{Y-E[Y]}{\sigma_Y}]=\frac{Cov(X,Y)}{\sigma_X \sigma_Y}<br>$$</p>
+<h3 id="Property-1"><a href="#Property-1" class="headerlink" title="Property"></a>Property</h3><ul>
+<li><p>$-1 \le \rho \le 1$</p>
+</li>
+<li><p>$\rho(X,X) = 1 , \rho(X,-X) = -1$</p>
+</li>
+<li><p>$|\rho(X,Y)|=1 \iff X-E[X] = C(Y-E[Y])$ C is constant</p>
+</li>
+<li><p>$\rho(aX+b,Y) = sign(a) \times \rho(X,Y)$ when doing linear transformation, how much the two r.v. are related will not change, only the sign changes</p>
+</li>
+</ul>
+<h3 id="Interpretation"><a href="#Interpretation" class="headerlink" title="Interpretation"></a>Interpretation</h3><p>Correlation coefficient does NOT mean the two r.v. influence each other. It often reflect that there is a underlying, common, hidden factor influence both the two r.v.</p>
+<p>For example, let X be a person’s musical ability and Y be the person’s math ability. $\rho(X,Y)$ is high doesn’t mean that you study math hard will also make you a good musician, it indicate that musical ability and math ability might both controlled by the same area of a person’s mind.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2022/08/31/Math/Statistics/CovCor/" data-id="cl7hdt5970001enyqdhypd58f" data-title="CovCor" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/08/30/Math/Statistics/DerivedDistro/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">DerivedDistro</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/LLL/">LLL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Linear-Algebra/">Linear Algebra</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Statistics/">Statistics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/feelings/">feelings</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/08/31/Math/Statistics/CovCor/">CovCor</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/30/Math/Statistics/DerivedDistro/">DerivedDistro</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/26/Math/Statistics/ContinuousRandomVariable/">ContinuousRandomVariable</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/21/Math/Statistics/DiscreteRandomVariable/">DiscreteRandomVariable</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/20/Math/Statistics/Independent/">Independent</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

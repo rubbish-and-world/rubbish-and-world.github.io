@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>DiscreteRandomVariable | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Discrete Random Variable">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DiscreteRandomVariable">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2022/08/21/Math/Statistics/DiscreteRandomVariable/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&#39;$&#39;, &#39;$&#39;]]}, messageStyle: &quot;none&quot; });  Discrete Random Variable">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/21/Math/Statistics/DiscreteRandomVariable/rv.jpg">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/21/Math/Statistics/DiscreteRandomVariable/idea.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/21/Math/Statistics/DiscreteRandomVariable/fix.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/21/Math/Statistics/DiscreteRandomVariable/pmfexample.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/21/Math/Statistics/DiscreteRandomVariable/uniformgraph.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/21/Math/Statistics/DiscreteRandomVariable/binomialgraph.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/21/Math/Statistics/DiscreteRandomVariable/rule.jpg">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/21/Math/Statistics/DiscreteRandomVariable/variance.jpg">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/21/Math/Statistics/DiscreteRandomVariable/bvar.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/21/Math/Statistics/DiscreteRandomVariable/binomialmean.jpg">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/21/Math/Statistics/DiscreteRandomVariable/morethan2.png">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2022/08/21/Math/Statistics/DiscreteRandomVariable/independentrv.jpg">
+<meta property="article:published_time" content="2022-08-21T05:02:29.000Z">
+<meta property="article:modified_time" content="2022-08-26T02:20:07.347Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2022/08/21/Math/Statistics/DiscreteRandomVariable/rv.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Math/Statistics/DiscreteRandomVariable" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/08/21/Math/Statistics/DiscreteRandomVariable/" class="article-date">
+  <time class="dt-published" datetime="2022-08-21T05:02:29.000Z" itemprop="datePublished">2022-08-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Math/">Math</a>►<a class="article-category-link" href="/categories/Math/Statistics/">Statistics</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      DiscreteRandomVariable
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<script type="text/x-mathjax-config">MathJax.Hub.Config({ tex2jax: {inlineMath: [['$', '$']]}, messageStyle: "none" });</script>
+
+<h1 id="Discrete-Random-Variable"><a href="#Discrete-Random-Variable" class="headerlink" title="Discrete Random Variable"></a>Discrete Random Variable</h1><a id="more"></a>
+
+<p><em>Random “variables” are actually <strong>functions</strong> they are not variables!</em></p>
+<blockquote>
+<p>It is a mapping or a function from possible outcomes in a sample space to a measurable space, often the real numbers.</p>
+</blockquote>
+<p><img src="/2022/08/21/Math/Statistics/DiscreteRandomVariable/rv.jpg" alt="rv"></p>
+<p><img src="/2022/08/21/Math/Statistics/DiscreteRandomVariable/idea.png" alt="idea"></p>
+<p>Random variables : associate a number to every possible outcome</p>
+<h2 id="Probability-mass-function"><a href="#Probability-mass-function" class="headerlink" title="Probability mass function"></a>Probability mass function</h2><p><em>The “probability law” or “probability distribution”</em></p>
+<p>If we fix some $x$ , the $X = x$ is an event, we can have its probability</p>
+<p><img src="/2022/08/21/Math/Statistics/DiscreteRandomVariable/fix.png" alt="fix"></p>
+<p>$$<br>P_X (x) = P(X=x)<br>$$</p>
+<p>$$<br>\text{In this case :} P_X(5)=P(X=5) = \frac{1}{2}<br>$$</p>
+<p>Then we can have a the probability mass function</p>
+<p>$$<br>P_X(x)<br>$$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>Px(<span class="number">3</span>)</span><br><span class="line"><span class="number">1</span>/<span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Px(<span class="number">4</span>)</span><br><span class="line"><span class="number">1</span>/<span class="number">4</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Px(<span class="number">5</span>)</span><br><span class="line"><span class="number">1</span>/<span class="number">2</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Px(<span class="number">1</span>)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">Exception: <span class="string">&quot;Not in domain&quot;</span><span class="string">&quot;</span></span><br></pre></td></tr></table></figure>
+<h4 id="Property"><a href="#Property" class="headerlink" title="Property"></a>Property</h4><p>$$<br>P_X(x) \ge 0<br>$$</p>
+<p>$$<br>P_X(x_1)+P_X(x_2) + … + P_X(x_n) = 1<br>$$</p>
+<p><img src="/2022/08/21/Math/Statistics/DiscreteRandomVariable/pmfexample.png" alt="pmf"></p>
+<h2 id="Useful-PMF"><a href="#Useful-PMF" class="headerlink" title="Useful PMF"></a>Useful PMF</h2><h3 id="Uniform-PMF"><a href="#Uniform-PMF" class="headerlink" title="Uniform PMF"></a>Uniform PMF</h3><ul>
+<li><p>experiment : <code>random.randint(a,b)</code></p>
+</li>
+<li><p>sample space : ${a,a+1,a+2,…,b-1,b}$</p>
+</li>
+<li><p>Random Variable : $X : X(\text{result is x}) = x$</p>
+</li>
+</ul>
+<p><img src="/2022/08/21/Math/Statistics/DiscreteRandomVariable/uniformgraph.png" alt="uniform"></p>
+<h3 id="Binomial-PMF"><a href="#Binomial-PMF" class="headerlink" title="Binomial PMF"></a>Binomial PMF</h3><ul>
+<li><p>experiment : <code>toss a coin N times, with P(heads) = p</code></p>
+</li>
+<li><p>sample space : ${H_1H_2…H_N , T_1H_2…H_N,….}$</p>
+</li>
+<li><p>Random Variable : $X : X( \text{an outcome}) = \text{number of heads in this outcome}$</p>
+</li>
+</ul>
+<p><img src="/2022/08/21/Math/Statistics/DiscreteRandomVariable/binomialgraph.png" alt="binomial"></p>
+<h3 id="Geometry-PMF"><a href="#Geometry-PMF" class="headerlink" title="Geometry PMF"></a>Geometry PMF</h3><ul>
+<li><p>experiment : <code>keep tossing before heads appear</code></p>
+</li>
+<li><p>sample space : ${H,TH,TTH,TTTH,….}$</p>
+</li>
+<li><p>Random Variable : $X : X(\text{an sequence}) = \text{number of trials}$</p>
+</li>
+</ul>
+<p>$$<br>P_X(k) = P(X=k) = (1-p)^{k-1}p , k=1,2,3,…<br>$$</p>
+<h2 id="Expectation-Mean-of-Random-Variable"><a href="#Expectation-Mean-of-Random-Variable" class="headerlink" title="Expectation/Mean of Random Variable"></a>Expectation/Mean of Random Variable</h2><p><em>.<strong>Average</strong> in large number of repetition of the experiment</em></p>
+<p>For example, if you play a game with random variable like this</p>
+<p>$$<br>x=\begin{cases}<br>1 , X(lose),P(lose) = \frac{2}{10}\<br>2 , X(equal),P(equal) = \frac{5}{10}\<br>4 , X(win) , P(win) = \frac{3}{10}<br>\end{cases}<br>$$</p>
+<p>$$<br>\therefore P_X(x) = \begin{cases}<br>\frac{2}{10} , x = 1\<br>\frac{5}{10} , x = 2\<br>\frac{3}{10} , x = 4<br>\end{cases}<br>$$</p>
+<p>When playing the game for 1000 times</p>
+<p>I expect to get</p>
+<p>$$<br>\text{Average Gain} = 1 \times 200 + 2 \times 500 + 4 \times 300<br>$$</p>
+<p>$$<br>\therefore E[X] = \sum_{\text{all x}} P_X(x) \times x<br>$$</p>
+<h4 id="Obvious-property"><a href="#Obvious-property" class="headerlink" title="Obvious property"></a>Obvious property</h4><p><em>Expected value is the “balance” point for the PMF graph, the midpoint for symmetric graphs</em></p>
+<p><em>remember that probability always add to 1</em></p>
+<p>$$<br>a \le X\le b  \implies a \le E[X] \le b<br>$$</p>
+<p>$$<br>X(outcome) = C \Longrightarrow E[X] = C , \text{C is a constant}<br>$$</p>
+<h3 id="Expected-Value-rule-for-E-g-X"><a href="#Expected-Value-rule-for-E-g-X" class="headerlink" title="Expected Value rule, for $E[g(X)]$"></a>Expected Value rule, for $E[g(X)]$</h3><p><img src="/2022/08/21/Math/Statistics/DiscreteRandomVariable/rule.jpg" alt="rule"></p>
+<p>$$<br>\therefore E[g(X)] = \sum_{\text{for all} x} g(x) \times P_X(x)<br>$$</p>
+<p>(Only value mapped, probability doesn’t change)</p>
+<h3 id="Linearity"><a href="#Linearity" class="headerlink" title="Linearity"></a>Linearity</h3><p><a target="_blank" rel="noopener" href="https://proofwiki.org/wiki/Linearity_of_Expectation_Function">proof</a></p>
+<p>$$<br>E[aX+bY] = aE[X] + bE[Y]<br>$$</p>
+<p>$$<br>E[aX+C] = aE[X]+C<br>$$</p>
+<p>(If every ones’ salary doubled and raised 100, the average salary also doubled and raised 100)</p>
+<hr>
+<hr>
+<hr>
+<h2 id="Variance"><a href="#Variance" class="headerlink" title="Variance"></a>Variance</h2><p><em>Measure how the PMF <strong>spread</strong>.</em></p>
+<p>Let $\mu = E[X]$</p>
+<p><img src="/2022/08/21/Math/Statistics/DiscreteRandomVariable/variance.jpg" alt="variance"></p>
+<p>$$<br>var(X) = E[(X-\mu)^2] = E[g(X)] = \sum g(x)P_X(x)<br>$$</p>
+<h4 id="Property-of-variance"><a href="#Property-of-variance" class="headerlink" title="Property of  variance"></a>Property of  variance</h4><p>$$<br>var(aX+b) = a^2var(X)<br>$$</p>
+<p>$$<br>var(X+b)= E[(X+b-(\mu+b))^2] = E[(X-\mu)^2] = var(X)<br>$$</p>
+<p><mark>(just moving the graph left/right by the const $b$, distance won’t change)</mark></p>
+<p>$$<br>var(aX) = E[(aX-a\mu)^2] = E[a^2(X-\mu)^2] = a^2var(X)<br>$$</p>
+<h5 id="A-useful-formula-quick-calculation"><a href="#A-useful-formula-quick-calculation" class="headerlink" title="A useful formula, quick calculation"></a>A useful formula, quick calculation</h5><p>$$<br>var(X) = E[X^2]-(E[X])^2<br>$$</p>
+<p>$$<br>\because var(X) = E[(X-\mu)^2]<br>$$</p>
+<p>$$<br>= \sum X^2P_X(x) - 2\mu\sum XP_X(x) + \mu^2<br>$$</p>
+<p>$$<br>= E[X^2] - 2\mu^2 + \mu = E[X^2]-(E(X)^2)<br>$$</p>
+<h5 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h5><p><em>variance indicate the randomness of a PMF, larger variance gives larger randomness</em></p>
+<h6 id="Bernoulli-variance"><a href="#Bernoulli-variance" class="headerlink" title="Bernoulli variance"></a>Bernoulli variance</h6><p>$$<br>var(X) = p(1-p)<br>$$</p>
+<p><em>A coin is most random when it is <strong>fair</strong>.</em></p>
+<p><img src="/2022/08/21/Math/Statistics/DiscreteRandomVariable/bvar.png" alt="bernoulliVariance"></p>
+<h3 id="Conditional-PMF"><a href="#Conditional-PMF" class="headerlink" title="Conditional PMF"></a>Conditional PMF</h3><p>Total expectation theorem</p>
+<h2 id="Multiple-r-v-and-joint-PMF"><a href="#Multiple-r-v-and-joint-PMF" class="headerlink" title="Multiple r.v. and joint PMF"></a>Multiple r.v. and joint PMF</h2><p>Joint PMF</p>
+<p>$$<br>P_{X,Y} (x,y) = P(X=x  \land Y = y)<br>$$</p>
+<ul>
+<li><p>$\sum_{\text{all x}}\sum_{\text{all y}}P_{X,Y}(x,y)=1$</p>
+</li>
+<li><p>$P_X(x) = \sum_\text{all y} P_{X,Y}(x,y)$</p>
+</li>
+<li><p>$E[g(X,Y)] = \sum_\text{all x}\sum_\text{all y} g(x,y)P_{X,Y}(x,y)$</p>
+</li>
+<li><p>$E[X+Y] = E[X]+E[Y]$</p>
+</li>
+</ul>
+<p><img src="/2022/08/21/Math/Statistics/DiscreteRandomVariable/binomialmean.jpg" alt="exp"></p>
+<h2 id="Independent-r-v"><a href="#Independent-r-v" class="headerlink" title="Independent r.v."></a>Independent r.v.</h2><p>$$<br>P_{X|Y}(x,y) = P(X=x | Y=y) = \frac{P( X=x \land Y = y )}{P(Y=y)}<br>$$</p>
+<p>$$<br>= \frac{P_{X,Y}(x,y)}{P_Y(y)}<br>$$</p>
+<p>And for every $y$, we take it as if it is a const</p>
+<p>$$<br>\sum_\text{for all x} P_{X|Y}(x,y) = 1<br>$$</p>
+<h4 id="Multiplication-rule-for-conditioning-r-v"><a href="#Multiplication-rule-for-conditioning-r-v" class="headerlink" title="Multiplication rule for conditioning r.v."></a>Multiplication rule for conditioning r.v.</h4><p>$$<br>P_{X|Y}(x,y) = P_{Y}(y) \times P_{X|Y}(x|y)<br>$$</p>
+<p><img src="/2022/08/21/Math/Statistics/DiscreteRandomVariable/morethan2.png" alt="more"></p>
+<h4 id="Total-Probability-theorem"><a href="#Total-Probability-theorem" class="headerlink" title="Total Probability theorem"></a>Total Probability theorem</h4><p>$$<br>P_X(x) = \sum_\text{all y}P_Y(y)P_{X|Y}(x|y)<br>$$</p>
+<h5 id="Total-Expectation-theorem"><a href="#Total-Expectation-theorem" class="headerlink" title="Total Expectation theorem"></a>Total Expectation theorem</h5><p>$$<br>E[X] = \sum_\text{all y} P_Y(y)E[X|Y=y]<br>$$</p>
+<p>$$<br>E[X|Y=y] = \sum_\text{all y}x \times P_{X|Y}(x|y)<br>$$</p>
+<h2 id="Independent-r-v-1"><a href="#Independent-r-v-1" class="headerlink" title="Independent r.v."></a>Independent r.v.</h2><p><em>Similar with independent events</em></p>
+<p><img src="/2022/08/21/Math/Statistics/DiscreteRandomVariable/independentrv.jpg" alt="independent r.v."></p>
+<p>$$<br>P_{X,Y,Z}(x,y,z)=P_X(x)P_Y(y)P_Z(z)<br>$$</p>
+<p>The random variables are independent when they do not intersect with each other, knowing any probability of any random variable will give any information about the probability of the rest r.v.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jointPMF == functools.reduce( <span class="keyword">lambda</span> x,y : x*y , marginalPMFs )</span><br></pre></td></tr></table></figure>
+<h5 id="Independent-expectation"><a href="#Independent-expectation" class="headerlink" title="Independent expectation"></a>Independent expectation</h5><p>$$<br>X \text{ and } Y \text{ are independent} \implies E[XY] = E[X]E[Y]<br>$$</p>
+<p>$$<br>E[XY] = \sum_{x}\sum_{y}xyP_{X,Y}(x,y)<br>$$</p>
+<p>$$<br> \because P_{X,Y}(x,y) = P_X(x)P_Y(y)<br>$$</p>
+<p>$$<br>\therefore \sum_{x}\sum_{y}xyP_{X,Y}(x,y) = \sum_{x}\sum_{y}xP_{X}(x)yP_Y(y)<br>$$</p>
+<p>$$<br>= \sum_xxP_{X}(x)\sum_yyP_Y(y) = \sum_xP_X(x)E[Y]<br>$$</p>
+<p>$$<br> = E[Y] \sum_xP_X(x)  = E[Y]E[X]<br>$$</p>
+<p>And this can expand to more situations</p>
+<p>$$<br>E[g(X)h(Y)]= E[g(X)]E[h(Y)]<br>$$</p>
+<h4 id="Independent-variance"><a href="#Independent-variance" class="headerlink" title="Independent variance"></a>Independent variance</h4><p>$$<br>X \text{ and } Y \text{ are independent} \implies var(X+Y) = var(X) + var(Y)<br>$$</p>
+<h6 id="Example-1"><a href="#Example-1" class="headerlink" title="Example"></a>Example</h6><p>variance of binomial r.v.</p>
+<p>same trick when calculating expectation</p>
+<p>$$<br>var(X)= var(X_1 + X_2 + … +X_i) = var(X_1)+var(X_2)+…<br>$$</p>
+<p>$$<br>= n\times var(X_1) = n p(1-p)<br>$$</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2022/08/21/Math/Statistics/DiscreteRandomVariable/" data-id="cl7hdt5990003enyqhbawcrs9" data-title="DiscreteRandomVariable" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/08/26/Math/Statistics/ContinuousRandomVariable/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          ContinuousRandomVariable
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/08/20/Math/Statistics/Independent/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Independent</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/LLL/">LLL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Linear-Algebra/">Linear Algebra</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Statistics/">Statistics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/feelings/">feelings</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/08/31/Math/Statistics/CovCor/">CovCor</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/30/Math/Statistics/DerivedDistro/">DerivedDistro</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/26/Math/Statistics/ContinuousRandomVariable/">ContinuousRandomVariable</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/21/Math/Statistics/DiscreteRandomVariable/">DiscreteRandomVariable</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/20/Math/Statistics/Independent/">Independent</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
