@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>JStypes | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="JavaScript Type System">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JStypes">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2022/11/15/miscellaneous/JStypes/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="JavaScript Type System">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-11-15T00:40:37.000Z">
+<meta property="article:modified_time" content="2022-11-15T07:38:19.637Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-miscellaneous/JStypes" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/11/15/miscellaneous/JStypes/" class="article-date">
+  <time class="dt-published" datetime="2022-11-15T00:40:37.000Z" itemprop="datePublished">2022-11-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      JStypes
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="JavaScript-Type-System"><a href="#JavaScript-Type-System" class="headerlink" title="JavaScript Type System"></a>JavaScript Type System</h1><a id="more"></a>
+
+<p><em>One may find that JS type system is quiet confusing, and it is.</em></p>
+<p><em>But if you spot them from a <code>C</code> perspective, thing might be a bit more understandable</em></p>
+<h2 id="Basic-types"><a href="#Basic-types" class="headerlink" title="Basic types"></a>Basic types</h2><p><strong><em>JS only have three basic types, JSON representable types</em></strong></p>
+<h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="string">&quot;abcdef&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> ss = <span class="string">&#x27;dsfasdgrg&#x27;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> s);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> ss);</span><br></pre></td></tr></table></figure>
+<h3 id="Number"><a href="#Number" class="headerlink" title="Number"></a>Number</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> n = <span class="number">1204352</span>;</span><br><span class="line"><span class="keyword">var</span> nn = <span class="number">3.12354235</span>;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> n);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> nn);</span><br></pre></td></tr></table></figure>
+<h3 id="Boolean"><a href="#Boolean" class="headerlink" title="Boolean"></a>Boolean</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> one = <span class="literal">true</span> ;</span><br><span class="line"><span class="keyword">var</span> zero = <span class="literal">false</span> ;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> one);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> zero);</span><br></pre></td></tr></table></figure>
+<h2 id="Object-type"><a href="#Object-type" class="headerlink" title="Object type"></a>Object type</h2><p><strong><em>Just like <code>Python</code>, so many things are objects</em></strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> array = [];</span><br><span class="line"><span class="keyword">var</span> dic = &#123;&#125; ;</span><br><span class="line"><span class="keyword">var</span> obj = &#123; <span class="attr">name</span> : <span class="string">&quot;V&quot;</span> , <span class="attr">age</span> : <span class="number">30</span> &#125;;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> array);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> dic);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> obj);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Functions are also objects</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/42467581/why-does-typeof-function-return-function">javascript - Why does typeof function return function? - Stack Overflow</a></p>
+<h2 id="Undefined"><a href="#Undefined" class="headerlink" title="Undefined"></a>Undefined</h2><p><em>Just “Garbage Value”, the container sits there but it holds garbage</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> variable ;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">the value of variable can be any number ranging [-(2**31),2**31-1]</span></span><br><span class="line"><span class="comment">you can never know it</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> variable ; <span class="comment">// uninitialized variable holds garbage value</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> variable); <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+<h2 id="Null-Object"><a href="#Null-Object" class="headerlink" title="Null (Object)"></a>Null (Object)</h2><p><em>The <code>NULL</code> pointer in <code>C</code></em></p>
+<p><em>JavaScript objects are all referred by pointer/reference, so when the obj doesn’t exist, a <code>null</code> is returned</em></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">node</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> data; </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> * <span class="title">next</span> ;</span></span><br><span class="line">&#125; Node ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function">Node* <span class="title">find</span><span class="params">(Node* head)</span></span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">if</span> (notFound)&#123; <span class="keyword">return</span> <span class="literal">NULL</span> ;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">find</span>(<span class="params">Node head</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="keyword">if</span> (notFound) &#123; <span class="keyword">return</span> <span class="literal">null</span> ;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="literal">null</span>); <span class="comment">// Object    !!!!</span></span><br></pre></td></tr></table></figure>
+<h2 id="NaN-Number"><a href="#NaN-Number" class="headerlink" title="NaN (Number)"></a>NaN (Number)</h2><p><em>NaN, not a number, represent an “error” in arithmetic</em></p>
+<p>The result is still a number, but it just can’t be represented correctly in computer</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> v = <span class="number">3</span> / <span class="number">0</span> ;</span><br><span class="line"><span class="comment">// warning: division by zero is undefined</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">float</span> a = <span class="built_in">sqrt</span>(<span class="number">-9</span>) ;</span><br><span class="line"><span class="comment">// nan</span></span><br><span class="line"><span class="comment">// C also has this in some implementation !!!</span></span><br><span class="line"><span class="comment">// It even has inf</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">0</span> / <span class="number">0</span> ;</span><br><span class="line"><span class="keyword">var</span> s = <span class="string">&quot;ok&quot;</span> * <span class="number">10</span> ;</span><br><span class="line"><span class="keyword">var</span> c = <span class="built_in">Math</span>.sqrt(-<span class="number">9</span>) ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">(<span class="literal">NaN</span> != <span class="literal">NaN</span>) == <span class="literal">true</span> ; </span><br><span class="line"><span class="built_in">isNaN</span>(<span class="literal">NaN</span>) == <span class="literal">true</span> ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">typeof</span> <span class="literal">NaN</span> ; <span class="comment">// number</span></span><br><span class="line"><span class="comment">// The result is still a number, </span></span><br><span class="line"><span class="comment">// but it just can&#x27;t be represented correctly in computer</span></span><br><span class="line"><span class="comment">// So it still a number !</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="Comparison"><a href="#Comparison" class="headerlink" title="Comparison"></a>Comparison</h2><h3 id="Rule-1"><a href="#Rule-1" class="headerlink" title="Rule 1:"></a>Rule 1:</h3><p>when <code>string</code> vs <code>number</code>, always convert <code>string</code> to <code>number</code></p>
+<h3 id="Rule-2"><a href="#Rule-2" class="headerlink" title="Rule 2:"></a>Rule 2:</h3><p>when <code>boolean</code> vs <code>number</code>, always convert to <code>number</code>(That’s natural, true is 1, false is 0)</p>
+<h3 id="Rule-3"><a href="#Rule-3" class="headerlink" title="Rule 3:"></a>Rule 3:</h3><p><code>undefined</code> and <code>null</code> are equal, since they both represent “no value”</p>
+<h4 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;hello&quot;</span> == <span class="number">3</span></span><br><span class="line"><span class="comment">// &quot;hello&quot; -&gt; NaN</span></span><br><span class="line"><span class="comment">// NaN != 3 -&gt; false</span></span><br><span class="line"><span class="string">&quot;&quot;</span> == <span class="literal">false</span></span><br><span class="line"><span class="comment">// &quot;&quot; -&gt; 0</span></span><br><span class="line"><span class="comment">// false -&gt; 0</span></span><br><span class="line"><span class="comment">// 0 == 0 -&gt; true</span></span><br></pre></td></tr></table></figure>
+<h4 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h4><p><strong>If you want to strict type comparison, use <code>===</code> instead!</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2022/11/15/miscellaneous/JStypes/" data-id="clqcg0ivq006k2dyq6m3x1zh2" data-title="JStypes" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/12/03/feelings/EndOfIdealism/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          EndOfIdealism
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/09/15/FrontEnd/MSbeginnerCourse/JSbasic/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">JSbasic</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/">FrontEnd</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/course/">course</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/IOT/">IOT</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/LLL/">LLL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Linear-Algebra/">Linear Algebra</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Statistics/">Statistics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/TEP/">TEP</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web3/">Web3</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/feelings/">feelings</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/12/19/Web3/Blockchain/Money-Ledger-Bitcoin/">Money-Ledger-Bitcoin</a>
+          </li>
+        
+          <li>
+            <a href="/2023/12/10/Web3/Blockchain/MIT15-S12/">MIT15.S12</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/18/OS/OSTEP/Virtualization/">Virtualization</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/10/OS/OSTEP/Operating-System-the-Three-Easy-Piece/">Operating System the Three Easy Piece</a>
+          </li>
+        
+          <li>
+            <a href="/2023/03/11/feelings/Ideas/">Ideas</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

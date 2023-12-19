@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Virtualization | rubbishbin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="The first piece : Virtualization">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Virtualization">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2023/08/18/OS/OSTEP/Virtualization/index.html">
+<meta property="og:site_name" content="rubbishbin">
+<meta property="og:description" content="The first piece : Virtualization">
+<meta property="og:locale">
+<meta property="og:image" content="http://rubbish-and-world.github.io/2023/08/18/OS/OSTEP/Virtualization/Transitions.png">
+<meta property="article:published_time" content="2023-08-18T00:56:53.000Z">
+<meta property="article:modified_time" content="2023-09-18T00:17:36.945Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rubbish-and-world.github.io/2023/08/18/OS/OSTEP/Virtualization/Transitions.png">
+  
+    <link rel="alternate" href="/atom.xml" title="rubbishbin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">rubbishbin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-OS/OSTEP/Virtualization" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/08/18/OS/OSTEP/Virtualization/" class="article-date">
+  <time class="dt-published" datetime="2023-08-18T00:56:53.000Z" itemprop="datePublished">2023-08-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/OS/">OS</a>►<a class="article-category-link" href="/categories/OS/TEP/">TEP</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Virtualization
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="The-first-piece-Virtualization"><a href="#The-first-piece-Virtualization" class="headerlink" title="The first piece : Virtualization"></a>The first piece : Virtualization</h1><a id="more"></a>
+
+<h2 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h2><h3 id="How-to-implement-an-OS-idea"><a href="#How-to-implement-an-OS-idea" class="headerlink" title="How to implement an OS idea ?"></a>How to implement an OS idea ?</h3><p>Cooperation between low-level <strong>manchanism(functionality implementation)</strong> and high-level <strong>policy(decision maker)</strong></p>
+<h3 id="Process-Interface"><a href="#Process-Interface" class="headerlink" title="Process Interface"></a>Process Interface</h3><ul>
+<li>Creation</li>
+<li>Destroy</li>
+<li>Wait</li>
+<li>Other( read statistics, suspand, … )</li>
+</ul>
+<h3 id="Process-Status-Transitions"><a href="#Process-Status-Transitions" class="headerlink" title="Process Status Transitions"></a>Process Status Transitions</h3><p><img src="/2023/08/18/OS/OSTEP/Virtualization/Transitions.png" alt="Transitions"></p>
+<h3 id="An-orphaned-child-will-adopted-by-init"><a href="#An-orphaned-child-will-adopted-by-init" class="headerlink" title="An orphaned child will adopted by init"></a>An orphaned child will adopted by <code>init</code></h3><p>When parent is killed, the child will not be automatically killed. It will be adopted by <code>init</code> whose <code>pid</code> is <code>1</code>.</p>
+<p><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/395877/are-child-processes-created-with-fork-automatically-killed-when-the-parent-is">are-child-processes-created-with-fork-automatically-killed-when-the-parent-is</a></p>
+<h3 id="Hackers-‘hack’-a-system-via-malicious-input"><a href="#Hackers-‘hack’-a-system-via-malicious-input" class="headerlink" title="Hackers ‘hack’ a system via malicious input"></a>Hackers ‘hack’ a system via <code>malicious input</code></h3><blockquote>
+<p>In general, a secure system must treat user inputs with great suspicion. Not doing so will undoubtedly lead to easily hacked software, a despairing sense that the world is an unsafe and scary place, and the loss of job security for the all-too-trusting OS developer.</p>
+</blockquote>
+<h2 id="Scheduling"><a href="#Scheduling" class="headerlink" title="Scheduling"></a>Scheduling</h2><h3 id="The-idea-of-‘predicating-the-future-via-past’-is-also-used-in-OS-but-not-implemented-with-neural-network"><a href="#The-idea-of-‘predicating-the-future-via-past’-is-also-used-in-OS-but-not-implemented-with-neural-network" class="headerlink" title="The idea of ‘predicating the future via past’ is also used in OS, but not implemented with neural network"></a>The idea of ‘predicating the future via past’ is also used in OS, but not implemented with neural network</h3><blockquote>
+<p>Shortly,we will see how to overcome this problem, by building a scheduler that<br>uses the recent past to predict the future. This scheduler is known as the multi-level feedback queue</p>
+</blockquote>
+<h3 id="Attack-Game-the-scheduler"><a href="#Attack-Game-the-scheduler" class="headerlink" title="Attack/Game the scheduler"></a>Attack/Game the scheduler</h3><blockquote>
+<p>a smart user could rewrite their program to game the scheduler. Gaming the scheduler generally refers to the idea of doing something sneaky to trick the scheduler into giving you more than your fair share of the resource.</p>
+</blockquote>
+<blockquote>
+<p>Consider the modern datacenter, in which users from around the world share CPUs, memories, networks, and storage systems; without care in policy design and enforcement, a single user may be able to adversely harm others and gain<br>advantage for itself. Thus, scheduling policy forms an important part of<br>the security of a system, and should be carefully constructed.</p>
+</blockquote>
+<h3 id="Parameter-is-always-a-problem"><a href="#Parameter-is-always-a-problem" class="headerlink" title="Parameter is always a problem"></a>Parameter is always a problem</h3><blockquote>
+<p>A few other issues arise with MLFQ scheduling. One big question is<br>how to parameterize such a scheduler.</p>
+<p>There are no easy answers to these questions, and thus only some experience with workloads and subsequent tuning of the scheduler will lead to a satisfactory balance</p>
+</blockquote>
+<p>The reason behind the existence of parameters is <strong>schema/model/policy is purposed to solve universal scenario problem, to perfectly apply them to specified problem, parameters must be fine tuned with <mark>additional information of specified scenario</mark></strong></p>
+<p>If we want to build a omniscient solution, the solution need to <mark>learn both the policy itself and the scenario-specified information</mark> and carefully combine them together.</p>
+<h3 id="Divide-something-by-proportion"><a href="#Divide-something-by-proportion" class="headerlink" title="Divide something by proportion"></a>Divide something by proportion</h3><blockquote>
+<p>One of the most powerful (and basic) mechanisms in the design of lottery<br>(and stride) scheduling is that of the ticket. The ticket is used to represent<br>a process’s share of the CPU in these examples, but can be applied much<br>more broadly.</p>
+<p>If you are ever in need of a mechanism to represent a proportion of ownership,<br>this concept just might be … (wait for it) … the ticket.</p>
+</blockquote>
+<h3 id="Linux-scheduler-CFS"><a href="#Linux-scheduler-CFS" class="headerlink" title="Linux scheduler : CFS"></a>Linux scheduler : CFS</h3><p>modern linux use an simple but advanced scheduler : Complete Fair Scheduler</p>
+<h3 id="There-are-no-perfect-solution-to-lots-of-system-design-problems-they-are-all-trade-off"><a href="#There-are-no-perfect-solution-to-lots-of-system-design-problems-they-are-all-trade-off" class="headerlink" title="There are no perfect solution to lots of system design problems, they are all trade-off"></a>There are no perfect solution to lots of system design problems, they are all trade-off</h3><blockquote>
+<p>I personally think being pragmatic is a<br>good thing, and pragmatists realize that not all problems have clean and easy<br>solutions.</p>
+</blockquote>
+<h2 id="XV6-Lab"><a href="#XV6-Lab" class="headerlink" title="XV6 Lab"></a>XV6 Lab</h2><h3 id="Know-when-you-should-need-to-obsess-with-details"><a href="#Know-when-you-should-need-to-obsess-with-details" class="headerlink" title="Know when you should/need to obsess with details"></a>Know <strong>when</strong> you should/need to obsess with details</h3><ol>
+<li>Must of the time you should stick with high level concept/ideas (Idea level)</li>
+<li>When you need to make it real and prove the idea works in some extend, conside a small amount of details (Lab level)</li>
+<li>When your idea works perfectly in your lab environment, you decide to make it into larget scale production, conside all possible details (Engineering level)</li>
+</ol>
+<blockquote>
+<p>As always, the concept is easy: with operating systems, the devil is always in the details.</p>
+</blockquote>
+<h2 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h2><h3 id="How-to-build-reliable-system"><a href="#How-to-build-reliable-system" class="headerlink" title="How to build reliable system ?"></a>How to build reliable system ?</h3><blockquote>
+<p>Isolation is a key principle in building reliable systems. If two entities are properly isolated from one another, this implies that one can fail with- out affecting the other.</p>
+</blockquote>
+<h3 id="What-to-do-if-you-need-to-be-really-fast-caring-much-about-efficiency"><a href="#What-to-do-if-you-need-to-be-really-fast-caring-much-about-efficiency" class="headerlink" title="What to do if you need to be really fast, caring much about efficiency"></a>What to do if you need to be really fast, caring much about <strong>efficiency</strong></h3><p><em>You use <strong>hardware</strong>.</em></p>
+<blockquote>
+<p> Efficiency dictates that we make use of hardware support, which at first<br>will be quite rudimentary (e.g., just a few registers) but will grow to be<br>fairly complex (e.g., TLBs, page-table support, and so forth, as you will<br>see). </p>
+</blockquote>
+<h3 id="How-to-solve-problems"><a href="#How-to-solve-problems" class="headerlink" title="How to solve problems ?"></a>How to <strong><em>solve problems</em></strong> ?</h3><blockquote>
+<p>always make sure you understand the problem you are solving before moving onto the solution; indeed, if you understand the problem, you can often derive the solution yourself. </p>
+</blockquote>
+<h3 id="Common-innovation-Combination"><a href="#Common-innovation-Combination" class="headerlink" title="Common innovation : Combination"></a>Common innovation : Combination</h3><blockquote>
+<p>Whenever you have two reasonable but different approaches to something in life, you should always examine the combination of the two to see if you can obtain the best of both worlds.</p>
+</blockquote>
+<blockquote>
+<p>When you have two good and seemingly opposing ideas, you should always see if you can combine them into a hybrid that manages to achieve the best of both worlds. Hybrid corn species, for example, are known to be more robust than any naturally-occurring species.</p>
+</blockquote>
+<p>**But also beware that : **</p>
+<blockquote>
+<p>Of course, not all hybrids are a good idea;</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2023/08/18/OS/OSTEP/Virtualization/" data-id="clqcg0iw7008q2dyq679fhws9" data-title="Virtualization" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/12/10/Web3/Blockchain/MIT15-S12/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          MIT15.S12
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/08/10/OS/OSTEP/Operating-System-the-Three-Easy-Piece/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">Operating System the Three Easy Piece</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/">FrontEnd</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/course/">course</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/IOT/">IOT</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/LLL/">LLL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Linear-Algebra/">Linear Algebra</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Statistics/">Statistics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/TEP/">TEP</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web3/">Web3</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/feelings/">feelings</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/12/19/Web3/Blockchain/Money-Ledger-Bitcoin/">Money-Ledger-Bitcoin</a>
+          </li>
+        
+          <li>
+            <a href="/2023/12/10/Web3/Blockchain/MIT15-S12/">MIT15.S12</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/18/OS/OSTEP/Virtualization/">Virtualization</a>
+          </li>
+        
+          <li>
+            <a href="/2023/08/10/OS/OSTEP/Operating-System-the-Three-Easy-Piece/">Operating System the Three Easy Piece</a>
+          </li>
+        
+          <li>
+            <a href="/2023/03/11/feelings/Ideas/">Ideas</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
