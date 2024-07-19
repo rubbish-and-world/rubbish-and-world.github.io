@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Solana-SPL-Token | RainbowBin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Make your own coin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Solana-SPL-Token">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2024/07/19/Web3/Blockchain/Solana-SPL-Token/index.html">
+<meta property="og:site_name" content="RainbowBin">
+<meta property="og:description" content="Make your own coin">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-07-19T11:23:59.000Z">
+<meta property="article:modified_time" content="2024-07-19T12:06:52.900Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="RainbowBin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">RainbowBin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Web3/Blockchain/Solana-SPL-Token" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/07/19/Web3/Blockchain/Solana-SPL-Token/" class="article-date">
+  <time class="dt-published" datetime="2024-07-19T11:23:59.000Z" itemprop="datePublished">2024-07-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Web3/">Web3</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Solana-SPL-Token
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Make-your-own-coin"><a href="#Make-your-own-coin" class="headerlink" title="Make your own coin"></a>Make your own coin</h1><a id="more"></a>
+
+<p> <em>Actually, if you are offering a coin based on an existing blockchain, the process is quite easy</em></p>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=1U1ae2D2jk4&ab_channel=Solana">Tutorial by Solana</a></p>
+<p><a target="_blank" rel="noopener" href="https://youtu.be/befUVytFC80?si=7-pFaM6IWET08ocG">Tutorial without extension</a></p>
+<h2 id="Create-a-wallet"><a href="#Create-a-wallet" class="headerlink" title="Create a wallet"></a>Create a wallet</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ solana-keygen new</span><br></pre></td></tr></table></figure>
+<p>and send it some solana</p>
+<h2 id="Install-spl-token"><a href="#Install-spl-token" class="headerlink" title="Install spl-token"></a>Install spl-token</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cargo install spl-token</span><br></pre></td></tr></table></figure>
+<h2 id="Create-the-token"><a href="#Create-the-token" class="headerlink" title="Create the token"></a>Create the token</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ spl-token create-token</span><br><span class="line"></span><br><span class="line"><span class="comment"># If you need to add metadata to it, use this one</span></span><br><span class="line">$ spl-token --program-id TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb create-token --enable-metadata</span><br><span class="line">...</span><br><span class="line">This gives you the Token address</span><br><span class="line">$ spl-token initialize-metadata YourTokenAddress <span class="string">&#x27;TokenName&#x27;</span> <span class="string">&#x27;TokenSymbol&#x27;</span> <span class="string">&#x27;URL_to_metadata.json&#x27;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Create-an-account-to-hold-your-new-token"><a href="#Create-an-account-to-hold-your-new-token" class="headerlink" title="Create an account to hold your new token"></a>Create an account to hold your new token</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ spl-token create-account YourTokenAddress</span><br></pre></td></tr></table></figure>
+<h2 id="Create-money-from-Air-and-send-it-to-the-new-account"><a href="#Create-money-from-Air-and-send-it-to-the-new-account" class="headerlink" title="Create money from Air and send it to the new account"></a>Create money from Air and send it to the new account</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ spl-token mint YourTokenAddress 1000000000 YourAccountAddress</span><br></pre></td></tr></table></figure>
+<h2 id="check-your-tokens"><a href="#check-your-tokens" class="headerlink" title="check your tokens"></a>check your tokens</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ spl-token accounts</span><br><span class="line">Token                                         Balance</span><br><span class="line">--------------------------------------------------------</span><br></pre></td></tr></table></figure>
+<h2 id="Send-your-token-to-others"><a href="#Send-your-token-to-others" class="headerlink" title="Send your token to others"></a>Send your token to others</h2><p>Your user need to have a solana wallet, whatever it is. Then give you the public key. </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ spl-token transfer --fund-recipient --allow-unfunded-recipient YourTokenAddress Number_you_want_to_send OthersPublicKey</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="But-how-to-make-your-token-tradable"><a href="#But-how-to-make-your-token-tradable" class="headerlink" title="But how to make your token tradable ?"></a>But how to make your token tradable ?</h2><p><em>Here is what we called an ‘exchange’ comes into play</em></p>
+<p>You need to <strong>list</strong> your coin on an exchange. There are two types of Exchanges : CEX and DEX</p>
+<h3 id="CEX-Centralized-Exchanges"><a href="#CEX-Centralized-Exchanges" class="headerlink" title="CEX (Centralized Exchanges)"></a>CEX (Centralized Exchanges)</h3><p>Like <code>OKX</code> and <code>Binance</code>, users send their coins to the CEX, then trading happens there. Just like traditional exchanges.</p>
+<h3 id="DEX-Decentralized-Exchanges"><a href="#DEX-Decentralized-Exchanges" class="headerlink" title="DEX (Decentralized Exchanges)"></a>DEX (Decentralized Exchanges)</h3><p>DEX use something called Liquidity Pool and Automatical Market Maker(AMM). DEX is acutally some <strong>smart contract code</strong> manage two piles of pre-staking coins. The exchange happens directly between user and Liquidity Pool.</p>
+<h2 id="The-easiest-way-to-make-it-tradable"><a href="#The-easiest-way-to-make-it-tradable" class="headerlink" title="The easiest way to make it tradable"></a>The easiest way to make it tradable</h2><p>Go to <a target="_blank" rel="noopener" href="https://raydium.io/">Raydium</a>, create a new Liquidity Pool, staking some tokens, then it is done.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2024/07/19/Web3/Blockchain/Solana-SPL-Token/" data-id="clysnnrfn0000hzyq3w92ggcl" data-title="Solana-SPL-Token" class="article-share-link">Teilen</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2024/07/09/miscellaneous/PaperHow2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">PaperHow2</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/">FrontEnd</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/course/">course</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/IOT/">IOT</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/LLL/">LLL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Linear-Algebra/">Linear Algebra</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Statistics/">Statistics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/TEP/">TEP</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web3/">Web3</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/academic/">academic</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bis/">bis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/feeling/">feeling</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/feelings/">feelings</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">February 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/07/19/Web3/Blockchain/Solana-SPL-Token/">Solana-SPL-Token</a>
+          </li>
+        
+          <li>
+            <a href="/2024/07/09/miscellaneous/PaperHow2/">PaperHow2</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/19/feelings/flow/">flow</a>
+          </li>
+        
+          <li>
+            <a href="/2024/05/17/feelings/crush/">crush</a>
+          </li>
+        
+          <li>
+            <a href="/2024/02/04/Bis/Core/">Core</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
