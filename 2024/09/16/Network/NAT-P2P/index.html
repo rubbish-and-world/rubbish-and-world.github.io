@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>NAT_P2P | RainbowBin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="P2P problem">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NAT_P2P">
+<meta property="og:url" content="http://rubbish-and-world.github.io/2024/09/16/Network/NAT-P2P/index.html">
+<meta property="og:site_name" content="RainbowBin">
+<meta property="og:description" content="P2P problem">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-09-16T12:09:08.000Z">
+<meta property="article:modified_time" content="2024-09-16T13:00:51.998Z">
+<meta property="article:author" content="rubbish">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="RainbowBin" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">RainbowBin</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://rubbish-and-world.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Network/NAT-P2P" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2024/09/16/Network/NAT-P2P/" class="article-date">
+  <time class="dt-published" datetime="2024-09-16T12:09:08.000Z" itemprop="datePublished">2024-09-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Networking/">Networking</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      NAT_P2P
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="P2P-problem"><a href="#P2P-problem" class="headerlink" title="P2P problem"></a>P2P problem</h1><a id="more"></a>
+
+<h2 id="Origination-of-the-problem"><a href="#Origination-of-the-problem" class="headerlink" title="Origination of the problem"></a>Origination of the problem</h2><p>I am going to build a game which only involve two player, then it would be nature to consider connecting them directly, aka P2P networking.</p>
+<p>The game is written in Javascript, so it WebRTC appear to be my answer. After some research, I choose to use the library called <code>peerjs</code>, a wrapper around the WebRTC API.</p>
+<h2 id="Test-P2P-Network"><a href="#Test-P2P-Network" class="headerlink" title="Test P2P Network"></a>Test P2P Network</h2><p>In the <a target="_blank" rel="noopener" href="https://peerjs.com/examples">examples</a> given by <code>peerjs</code>, I test the ‘Peer-to-Peer Cue System’, and other P2P app in the wild. It appears that the app only works when the sender and receiver are on the same host. It doesn’t work when my Mac serves as sender and Lab Desktop serves as receiver.</p>
+<h2 id="Dig-into-the-code"><a href="#Dig-into-the-code" class="headerlink" title="Dig into the code"></a>Dig into the code</h2><p>I download the ‘Peer-to-Peer Cue System’ source code from Github to modify and get some sense. Finally I come with the following test code by following the <code>peerjs</code> documentation.</p>
+<h3 id="Sender"><a href="#Sender" class="headerlink" title="Sender"></a>Sender</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;peerID&quot;</span>&gt;</span> ID :<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;otherID&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;status&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">&quot;destID&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">&quot;connectPeer()&quot;</span>&gt;</span>Connect<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> peerID = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;peerID&#x27;</span>);</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> otherID = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;otherID&#x27;</span>);</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> stat = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;status&#x27;</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> peer = <span class="keyword">new</span> Peer(&#123;</span></span><br><span class="line">            config : &#123;</span><br><span class="line"><span class="javascript">                <span class="string">&#x27;iceServers&#x27;</span> : [</span></span><br><span class="line"><span class="javascript">                    &#123; <span class="attr">url</span>: <span class="string">&#x27;stun:stun.l.google.com:19302&#x27;</span> &#125;</span></span><br><span class="line">                ]</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="comment">//create a new peer</span></span></span><br><span class="line"><span class="javascript">        peer.on(<span class="string">&#x27;open&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">id</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">	    <span class="built_in">console</span>.log(<span class="string">&#x27;My peer ID is: &#x27;</span> + id);</span></span><br><span class="line"><span class="javascript">            peerID.textContent = <span class="string">&#x27;My peer ID is: &#x27;</span> + id;</span></span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="function"><span class="keyword">function</span> <span class="title">connectPeer</span>(<span class="params"></span>)</span>&#123;</span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> destID = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;destID&#x27;</span>).value;</span></span><br><span class="line"><span class="javascript">            <span class="built_in">console</span>.log(<span class="string">&quot;try to connect to &quot;</span> + destID)</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">            <span class="comment">//connect to peer</span></span></span><br><span class="line"><span class="javascript">            <span class="keyword">var</span> conn = peer.connect(destID,  &#123;<span class="attr">reliable</span> : <span class="literal">true</span>&#125;);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">            <span class="built_in">console</span>.log(<span class="string">&quot;connected to : &quot;</span> + conn.peer);</span></span><br><span class="line"><span class="javascript">            otherID.innerText = <span class="string">&quot;connected to : &quot;</span> + conn.peer ;</span></span><br><span class="line"><span class="javascript">            stat.innerText = <span class="string">&quot;Connection is &quot;</span> + conn.open ;</span></span><br><span class="line">            </span><br><span class="line"><span class="javascript">            <span class="comment">// open the connection</span></span></span><br><span class="line"><span class="javascript">            conn.on(<span class="string">&#x27;open&#x27;</span> , <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">                stat.innerHTML = <span class="string">&quot;Connection turned to open &quot;</span> + conn.open ;</span></span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="Receiver"><a href="#Receiver" class="headerlink" title="Receiver"></a>Receiver</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;peerID&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;otherID&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;status&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> peer = <span class="keyword">new</span> Peer(&#123;</span></span><br><span class="line">            config : &#123;</span><br><span class="line"><span class="javascript">                <span class="string">&#x27;iceServers&#x27;</span> : [</span></span><br><span class="line"><span class="javascript">                    &#123; <span class="attr">url</span>: <span class="string">&#x27;stun:stun.l.google.com:19302&#x27;</span> &#125;</span></span><br><span class="line">                ]</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> peerID  = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;peerID&#x27;</span>);</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> otherID = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;otherID&#x27;</span>);</span></span><br><span class="line"><span class="javascript">        <span class="keyword">var</span> stat = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;status&#x27;</span>);</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">        peer.on(<span class="string">&#x27;open&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">id</span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">	        <span class="built_in">console</span>.log(<span class="string">&#x27;My peer ID is: &#x27;</span> + id);</span></span><br><span class="line"><span class="javascript">            peerID.innerText = <span class="string">&#x27;My peer ID is: &#x27;</span> + id ;</span></span><br><span class="line">  &#125;);</span><br><span class="line"><span class="javascript">    <span class="comment">// waiting for connection</span></span></span><br><span class="line"><span class="javascript">    peer.on(<span class="string">&#x27;connection&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">conn</span>) </span>&#123; </span></span><br><span class="line"><span class="javascript">        <span class="comment">//once p2p is established</span></span></span><br><span class="line"><span class="javascript">        otherID.innerText = <span class="string">&quot;Connected with &quot;</span> + conn.peer ;</span></span><br><span class="line"><span class="javascript">        stat.innerText = <span class="string">&quot;The connection is &quot;</span> + conn.open ;</span></span><br><span class="line"></span><br><span class="line"><span class="javascript">        <span class="comment">//open the connection</span></span></span><br><span class="line"><span class="javascript">        conn.on(<span class="string">&#x27;open&#x27;</span> , <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;  </span></span><br><span class="line"><span class="javascript">            stat.innerText = <span class="string">&quot;Connection turned to open : &quot;</span> + conn.open ;</span></span><br><span class="line">          &#125;)</span><br><span class="line">     &#125;);</span><br><span class="line">    <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="Result"><a href="#Result" class="headerlink" title="Result"></a>Result</h3><p>Sender and receiver will successfully establish connection with <code>conn</code> become both readable and writeable on the same host.</p>
+<p>When they need to communicate through the network, even specify the <code>STUN</code> server wouldn’t help. The <code>conn</code> will always be false, indicating it is not R/W.</p>
+<h2 id="STUN-TURN-and-Symmetrical-NAT"><a href="#STUN-TURN-and-Symmetrical-NAT" class="headerlink" title="STUN, TURN and Symmetrical NAT"></a>STUN, TURN and Symmetrical NAT</h2><p>I then think maybe it is the STUN server doesn’t work. But it turns out that the reason is I am sitting behind a symmetrical NAT.</p>
+<blockquote>
+<p>A symmetric NAT is one where all requests from the same internal IP address and port, to a specific destination IP address and port, are mapped to the same external IP address and port. If the same host sends a packet with the same source address and port, but to a different destination, a different mapping is used.</p>
+</blockquote>
+<p>So the STUN server can only punching the Asymmetrical NAT, by exchanging NAT mapped IP and port of P2P pair. For symmetrical NAT, a TURN server will be needed. A TURN server serves as a relay, connecting P2P pair.</p>
+<p>That makes me give the idea of building the game via P2P communication a second thought. Since a server is a must have, the question become choosing between C/S architecture vs P2P architecture. If we use P2P architecture, the server will do nothing but forwording the traffic, but if we choose C/S architecture, the server will also response for game state computation and other stuff.</p>
+<h3 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h3><p><a target="_blank" rel="noopener" href="https://pypi.org/project/pystun3/">Pystun3</a> is a Python STUN client for getting NAT type and external IP. Supports Python versions 2 and 3.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">$ pip install pystun3</span><br><span class="line">$ pystun3 -d</span><br><span class="line">DEBUG:pystun3:Do Test1</span><br><span class="line">DEBUG:pystun3:Trying STUN host: stun.ekiga.net</span><br><span class="line">DEBUG:pystun3:sendto: (<span class="string">&#x27;stun.ekiga.net&#x27;</span>, 3478)</span><br><span class="line">DEBUG:pystun3:sendto: (<span class="string">&#x27;stun.ekiga.net&#x27;</span>, 3478)</span><br><span class="line">DEBUG:pystun3:sendto: (<span class="string">&#x27;stun.ekiga.net&#x27;</span>, 3478)</span><br><span class="line">DEBUG:pystun3:sendto: (<span class="string">&#x27;stun.ekiga.net&#x27;</span>, 3478)</span><br><span class="line">DEBUG:pystun3:Trying STUN host: stun.ideasip.com</span><br><span class="line">DEBUG:pystun3:sendto: (<span class="string">&#x27;stun.ideasip.com&#x27;</span>, 3478)</span><br><span class="line">DEBUG:pystun3:Trying STUN host: stun.voiparound.com</span><br><span class="line">DEBUG:pystun3:sendto: (<span class="string">&#x27;stun.voiparound.com&#x27;</span>, 3478)</span><br><span class="line">DEBUG:pystun3:sendto: (<span class="string">&#x27;stun.voiparound.com&#x27;</span>, 3478)</span><br><span class="line">DEBUG:pystun3:sendto: (<span class="string">&#x27;stun.voiparound.com&#x27;</span>, 3478)</span><br><span class="line">DEBUG:pystun3:sendto: (<span class="string">&#x27;stun.voiparound.com&#x27;</span>, 3478)</span><br><span class="line">DEBUG:pystun3:Trying STUN host: stun.voipbuster.com</span><br><span class="line">DEBUG:pystun3:sendto: (<span class="string">&#x27;stun.voipbuster.com&#x27;</span>, 3478)</span><br><span class="line">DEBUG:pystun3:recvfrom: (<span class="string">&#x27;77.72.169.211&#x27;</span>, 3478)</span><br><span class="line">DEBUG:pystun3:Result: &#123;<span class="string">&#x27;Resp&#x27;</span>: True, <span class="string">&#x27;ExternalIP&#x27;</span>: <span class="string">&#x27;121.229.106.72&#x27;</span>, <span class="string">&#x27;ExternalPort&#x27;</span>: 41821, <span class="string">&#x27;SourceIP&#x27;</span>: <span class="string">&#x27;77.72.169.211&#x27;</span>, <span class="string">&#x27;SourcePort&#x27;</span>: 3478, <span class="string">&#x27;ChangedIP&#x27;</span>: <span class="string">&#x27;77.72.169.210&#x27;</span>, <span class="string">&#x27;ChangedPort&#x27;</span>: 3479&#125;</span><br><span class="line">DEBUG:pystun3:Do Test2</span><br><span class="line">DEBUG:pystun3:sendto: (<span class="string">&#x27;stun.voipbuster.com&#x27;</span>, 3478)</span><br><span class="line">DEBUG:pystun3:sendto: (<span class="string">&#x27;stun.voipbuster.com&#x27;</span>, 3478)</span><br><span class="line">DEBUG:pystun3:sendto: (<span class="string">&#x27;stun.voipbuster.com&#x27;</span>, 3478)</span><br><span class="line">DEBUG:pystun3:sendto: (<span class="string">&#x27;stun.voipbuster.com&#x27;</span>, 3478)</span><br><span class="line">DEBUG:pystun3:Result: &#123;<span class="string">&#x27;Resp&#x27;</span>: False, <span class="string">&#x27;ExternalIP&#x27;</span>: None, <span class="string">&#x27;ExternalPort&#x27;</span>: None, <span class="string">&#x27;SourceIP&#x27;</span>: None, <span class="string">&#x27;SourcePort&#x27;</span>: None, <span class="string">&#x27;ChangedIP&#x27;</span>: None, <span class="string">&#x27;ChangedPort&#x27;</span>: None&#125;</span><br><span class="line">DEBUG:pystun3:Do Test1</span><br><span class="line">DEBUG:pystun3:sendto: (<span class="string">&#x27;77.72.169.210&#x27;</span>, 3479)</span><br><span class="line">DEBUG:pystun3:recvfrom: (<span class="string">&#x27;77.72.169.210&#x27;</span>, 3479)</span><br><span class="line">DEBUG:pystun3:Result: &#123;<span class="string">&#x27;Resp&#x27;</span>: True, <span class="string">&#x27;ExternalIP&#x27;</span>: <span class="string">&#x27;121.229.106.72&#x27;</span>, <span class="string">&#x27;ExternalPort&#x27;</span>: 42299, <span class="string">&#x27;SourceIP&#x27;</span>: <span class="string">&#x27;77.72.169.210&#x27;</span>, <span class="string">&#x27;SourcePort&#x27;</span>: 3479, <span class="string">&#x27;ChangedIP&#x27;</span>: <span class="string">&#x27;77.72.169.211&#x27;</span>, <span class="string">&#x27;ChangedPort&#x27;</span>: 3478&#125;</span><br><span class="line">NAT Type: Symmetric NAT</span><br><span class="line">External IP: 121.229.106.72</span><br><span class="line">External Port: 42299</span><br><span class="line">$ pystun3</span><br><span class="line">NAT Type: Symmetric NAT</span><br><span class="line">External IP: 121.229.106.72</span><br><span class="line">External Port: 4737</span><br></pre></td></tr></table></figure>
+<h2 id="How-about-IPv6"><a href="#How-about-IPv6" class="headerlink" title="How about IPv6"></a>How about IPv6</h2><p>Unfortunately, ISP and router doesn’t support it, hardware upgrade is difficult.</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://test-ipv6.com/">test-ipv6</a></li>
+<li><a target="_blank" rel="noopener" href="https://ipv6test.google.com/">google test-ipv6</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://rubbish-and-world.github.io/2024/09/16/Network/NAT-P2P/" data-id="cm150k6rs0000rryq9z8eghvg" data-title="NAT_P2P" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2024/09/04/feelings/Ultimate/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Ultimate</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Cryptography/">Cryptography</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Data-Structure/">Data Structure</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Database/">Database</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Electronics/">Electronics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/">FrontEnd</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/FrontEnd/course/">course</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Hexo/">Hexo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/IOT/">IOT</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/LLL/">LLL</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/">Machine Learning</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/NTU/">NTU</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Machine-Learning/Stanford-CS229/">Stanford CS229</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/">Math</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Discrete-Mathematics/">Discrete Mathematics</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Linear-Algebra/">Linear Algebra</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Math/Statistics/">Statistics</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Missing-Semester/">Missing Semester</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/">Networking</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Networking/Stanford-CS144/">Stanford CS144</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/OS/30DayOS/">30DayOS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/TEP/">TEP</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python-OG/">Python OG</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web3/">Web3</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/academic/">academic</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/bis/">bis</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/csapp/">csapp</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/feeling/">feeling</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/feelings/">feelings</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/misc/">misc</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/noval/">noval</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/game/" rel="tag">game</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/game/" style="font-size: 10px;">game</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/09/">September 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/08/">August 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">July 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/02/">February 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/01/">January 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">August 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/">December 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/">November 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/">June 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/05/">May 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">July 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/06/">June 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2024/09/16/Network/NAT-P2P/">NAT_P2P</a>
+          </li>
+        
+          <li>
+            <a href="/2024/09/04/feelings/Ultimate/">Ultimate</a>
+          </li>
+        
+          <li>
+            <a href="/2024/08/16/feelings/Nonce/">Nonce</a>
+          </li>
+        
+          <li>
+            <a href="/2024/07/19/Web3/Blockchain/Solana-SPL-Token/">Solana-SPL-Token</a>
+          </li>
+        
+          <li>
+            <a href="/2024/07/09/miscellaneous/PaperHow2/">PaperHow2</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2024 rubbish<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
